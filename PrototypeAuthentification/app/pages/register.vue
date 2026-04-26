@@ -1,60 +1,91 @@
 <script setup lang="ts">
 const configs = useRuntimeConfig();
+
 const name = ref("damien2");
 const email = ref("testvisitor2@exemple.com");
 const password = ref("Password123!");
 const confirmPassword = ref("Password123!");
+const loading = ref<boolean>(false);
+const errorMessage = ref<string | null>(null);
 const cookie = useCookie("authToken", {
   // Set the cookie to expire in 7 days
   maxAge: 3600,
   // Ensure the cookie is sent only over secure connections
-  secure: true,
+  secure: import.meta.env.PROD,
   // Set the SameSite attribute to prevent CSRF attacks
   sameSite: "lax",
 });
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+const nameRegex = /^[A-Za-zÀ-ÿ\s]{2,50}$/;
+
 const register = async () => {
-    console.log("Registering user:", { name: name.value, email: email.value });
-    if (password.value !== confirmPassword.value) {
-        alert("Passwords do not match!");
+    loading.value = true;
+    errorMessage.value = null;
+
+    if (!nameRegex.test(name.value)) {
+        errorMessage.value = "Invalid name format.";
+        loading.value = false;
         return;
     }
-    console.log("Passwords match, proceeding with registration.");
-    // Here you would typically send a request to your backend to create the user
-    
+
+    if (!emailRegex.test(email.value)) {
+        errorMessage.value = "Invalid email format.";
+        loading.value = false;
+        return;
+    }
+
+    if (!passwordRegex.test(password.value)) {
+        errorMessage.value = "Password must be at least 8 characters, include uppercase, lowercase and a number.";
+        loading.value = false;
+        return;
+    }
+    if (password.value !== confirmPassword.value) {
+        errorMessage.value = "Passwords do not match.";
+        loading.value = false;
+        return;
+    }
+
     try {
-        const response = await $fetch<{message: string}>(`${configs.public.apiBase}/api/users/custom-register`, {
-        method: 'POST',
-        body: {
-            email: email.value,
-            password: password.value,
-            name: name.value
-        }
-        });
-
-        console.log("Registration response:", response);
-
-        // Return the data to your frontend
-        console.log('Register successful:', response);
-        // In a component or plugin
-        
-        const loginResponse = await $fetch<{ accessToken: string; expiresIn: number }>(`${configs.public.apiBase}/login`, {
-            method: 'POST',
-            body: {
-                email: email.value,
-                password: password.value
+        const response = await $fetch<{ message: string }>(`${configs.public.apiBase}/api/users/custom-register`,
+            {
+                method: 'POST',
+                body: {
+                    name: name.value,
+                    email: email.value,
+                    password: password.value
+                }
             }
-        });
+        );
 
-        cookie.value = loginResponse.accessToken;
+        console.log("Registration successful:", response);
+
+        const loginRespons = await $fetch<{ accessToken: string; expiresIn: number }>(`${configs.public.apiBase}/login`,
+            {
+                method: 'POST',
+                body: {
+                    email: email.value,
+                    password: password.value
+                }
+            }
+        );
+
+        cookie.value = loginRespons.accessToken;
         return navigateTo('/profile');
-    } catch (error) {
-        // Handle errors gracefully
-        throw createError({
-        statusCode: 500,
-        statusMessage: 'Failed to fetch data'
-        });
-    };
+    } catch (error: any) {
+        console.error("Registration error:", error);
+
+        if (error?.status === 400) {
+            errorMessage.value = "Invalid data or email already exists.";
+        } else if (error?.status === 0) {
+            errorMessage.value = "Server unreachable.";
+        } else {
+            errorMessage.value = "Unexpected error occurred.";
+        }
+    } finally {
+        loading.value = false;
+    }
 }
 </script>
 
@@ -66,7 +97,12 @@ const register = async () => {
             <input v-model="email" type="email" placeholder="Email" />
             <input v-model="password" type="password" placeholder="Password" />
             <input v-model="confirmPassword" type="password" placeholder="Confirm Password" />
-            <button type="submit">Register</button>
+            <button type="submit" :disabled="loading">
+                {{ loading ? "Registering..." : "Register" }}
+            </button>
+            <p v-if="errorMessage" class="error">
+                {{ errorMessage }}
+            </p>
         </form>
         <p>Already have an account? <NuxtLink to="/login">Login</NuxtLink></p>
     </div>
@@ -133,5 +169,14 @@ const register = async () => {
 
 .register-card a:hover {
     text-decoration: underline;
+}
+
+.error {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
 }
 </style>
