@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const configs = useRuntimeConfig();
 const name = ref("damien2");
 const email = ref("testvisitor2@exemple.com");
 const password = ref("Password123!");
@@ -22,7 +23,7 @@ const register = async () => {
     // Here you would typically send a request to your backend to create the user
     
     try {
-        const response = await $fetch<{message: string}>('http://localhost:5299/api/users/custom-register', {
+        const response = await $fetch<{message: string}>(`${configs.public.apiBase}/api/users/custom-register`, {
         method: 'POST',
         body: {
             email: email.value,
@@ -37,7 +38,7 @@ const register = async () => {
         console.log('Register successful:', response);
         // In a component or plugin
         
-        const loginResponse = await $fetch<{ accessToken: string; expiresIn: number }>('http://localhost:5299/login', {
+        const loginResponse = await $fetch<{ accessToken: string; expiresIn: number }>(`${configs.public.apiBase}/login`, {
             method: 'POST',
             body: {
                 email: email.value,

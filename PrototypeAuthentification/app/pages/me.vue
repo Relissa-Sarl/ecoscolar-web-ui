@@ -2,6 +2,7 @@
 definePageMeta({
     middleware: 'auth'
 })
+const configs = useRuntimeConfig();
 const cookie = useCookie("authToken");
 
 function logout() {
@@ -12,21 +13,19 @@ function logout() {
 const users = ref<Object[]>();
 const fetchUsers = async () => {
     try {
-        const response = await $fetch<Object[]>('http://localhost:5299/api/users', {
+        const response = await $fetch<Object[]>(`${configs.public.apiBase}/api/users`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${cookie.value}`
             }
         });
         users.value = response;
-        console.log('Users:', response);
     } catch (error) {
         console.error('Error fetching users:', error);
     }
 }
 onMounted(() => {
     fetchUsers();
-    console.log('Users after fetch:', users.value);
 });
 
 </script>
