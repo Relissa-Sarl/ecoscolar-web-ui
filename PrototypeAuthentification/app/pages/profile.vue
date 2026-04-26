@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { User } from '~/types/user';
 
+const configs = useRuntimeConfig();
 const cookie = useCookie("authToken");
 definePageMeta({
     middleware: 'auth'
@@ -24,7 +25,7 @@ const fetchUsers = async () => {
     errorMessage.value = null;
 
     try {
-        const response = await $fetch<User[]>('http://localhost:5299/api/users', {
+        const response = await $fetch<User[]>(`${configs.public.apiBase}/api/users`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${cookie.value}`
