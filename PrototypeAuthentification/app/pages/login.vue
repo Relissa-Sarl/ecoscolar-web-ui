@@ -1,19 +1,19 @@
 <script setup lang="ts">
-const email = ref("testvisitor@exemple.com");
+const configs = useRuntimeConfig();
+
+const email = ref("testvisitor2@exemple.com");
 const password = ref("Password123!");
 const cookie = useCookie("authToken", {
-  // Set the cookie to expire in 7 days
   maxAge: 3600,
-  // Ensure the cookie is sent only over secure connections
   secure: true,
-  // Set the SameSite attribute to prevent CSRF attacks
   sameSite: "lax",
 });
+
 // "email": "testvisitor@exemple.com",
 // "password": "Password123!"
 const login = async () => {
   try {
-    const response = await $fetch<{ accessToken: string; expiresIn: number }>('http://localhost:5299/login', {
+    const response = await $fetch<{ accessToken: string; expiresIn: number }>(`${configs.public.apiBase}/login`, {
       method: 'POST',
       body: {
         email: email.value,
@@ -21,17 +21,13 @@ const login = async () => {
       }
     });
 
-    // Return the data to your frontend
-    console.log('Login successful:', response);
-    // In a component or plugin
     cookie.value = response.accessToken;
 
     return navigateTo('/profile');
   } catch (error) {
-    // Handle errors gracefully
     throw createError({
       statusCode: 500,
-      statusMessage: 'Failed to fetch weather data'
+      statusMessage: 'Failed to fetch user data',
     });
   }
 };

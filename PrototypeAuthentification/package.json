@@ -3,15 +3,20 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
+    "build": "nuxt build --dotenv .env.prod",
+    "start": "node --env-file=.env.prod .output/server/index.mjs",
+
     "dev": "nuxt dev",
+    "dev:test": "nuxt dev --dotenv .env.test",
+    "dev:prod": "nuxt dev --dotenv .env.prod",
+    "prod": "npm run build && npm run start",
+
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "nuxt": "^4.4.2",
-    "nuxt-auth-utils": "^0.5.29",
     "vue": "^3.5.32",
     "vue-router": "^5.0.4"
   }
