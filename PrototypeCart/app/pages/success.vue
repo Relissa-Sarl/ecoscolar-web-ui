@@ -9,7 +9,7 @@ import successImg from '@/assets/success-24.png'
     <h1>Le paiement a été effectué avec succès !</h1>
     <img :src="successImg" alt="Success" class="success-image" />
     <p>Merci pour votre achat. Votre commande est en cours de traitement.</p>
-    <button @click="$router.push('/cart')" class="checkout-btn">Retour à l'accueil</button>
+    <button @click="$router.push('/listItems')" class="checkout-btn">Retour à l'accueil</button>
   </div>
 </template>
 

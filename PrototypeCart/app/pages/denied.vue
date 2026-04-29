@@ -9,7 +9,7 @@ import successImg from '@/assets/error-43.png'
     <h1>Le paiement a été refusé !</h1>
     <img :src="successImg" alt="Success" class="success-image" />
     <p>Veuillez réessayer votre paiement ou utiliser un autre moyen de paiement.</p>
-    <button @click="$router.push('/cart')" class="checkout-btn">Retour au paiement</button>
+    <button @click="$router.push('/listItems')" class="checkout-btn">Retour à l'accueil</button>
   </div>
 </template>
 

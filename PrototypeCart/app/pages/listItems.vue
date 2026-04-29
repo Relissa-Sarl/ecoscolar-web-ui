@@ -1,27 +1,38 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-
-const { cartItems, addToCart } = useCart()
-const nbrItems = computed(() => cartItems.value.length)
-const isExistMessage = ref('')
+import axios from 'axios'
 
 const products = [
   { id: 1, img: '/path/to/book1.jpg', name: 'Livre de maths', price: 25.50 },
   { id: 2, img: '/path/to/book2.jpg', name: 'Cours de maths', price: 15.00 }
 ]
 
+const url = ""
 
-const handleAddToCart = (item: { id: number; img: string; name: string; price: number }) => {
-  const isNotExist = addToCart(item)
-  isExistMessage.value = isNotExist ? '' : "L' article '" + item.name + "' est déjà dans le panier"
+const gotoLink = (link: string) => {
+  window.location.href = link
+}
+
+const fetchStripe = async (id: number) => {
+try {
+  // Envoi de la requête
+  const response = await axios.post("http://localhost:5000/api/payments/checkout", {productId: id, productPrice: products.find(p => p.id === id)?.price}, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  console.log(response.status)
+  gotoLink(response.data.url)
+
+  // Renvoi des données en format JSON
+  return response.data
+}
+catch (error) {
+    throw new Error(`Erreur HTTP : ${(error as any).response.status}`)
+  }
 }
 </script>
 
 <template>
-  <header>
-    <button @click="$router.push('/cart')" class="cart-btn">Voir le panier</button>
-    <p>{{ nbrItems }} articles dans le panier</p>
-  </header>
   <div class="list-container">
     <h2>LIste des articles</h2>
       <ul class="item-list">
@@ -36,13 +47,10 @@ const handleAddToCart = (item: { id: number; img: string; name: string; price: n
           </div>
 
           <div class="item-actions">
-            <button class="add-btn" @click="handleAddToCart(item)">Ajouter au panier</button>
+            <button class="add-btn" @click="fetchStripe(item.id)">Passer au paiement</button>
           </div>
         </li>
       </ul>
-      <div class="item-in-cart" v-if="isExistMessage">
-        <span>{{ isExistMessage }}</span>
-      </div>
 
   </div>
 </template>
