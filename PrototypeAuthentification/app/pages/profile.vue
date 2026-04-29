@@ -11,6 +11,8 @@ const users = ref<User[]>([]);
 const loading = ref<boolean>(false);
 const errorMessage = ref<string | null>(null);
 
+const me = ref<User | null>(null);
+
 function logout() {
     cookie.value = null;
     return navigateTo('/login');
@@ -46,8 +48,33 @@ const fetchUsers = async () => {
         loading.value = false;
     }
 }
+
+const fetchMe = async () => {
+    if (!cookie.value) {
+        logout();
+        return;
+    }
+
+    try {
+        const response = await $fetch<User>(`${configs.public.apiBase}/api/users/me`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${cookie.value}`
+            }
+        })
+
+        me.value = response;
+    } catch (error: any) {
+        console.error('Error fetching user info:', error);
+        if (error?.status === 401) {
+            logout();
+        }
+    }
+}
+
 onMounted(() => {
     fetchUsers();
+    fetchMe();
     console.log('Users after fetch:', users.value);
 });
 
@@ -58,6 +85,11 @@ onMounted(() => {
         <div class="profile-header">
             <h1>Profile</h1>
             <button class="logout-btn" @click="logout()">Logout</button>
+        </div>
+
+        <div>
+            <p><strong>Name:</strong> {{ me?.name }}</p>
+            <p><strong>Email:</strong> {{ me?.email }}</p>
         </div>
 
         <p class="profile-subtitle">
@@ -102,6 +134,7 @@ onMounted(() => {
 }
 
 .profile-subtitle {
+    margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     color: #64748b;
 }
