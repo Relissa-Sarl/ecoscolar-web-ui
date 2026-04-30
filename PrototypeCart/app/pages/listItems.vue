@@ -2,135 +2,130 @@
 import axios from 'axios'
 
 const products = [
-  { id: 1, img: '/path/to/book1.jpg', name: 'Livre de maths', price: 25.50 },
-  { id: 2, img: '/path/to/book2.jpg', name: 'Cours de maths', price: 15.00 }
+  { id: 1, name: 'Livre de maths', price: 25.50 },
+  { id: 2, name: 'Cours de maths', price: 15.00 }
 ]
 
-const url = ""
-
-const gotoLink = (link: string) => {
-  window.location.href = link
-}
-
-const fetchStripe = async (id: number) => {
-try {
-  // Envoi de la requête
-  const response = await axios.post("http://localhost:5173/api/payments/checkout", {productId: id, productPrice: products.find(p => p.id === id)?.price}, {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  console.log(response.status)
-  gotoLink(response.data.url)
-
-  // Renvoi des données en format JSON
-  return response.data
-}
-catch (error) {
-    throw new Error(`Erreur HTTP : ${(error as any).response.status}`)
+const handlePayment = async (product: any) => {
+  try {
+    const { data } = await axios.post("http://localhost:5173/api/payments/checkout", {
+      productId: product.id,
+      productPrice: product.price
+    })
+    window.location.href = data.url
+  } catch (error) {
+    console.error("Erreur de paiement", error)
   }
 }
 </script>
 
 <template>
-  <div class="list-container">
-    <button @click="$router.push('/home')" class="checkout-btn">Créer utilisateur Stripe</button>
-    <h2>LIste des articles</h2>
-      <ul class="item-list">
-        <li v-for="item in products" :key="item.id" class="item">
-          <div class="item-img">
-            <img :src="item.img" alt="Image" width="100" />
-          </div>
-          <div class="item-details">
-            <span class="item-name">{{ item.name }}</span>
-            <span class="item-price">{{ item.price.toFixed(2) }} CHF</span>
-            
+  <div class="shop-wrapper">
+    <!-- Header minimaliste -->
+    <nav class="nav">
+      <button @click="$router.push('/home')" class="account-link">
+        Créer compte stripe
+      </button>
+    </nav>
+
+    <main>
+      <h2 class="title">Articles</h2>
+
+      <div class="product-list">
+        <div v-for="item in products" :key="item.id" class="product-row">
+          <div class="info">
+            <span class="name">{{ item.name }}</span>
+            <span class="price">{{ item.price.toFixed(2) }} CHF</span>
           </div>
 
-          <div class="item-actions">
-            <button class="add-btn" @click="fetchStripe(item.id)">Passer au paiement</button>
-          </div>
-        </li>
-      </ul>
-
+          <button class="pay-btn" @click="handlePayment(item)">
+            Payer
+          </button>
+        </div>
+      </div>
+    </main>
   </div>
 </template>
 
 <style scoped>
-.list-container {
-  border: 1px solid #e2e8f0;
-  padding: 24px;
-  border-radius: 12px;
-  max-width: 450px;
-  margin: 20px auto;
+/* Conteneur principal - Fond blanc pur */
+.shop-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 40px 20px;
   background-color: #ffffff;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  font-family: sans-serif;
+  font-family: -apple-system, system-ui, sans-serif;
+  color: #111;
 }
-.item-list {
-  list-style-type: none;
+
+/* Navigation / Mon Compte */
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 60px;
+}
+
+.account-link {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
   padding: 0;
 }
-.item {
+
+.account-link:hover {
+  color: #000;
+}
+
+/* Titre */
+.title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 30px;
+  letter-spacing: -0.01em;
+}
+
+/* Liste des produits */
+.product-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #dbdbdb;
+  padding: 20px 0;
+  border-bottom: 1px solid #f0f0f0; /* Ligne très discrète */
 }
-.item-details {
+
+.info {
   display: flex;
   flex-direction: column;
-}
-.item-name {
-  font-weight: 600;
-  color: #334155;
-}
-.item-price {
-  margin-top: 5px;
-  color: #000000;
-  
-}
-.item-actions {
-  display: flex;
-  gap: 12px;
-  align-items: center;
+  gap: 4px;
 }
 
-.item-summary {
-  margin-top: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.1em;
+.name {
+  font-weight: 400;
+  font-size: 1rem;
 }
 
-.item-in-cart{
-  color: red;
+.price {
+  color: #888;
+  font-size: 0.9rem;
 }
-.cart-btn {
-  background-color: #106db9;
-  color: white;
+
+/* Bouton Payer */
+.pay-btn {
+  background: #000;
+  color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
-  border-radius: 6px;
-  font-weight: bold;
-  transition: background-color 0.2s;
+  transition: opacity 0.15s;
 }
 
-.add-btn {
-  background-color: #10b981;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  cursor: pointer;
-  border-radius: 6px;
-  font-size: 0.85em;
-  transition: background-color 0.2s;
-}
-.add-btn:hover {
-  background-color: #059669;
+.pay-btn:hover {
+  opacity: 0.7;
 }
 </style>

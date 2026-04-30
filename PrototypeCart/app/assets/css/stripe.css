@@ -4,12 +4,10 @@
   --error-color: #ff4444;
   --success-color: #00c851;
   --border-color: #e6e6e6;
-  --text-color: #e0e3f0;
-  --background-color: #242d60;
+  --text-color: #252833;
 }
 
 body {
-  background: var(--background-color);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
   'Helvetica Neue', 'Ubuntu', sans-serif;
   height: 100vh;
