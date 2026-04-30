@@ -2,5 +2,10 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  css: ['~/assets/css/stripe.css']
+  css: ['~/assets/css/stripe.css'],
+  runtimeConfig: {
+    public : {
+      apiBase: ""
+    }
+  }
 })

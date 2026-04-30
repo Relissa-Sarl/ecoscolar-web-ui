@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const configs = useRuntimeConfig();
 import { ref } from 'vue';
 import { useAccount } from '../composables/useAccount';
 
@@ -10,7 +11,7 @@ const handleCreateAccountAndOnboard = async (e: Event) => {
 
   try {
     // 1. Create Connect Account
-    const createRes = await fetch('http://localhost:5173/api/payments/create-connect-account', {
+    const createRes = await fetch(`${configs.public.apiBase}/api/payments/create-connect-account`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,7 +28,7 @@ const handleCreateAccountAndOnboard = async (e: Event) => {
     setAccountId(newAccountId);
 
     // 2. Immediately start onboarding by getting account link
-    const linkRes = await fetch('http://localhost:5173/api/payments/create-account-link', {
+    const linkRes = await fetch(`${configs.public.apiBase}/api/payments/create-account-link`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

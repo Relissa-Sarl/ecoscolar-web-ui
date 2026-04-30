@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const configs = useRuntimeConfig();
+
 import axios from 'axios'
 
 const products = [
@@ -8,7 +10,7 @@ const products = [
 
 const handlePayment = async (product: any) => {
   try {
-    const { data } = await axios.post("http://localhost:5173/api/payments/checkout", {
+    const { data } = await axios.post(`${configs.public.apiBase}/api/payments/checkout`, {
       productId: product.id,
       productPrice: product.price
     })
