@@ -15,7 +15,7 @@ const gotoLink = (link: string) => {
 const fetchStripe = async (id: number) => {
 try {
   // Envoi de la requête
-  const response = await axios.post("http://localhost:5000/api/payments/checkout", {productId: id, productPrice: products.find(p => p.id === id)?.price}, {
+  const response = await axios.post("http://localhost:5173/api/payments/checkout", {productId: id, productPrice: products.find(p => p.id === id)?.price}, {
     headers: {
       'Content-Type': 'application/json'
     }
@@ -34,6 +34,7 @@ catch (error) {
 
 <template>
   <div class="list-container">
+    <button @click="$router.push('/home')" class="checkout-btn">Créer utilisateur Stripe</button>
     <h2>LIste des articles</h2>
       <ul class="item-list">
         <li v-for="item in products" :key="item.id" class="item">
