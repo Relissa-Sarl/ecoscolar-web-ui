@@ -32,7 +32,11 @@ const handleCreateAccountAndOnboard = async (e: Event) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ accountId: newAccountId }),
+      body: JSON.stringify({ 
+        accountId: newAccountId,
+        returnUrl: `${window.location.origin}/home?accountId=${newAccountId}`,
+        refreshUrl: `${window.location.origin}/home`
+      }),
     });
 
     if (!linkRes.ok) {
