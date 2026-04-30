@@ -11,10 +11,10 @@ const isSuccess = computed(() => !!route.query.accountId);
 <template>
   <div class="App">
     <div class="container">
-      <div class="logo">Sample Connect Business | Dashboard</div>
+      <div class="logo">Exemple création compte Stripe Connect</div>
       
       <div v-if="isSuccess" class="success-message">
-        <p>✅ COMPTE CRéé, ID = {{ route.query.accountId }}</p>
+        <p>✅ COMPTE CREE, ID = {{ route.query.accountId }}</p>
       </div>
 
       <ConnectOnboarding v-if="!isSuccess" />
