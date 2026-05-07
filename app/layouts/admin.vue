@@ -8,7 +8,7 @@
         <li>[ Gestion Utilisateurs ]</li>
         <li>[ Signalements ]</li>
       </ul>
-      <br/>
+      <br>
       <button>[ Retour au site public ]</button>
     </aside>
 
@@ -18,9 +18,9 @@
         <span>[ Déconnexion ]</span>
       </header>
 
-      <hr/>
+      <hr>
       <div>
-        <slot/>
+        <slot />
       </div>
     </main>
   </div>

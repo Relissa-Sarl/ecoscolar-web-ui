@@ -15,13 +15,13 @@ export default defineNuxtConfig({
     enabled: true
   },
   css: ['~/assets/css/main.css'],
+  site: {
+    name: 'EcoScolar'
+  },
   runtimeConfig: {
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://localhost:5001/api'
     }
-  },
-  site: {
-    name: 'EcoScolar'
   },
   routeRules: {
     '/': { prerender: true }
