@@ -1,0 +1,42 @@
+services:
+  # -----------------------------
+  # Vote microservices
+  # -----------------------------
+  ms-frontend-proj:
+    build: .
+    container_name: ms-frontend-proj
+    networks:
+      - frontend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # -----------------------------
+  # Nginx API Gateway
+  # -----------------------------
+  ms-api-gateway-frontend:
+    build: ms-api-gateway-frontend
+    container_name: ms-api-gateway-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      ms-frontend-proj:
+        condition: service_healthy
+    networks:
+      - dmz
+      - frontend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  dmz:
+    driver: bridge
+  frontend:
+    driver: bridge
+    internal : true
