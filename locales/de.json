@@ -1,0 +1,10 @@
+{
+  "home": {
+    "welcome": "TEXTE EN DE",
+    "cta": "TEXTE EN DE"
+  },
+  "cart": {
+    "title": "TEXTE EN DE",
+    "empty": "TEXTE EN DE"
+  }
+}

@@ -1,0 +1,1 @@
+# Etat global avec pinia

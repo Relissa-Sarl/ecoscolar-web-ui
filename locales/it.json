@@ -1,0 +1,10 @@
+{
+  "home": {
+    "welcome": "Bienvenido",
+    "cta": "Hola"
+  },
+  "cart": {
+    "title": "Carrito",
+    "empty": "Vacio"
+  }
+}
