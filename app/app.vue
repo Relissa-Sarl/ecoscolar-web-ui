@@ -1,9 +1,8 @@
 <script setup lang="ts">
 useSeoMeta({
-  title: 'EcoScolar',
+  title: 'Home',
   description: 'La marketplace e-commerce pour les étudiants (Livres, Matériel, Cours)'
 })
-
 </script>
 
 <template>

@@ -11,6 +11,40 @@ export default defineNuxtConfig({
     'nuxt-zod-i18n',
     '@nuxtjs/google-fonts'
   ],
+  devtools: {
+    enabled: true
+  },
+  css: ['~/assets/css/main.css'],
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://localhost:5001/api'
+    }
+  },
+  site: {
+    name: 'EcoScolar'
+  },
+  routeRules: {
+    '/': { prerender: true }
+  },
+  compatibilityDate: '2025-01-15',
+  typescript: {
+    strict: true,
+    typeCheck: true
+  },
+
+  eslint: {
+    config: {
+      stylistic: {
+        commaDangle: 'never',
+        braceStyle: '1tbs'
+      }
+    }
+  },
+  googleFonts: {
+    families: {
+      Inter: [400, 500, 600, 700]
+    }
+  },
   i18n: {
     locales: [
       { code: 'fr', iso: 'fr-CH', name: 'Français', file: 'fr.json' },
@@ -20,37 +54,5 @@ export default defineNuxtConfig({
     defaultLocale: 'fr',
     langDir: '../locales/', // Chemin relatif depuis /app
     strategy: 'prefix_except_default'
-  },
-  devtools: {
-    enabled: true
-  },
-  googleFonts: {
-    families: {
-      Inter: [400, 500, 600, 700],
-    }
-  },
-  css: ['~/assets/css/main.css'],
-
-  routeRules: {
-    '/': { prerender: true }
-  },
-  runtimeConfig: {
-    public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://localhost:5001/api'
-    }
-  },
-  typescript: {
-    strict: true,
-    typeCheck: true
-  },
-  compatibilityDate: '2025-01-15',
-
-  eslint: {
-    config: {
-      stylistic: {
-        commaDangle: 'never',
-        braceStyle: '1tbs'
-      }
-    }
   }
 })
