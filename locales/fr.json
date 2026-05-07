@@ -1,0 +1,10 @@
+{
+  "home": {
+    "welcome": "Trouvez vos livres et matériel scolaire à prix réduit",
+    "cta": "Commencer à vendre"
+  },
+  "cart": {
+    "title": "Mon Panier",
+    "empty": "Votre panier est vide pour le moment"
+  }
+}
