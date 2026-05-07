@@ -10,7 +10,7 @@ const localePath = useLocalePath()
         :to="localePath('/')"
         class="text-xl font-bold text-gray-800 dark:text-white hover:text-indigo-600 transition-colors"
       >
-        [ LOGO EcoScholar ]
+        [ LOGO EcoScolar ]
       </NuxtLink>
     </div>
 
