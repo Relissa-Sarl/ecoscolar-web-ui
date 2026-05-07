@@ -1,32 +1,17 @@
 <script setup lang="ts">
-// On récupère "locales" en plus de "locale" et "setLocale"
-const { locale, locales, setLocale } = useI18n()
+// definePageMeta({ layout: 'admin' })
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center min-h-[70vh] gap-8 px-4">
+  <section style="padding: 2rem; text-align: center;">
+    <h1>{{ $t('home.welcome') }}</h1>
 
-    <h1 class="text-4xl md:text-5xl font-bold text-center text-gray-900 dark:text-white">
-      {{ $t('home.welcome') }}
-    </h1>
+    <p style="margin: 1rem 0; color: #666;">
+      [ Ici s'affichera la liste des derniers livres et objets en vente ]
+    </p>
 
-    <UButton size="xl" color="primary" icon="i-heroicons-shopping-bag">
+    <button style="padding: 0.5rem 1rem;">
       {{ $t('home.cta') }}
-    </UButton>
-
-    <UDivider class="w-1/3 my-4" />
-
-    <div class="flex gap-4">
-      <UButton
-        v-for="l in locales"
-        :key="l.code"
-        :variant="locale === l.code ? 'solid' : 'soft'"
-        color="neutral"
-        @click="setLocale(l.code)"
-      >
-        {{ l.code.toUpperCase() }}
-      </UButton>
-    </div>
-
-  </div>
+    </button>
+  </section>
 </template>
