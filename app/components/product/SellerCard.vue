@@ -19,9 +19,19 @@ defineEmits<{
       size="lg"
     />
     <div class="flex-1">
-      <p class="font-medium text-gray-900 dark:text-white">{{ seller.username }}</p>
-      <p class="text-sm text-gray-500 dark:text-gray-400">📍 {{ seller.zip }}</p>
+      <p class="font-medium text-gray-900 dark:text-white">
+        {{ seller.username }}
+      </p>
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        📍 {{ seller.zip }}
+      </p>
     </div>
-    <UButton color="neutral" variant="outline" @click="$emit('view-profile')">View Profile</UButton>
+    <UButton
+      color="neutral"
+      variant="outline"
+      @click="$emit('view-profile')"
+    >
+      View Profile
+    </UButton>
   </div>
 </template>

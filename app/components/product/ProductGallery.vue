@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 interface Props {
   images: string[]
@@ -9,6 +9,12 @@ interface Props {
 const props = defineProps<Props>()
 
 const selectedImage = ref<string>(props.images[0] || '')
+
+watch(() => props.images, (newImages) => {
+  if (newImages.length > 0) {
+    selectedImage.value = newImages[0]
+  }
+}, { deep: true })
 </script>
 
 <template>
@@ -29,9 +35,9 @@ const selectedImage = ref<string>(props.images[0] || '')
       <div
         v-for="(img, idx) in images"
         :key="idx"
-        @click="selectedImage = img"
         class="cursor-pointer rounded overflow-hidden border-2 transition-all"
         :class="selectedImage === img ? 'border-gray-900 dark:border-gray-100' : 'border-gray-300 dark:border-gray-700'"
+        @click="selectedImage = img"
       >
         <NuxtImg
           :src="img"
