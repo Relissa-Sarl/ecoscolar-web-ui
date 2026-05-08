@@ -2,11 +2,13 @@
 import { ref, watch } from 'vue'
 
 interface Props {
-  images: string[]
+  images?: string[]
   title: string
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  images: () => []
+})
 
 const selectedImage = ref<string>(props.images[0] || '')
 
