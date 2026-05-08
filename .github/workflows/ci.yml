@@ -1,12 +1,6 @@
 name: ci pipeline - frontend
 
-on: 
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: push
 
 jobs:
   build-and-test:
@@ -24,17 +18,20 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --shamefully-hoist
+        run: pnpm install --no-frozen-lockfile --shamefully-hoist --ignore-workspace
 
-      - name: Nuxt Types Preparation
-        run: pnpm run prepare
+      - name: Nuxt Type Preparation
+        run: pnpm nuxi prepare
 
+      - name: Lint
+        run: pnpm run lint
+      
       - name: Nuxt Build
-        run: pnpm run build
+        run: pnpm build
 
       - name: Docker Build Test
-        run : docker build -t ms-frontend-proj .
+        run: docker build -t ms-frontend-proj .
