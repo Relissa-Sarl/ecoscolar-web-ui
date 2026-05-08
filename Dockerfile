@@ -1,35 +1,38 @@
-# --- Étape 1 : Build de l'application ---
+# Application build ---
 FROM node:lts-alpine as build-stage
 
-# 1. Ajout des librairies de compatibilité pour Alpine
+# Add compatibility libraries for Alpine
 RUN apk add --no-cache libc6-compat
 
-# Active Corepack pour utiliser pnpm
+# Enable Corepack to use pnpm
 RUN corepack enable pnpm
 
-# Définit le dossier de travail dans le conteneur
+# Set the working directory in the container
 WORKDIR /app
 
-# Copie les fichiers de dépendances en premier (pour optimiser le cache Docker)
+# Copy dependency files first (to optimize Docker cache)
 COPY package*.json pnpm-lock.yaml ./
 
-# Installe les dépendances avec pnpm
+# Install dependencies with pnpm
 RUN pnpm install --frozen-lockfile --shamefully-hoist
 
-# Copie le reste des fichiers du projet
+# Copy the rest of the project files
 COPY . .
 
-# Génère l'application statique pour la production
-RUN pnpm run build
+# Generate Nuxt types to prevent TypeScript errors
+RUN pnpm nuxi prepare
 
-# --- Étape 2 : Serveur Nginx pour la production ---
+# Generate the static application for production
+RUN pnpm build
+
+# Nginx server for production ---
 FROM nginx:stable-alpine as production-stage
 
-# Copie les fichiers compilés depuis l'étape précédente vers le dossier de Nginx
+# Copy the compiled files from the previous stage to the Nginx directory
 COPY --from=build-stage /app/.output/public/. /usr/share/nginx/html/
 
-# Expose le port 80 pour pouvoir y accéder
+# Expose port 80 to allow access
 EXPOSE 80
 
-# Lance Nginx
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
