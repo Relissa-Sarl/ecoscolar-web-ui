@@ -11,9 +11,7 @@ const props = defineProps<Props>()
 const selectedImage = ref<string>(props.images[0] || '')
 
 watch(() => props.images, (newImages) => {
-  if (newImages.length > 0) {
-    selectedImage.value = newImages[0]
-  }
+  selectedImage.value = newImages?.[0] ?? ''
 }, { deep: true })
 </script>
 
