@@ -1,10 +1,10 @@
 {
   "home": {
-    "welcome": "TEXTE EN DE",
-    "cta": "TEXTE EN DE"
+    "welcome": "Willkommen",
+    "cta": "Jetzt einkaufen"
   },
   "cart": {
-    "title": "TEXTE EN DE",
-    "empty": "TEXTE EN DE"
+    "title": "Warenkorb",
+    "empty": "Ihr Warenkorb ist leer"
   }
 }
