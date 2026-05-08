@@ -3,7 +3,7 @@
 
     <div class="flex flex-col gap-2">
       <label for="email" class="text-sm font-bold text-slate-700 dark:text-slate-300">
-        Adresse e-mail <span class="text-red-600" aria-hidden="true">*</span>
+        {{ $t('support.fields.email') }} <span class="text-red-600" aria-hidden="true">*</span>
       </label>
       <input
         id="email"
@@ -11,14 +11,14 @@
         type="email"
         required
         aria-required="true"
-        placeholder="exemple@email.com"
+        :placeholder="$t('support.fields.email_placeholder')"
         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
       />
     </div>
 
     <div class="flex flex-col gap-2">
       <label for="reason" class="text-sm font-bold text-slate-700 dark:text-slate-300">
-        Raison du contact <span class="text-red-600" aria-hidden="true">*</span>
+        {{ $t('support.fields.reason') }} <span class="text-red-600" aria-hidden="true">*</span>
       </label>
       <select
         id="reason"
@@ -27,17 +27,17 @@
         aria-required="true"
         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all cursor-pointer"
       >
-        <option value="" disabled>Sélectionnez une option</option>
-        <option value="account">Problème de compte</option>
-        <option value="order">Suivi de commande</option>
-        <option value="bug">Signaler un bug</option>
-        <option value="other">Autre demande</option>
+        <option value="" disabled>{{ $t('support.fields.reason_placeholder') }}</option>
+        <option value="account">{{ $t('support.reasons.account') }}</option>
+        <option value="order">{{ $t('support.reasons.order') }}</option>
+        <option value="bug">{{ $t('support.reasons.bug') }}</option>
+        <option value="other">{{ $t('support.reasons.other') }}</option>
       </select>
     </div>
 
     <div class="flex flex-col gap-2">
       <label for="message" class="text-sm font-bold text-slate-700 dark:text-slate-300">
-        Votre message <span class="text-red-600" aria-hidden="true">*</span>
+        {{ $t('support.fields.message') }} <span class="text-red-600" aria-hidden="true">*</span>
       </label>
       <textarea
         id="message"
@@ -45,7 +45,7 @@
         rows="5"
         required
         aria-required="true"
-        placeholder="Comment pouvons-nous vous aider ?"
+        :placeholder="$t('support.fields.message_placeholder')"
         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all resize-none"
       ></textarea>
     </div>
@@ -55,20 +55,22 @@
         type="submit"
         class="flex-1 bg-emerald-800 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-lg transition-colors focus:ring-4 focus:ring-emerald-500/50 outline-none"
       >
-        Envoyer le message
+        {{ $t('support.actions.submit') }}
       </button>
       <button
         type="button"
         @click="handleCancel"
         class="flex-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-slate-700 dark:text-slate-300 font-bold py-3 px-6 rounded-lg transition-colors focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-700 outline-none"
       >
-        Annuler
+        {{ $t('support.actions.cancel') }}
       </button>
     </div>
   </form>
 </template>
 
 <script setup lang="ts">
+// On récupère t pour les messages d'alerte dans le script
+const { t } = useI18n()
 const router = useRouter()
 const localePath = useLocalePath()
 
@@ -79,13 +81,13 @@ const form = ref({
 })
 
 const handleSubmit = () => {
-  console.log('Formulaire soumis :', form.value)
-  alert('Merci ! Votre message a été envoyé.')
+  console.log('Form submission:', form.value)
+  alert(t('support.success'))
   router.push(localePath('/'))
 }
 
 const handleCancel = () => {
-  if (confirm('Voulez-vous vraiment annuler ? Vos modifications seront perdues.')) {
+  if (confirm(t('support.actions.confirm_cancel'))) {
     router.push(localePath('/'))
   }
 }

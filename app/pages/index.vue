@@ -4,7 +4,7 @@
 
 <template>
   <div>
-    <WelcomeHero />
+    <HomeHero />
   </div>
 
 </template>

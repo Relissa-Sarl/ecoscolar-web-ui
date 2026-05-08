@@ -1,7 +1,5 @@
 <script setup lang="ts">
-// On importe le header pour qu'il soit visible sur toutes les pages
-import AppHeader from '~/components/AppHeader.vue'
-// On initialise le helper pour les liens traduits dans le footer
+// Nuxt auto-importe AppHeader, on ne l'importe pas manuellement ici
 const localePath = useLocalePath()
 </script>
 
@@ -13,15 +11,15 @@ const localePath = useLocalePath()
     >
       Passer au contenu principal
     </a>
+
     <AppHeader />
 
-    <main class="flex-1 p-8">
+    <main id="main-content" class="flex-1 p-8">
       <slot />
     </main>
 
     <footer class="p-8 border-t border-gray-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-900" role="contentinfo">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-
         <div class="flex flex-col gap-2">
           <div class="flex items-center gap-2">
             <svg class="w-6 h-6 text-emerald-800 dark:text-emerald-500" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
@@ -36,18 +34,11 @@ const localePath = useLocalePath()
 
         <nav aria-label="Navigation secondaire de bas de page">
           <ul class="flex flex-wrap gap-6 text-sm font-semibold text-slate-700 dark:text-slate-300">
-            <li>
-              <NuxtLink :to="localePath('/support')" class="hover:underline focus:ring-2 focus:ring-emerald-500 outline-none">Support</NuxtLink>
-            </li>
-            <li>
-              <NuxtLink :to="localePath('/terms')" class="hover:underline focus:ring-2 focus:ring-emerald-500 outline-none">Terms of Service</NuxtLink>
-            </li>
-            <li>
-              <NuxtLink :to="localePath('/privacy')" class="hover:underline focus:ring-2 focus:ring-emerald-500 outline-none">Privacy</NuxtLink>
-            </li>
+            <li><NuxtLink :to="localePath('/support')" class="hover:underline focus:ring-2 focus:ring-emerald-500 outline-none">Support</NuxtLink></li>
+            <li><NuxtLink :to="localePath('/terms')" class="hover:underline focus:ring-2 focus:ring-emerald-500 outline-none">Terms of Service</NuxtLink></li>
+            <li><NuxtLink :to="localePath('/privacy')" class="hover:underline focus:ring-2 focus:ring-emerald-500 outline-none">Privacy</NuxtLink></li>
           </ul>
         </nav>
-
       </div>
     </footer>
   </div>
