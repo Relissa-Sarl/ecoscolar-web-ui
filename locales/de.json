@@ -6,5 +6,25 @@
   "cart": {
     "title": "TEXTE EN DE",
     "empty": "TEXTE EN DE"
+  },
+  "me": {
+    "adverts": {
+      "title": "TEXTE EN DE",
+      "description": "TEXTE EN DE",
+      "empty": "TEXTE EN DE",
+      "add": "TEXTE EN DE",
+      "filters": {
+        "all": "TEXTE EN DE",
+        "book": "TEXTE EN DE",
+        "supplies": "TEXTE EN DE",
+        "tutoring": "TEXTE EN DE"
+      },
+      "actions": {
+        "edit": "TEXTE EN DE",
+        "resume": "TEXTE EN DE",
+        "expired": "TEXTE EN DE",
+        "sold": "TEXTE EN DE"
+      }
+    }
   }
 }

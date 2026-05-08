@@ -6,5 +6,25 @@
   "cart": {
     "title": "Carrito",
     "empty": "Vacio"
+  },
+  "me": {
+    "adverts": {
+      "title": "TEXT EN IT",
+      "description": "TEXT EN IT",
+      "empty": "TEXT EN IT",
+      "add": "TEXT EN IT",
+      "filters": {
+        "all": "Tutto",
+        "book": "Libri",
+        "supplies": "Forniture",
+        "tutoring": "Tutoraggio"
+      },
+      "actions": {
+        "edit": "TEXT EN IT",
+        "resume": "TEXT EN IT",
+        "expired": "TEXT EN IT",
+        "sold": "TEXT EN IT"
+      }
+    }
   }
 }

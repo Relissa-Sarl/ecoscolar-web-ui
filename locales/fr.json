@@ -6,5 +6,25 @@
   "cart": {
     "title": "Mon Panier",
     "empty": "Votre panier est vide pour le moment"
+  },
+  "me": {
+    "adverts": {
+      "title": "Mes Annonces",
+      "description": "Gérez vos annonces en vente et vos services de tutorat.",
+      "empty": "Vous n'avez pas encore publié d'annonces",
+      "add": "Publier une nouvelle annonce",
+      "filters": {
+        "all": "Tout",
+        "book": "Livres",
+        "supplies": "Fournitures",
+        "tutoring": "Tutorat"
+      },
+      "actions": {
+        "edit": "Modifier",
+        "resume": "Reprendre",
+        "expired": "Expiré",
+        "sold": "Vendu"
+      }
+    }
   }
 }
