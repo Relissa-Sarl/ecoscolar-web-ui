@@ -13,7 +13,7 @@ export const useApi = async <T>(
   options?: UseApiOptions
 ) => {
   const config = useRuntimeConfig()
-  const authStore = useAuthStore()
+  // const authStore = useAuthStore() // TODO : After the JWT implementation
   const { skipAuth, ...fetchOptions } = options ?? {}
 
   return $fetch<T>(request, {
@@ -26,10 +26,11 @@ export const useApi = async <T>(
       // Check JWT if it is enabled
       const jwtEnabled = config.public.enableJwt as boolean
       if (jwtEnabled && !skipAuth) {
-        const token = authStore.token
+        // TODO : After the JWT implementation
+        /* const token = authStore.token
         if (token) {
           headers.set('Authorization', `Bearer ${token}`)
-        }
+        } */
       }
 
       options.headers = headers
@@ -38,7 +39,7 @@ export const useApi = async <T>(
     async onResponseError({ response }) {
       // Redirection if unauthorized
       if (response.status === 401) {
-        authStore.clearAuth()
+        // authStore.clearAuth()
         navigateTo('/') // TODO : Change to login route
       }
     }
