@@ -1,29 +1,46 @@
-import { useToast } from '#imports'
+// Get base fetch options type from $fetch
+type FetchParameters = Parameters<typeof $fetch>
+type BaseFetchOptions = NonNullable<FetchParameters[1]>
 
+// Custom options
+type UseApiOptions = BaseFetchOptions & {
+  skipAuth?: boolean
+}
+
+// $fetch wrapper
 export const useApi = async <T>(
-  request: Parameters<typeof $fetch>[0],
-  opts?: Parameters<typeof $fetch>[1]
+  request: string,
+  options?: UseApiOptions
 ) => {
-  const toast = useToast()
   const config = useRuntimeConfig()
+  const authStore = useAuthStore()
+  const { skipAuth, ...fetchOptions } = options ?? {}
 
   return $fetch<T>(request, {
     baseURL: config.public.apiBase as string,
-    ...opts,
+    ...fetchOptions,
 
     async onRequest({ options }) {
       const headers = new Headers(options.headers)
 
-      // TODO : Gestion du token JWT
+      // Check JWT if it is enabled
+      const jwtEnabled = config.public.enableJwt as boolean
+      if (jwtEnabled && !skipAuth) {
+        const token = authStore.token
+        if (token) {
+          headers.set('Authorization', `Bearer ${token}`)
+        }
+      }
+
       options.headers = headers
     },
 
     async onResponseError({ response }) {
-      toast.add({
-        title: 'Erreur',
-        description: response.statusText,
-        color: 'error'
-      })
+      // Redirection if unauthorized
+      if (response.status === 401) {
+        authStore.clearAuth()
+        navigateTo('/') // TODO : Change to login route
+      }
     }
   })
 }
