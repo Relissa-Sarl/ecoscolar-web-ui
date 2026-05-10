@@ -40,7 +40,7 @@ export const useApi = async <T>(
       // Redirection if unauthorized
       if (response.status === 401) {
         // authStore.clearAuth()
-        navigateTo('/') // TODO : Change to login route
+        return await navigateTo('/') // TODO : Change to login route
       }
     }
   })
