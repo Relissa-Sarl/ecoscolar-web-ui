@@ -15,7 +15,7 @@ type DummyJsonProductsParams = {
 export async function getDummyjsonProducts(params?: DummyJsonProductsParams) {
   const query = params?.q?.trim()
 
-  return useApi<DummyJsonProductsResponse>(query ? '/search' : '', {
+  return useApi<DummyJsonProductsResponse>(query ? '/products/search' : '/products', {
     skipAuth: true,
     query: query ? { q: query } : undefined
   })
