@@ -37,8 +37,9 @@ export const useApi = async <T>(
     },
 
     async onResponseError({ response }) {
-      // Redirection if unauthorized
-      if (response.status === 401) {
+      // Redirection if unauthorized only for authenticated flows
+      const jwtEnabled = config.public.enableJwt as boolean
+      if (response.status === 401 && jwtEnabled && !skipAuth) {
         // authStore.clearAuth()
         await navigateTo('/') // TODO : Change to login route
       }
