@@ -12,15 +12,6 @@
     "impact_text": "Découvrez comment vous aidez la planète.",
     "impact_unit": "économisés"
   },
-  "common": {
-    "back_to_home": "← Retour à l'accueil",
-    "last_updated": "Dernière mise à jour :",
-    "contact_support": "Contactez le support"
-  },
-  "support": {
-    "title": "Contactez le support",
-    "description": "Une question ou un problème ? Notre équipe EcoScolar vous répond !"
-  },
   "cart": {
     "title": "Mon Panier",
     "empty": "Votre panier est vide pour le moment"
@@ -84,5 +75,33 @@
     "s3_title": "3. Limitation de responsabilité",
     "s3_text": "EcoScolar agit en tant qu'intermédiaire. Nous ne saurions être tenus responsables de la qualité des articles échangés entre les utilisateurs.",
     "footer": "Vous avez des questions sur nos conditions ?"
+  },
+  "login": {
+    "title": "Connexion",
+    "subtitle": "Heureux de vous revoir sur EcoScolar !",
+    "email_label": "Adresse e-mail",
+    "email_placeholder": "votre{'@'}email.com",
+    "password_label": "Mot de passe",
+    "forgot_password": "Mot de passe oublié ?",
+    "submit_button": "Se connecter",
+    "no_account": "Pas encore de compte ?",
+    "register_link": "Créer un compte"
+  },
+  "register": {
+    "title": "Créer un compte",
+    "subtitle": "Rejoignez la communauté EcoScolar dès aujourd'hui.",
+    "name_label": "Nom complet",
+    "name_placeholder": "Jean Dupont",
+    "email_label": "Adresse e-mail",
+    "email_placeholder": "votre{'@'}email.com",
+    "password_label": "Mot de passe",
+    "submit_button": "S'inscrire",
+    "has_account": "Déjà inscrit ?",
+    "login_link": "Se connecter"
+  },
+  "forgot_password": {
+    "instruction": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+    "submit_button": "Envoyer le lien",
+    "back_to_login": "Retour à la connexion"
   }
 }

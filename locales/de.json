@@ -21,11 +21,6 @@
     "title": "Mein Warenkorb",
     "empty": "Ihr Warenkorb ist zur Zeit leer"
   },
-  "common": {
-    "back_to_home": "← Zurück zur Startseite",
-    "last_updated": "Zuletzt aktualisiert:",
-    "contact_support": "Support kontaktieren"
-  },
   "support": {
     "title": "Support kontaktieren",
     "description": "Eine Frage oder ein Problem? Unser EcoScolar-Team antwortet Ihnen.",
@@ -81,5 +76,33 @@
     "s3_title": "3. Haftungsbeschränkung",
     "s3_text": "EcoScolar fungiert als Vermittler. Wir können nicht für die Qualität der zwischen den Benutzern ausgetauschten Artikel verantwortlich gemacht werden.",
     "footer": "Haben Sie Fragen zu unseren Bedingungen?"
+  },
+  "login": {
+    "title": "Anmelden",
+    "subtitle": "Schön, Sie wieder bei EcoScolar zu sehen!",
+    "email_label": "E-Mail-Adresse",
+    "email_placeholder": "ihre{'@'}email.com",
+    "password_label": "Passwort",
+    "forgot_password": "Passwort vergessen?",
+    "submit_button": "Anmelden",
+    "no_account": "Noch kein Konto?",
+    "register_link": "Konto erstellen"
+  },
+  "register": {
+    "title": "Konto erstellen",
+    "subtitle": "Werden Sie noch heute Teil der EcoScolar-Community.",
+    "name_label": "Vollständiger Name",
+    "name_placeholder": "Max Mustermann",
+    "email_label": "E-Mail-Adresse",
+    "email_placeholder": "ihre{'@'}email.com",
+    "password_label": "Passwort",
+    "submit_button": "Registrieren",
+    "has_account": "Bereits registriert?",
+    "login_link": "Anmelden"
+  },
+  "forgot_password": {
+    "instruction": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.",
+    "submit_button": "Link senden",
+    "back_to_login": "Zurück zur Anmeldung"
   }
 }

@@ -21,11 +21,6 @@
     "title": "Il mio carrello",
     "empty": "Il tuo carrello è attualmente vuoto"
   },
-  "common": {
-    "back_to_home": "← Torna alla home",
-    "last_updated": "Ultimo aggiornamento:",
-    "contact_support": "Contatta il supporto"
-  },
   "support": {
     "title": "Contatta il supporto",
     "description": "Una domanda o un problema? Il nostro team EcoScolar ti risponderà.",
@@ -81,5 +76,33 @@
     "s3_title": "3. Limitazione di responsabilità",
     "s3_text": "EcoScolar funge da intermediario. Non possiamo essere ritenuti responsabili per la qualità degli articoli scambiati tra gli utenti.",
     "footer": "Hai domande sulle nostre condizioni?"
+  },
+  "login": {
+    "title": "Accesso",
+    "subtitle": "Felice di rivederti su EcoScolar!",
+    "email_label": "Indirizzo e-mail",
+    "email_placeholder": "tua{'@'}email.com",
+    "password_label": "Password",
+    "forgot_password": "Password dimenticata?",
+    "submit_button": "Accedi",
+    "no_account": "Non hai ancora un account?",
+    "register_link": "Crea un account"
+  },
+  "register": {
+    "title": "Crea un account",
+    "subtitle": "Unisciti alla comunità EcoScolar oggi stesso.",
+    "name_label": "Nome completo",
+    "name_placeholder": "Mario Rossi",
+    "email_label": "Indirizzo e-mail",
+    "email_placeholder": "tua{'@'}email.com",
+    "password_label": "Password",
+    "submit_button": "Iscriviti",
+    "has_account": "Già iscritto?",
+    "login_link": "Accedi"
+  },
+  "forgot_password": {
+    "instruction": "Inserisci il tuo indirizzo e-mail e ti invieremo un link per reimpostare la tua password.",
+    "submit_button": "Invia il link",
+    "back_to_login": "Torna all'accesso"
   }
 }

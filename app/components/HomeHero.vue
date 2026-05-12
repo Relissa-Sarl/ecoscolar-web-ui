@@ -34,18 +34,7 @@ const localePath = useLocalePath()
         </div>
       </article>
 
-      <article class="group relative overflow-hidden rounded-3xl bg-white dark:bg-gray-900 p-8 border border-gray-200 dark:border-gray-800">
-        <div class="relative z-10">
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white">{{ $t('home.impact_title') }}</h2>
-          <p class="mt-2 text-slate-700 dark:text-slate-300">{{ $t('home.impact_text') }}</p>
-          <div class="mt-6 flex items-center gap-2" role="status" aria-live="polite">
-            <span class="text-3xl font-bold text-emerald-700 dark:text-emerald-500">-12kg</span>
-            <span class="text-xs text-slate-600 dark:text-slate-400 uppercase font-bold tracking-wider leading-tight">
-              CO2<br>{{ $t('home.impact_unit') }}
-            </span>
-          </div>
-        </div>
-      </article>
+
     </div>
   </section>
 </template>
