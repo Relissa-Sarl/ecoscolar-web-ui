@@ -1,64 +1,84 @@
-# Nuxt Starter Template
+# 🎓 EcoScolar - Web UI
 
-[![Nuxt UI](https://img.shields.io/badge/Made%20with-Nuxt%20UI-00DC82?logo=nuxt&labelColor=020420)](https://ui.nuxt.com)
+Bienvenue sur le dépôt front-end d'EcoScolar, la marketplace dédiée aux étudiants (Livres, Matériel, Cours d'appui). 
+Ce projet est développé avec 
+- **Nuxt 4**
+- **Vue 3**
+- **Tailwind CSS**
+- **TypeScript**
 
-Use this template to get started with [Nuxt UI](https://ui.nuxt.com) quickly.
+## 🛠 Prérequis
 
-- [Live demo](https://starter-template.nuxt.dev/)
-- [Documentation](https://ui.nuxt.com/docs/getting-started/installation/nuxt)
+- **Node.js** : `v22.x` 
+- **Gestionnaire de paquets** : `pnpm v10.x`
 
-<a href="https://starter-template.nuxt.dev/" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://ui.nuxt.com/assets/templates/nuxt/starter-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://ui.nuxt.com/assets/templates/nuxt/starter-light.png">
-    <img alt="Nuxt Starter Template" src="https://ui.nuxt.com/assets/templates/nuxt/starter-light.png" width="830" height="466">
-  </picture>
-</a>
-
-> The starter template for Vue is on https://github.com/nuxt-ui-templates/starter-vue.
-
-## Quick Start
-
-```bash [Terminal]
-npm create nuxt@latest -- -t ui
-```
-
-## Deploy your own
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-name=starter&repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fstarter&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fnuxt%2Fstarter-dark.png&demo-url=https%3A%2F%2Fstarter-template.nuxt.dev%2F&demo-title=Nuxt%20Starter%20Template&demo-description=A%20minimal%20template%20to%20get%20started%20with%20Nuxt%20UI.)
-
-## Setup
-
-Make sure to install the dependencies:
+## 📦 Installation et Lancement
 
 ```bash
+# 1. Installer les dépendances
 pnpm install
+
+# 2. Lancer le serveur de développement
+pnpm run dev
 ```
 
-## Development Server
+# 📜 Conventions de Nommage
 
-Start the development server on `http://localhost:3000`:
+## 1. Fichiers et Composants (Vue/Nuxt)
 
+**Composants (app/components/)** : PascalCase et multi-mots.
+- `AppHeader.vue`, `ProductCard.vue`
+
+**Pages et Routes (app/pages/)** : kebab-case. Nuxt utilise le nom du fichier pour générer l'URL.
+- `product-details.vue` (donne `/product-details`)
+
+**Composables (app/composables/)** : camelCase en commençant toujours par `use`.
+- `useCart.ts`, `useAuth.ts`
+
+## 2. TypeScript et Variables
+
+**Types & Interfaces (app/types/)** : PascalCase. Ne pas préfixer par un I ou un T.
+- `interface Product { ... }`
+- `type UserRole = ...`
+
+**Variables et Fonctions** : camelCase. Un nom de fonction doit décrire une action.
+- `const isAuthenticated = true;`
+- `function fetchProducts() { ... }`
+
+# 🤝 Git Flow & Collaboration
+Approche de "Feature Branch Workflow" pour garder la branche principale toujours stable.
+
+## 1. Les Branches Principales
+- `main` : Code en production (Stable). Personne ne push directement ici.
+- `develop` : Code d'intégration (Test). Toutes les features terminées sont fusionnées ici en premier.
+
+## 2. Créer sa branche de travail
+À partir de `develop`, créez une branche nommée selon le type de travail :
+- `feature/nom-de-la-fonctionnalite` (ex: `feature/cart-store`)
+- `fix/nom-du-bug` (ex: `fix/login-crash`)
+- `refactor/nom-du-refacto` (ex: `refactor/header-design`)
+
+## 3. Les Messages de Commit (Conventional Commits)
+Commencez toujours vos commits par un des préfixes suivants :
+- `feat:` : Ajout d'une nouvelle fonctionnalité (ex: `feat: ajout du bouton de langue`)
+- `fix:` : Correction d'un bug (ex: `fix: correction de l'erreur 500 sur le login`)
+- `chore:` : Tâches de maintenance, mises à jour de paquets (ex: `chore: fix eslint errors`)
+- `docs:` : Modification du README ou de la documentation
+- `style:` : Changements de design (Tailwind) sans impact sur la logique métier
+
+## 4. Le Cycle de vie d'une tâche
 ```bash
-pnpm dev
+git checkout develop
+git pull
+git checkout -b feature/ma-nouvelle-page
+# ... Vous codez ...
+pnpm run lint --fix # (Obligatoire avant de commit pour passer la CI !)
+git add .
+git commit -m "feat: création de la page d'accueil"
+git push
 ```
+Ouvrir une Pull Request (PR) sur GitHub vers la branche `develop`.
 
-## Production
-
-Build the application for production:
-
-```bash
-pnpm build
-```
-
-Locally preview production build:
-
-```bash
-pnpm preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
-
-## Renovate integration
-
-Install [Renovate GitHub app](https://github.com/apps/renovate/installations/select_target) on your repository and you are good to go.
+# 🛡️ Qualité du code
+L'application est protégée par ESLint en mode strict.
+Si la CI (GitHub Actions) échoue sur votre Pull Request à cause du formatage, lancez `pnpm run lint --fix` en local, commitez le résultat, et la CI passera au vert !
