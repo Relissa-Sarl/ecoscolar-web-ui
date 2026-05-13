@@ -1,9 +1,17 @@
 <template>
-  <form @submit.prevent="handleRegister" class="space-y-6 bg-white dark:bg-gray-900 p-8 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
-
+  <form
+    class="space-y-6 bg-white dark:bg-gray-900 p-8 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm"
+    @submit.prevent="handleRegister"
+  >
     <div class="flex flex-col gap-2">
-      <label for="reg-name" class="text-sm font-bold text-slate-700 dark:text-slate-300">
-        {{ $t('register.name_label') }} <span class="text-red-600" aria-hidden="true">*</span>
+      <label
+        for="reg-name"
+        class="text-sm font-bold text-slate-700 dark:text-slate-300"
+      >
+        {{ $t('register.name_label') }} <span
+          class="text-red-600"
+          aria-hidden="true"
+        >*</span>
       </label>
       <input
         id="reg-name"
@@ -14,12 +22,18 @@
         aria-required="true"
         :placeholder="$t('register.name_placeholder')"
         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
-      />
+      >
     </div>
 
     <div class="flex flex-col gap-2">
-      <label for="reg-email" class="text-sm font-bold text-slate-700 dark:text-slate-300">
-        {{ $t('register.email_label') }} <span class="text-red-600" aria-hidden="true">*</span>
+      <label
+        for="reg-email"
+        class="text-sm font-bold text-slate-700 dark:text-slate-300"
+      >
+        {{ $t('register.email_label') }} <span
+          class="text-red-600"
+          aria-hidden="true"
+        >*</span>
       </label>
       <input
         id="reg-email"
@@ -30,12 +44,18 @@
         aria-required="true"
         :placeholder="$t('register.email_placeholder')"
         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
-      />
+      >
     </div>
 
     <div class="flex flex-col gap-2">
-      <label for="reg-password" class="text-sm font-bold text-slate-700 dark:text-slate-300">
-        {{ $t('register.password_label') }} <span class="text-red-600" aria-hidden="true">*</span>
+      <label
+        for="reg-password"
+        class="text-sm font-bold text-slate-700 dark:text-slate-300"
+      >
+        {{ $t('register.password_label') }} <span
+          class="text-red-600"
+          aria-hidden="true"
+        >*</span>
       </label>
       <input
         id="reg-password"
@@ -46,7 +66,7 @@
         aria-required="true"
         placeholder="••••••••"
         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
-      />
+      >
     </div>
 
     <button

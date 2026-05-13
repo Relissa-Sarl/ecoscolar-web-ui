@@ -1,12 +1,21 @@
 <template>
-  <form @submit.prevent="handleResetRequest" class="space-y-6 bg-white dark:bg-gray-900 p-8 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
+  <form
+    class="space-y-6 bg-white dark:bg-gray-900 p-8 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm"
+    @submit.prevent="handleResetRequest"
+  >
     <p class="text-sm text-slate-600 dark:text-slate-300">
       {{ $t('forgot_password.instruction') }}
     </p>
 
     <div class="flex flex-col gap-2">
-      <label for="forgot-email" class="text-sm font-bold text-slate-700 dark:text-slate-300">
-        {{ $t('login.email_label') }} <span class="text-red-600" aria-hidden="true">*</span>
+      <label
+        for="forgot-email"
+        class="text-sm font-bold text-slate-700 dark:text-slate-300"
+      >
+        {{ $t('login.email_label') }} <span
+          class="text-red-600"
+          aria-hidden="true"
+        >*</span>
       </label>
       <input
         id="forgot-email"
@@ -17,7 +26,7 @@
         aria-required="true"
         :placeholder="$t('login.email_placeholder')"
         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
-      />
+      >
     </div>
 
     <button
@@ -30,7 +39,6 @@
 </template>
 
 <script setup lang="ts">
-
 const email = ref('')
 
 const handleResetRequest = () => {

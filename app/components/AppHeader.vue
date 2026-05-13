@@ -24,8 +24,14 @@ const localePath = useLocalePath()
     </div>
 
     <div class="flex items-center gap-6">
-      <nav class="flex items-center gap-2" aria-label="Sélecteur de langue">
-        <span class="text-sm text-gray-500 dark:text-gray-400" aria-hidden="true">Langue :</span>
+      <nav
+        class="flex items-center gap-2"
+        aria-label="Sélecteur de langue"
+      >
+        <span
+          class="text-sm text-gray-500 dark:text-gray-400"
+          aria-hidden="true"
+        >Langue :</span>
         <button
           v-for="l in locales"
           :key="l.code"
@@ -33,8 +39,8 @@ const localePath = useLocalePath()
           :class="locale === l.code
             ? 'font-bold bg-emerald-100 border-emerald-400 text-emerald-900 dark:bg-emerald-900 dark:border-emerald-500 dark:text-emerald-100'
             : 'bg-transparent border-gray-300 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800'"
-          @click="setLocale(l.code)"
           :aria-current="locale === l.code ? 'page' : undefined"
+          @click="setLocale(l.code)"
         >
           {{ l.code.toUpperCase() }}
         </button>

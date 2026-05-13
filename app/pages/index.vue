@@ -6,5 +6,4 @@
   <div>
     <HomeHero />
   </div>
-
 </template>

@@ -1,7 +1,13 @@
 <template>
   <div class="max-w-4xl mx-auto">
-    <nav class="mb-8" aria-label="Fil d'Ariane">
-      <NuxtLink :to="localePath('/')" class="text-emerald-700 dark:text-emerald-400 hover:underline text-sm font-medium focus:ring-2 focus:ring-emerald-500 outline-none">
+    <nav
+      class="mb-8"
+      aria-label="Fil d'Ariane"
+    >
+      <NuxtLink
+        :to="localePath('/')"
+        class="text-emerald-700 dark:text-emerald-400 hover:underline text-sm font-medium focus:ring-2 focus:ring-emerald-500 outline-none"
+      >
         {{ $t('common.back_to_home') }}
       </NuxtLink>
     </nav>
@@ -18,7 +24,10 @@
 
       <section class="space-y-8 text-slate-700 dark:text-slate-300 leading-relaxed">
         <section aria-labelledby="section-1-title">
-          <h2 id="section-1-title" class="text-2xl font-bold text-slate-900 dark:text-white">
+          <h2
+            id="section-1-title"
+            class="text-2xl font-bold text-slate-900 dark:text-white"
+          >
             {{ $t('terms.s1_title') }}
           </h2>
           <p class="mt-4">
@@ -27,21 +36,30 @@
         </section>
 
         <section aria-labelledby="section-2-title">
-          <h2 id="section-2-title" class="text-2xl font-bold text-slate-900 dark:text-white">
+          <h2
+            id="section-2-title"
+            class="text-2xl font-bold text-slate-900 dark:text-white"
+          >
             {{ $t('terms.s2_title') }}
           </h2>
           <p class="mt-4">
             {{ $t('terms.s2_text') }}
           </p>
           <ul class="list-disc pl-5 space-y-2 mt-4">
-            <li v-for="(item, index) in $tm('terms.s2_list')" :key="index">
+            <li
+              v-for="(item, index) in $tm('terms.s2_list')"
+              :key="index"
+            >
               {{ $rt(item) }}
             </li>
           </ul>
         </section>
 
         <section aria-labelledby="section-3-title">
-          <h2 id="section-3-title" class="text-2xl font-bold text-slate-900 dark:text-white">
+          <h2
+            id="section-3-title"
+            class="text-2xl font-bold text-slate-900 dark:text-white"
+          >
             {{ $t('terms.s3_title') }}
           </h2>
           <p class="mt-4">
@@ -53,7 +71,10 @@
       <footer class="mt-12 p-6 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl border border-emerald-100 dark:border-emerald-900">
         <p class="text-sm text-emerald-900 dark:text-emerald-300">
           {{ $t('terms.footer') }}
-          <NuxtLink :to="localePath('/support')" class="font-bold underline ml-1 focus:ring-2 focus:ring-emerald-500 outline-none">
+          <NuxtLink
+            :to="localePath('/support')"
+            class="font-bold underline ml-1 focus:ring-2 focus:ring-emerald-500 outline-none"
+          >
             {{ $t('common.contact_support') }}
           </NuxtLink>.
         </p>

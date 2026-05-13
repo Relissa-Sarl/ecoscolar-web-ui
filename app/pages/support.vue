@@ -1,7 +1,13 @@
 <template>
   <div class="max-w-2xl mx-auto">
-    <nav class="mb-8" aria-label="Fil d'Ariane">
-      <NuxtLink :to="localePath('/')" class="text-emerald-700 hover:underline text-sm font-medium">
+    <nav
+      class="mb-8"
+      aria-label="Fil d'Ariane"
+    >
+      <NuxtLink
+        :to="localePath('/')"
+        class="text-emerald-700 hover:underline text-sm font-medium"
+      >
         {{ $t('common.back_to_home') }}
       </NuxtLink>
     </nav>

@@ -1,7 +1,13 @@
 <template>
   <div class="max-w-md mx-auto py-12 px-4">
-    <nav class="mb-8" aria-label="Retour">
-      <NuxtLink :to="localePath('/login')" class="text-emerald-700 dark:text-emerald-400 hover:underline text-sm font-medium focus:ring-2 focus:ring-emerald-500 outline-none">
+    <nav
+      class="mb-8"
+      aria-label="Retour"
+    >
+      <NuxtLink
+        :to="localePath('/login')"
+        class="text-emerald-700 dark:text-emerald-400 hover:underline text-sm font-medium focus:ring-2 focus:ring-emerald-500 outline-none"
+      >
         ← {{ $t('forgot_password.back_to_login') }}
       </NuxtLink>
     </nav>
