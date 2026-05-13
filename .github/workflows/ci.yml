@@ -13,7 +13,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: latest
 
       - name: Install node
         uses: actions/setup-node@v4
@@ -35,3 +35,17 @@ jobs:
 
       - name: Docker Build Test
         run: docker build -t ms-frontend-proj .
+
+      - name: Container Lauch Test
+        run: |
+          # 1. Run the Docker container in detached mode, mapping port 8080 to 80
+          docker run -d -p 8080:80 --name test-container ms-frontend-proj
+          
+          # 2. Wait 3 seconds for the container to start
+          sleep 3
+          
+          # 3. HTTP Request Test On Port 8080
+          curl -f http://localhost:8080/
+          
+          # 4. Stop and Remove the test container
+          docker rm -f test-container
