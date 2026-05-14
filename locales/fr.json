@@ -1,10 +1,107 @@
 {
   "home": {
-    "welcome": "Trouvez vos livres et matériel scolaire à prix réduit",
-    "cta": "Commencer à vendre"
+    "welcome": "Bonjour,",
+    "subtitle": "Prêt à donner une seconde vie à vos fournitures scolaires ?",
+    "buy_title": "Acheter",
+    "buy_text": "Trouvez tout ce dont vous avez besoin à petit prix.",
+    "buy_cta": "Explorer la boutique",
+    "sell_title": "Vendre",
+    "sell_text": "Vendez vos anciens articles et gagnez de l'argent.",
+    "sell_cta": "Mettre en vente",
+    "impact_title": "Impact",
+    "impact_text": "Découvrez comment vous aidez la planète.",
+    "impact_unit": "économisés"
   },
   "cart": {
     "title": "Mon Panier",
     "empty": "Votre panier est vide pour le moment"
+  },
+  "common": {
+    "back_to_home": "← Retour à l'accueil",
+    "last_updated": "Dernière mise à jour :",
+    "contact_support": "Contactez le support"
+  },
+  "support": {
+    "title": "Contactez le support",
+    "description": "Une question ou un problème ? Notre équipe EcoScolar vous répond !",
+    "fields": {
+      "email": "Adresse e-mail",
+      "reason": "Raison du contact",
+      "reason_placeholder": "Sélectionnez une option",
+      "message": "Votre message",
+      "email_placeholder": "exemple{'@'}email.com",
+      "message_placeholder": "Comment pouvons-nous vous aider ?"
+    },
+    "reasons": {
+      "account": "Problème de compte",
+      "order": "Suivi de commande",
+      "bug": "Signaler un bug",
+      "other": "Autre demande"
+    },
+    "actions": {
+      "submit": "Envoyer le message",
+      "cancel": "Annuler",
+      "confirm_cancel": "Voulez-vous vraiment annuler ? Vos modifications seront perdues."
+    },
+    "success": "Merci ! Votre message a été envoyé."
+  },
+  "privacy": {
+    "title": "Politique de Confidentialité",
+    "s1_title": "1. Collecte des données",
+    "s1_text": "Nous collectons les informations que vous nous fournissez directement lors de la création de votre compte EcoScolar, notamment votre adresse e-mail et vos informations de profil.",
+    "s2_title": "2. Utilisation de vos données",
+    "s2_text": "Vos données sont utilisées exclusivement pour :",
+    "s2_list": [
+      "Gérer votre compte et vos transactions.",
+      "Vous envoyer des notifications relatives à vos achats ou ventes.",
+      "Améliorer l'expérience utilisateur sur notre plateforme."
+    ],
+    "s3_title": "3. Vos droits et accès",
+    "s3_text": "Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données personnelles. Vous pouvez exercer ces droits à tout moment depuis votre profil.",
+    "s4_title": "4. Sécurité des données",
+    "s4_text": "Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles pour protéger vos données contre tout accès non autorisé ou perte.",
+    "footer": "Pour toute question concernant vos données personnelles, contactez notre délégué à la protection des données via le"
+  },
+  "terms": {
+    "title": "Termes de Services",
+    "s1_title": "1. Acceptation des conditions",
+    "s1_text": "En accédant à EcoScolar, vous acceptez d'être lié par les présentes conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services.",
+    "s2_title": "2. Utilisation du service",
+    "s2_text": "Notre plateforme permet l'achat et la vente de fournitures scolaires d'occasion. Vous vous engagez à fournir des informations exactes et à ne pas utiliser le service à des fins illégales.",
+    "s2_list": [
+      "L'utilisateur doit avoir au moins 15 ans ou une autorisation parentale.",
+      "Les articles mis en vente doivent être conformes à la réalité."
+    ],
+    "s3_title": "3. Limitation de responsabilité",
+    "s3_text": "EcoScolar agit en tant qu'intermédiaire. Nous ne saurions être tenus responsables de la qualité des articles échangés entre les utilisateurs.",
+    "footer": "Vous avez des questions sur nos conditions ?"
+  },
+  "login": {
+    "title": "Connexion",
+    "subtitle": "Heureux de vous revoir sur EcoScolar !",
+    "email_label": "Adresse e-mail",
+    "email_placeholder": "votre{'@'}email.com",
+    "password_label": "Mot de passe",
+    "forgot_password": "Mot de passe oublié ?",
+    "submit_button": "Se connecter",
+    "no_account": "Pas encore de compte ?",
+    "register_link": "Créer un compte"
+  },
+  "register": {
+    "title": "Créer un compte",
+    "subtitle": "Rejoignez la communauté EcoScolar dès aujourd'hui.",
+    "name_label": "Nom complet",
+    "name_placeholder": "Jean Dupont",
+    "email_label": "Adresse e-mail",
+    "email_placeholder": "votre{'@'}email.com",
+    "password_label": "Mot de passe",
+    "submit_button": "S'inscrire",
+    "has_account": "Déjà inscrit ?",
+    "login_link": "Se connecter"
+  },
+  "forgot_password": {
+    "instruction": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+    "submit_button": "Envoyer le lien",
+    "back_to_login": "Retour à la connexion"
   }
 }
