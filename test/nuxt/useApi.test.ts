@@ -20,6 +20,3 @@ describe('useApi composable', () => {
     expect(signature).toContain('request')
   })
 })
-
-
-

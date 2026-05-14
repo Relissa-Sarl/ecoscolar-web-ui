@@ -69,4 +69,3 @@ describe('Breadcrumb', () => {
     expect(spans.length).toBeGreaterThan(0)
   })
 })
-
