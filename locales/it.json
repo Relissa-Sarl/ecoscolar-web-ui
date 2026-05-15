@@ -19,6 +19,20 @@
     "home": "Home",
     "breadcrumb_label": "Percorso di navigazione"
   },
+  "error": {
+    "not_found": {
+      "title": "Pagina non trovata",
+      "message": "La pagina richiesta non esiste oppure è stata spostata."
+    },
+    "generic": {
+      "title": "Si è verificato un errore",
+      "message": "Si è verificato un errore imprevisto."
+    },
+    "actions": {
+      "back_home": "Torna alla home",
+      "contact_support": "Contatta il supporto"
+    }
+  },
   "cart": {
     "title": "Il mio carrello",
     "empty": "Il tuo carrello è attualmente vuoto"

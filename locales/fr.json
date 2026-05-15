@@ -23,6 +23,20 @@
     "home": "Accueil",
     "breadcrumb_label": "Fil d'Ariane"
   },
+  "error": {
+    "not_found": {
+      "title": "Page introuvable",
+      "message": "La page demandée n’existe pas ou a été déplacée."
+    },
+    "generic": {
+      "title": "Une erreur est survenue",
+      "message": "Une erreur inattendue est survenue."
+    },
+    "actions": {
+      "back_home": "Retour à l’accueil",
+      "contact_support": "Contacter le support"
+    }
+  },
   "support": {
     "title": "Contactez le support",
     "description": "Une question ou un problème ? Notre équipe EcoScolar vous répond !",
