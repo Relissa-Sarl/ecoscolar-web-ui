@@ -25,7 +25,7 @@ const localePath = useLocalePath()
       </p>
     </header>
 
-    <RegisterForm />
+    <AccountRegisterForm />
 
     <p class="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
       {{ $t('register.has_account') }}

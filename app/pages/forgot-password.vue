@@ -22,6 +22,6 @@ const localePath = useLocalePath()
       </h1>
     </header>
 
-    <ForgotPasswordForm />
+    <AccountForgotPasswordForm />
   </div>
 </template>
