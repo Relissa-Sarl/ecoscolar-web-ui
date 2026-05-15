@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { Seller, Question, Answer } from '@/types/product'
+import type { Seller, Question, Answer } from '@/types/advert'
 
 interface Props {
   seller: Seller

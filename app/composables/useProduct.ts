@@ -1,7 +1,7 @@
-import type { Product } from '@/types/product'
+import type { Advert } from '@/types/advert'
 
 // Mock data - to be replaced by a real API call
-const MOCK_PRODUCT: Omit<Product, 'id'> = {
+const MOCK_PRODUCT: Omit<Advert, 'id'> = {
   title: 'Biology: A Global Approach, 12th Edition',
   authors: 'By Campbell, Urry, Cain, Wasserman',
   category: 'Textbooks',
@@ -56,7 +56,7 @@ const MOCK_PRODUCT: Omit<Product, 'id'> = {
 }
 
 export const useProduct = (productId: string) => {
-  return useAsyncData<Product>(
+  return useAsyncData<Advert>(
     `product:${productId}`,
     () => Promise.resolve({ id: productId, ...MOCK_PRODUCT })
   )

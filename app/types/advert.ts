@@ -30,7 +30,7 @@ export interface Answer {
   isSeller?: boolean
 }
 
-export interface Product {
+export interface Advert {
   id: string
   title: string
   authors: string
