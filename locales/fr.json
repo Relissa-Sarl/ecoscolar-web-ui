@@ -108,5 +108,17 @@
     "instruction": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
     "submit_button": "Envoyer le lien",
     "back_to_login": "Retour à la connexion"
+  },
+  "admin": {
+    "nav_label": "Menu administration",
+    "menu": {
+      "dashboard": "Tableau de bord",
+      "listings": "Validation des annonces",
+      "users": "Gestion des utilisateurs",
+      "reports": "Signalements",
+      "back_to_public": "Retour au site public"
+    },
+    "logged_as": "Connecté : {name}",
+    "logout": "Déconnexion"
   }
 }

@@ -108,5 +108,17 @@
     "instruction": "Inserisci il tuo indirizzo e-mail e ti invieremo un link per reimpostare la tua password.",
     "submit_button": "Invia il link",
     "back_to_login": "Torna all'accesso"
+  },
+  "admin": {
+    "nav_label": "Menu amministrazione",
+    "menu": {
+      "dashboard": "Dashboard",
+      "listings": "Convalida degli annunci",
+      "users": "Gestione utenti",
+      "reports": "Segnalazioni",
+      "back_to_public": "Torna al sito pubblico"
+    },
+    "logged_as": "Connesso : {name}",
+    "logout": "Disconnessione"
   }
 }

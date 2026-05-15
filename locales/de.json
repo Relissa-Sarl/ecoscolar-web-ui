@@ -108,5 +108,17 @@
     "instruction": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.",
     "submit_button": "Link senden",
     "back_to_login": "Zurück zur Anmeldung"
+  },
+  "admin": {
+    "nav_label": "Admin-Menü",
+    "menu": {
+      "dashboard": "Dashboard",
+      "listings": "Anzeigen prüfen",
+      "users": "Benutzerverwaltung",
+      "reports": "Meldungen",
+      "back_to_public": "Zurück zur öffentlichen Seite"
+    },
+    "logged_as": "Angemeldet : {name}",
+    "logout": "Abmelden"
   }
 }
