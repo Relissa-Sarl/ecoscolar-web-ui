@@ -15,7 +15,9 @@
   "common": {
     "back_to_home": "← Zurück zur Startseite",
     "last_updated": "Zuletzt aktualisiert:",
-    "contact_support": "Support kontaktieren"
+    "contact_support": "Support kontaktieren",
+    "home": "Startseite",
+    "breadcrumb_label": "Brotkrümel-Navigation"
   },
   "cart": {
     "title": "Mein Warenkorb",

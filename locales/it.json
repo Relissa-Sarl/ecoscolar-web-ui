@@ -15,7 +15,9 @@
   "common": {
     "back_to_home": "← Torna alla home",
     "last_updated": "Ultimo aggiornamento:",
-    "contact_support": "Contatta il supporto"
+    "contact_support": "Contatta il supporto",
+    "home": "Home",
+    "breadcrumb_label": "Percorso di navigazione"
   },
   "cart": {
     "title": "Il mio carrello",

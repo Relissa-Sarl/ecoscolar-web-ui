@@ -19,7 +19,9 @@
   "common": {
     "back_to_home": "← Retour à l'accueil",
     "last_updated": "Dernière mise à jour :",
-    "contact_support": "Contactez le support"
+    "contact_support": "Contactez le support",
+    "home": "Accueil",
+    "breadcrumb_label": "Fil d'Ariane"
   },
   "support": {
     "title": "Contactez le support",

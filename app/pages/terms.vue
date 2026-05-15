@@ -1,20 +1,19 @@
 <script setup lang="ts">
+const { t } = useI18n()
 const localePath = useLocalePath()
+
+const breadcrumbItems = computed(() => [
+  { label: t('common.home'), to: localePath('/') },
+  { label: t('terms.title') }
+])
 </script>
 
 <template>
   <div class="max-w-4xl mx-auto">
-    <nav
+    <Breadcrumb
       class="mb-8"
-      aria-label="Fil d'Ariane"
-    >
-      <NuxtLink
-        :to="localePath('/')"
-        class="text-emerald-700 dark:text-emerald-400 hover:underline text-sm font-medium focus:ring-2 focus:ring-emerald-500 outline-none"
-      >
-        {{ $t('common.back_to_home') }}
-      </NuxtLink>
-    </nav>
+      :items="breadcrumbItems"
+    />
 
     <article class="prose prose-slate dark:prose-invert max-w-none">
       <header class="mb-10 border-b border-gray-200 dark:border-gray-800 pb-6">
