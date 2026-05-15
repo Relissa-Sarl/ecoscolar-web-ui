@@ -42,7 +42,9 @@
       "submit": "Nachricht senden",
       "cancel": "Abbrechen",
       "confirm_cancel": "Möchten Sie wirklich abbrechen? Ihre Änderungen gehen verloren.",
-      "confirm_cancel_title": "Änderungen abbrechen"
+      "confirm_cancel_title": "Änderungen abbrechen",
+      "confirm_cancel_confirm": "Verlassen",
+      "confirm_cancel_stay": "Bleiben"
     },
     "success": "Vielen Dank! Ihre Nachricht wurde gesendet."
   },
