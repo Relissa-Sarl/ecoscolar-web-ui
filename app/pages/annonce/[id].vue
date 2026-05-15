@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const route = useRoute()
-const { product } = useProduct(String(route.params.id))
+const { data: product } = await useProduct(String(route.params.id))
 
 const breadcrumbItems = computed(() => [
   { label: 'Shop', to: '/' },
