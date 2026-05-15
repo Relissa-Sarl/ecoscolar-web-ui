@@ -9,8 +9,7 @@ export default defineNuxtConfig({
     '@nuxtjs/seo',
     '@nuxtjs/i18n',
     'nuxt-zod-i18n',
-    '@nuxtjs/google-fonts',
-    '@nuxt/test-utils'
+    '@nuxtjs/google-fonts'
   ],
   devtools: {
     enabled: true
