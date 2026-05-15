@@ -1,4 +1,4 @@
-name: ci pipeline - frontend
+name: Build & Test - Frontend
 
 on: push
 
@@ -34,12 +34,12 @@ jobs:
         run: pnpm build
 
       - name: Docker Build Test
-        run: docker build -t ms-frontend-proj .
+        run: docker build -t ecoscolar-frontend .
 
-      - name: Container Lauch Test
+      - name: Container Launch Test
         run: |
           # 1. Run the Docker container in detached mode, mapping port 8080 to 80
-          docker run -d -p 8080:80 --name test-container ms-frontend-proj
+          docker run -d -p 8080:80 --name test-container ecoscolar-frontend
           
           # 2. Wait 3 seconds for the container to start
           sleep 3

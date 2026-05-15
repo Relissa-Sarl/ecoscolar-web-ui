@@ -2,9 +2,9 @@ services:
   # -----------------------------
   # Frontend microservices
   # -----------------------------
-  ms-frontend-proj:
+  ecoscolar-frontend:
     build: .
-    container_name: ms-frontend-proj
+    container_name: ecoscolar-frontend
     networks:
       - frontend
     healthcheck:
@@ -17,13 +17,13 @@ services:
   # -----------------------------
   # Nginx API Gateway
   # -----------------------------
-  ms-api-gateway-frontend:
-    build: ms-api-gateway-frontend
-    container_name: ms-api-gateway-frontend
+  ecoscolar-gateway-frontend:
+    build: ecoscolar-gateway-frontend
+    container_name: ecoscolar-gateway-frontend
     ports:
       - "${NGINX_PORT}:80"
     depends_on:
-      ms-frontend-proj:
+      ecoscolar-frontend:
         condition: service_healthy
     networks:
       - dmz
