@@ -8,8 +8,8 @@ const breadcrumbItems = computed(() => [
   { label: product.value?.title || '', to: undefined }
 ])
 
-const handleAskQuestion = (text: string) => {
-  console.log('Question asked:', text)
+const handleAskQuestion = (_text: string) => {
+  // TODO: send question to API
 }
 </script>
 

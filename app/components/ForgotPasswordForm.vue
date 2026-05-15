@@ -42,6 +42,6 @@
 const email = ref('')
 
 const handleResetRequest = () => {
-  console.log('Demande envoyée pour:', email.value)
+  // TODO: call password reset API with the email
 }
 </script>

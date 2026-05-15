@@ -71,7 +71,6 @@ const email = ref('')
 const password = ref('')
 
 const handleLogin = () => {
-  // Logique de connexion à venir
-  console.log('Tentative de connexion:', email.value)
+  // TODO: call auth API with email/password and handle errors
 }
 </script>

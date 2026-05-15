@@ -114,7 +114,7 @@ const form = ref({
 })
 
 const handleSubmit = () => {
-  console.log('Form submission:', form.value)
+  // TODO: send support request to API
   alert(t('support.success'))
   router.push(localePath('/'))
 }

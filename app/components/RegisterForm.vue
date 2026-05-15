@@ -81,6 +81,6 @@
 <script setup lang="ts">
 const form = ref({ name: '', email: '', password: '' })
 const handleRegister = () => {
-  console.log('Inscription de :', form.value.name)
+  // TODO: call register API with form fields and handle validation errors
 }
 </script>
