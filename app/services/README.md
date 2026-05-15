@@ -41,3 +41,11 @@ Tout service doit utiliser le wrapper `useApi` (`app/composables/useApi.ts`) pou
 | Fichier | API cible | Statut |
 |---|---|---|
 | `dummyjsonProductService.ts` | API publique DummyJSON (test / démo) | Exemple — à remplacer par les services réels |
+
+## À ne pas confondre
+
+| Dossier | Rôle |
+|---|---|
+| `app/services/` (ici) | Couche HTTP **côté navigateur** vers l'API .NET |
+| `api/` (racine) | Backend Nuxt (Nitro) — routes serveur écrites en TS, exécutées côté Node |
+| `ecoscolar-web-api/` | Le vrai backend .NET (autre repo) |

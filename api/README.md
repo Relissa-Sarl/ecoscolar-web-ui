@@ -1,19 +1,23 @@
-# api/ (racine — placeholder historique)
+# api/
 
-Ce dossier était initialement prévu pour héberger la couche d'appels HTTP vers l'API .NET (`ecoscolar-web-api`).
+Backend propre à Nuxt (serveur Nitro intégré). Réservé aux cas où le front
+a besoin d'une route HTTP servie directement par Nuxt, plutôt que par l'API
+.NET (`ecoscolar-web-api`).
 
-**Dans la configuration actuelle, cette couche vit dans `app/services/`** (services Nuxt non auto-importés volontairement, pour conserver une séparation explicite entre logique réseau et logique réactive).
+Exemples de cas d'usage envisagés :
 
-> `app/services/` — services HTTP métier vers l'API .NET
-> `app/composables/useApi.ts` — wrapper `$fetch` (baseURL, JWT, gestion 401)
+- Endpoint qui agrège ou transforme une réponse de l'API .NET avant de
+  l'envoyer au navigateur.
+- Endpoint qui appelle un service tiers et masque la clé d'API côté serveur.
+- Webhook reçu par Nuxt (Stripe, etc.).
 
-Ce dossier reste présent pour ne rien casser dans la documentation historique. Aucun nouveau fichier ne doit être créé ici.
+Vide pour le moment — sera rempli au cas par cas.
 
-## À ne pas confondre
+## Distinction
 
 | Dossier | Rôle |
 |---|---|
-| `api/` (racine) | Placeholder historique, **vide** |
-| `app/services/` | Services HTTP métier côté front (auteur de la requête : front) |
-| `server/api/` | Routes serveur Nuxt (auteur de la requête : navigateur, exécuté côté Node par Nuxt) — n'existe pas encore |
-| `ecoscolar-web-api/` | Le vrai backend .NET (autre repo / autre projet) |
+| `api/` (ici) | Backend Nuxt (routes Nitro), exécutées côté Node | 
+| `app/services/` | Couche HTTP côté navigateur vers l'API .NET |
+| `app/composables/useApi.ts` | Wrapper `$fetch` (baseURL, JWT, gestion 401) |
+| `ecoscolar-web-api/` | Le vrai backend .NET (autre repo) |
