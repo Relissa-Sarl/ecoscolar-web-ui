@@ -118,7 +118,7 @@
       "reports": "Meldungen",
       "back_to_public": "Zurück zur öffentlichen Seite"
     },
-    "logged_as": "Angemeldet : {name}",
+    "logged_as": "Angemeldet: {name}",
     "logout": "Abmelden"
   }
 }

@@ -118,7 +118,7 @@
       "reports": "Segnalazioni",
       "back_to_public": "Torna al sito pubblico"
     },
-    "logged_as": "Connesso : {name}",
+    "logged_as": "Connesso: {name}",
     "logout": "Disconnessione"
   }
 }
