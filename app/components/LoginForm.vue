@@ -1,3 +1,14 @@
+<script setup lang="ts">
+const localePath = useLocalePath()
+
+const email = ref('')
+const password = ref('')
+
+const handleLogin = () => {
+  // TODO: call auth API with email/password and handle errors
+}
+</script>
+
 <template>
   <form
     class="space-y-6 bg-white dark:bg-gray-900 p-8 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm"
@@ -63,14 +74,3 @@
     </button>
   </form>
 </template>
-
-<script setup lang="ts">
-const localePath = useLocalePath()
-
-const email = ref('')
-const password = ref('')
-
-const handleLogin = () => {
-  // TODO: call auth API with email/password and handle errors
-}
-</script>

@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const localePath = useLocalePath()
+</script>
+
 <template>
   <div class="max-w-2xl mx-auto">
     <nav
@@ -24,7 +28,3 @@
     <SupportForm />
   </div>
 </template>
-
-<script setup lang="ts">
-const localePath = useLocalePath()
-</script>

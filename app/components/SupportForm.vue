@@ -1,3 +1,36 @@
+<script setup lang="ts">
+const { t } = useI18n()
+const router = useRouter()
+const localePath = useLocalePath()
+const toast = useToast()
+
+const form = ref({
+  email: '',
+  reason: '',
+  message: ''
+})
+
+const isCancelModalOpen = ref(false)
+
+const handleSubmit = () => {
+  // TODO: send support request to API
+  toast.add({
+    title: t('support.success'),
+    color: 'success'
+  })
+  router.push(localePath('/'))
+}
+
+const handleCancel = () => {
+  isCancelModalOpen.value = true
+}
+
+const confirmCancel = () => {
+  isCancelModalOpen.value = false
+  router.push(localePath('/'))
+}
+</script>
+
 <template>
   <form
     class="space-y-6 bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm"
@@ -122,36 +155,3 @@
     </template>
   </UModal>
 </template>
-
-<script setup lang="ts">
-const { t } = useI18n()
-const router = useRouter()
-const localePath = useLocalePath()
-const toast = useToast()
-
-const form = ref({
-  email: '',
-  reason: '',
-  message: ''
-})
-
-const isCancelModalOpen = ref(false)
-
-const handleSubmit = () => {
-  // TODO: send support request to API
-  toast.add({
-    title: t('support.success'),
-    color: 'success'
-  })
-  router.push(localePath('/'))
-}
-
-const handleCancel = () => {
-  isCancelModalOpen.value = true
-}
-
-const confirmCancel = () => {
-  isCancelModalOpen.value = false
-  router.push(localePath('/'))
-}
-</script>

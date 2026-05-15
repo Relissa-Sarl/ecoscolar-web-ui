@@ -1,3 +1,10 @@
+<script setup lang="ts">
+const form = ref({ name: '', email: '', password: '' })
+const handleRegister = () => {
+  // TODO: call register API with form fields and handle validation errors
+}
+</script>
+
 <template>
   <form
     class="space-y-6 bg-white dark:bg-gray-900 p-8 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm"
@@ -77,10 +84,3 @@
     </button>
   </form>
 </template>
-
-<script setup lang="ts">
-const form = ref({ name: '', email: '', password: '' })
-const handleRegister = () => {
-  // TODO: call register API with form fields and handle validation errors
-}
-</script>

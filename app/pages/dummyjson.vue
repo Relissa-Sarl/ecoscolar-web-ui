@@ -1,3 +1,49 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { getDummyjsonProducts } from '~/services/dummyjsonProductService'
+
+const toast = useToast()
+const searchInput = ref('')
+const searchTerm = ref('')
+
+const fetchProducts = () => {
+  return getDummyjsonProducts({
+    q: searchTerm.value || undefined
+  })
+}
+
+const { data, status, error, refresh } = await useAsyncData(
+  'dummyjson-products',
+  fetchProducts,
+  {
+    default: () => ({ products: [] }),
+    watch: [searchTerm]
+  }
+)
+
+const products = computed(() => data.value?.products ?? [])
+
+const search = () => {
+  searchTerm.value = searchInput.value.trim()
+  toast.add({
+    title: 'Recherche',
+    description: searchTerm.value ? `Filtre: ${searchTerm.value}` : 'Liste complete',
+    color: 'primary'
+  })
+}
+
+const resetSearch = () => {
+  searchInput.value = ''
+  searchTerm.value = ''
+  refresh()
+  toast.add({
+    title: 'Reset',
+    description: 'Filtre supprime',
+    color: 'neutral'
+  })
+}
+</script>
+
 <template>
   <div class="mx-auto max-w-2xl p-6">
     <h1 class="mb-4 text-xl font-semibold">
@@ -65,49 +111,3 @@
     </ul>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed, ref } from 'vue'
-import { getDummyjsonProducts } from '~/services/dummyjsonProductService'
-
-const toast = useToast()
-const searchInput = ref('')
-const searchTerm = ref('')
-
-const fetchProducts = () => {
-  return getDummyjsonProducts({
-    q: searchTerm.value || undefined
-  })
-}
-
-const { data, status, error, refresh } = await useAsyncData(
-  'dummyjson-products',
-  fetchProducts,
-  {
-    default: () => ({ products: [] }),
-    watch: [searchTerm]
-  }
-)
-
-const products = computed(() => data.value?.products ?? [])
-
-const search = () => {
-  searchTerm.value = searchInput.value.trim()
-  toast.add({
-    title: 'Recherche',
-    description: searchTerm.value ? `Filtre: ${searchTerm.value}` : 'Liste complete',
-    color: 'primary'
-  })
-}
-
-const resetSearch = () => {
-  searchInput.value = ''
-  searchTerm.value = ''
-  refresh()
-  toast.add({
-    title: 'Reset',
-    description: 'Filtre supprime',
-    color: 'neutral'
-  })
-}
-</script>
