@@ -14,13 +14,13 @@ const selectedImage = ref<string>(props.images[0] || '')
 
 watch(() => props.images, (newImages) => {
   selectedImage.value = newImages?.[0] ?? ''
-}, { deep: true })
+})
 </script>
 
 <template>
   <div>
     <!-- Main Image -->
-    <div class="bg-red-700 rounded-lg overflow-hidden mb-4 h-96 flex items-center justify-center">
+    <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden mb-4 h-96 flex items-center justify-center">
       <NuxtImg
         :src="selectedImage"
         :alt="title"
@@ -32,11 +32,14 @@ watch(() => props.images, (newImages) => {
 
     <!-- Thumbnail Gallery -->
     <div class="grid grid-cols-4 gap-2">
-      <div
+      <button
         v-for="(img, idx) in images"
-        :key="idx"
-        class="cursor-pointer rounded overflow-hidden border-2 transition-all"
+        :key="img"
+        type="button"
+        class="block w-full bg-transparent p-0 cursor-pointer rounded overflow-hidden border-2 transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500"
         :class="selectedImage === img ? 'border-gray-900 dark:border-gray-100' : 'border-gray-300 dark:border-gray-700'"
+        :aria-label="`View image ${idx + 1}`"
+        :aria-pressed="selectedImage === img"
         @click="selectedImage = img"
       >
         <NuxtImg
@@ -46,13 +49,7 @@ watch(() => props.images, (newImages) => {
           width="100"
           height="100"
         />
-      </div>
-      <div class="rounded overflow-hidden border-2 border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 flex items-center justify-center cursor-pointer">
-        <span class="text-sm text-gray-500">📷</span>
-      </div>
-      <div class="rounded overflow-hidden border-2 border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 flex items-center justify-center cursor-pointer">
-        <span class="text-sm text-gray-500">🎥</span>
-      </div>
+      </button>
     </div>
   </div>
 </template>
