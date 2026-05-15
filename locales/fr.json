@@ -41,7 +41,8 @@
     "actions": {
       "submit": "Envoyer le message",
       "cancel": "Annuler",
-      "confirm_cancel": "Voulez-vous vraiment annuler ? Vos modifications seront perdues."
+      "confirm_cancel": "Voulez-vous vraiment annuler ? Vos modifications seront perdues.",
+      "confirm_cancel_title": "Annuler les modifications"
     },
     "success": "Merci ! Votre message a été envoyé."
   },
