@@ -22,7 +22,7 @@ const handleAskQuestion = (_text: string) => {
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Left: Image Gallery -->
         <div class="lg:col-span-2">
-          <ProductGallery
+          <AdvertGallery
             :images="advert?.images || []"
             :title="advert?.title || ''"
           />
@@ -30,7 +30,7 @@ const handleAskQuestion = (_text: string) => {
 
         <!-- Right: Advert Details -->
         <div class="lg:col-span-1">
-          <ProductInfo
+          <AdvertInfo
             v-if="advert"
             :condition="advert.condition"
             :featured="advert.featured"
@@ -39,35 +39,35 @@ const handleAskQuestion = (_text: string) => {
             :price="advert.price"
             :old-price="advert.oldPrice"
           />
-          <ProductMetadata
+          <AdvertMetadata
             v-if="advert"
             :isbn="advert.isbn"
             :subject="advert.subject"
             :grade="advert.grade"
             :school="advert.school"
           />
-          <SellerCard
+          <AdvertSellerCard
             v-if="advert"
             :seller="advert.seller"
             @view-profile="() => {}"
           />
-          <ProductActionButtons :product-id="advert?.id" />
+          <AdvertActionButtons :advert-id="advert?.id" />
         </div>
       </div>
 
       <!-- Description Section -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12">
         <div class="lg:col-span-2">
-          <ProductDescription :description="advert?.description || ''" />
+          <AdvertDescription :description="advert?.description || ''" />
         </div>
 
         <!-- Condition Details -->
-        <ProductConditionDetails :conditions="advert?.conditions || []" />
+        <AdvertConditionDetails :conditions="advert?.conditions || []" />
       </div>
 
       <!-- Public Questions Section -->
       <div class="mt-12">
-        <PublicQuestions
+        <AdvertPublicQuestions
           v-if="advert"
           :seller="advert.seller"
           :questions="advert.questions || []"

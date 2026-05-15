@@ -4,7 +4,7 @@ import { ref } from 'vue'
 const showWishlist = ref(false)
 
 interface Props {
-  productId?: string | string[]
+  advertId?: string | string[]
 }
 
 defineProps<Props>()
