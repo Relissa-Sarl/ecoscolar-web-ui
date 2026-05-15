@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Condition } from '@/types/product'
+import type { Condition } from '@/types/advert'
 
 interface Props {
   conditions: Condition[]

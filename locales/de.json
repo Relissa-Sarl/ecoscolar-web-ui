@@ -15,7 +15,9 @@
   "common": {
     "back_to_home": "← Zurück zur Startseite",
     "last_updated": "Zuletzt aktualisiert:",
-    "contact_support": "Support kontaktieren"
+    "contact_support": "Support kontaktieren",
+    "home": "Startseite",
+    "breadcrumb_label": "Brotkrümel-Navigation"
   },
   "cart": {
     "title": "Mein Warenkorb",
@@ -42,7 +44,9 @@
       "submit": "Nachricht senden",
       "cancel": "Abbrechen",
       "confirm_cancel": "Möchten Sie wirklich abbrechen? Ihre Änderungen gehen verloren.",
-      "confirm_cancel_title": "Änderungen abbrechen"
+      "confirm_cancel_title": "Änderungen abbrechen",
+      "confirm_cancel_confirm": "Verlassen",
+      "confirm_cancel_stay": "Bleiben"
     },
     "success": "Vielen Dank! Ihre Nachricht wurde gesendet."
   },
@@ -104,5 +108,17 @@
     "instruction": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.",
     "submit_button": "Link senden",
     "back_to_login": "Zurück zur Anmeldung"
+  },
+  "admin": {
+    "nav_label": "Admin-Menü",
+    "menu": {
+      "dashboard": "Dashboard",
+      "listings": "Anzeigen prüfen",
+      "users": "Benutzerverwaltung",
+      "reports": "Meldungen",
+      "back_to_public": "Zurück zur öffentlichen Seite"
+    },
+    "logged_as": "Angemeldet: {name}",
+    "logout": "Abmelden"
   }
 }

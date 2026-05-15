@@ -2,6 +2,15 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import Breadcrumb from '~/components/common/Breadcrumb.vue'
 
+const globalOptions = {
+  mocks: {
+    $t: (key: string) => key
+  },
+  stubs: {
+    NuxtLink: true
+  }
+}
+
 // Test simple du composant Breadcrumb existant
 describe('Breadcrumb', () => {
   // Test 1 : Vérifie que le composant s'affiche
@@ -11,15 +20,9 @@ describe('Breadcrumb', () => {
       { label: 'Produits' }
     ]
 
-    // mount crée une instance du composant pour tester
-    // On ajoute un stub pour NuxtLink car ce n'est pas un composant standard
     const wrapper = mount(Breadcrumb, {
       props: { items },
-      global: {
-        stubs: {
-          NuxtLink: true
-        }
-      }
+      global: globalOptions
     })
 
     // Vérifie que le composant existe et que le texte 'Produits' est présent
@@ -36,11 +39,7 @@ describe('Breadcrumb', () => {
 
     const wrapper = mount(Breadcrumb, {
       props: { items },
-      global: {
-        stubs: {
-          NuxtLink: true
-        }
-      }
+      global: globalOptions
     })
 
     // `findAllComponents` cherche les composants NuxtLink
@@ -57,11 +56,7 @@ describe('Breadcrumb', () => {
 
     const wrapper = mount(Breadcrumb, {
       props: { items },
-      global: {
-        stubs: {
-          NuxtLink: true
-        }
-      }
+      global: globalOptions
     })
 
     // Cherche les spans (pour les items sans lien)

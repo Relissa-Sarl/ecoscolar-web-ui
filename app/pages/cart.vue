@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const localePath = useLocalePath()
+</script>
+
 <template>
   <div class="max-w-2xl mx-auto py-10">
     <h1 class="text-3xl font-bold">
@@ -14,7 +18,3 @@
     </NuxtLink>
   </div>
 </template>
-
-<script setup lang="ts">
-const localePath = useLocalePath()
-</script>

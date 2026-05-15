@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const localePath = useLocalePath()
+</script>
+
 <template>
   <div class="max-w-md mx-auto py-12 px-4">
     <nav
@@ -21,7 +25,7 @@
       </p>
     </header>
 
-    <RegisterForm />
+    <AccountRegisterForm />
 
     <p class="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
       {{ $t('register.has_account') }}
@@ -34,7 +38,3 @@
     </p>
   </div>
 </template>
-
-<script setup lang="ts">
-const localePath = useLocalePath()
-</script>

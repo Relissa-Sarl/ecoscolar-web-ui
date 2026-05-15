@@ -19,7 +19,9 @@
   "common": {
     "back_to_home": "← Retour à l'accueil",
     "last_updated": "Dernière mise à jour :",
-    "contact_support": "Contactez le support"
+    "contact_support": "Contactez le support",
+    "home": "Accueil",
+    "breadcrumb_label": "Fil d'Ariane"
   },
   "support": {
     "title": "Contactez le support",
@@ -41,7 +43,10 @@
     "actions": {
       "submit": "Envoyer le message",
       "cancel": "Annuler",
-      "confirm_cancel": "Voulez-vous vraiment annuler ? Vos modifications seront perdues."
+      "confirm_cancel": "Voulez-vous vraiment annuler ? Vos modifications seront perdues.",
+      "confirm_cancel_title": "Annuler les modifications",
+      "confirm_cancel_confirm": "Quitter",
+      "confirm_cancel_stay": "Rester"
     },
     "success": "Merci ! Votre message a été envoyé."
   },
@@ -103,5 +108,17 @@
     "instruction": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
     "submit_button": "Envoyer le lien",
     "back_to_login": "Retour à la connexion"
+  },
+  "admin": {
+    "nav_label": "Menu administration",
+    "menu": {
+      "dashboard": "Tableau de bord",
+      "listings": "Validation des annonces",
+      "users": "Gestion des utilisateurs",
+      "reports": "Signalements",
+      "back_to_public": "Retour au site public"
+    },
+    "logged_as": "Connecté : {name}",
+    "logout": "Déconnexion"
   }
 }

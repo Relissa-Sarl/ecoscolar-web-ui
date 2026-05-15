@@ -8,7 +8,7 @@ type UseApiOptions = BaseFetchOptions & {
 }
 
 // $fetch wrapper
-export const useApi = async <T>(
+export const useApi = <T>(
   request: string,
   options?: UseApiOptions
 ) => {
@@ -17,15 +17,14 @@ export const useApi = async <T>(
   const { skipAuth, ...fetchOptions } = options ?? {}
 
   return $fetch<T>(request, {
-    baseURL: config.public.apiBase as string,
+    baseURL: config.public.apiBase,
     ...fetchOptions,
 
     async onRequest({ options }) {
       const headers = new Headers(options.headers)
 
       // Check JWT if it is enabled
-      const jwtEnabled = config.public.enableJwt as boolean
-      if (jwtEnabled && !skipAuth) {
+      if (config.public.enableJwt && !skipAuth) {
         // TODO : After the JWT implementation
         /* const token = authStore.token
         if (token) {
@@ -38,8 +37,7 @@ export const useApi = async <T>(
 
     async onResponseError({ response }) {
       // Redirection if unauthorized only for authenticated flows
-      const jwtEnabled = config.public.enableJwt as boolean
-      if (response.status === 401 && jwtEnabled && !skipAuth) {
+      if (response.status === 401 && config.public.enableJwt && !skipAuth) {
         // authStore.clearAuth()
         await navigateTo('/') // TODO : Change to login route
       }

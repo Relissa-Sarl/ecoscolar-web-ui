@@ -15,7 +15,9 @@
   "common": {
     "back_to_home": "← Torna alla home",
     "last_updated": "Ultimo aggiornamento:",
-    "contact_support": "Contatta il supporto"
+    "contact_support": "Contatta il supporto",
+    "home": "Home",
+    "breadcrumb_label": "Percorso di navigazione"
   },
   "cart": {
     "title": "Il mio carrello",
@@ -42,7 +44,9 @@
       "submit": "Invia il messaggio",
       "cancel": "Annulla",
       "confirm_cancel": "Sei sicuro di voler annullare? Le tue modifiche andranno perse.",
-      "confirm_cancel_title": "Annulla le modifiche"
+      "confirm_cancel_title": "Annulla le modifiche",
+      "confirm_cancel_confirm": "Esci",
+      "confirm_cancel_stay": "Resta"
     },
     "success": "Grazie! Il tuo messaggio è stato inviato."
   },
@@ -104,5 +108,17 @@
     "instruction": "Inserisci il tuo indirizzo e-mail e ti invieremo un link per reimpostare la tua password.",
     "submit_button": "Invia il link",
     "back_to_login": "Torna all'accesso"
+  },
+  "admin": {
+    "nav_label": "Menu amministrazione",
+    "menu": {
+      "dashboard": "Dashboard",
+      "listings": "Convalida degli annunci",
+      "users": "Gestione utenti",
+      "reports": "Segnalazioni",
+      "back_to_public": "Torna al sito pubblico"
+    },
+    "logged_as": "Connesso: {name}",
+    "logout": "Disconnessione"
   }
 }
