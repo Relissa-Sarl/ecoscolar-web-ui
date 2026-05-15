@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// Nuxt auto-importe AppHeader, on ne l'importe pas manuellement ici
 const localePath = useLocalePath()
 </script>
 
@@ -12,7 +11,7 @@ const localePath = useLocalePath()
       Passer au contenu principal
     </a>
 
-    <AppHeader />
+    <LayoutAppHeader />
 
     <main
       id="main-content"
