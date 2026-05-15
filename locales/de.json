@@ -19,6 +19,20 @@
     "home": "Startseite",
     "breadcrumb_label": "Brotkrümel-Navigation"
   },
+  "error": {
+    "not_found": {
+      "title": "Seite nicht gefunden",
+      "message": "Die angeforderte Seite existiert nicht oder wurde verschoben."
+    },
+    "generic": {
+      "title": "Ein Fehler ist aufgetreten",
+      "message": "Ein unerwarteter Fehler ist aufgetreten."
+    },
+    "actions": {
+      "back_home": "Zurück zur Startseite",
+      "contact_support": "Support kontaktieren"
+    }
+  },
   "cart": {
     "title": "Mein Warenkorb",
     "empty": "Ihr Warenkorb ist zur Zeit leer"
