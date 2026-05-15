@@ -28,7 +28,7 @@
       </button>
     </div>
 
-    <p v-if="pending">
+    <p v-if="status === 'pending'">
       Chargement...
     </p>
 
@@ -80,7 +80,7 @@ const fetchProducts = () => {
   })
 }
 
-const { data, pending, error, refresh } = await useAsyncData(
+const { data, status, error, refresh } = await useAsyncData(
   'dummyjson-products',
   fetchProducts,
   {
