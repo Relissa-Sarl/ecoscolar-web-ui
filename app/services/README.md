@@ -40,7 +40,7 @@ Tout service doit utiliser le wrapper `useApi` (`app/composables/useApi.ts`) pou
 
 | Fichier | API cible | Statut |
 |---|---|---|
-| `dummyjsonProductService.ts` | API publique DummyJSON (test / démo) | Exemple — à remplacer par les services réels |
+| `favoritesService.ts` | API .NET des favoris (relation user ↔ advert) | Implémenté avec bascule mock/réel |
 
 ## À ne pas confondre
 
