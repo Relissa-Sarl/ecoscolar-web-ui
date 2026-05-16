@@ -48,6 +48,12 @@ const localePath = useLocalePath()
 
       <div class="flex items-center gap-4 text-sm font-medium">
         <NuxtLink
+          :to="localePath('/favorites')"
+          class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
+        >
+          {{ $t('common.favorites') }}
+        </NuxtLink>
+        <NuxtLink
           :to="localePath('/cart')"
           class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
         >
