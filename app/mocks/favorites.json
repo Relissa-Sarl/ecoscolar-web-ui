@@ -1,0 +1,28 @@
+[
+  {
+    "id": "fav-1",
+    "advertId": "advert-1",
+    "createdAt": "2026-05-14T12:00:00.000Z",
+    "advert": {
+      "id": "advert-1",
+      "title": "Biology: A Global Approach, 12th Edition",
+      "category": "Textbooks",
+      "condition": "NEW CONDITION",
+      "price": 84.5,
+      "image": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&h=800&fit=crop"
+    }
+  },
+  {
+    "id": "fav-2",
+    "advertId": "advert-2",
+    "createdAt": "2026-05-15T09:30:00.000Z",
+    "advert": {
+      "id": "advert-2",
+      "title": "Mathematics Workbook",
+      "category": "Textbooks",
+      "condition": "GOOD CONDITION",
+      "price": 24.9,
+      "image": "https://images.unsplash.com/photo-1513258496099-48168024aec0?w=600&h=800&fit=crop"
+    }
+  }
+]
