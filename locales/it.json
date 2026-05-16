@@ -17,6 +17,7 @@
     "last_updated": "Ultimo aggiornamento:",
     "contact_support": "Contatta il supporto",
     "home": "Home",
+    "favorites": "Preferiti",
     "breadcrumb_label": "Percorso di navigazione"
   },
   "error": {
@@ -36,6 +37,33 @@
   "cart": {
     "title": "Il mio carrello",
     "empty": "Il tuo carrello è attualmente vuoto"
+  },
+  "advert": {
+    "actions": {
+      "buy_now": "Acquista ora",
+      "favorite_add": "Aggiungi ai preferiti",
+      "favorite_remove": "Rimuovi dai preferiti",
+      "notify": "Avvisami"
+    }
+  },
+  "favorites": {
+    "title": "I miei preferiti",
+    "subtitle": "Annunci salvati",
+    "empty": {
+      "title": "Nessun preferito per ora",
+      "message": "Aggiungi annunci ai preferiti per ritrovarli qui."
+    },
+    "status": {
+      "loading": "Caricamento dei preferiti...",
+      "error": "Impossibile caricare i tuoi preferiti."
+    },
+    "actions": {
+      "back_to_shop": "Torna al negozio",
+      "browse_shop": "Esplora il negozio",
+      "remove": "Rimuovi",
+      "removing": "Rimozione...",
+      "view_advert": "Vedi l'annuncio"
+    }
   },
   "support": {
     "title": "Contatta il supporto",

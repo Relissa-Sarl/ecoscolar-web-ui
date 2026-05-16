@@ -16,11 +16,39 @@
     "title": "Mon Panier",
     "empty": "Votre panier est vide pour le moment"
   },
+  "advert": {
+    "actions": {
+      "buy_now": "Acheter maintenant",
+      "favorite_add": "Ajouter aux favoris",
+      "favorite_remove": "Retirer des favoris",
+      "notify": "M’alerter"
+    }
+  },
+  "favorites": {
+    "title": "Mes favoris",
+    "subtitle": "Annonces enregistrées",
+    "empty": {
+      "title": "Aucun favori pour le moment",
+      "message": "Ajoutez des annonces à vos favoris pour les retrouver ici."
+    },
+    "status": {
+      "loading": "Chargement des favoris...",
+      "error": "Impossible de charger vos favoris."
+    },
+    "actions": {
+      "back_to_shop": "Retour à la boutique",
+      "browse_shop": "Explorer la boutique",
+      "remove": "Retirer",
+      "removing": "Retrait...",
+      "view_advert": "Voir l'annonce"
+    }
+  },
   "common": {
     "back_to_home": "← Retour à l'accueil",
     "last_updated": "Dernière mise à jour :",
     "contact_support": "Contactez le support",
     "home": "Accueil",
+    "favorites": "Favoris",
     "breadcrumb_label": "Fil d'Ariane"
   },
   "error": {

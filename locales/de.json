@@ -17,6 +17,7 @@
     "last_updated": "Zuletzt aktualisiert:",
     "contact_support": "Support kontaktieren",
     "home": "Startseite",
+    "favorites": "Favoriten",
     "breadcrumb_label": "Brotkrümel-Navigation"
   },
   "error": {
@@ -36,6 +37,33 @@
   "cart": {
     "title": "Mein Warenkorb",
     "empty": "Ihr Warenkorb ist zur Zeit leer"
+  },
+  "advert": {
+    "actions": {
+      "buy_now": "Jetzt kaufen",
+      "favorite_add": "Zu Favoriten hinzufügen",
+      "favorite_remove": "Aus Favoriten entfernen",
+      "notify": "Benachrichtige mich"
+    }
+  },
+  "favorites": {
+    "title": "Meine Favoriten",
+    "subtitle": "Gespeicherte Anzeigen",
+    "empty": {
+      "title": "Noch keine Favoriten",
+      "message": "Füge Anzeigen zu deinen Favoriten hinzu, um sie hier wiederzufinden."
+    },
+    "status": {
+      "loading": "Favoriten werden geladen...",
+      "error": "Favoriten konnten nicht geladen werden."
+    },
+    "actions": {
+      "back_to_shop": "Zurück zum Shop",
+      "browse_shop": "Shop durchsuchen",
+      "remove": "Entfernen",
+      "removing": "Wird entfernt...",
+      "view_advert": "Anzeige ansehen"
+    }
   },
   "support": {
     "title": "Support kontaktieren",
