@@ -75,7 +75,7 @@ const handleToggleFavorite = async (advertId: string) => {
           :key="item.id"
           :item="item"
           :removing="removingAdvertId === item.advertId"
-          @toggleFavorite="handleToggleFavorite"
+          @toggle-favorite="handleToggleFavorite"
         />
       </div>
     </section>

@@ -41,4 +41,3 @@ export const getFavoritesService = () => {
     apiClient: useApi as ApiClient
   })
 }
-
