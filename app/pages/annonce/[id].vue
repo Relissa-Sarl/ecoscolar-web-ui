@@ -11,6 +11,20 @@ const breadcrumbItems = computed(() => [
 const handleAskQuestion = (_text: string) => {
   // TODO: send question to API
 }
+
+// Génère un objet advert plus petit pour le passer au composant ActionButtons pour le favori
+const advertSummary = computed(() => {
+  if (!advert.value) return null
+
+  return {
+    id: advert.value.id,
+    title: advert.value.title,
+    category: advert.value.category,
+    condition: advert.value.condition,
+    price: advert.value.price,
+    image: advert.value.image || advert.value.images?.[0] || ''
+  }
+})
 </script>
 
 <template>
@@ -51,7 +65,9 @@ const handleAskQuestion = (_text: string) => {
             :seller="advert.seller"
             @view-profile="() => {}"
           />
-          <AdvertActionButtons :advert-id="advert?.id" />
+          <AdvertActionButtons
+            :advert="advertSummary"
+          />
         </div>
       </div>
 

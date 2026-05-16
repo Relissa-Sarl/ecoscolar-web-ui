@@ -1,37 +1,78 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
-const showWishlist = ref(false)
+import { computed, onBeforeMount, ref } from 'vue'
+import type { FavoriteAdvertSummary } from '~/types/favorite'
 
 interface Props {
-  advertId?: string | string[]
+  advert: FavoriteAdvertSummary | null
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
   buy: []
-  wishlist: [value: boolean]
+  favorite: [value: boolean]
   notify: []
 }>()
+
+const favoritesStore = useFavoritesStore()
+const isSubmittingFavorite = ref(false)
+
+const resolvedAdvertId = computed(() => props.advert?.id ?? null)
+
+// Extraction des champs pour pinia
+const favoriteInput = computed(() => {
+  if (!props.advert) {
+    return null
+  }
+
+  return {
+    advertId: props.advert.id,
+    advert: props.advert
+  }
+})
+
+const isFavorite = computed(() => {
+  if (!resolvedAdvertId.value) {
+    return false
+  }
+  return favoritesStore.isFavorite(resolvedAdvertId.value)
+})
+
+const favoriteLabel = computed(() =>
+  isFavorite.value ? 'advert.actions.favorite_remove' : 'advert.actions.favorite_add'
+)
 
 const handleBuy = () => {
   emit('buy')
 }
 
-const toggleWishlist = () => {
-  showWishlist.value = !showWishlist.value
-  emit('wishlist', showWishlist.value)
+const toggleFavorite = async () => {
+  if (!favoriteInput.value || isSubmittingFavorite.value) {
+    return
+  }
+  isSubmittingFavorite.value = true
+
+  try {
+    const result = await favoritesStore.toggleFavorite(favoriteInput.value)
+    emit('favorite', result.isFavorite)
+  } finally {
+    isSubmittingFavorite.value = false
+  }
 }
 
 const handleNotify = () => {
   emit('notify')
 }
+
+onBeforeMount(() => {
+  if (!favoritesStore.hasLoaded && !favoritesStore.isLoading) {
+    void favoritesStore.loadFavorites().catch(() => undefined)
+  }
+})
 </script>
 
 <template>
   <div class="space-y-3">
-    <!-- Buy Now + Wishlist -->
     <div class="flex gap-3">
       <button
         class="flex-1 px-4 py-3 bg-green-700 hover:bg-green-800 text-white font-medium rounded-lg transition-colors"
@@ -39,11 +80,16 @@ const handleNotify = () => {
       >
         {{ $t('advert.actions.buy_now') }}
       </button>
+
       <button
+        type="button"
         class="w-12 h-12 border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors flex items-center justify-center text-lg"
-        @click="toggleWishlist"
+        :aria-label="$t(favoriteLabel)"
+        :aria-pressed="isFavorite"
+        :disabled="isSubmittingFavorite || !favoriteInput"
+        @click="toggleFavorite"
       >
-        <span v-if="!showWishlist">
+        <span v-if="!isFavorite">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -64,7 +110,7 @@ const handleNotify = () => {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            class="size-6"
+            class="size-6 text-red-500"
           >
             <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
           </svg>
@@ -72,7 +118,6 @@ const handleNotify = () => {
       </button>
     </div>
 
-    <!-- Notify -->
     <button
       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors flex items-center justify-center gap-2"
       @click="handleNotify"
