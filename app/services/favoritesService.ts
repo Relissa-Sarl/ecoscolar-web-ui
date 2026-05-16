@@ -36,14 +36,9 @@ export function createFavoritesService({ apiClient }: FavoritesServiceDependenci
   }
 }
 
-// Singleton pour éviter de recréer le service à chaque fois qu'on en a besoin
-let favoritesServiceSingleton: FavoritesService | null = null
 export const getFavoritesService = () => {
-  if (!favoritesServiceSingleton) {
-    favoritesServiceSingleton = createFavoritesService({
-      apiClient: useApi as ApiClient
-    })
-  }
-
-  return favoritesServiceSingleton
+  return createFavoritesService({
+    apiClient: useApi as ApiClient
+  })
 }
+
