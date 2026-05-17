@@ -1,11 +1,38 @@
 {
   "home": {
-    "welcome": "Bienvenido",
-    "cta": "Hola"
+    "welcome": "Benvenuto,",
+    "subtitle": "Pronto a dare una seconda vita al tuo materiale scolastico?",
+    "buy_title": "Acquista",
+    "buy_text": "Trova tutto ciò di cui hai bisogno a prezzi contenuti.",
+    "buy_cta": "Esplora il negozio",
+    "sell_title": "Vendi",
+    "sell_text": "Vendi i tuoi vecchi articoli e guadagna denaro.",
+    "sell_cta": "Metti in vendita",
+    "impact_title": "Impatto",
+    "impact_text": "Scopri come stai aiutando il pianeta.",
+    "impact_unit": "risparmiati"
   },
-  "cart": {
-    "title": "Carrito",
-    "empty": "Vacio"
+  "common": {
+    "back_to_home": "← Torna alla home",
+    "last_updated": "Ultimo aggiornamento:",
+    "contact_support": "Contatta il supporto",
+    "home": "Home",
+    "favorites": "Preferiti",
+    "breadcrumb_label": "Percorso di navigazione"
+  },
+  "error": {
+    "not_found": {
+      "title": "Pagina non trovata",
+      "message": "La pagina richiesta non esiste oppure è stata spostata."
+    },
+    "generic": {
+      "title": "Si è verificato un errore",
+      "message": "Si è verificato un errore imprevisto."
+    },
+    "actions": {
+      "back_home": "Torna alla home",
+      "contact_support": "Contatta il supporto"
+    }
   },
   "me": {
     "adverts": {
@@ -108,5 +135,134 @@
         "imageCount": "Puoi caricare solo un massimo di 10 immagini"
       }
     }
+  },  
+  "cart": {
+    "title": "Il mio carrello",
+    "empty": "Il tuo carrello è attualmente vuoto"
+  },
+  "advert": {
+    "actions": {
+      "buy_now": "Acquista ora",
+      "favorite_add": "Aggiungi ai preferiti",
+      "favorite_remove": "Rimuovi dai preferiti",
+      "notify": "Avvisami"
+    }
+  },
+  "favorites": {
+    "title": "I miei preferiti",
+    "subtitle": "Annunci salvati",
+    "empty": {
+      "title": "Nessun preferito per ora",
+      "message": "Aggiungi annunci ai preferiti per ritrovarli qui."
+    },
+    "status": {
+      "loading": "Caricamento dei preferiti...",
+      "error": "Impossibile caricare i tuoi preferiti."
+    },
+    "actions": {
+      "back_to_shop": "Torna al negozio",
+      "browse_shop": "Esplora il negozio",
+      "remove": "Rimuovi",
+      "removing": "Rimozione...",
+      "view_advert": "Vedi l'annuncio"
+    }
+  },
+  "support": {
+    "title": "Contatta il supporto",
+    "description": "Una domanda o un problema? Il nostro team EcoScolar ti risponderà.",
+    "fields": {
+      "email": "Indirizzo e-mail",
+      "reason": "Motivo del contatto",
+      "reason_placeholder": "Seleziona un'opzione",
+      "message": "Il tuo messaggio",
+      "email_placeholder": "esempio{'@'}email.com",
+      "message_placeholder": "Come possiamo aiutarti?"
+    },
+    "reasons": {
+      "account": "Problema con l'account",
+      "order": "Tracciamento dell'ordine",
+      "bug": "Segnala un bug",
+      "other": "Altra richiesta"
+    },
+    "actions": {
+      "submit": "Invia il messaggio",
+      "cancel": "Annulla",
+      "confirm_cancel": "Sei sicuro di voler annullare? Le tue modifiche andranno perse.",
+      "confirm_cancel_title": "Annulla le modifiche",
+      "confirm_cancel_confirm": "Esci",
+      "confirm_cancel_stay": "Resta"
+    },
+    "success": "Grazie! Il tuo messaggio è stato inviato."
+  },
+  "privacy": {
+    "title": "Informativa sulla privacy",
+    "s1_title": "1. Raccolta dei dati",
+    "s1_text": "Raccogliamo le informazioni che ci fornisci direttamente durante la creazione del tuo account EcoScolar, in particolare il tuo indirizzo e-mail e le informazioni del profilo.",
+    "s2_title": "2. Utilizzo dei tuoi dati",
+    "s2_text": "I tuoi dati vengono utilizzati esclusivamente per:",
+    "s2_list": [
+      "Gestire il tuo account e le tue transazioni.",
+      "Inviarti notifiche relative ai tuoi acquisti o vendite.",
+      "Migliorare l'esperienza dell'utente sulla nostra piattaforma."
+    ],
+    "s3_title": "3. I tuoi diritti e l'accesso",
+    "s3_text": "In conformità con il GDPR, hai il diritto di accesso, rettifica e cancellazione dei tuoi dati personali. Puoi esercitare questi diritti in qualsiasi momento dal tuo profilo.",
+    "s4_title": "4. Sicurezza dei dati",
+    "s4_text": "Implementiamo misure di sicurezza tecniche e organizzative per proteggere i tuoi dati da accessi non autorizzati o perdite.",
+    "footer": "Per qualsiasi domanda riguardante i tuoi dati personali, contatta il nostro responsabile della protezione dei dati tramite il"
+  },
+  "terms": {
+    "title": "Termini di servizio",
+    "s1_title": "1. Accettazione dei termini",
+    "s1_text": "Accedendo a EcoScolar, accetti di essere vincolato dai presenti termini di utilizzo. Se non accetti questi termini, ti preghiamo di non utilizzare i nostri servizi.",
+    "s2_title": "2. Utilizzo del servizio",
+    "s2_text": "La nostra piattaforma consente l'acquisto e la vendita di materiale scolastico usato. Ti impegni a fornire informazioni accurate e a non utilizzare il servizio per scopi illegali.",
+    "s2_list": [
+      "L'utente deve avere almeno 15 anni o l'autorizzazione dei genitori.",
+      "Gli articoli messi in vendita devono essere conformi alla realtà."
+    ],
+    "s3_title": "3. Limitazione di responsabilità",
+    "s3_text": "EcoScolar funge da intermediario. Non possiamo essere ritenuti responsabili per la qualità degli articoli scambiati tra gli utenti.",
+    "footer": "Hai domande sulle nostre condizioni?"
+  },
+  "login": {
+    "title": "Accesso",
+    "subtitle": "Felice di rivederti su EcoScolar!",
+    "email_label": "Indirizzo e-mail",
+    "email_placeholder": "tua{'@'}email.com",
+    "password_label": "Password",
+    "forgot_password": "Password dimenticata?",
+    "submit_button": "Accedi",
+    "no_account": "Non hai ancora un account?",
+    "register_link": "Crea un account"
+  },
+  "register": {
+    "title": "Crea un account",
+    "subtitle": "Unisciti alla comunità EcoScolar oggi stesso.",
+    "name_label": "Nome completo",
+    "name_placeholder": "Mario Rossi",
+    "email_label": "Indirizzo e-mail",
+    "email_placeholder": "tua{'@'}email.com",
+    "password_label": "Password",
+    "submit_button": "Iscriviti",
+    "has_account": "Già iscritto?",
+    "login_link": "Accedi"
+  },
+  "forgot_password": {
+    "instruction": "Inserisci il tuo indirizzo e-mail e ti invieremo un link per reimpostare la tua password.",
+    "submit_button": "Invia il link",
+    "back_to_login": "Torna all'accesso"
+  },
+  "admin": {
+    "nav_label": "Menu amministrazione",
+    "menu": {
+      "dashboard": "Dashboard",
+      "listings": "Convalida degli annunci",
+      "users": "Gestione utenti",
+      "reports": "Segnalazioni",
+      "back_to_public": "Torna al sito pubblico"
+    },
+    "logged_as": "Connesso: {name}",
+    "logout": "Disconnessione"
   }
 }
