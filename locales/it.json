@@ -102,7 +102,7 @@
         "schoolGradeId": "Il livello scolastico è obbligatorio",
         "teachingLanguage": "La lingua di insegnamento è richiesta",
         "studyLevel": "Il livello di studio è obbligatorio",
-        "condition": "Lo stato è richiesto per i libri",
+        "condition": "Lo stato è richiesto per le forniture",
         "images": "È richiesta almeno un'immagine",
         "publisher": "L'editore è richiesto per i libri",
         "edition": "L'edizione è richiesta per i libri",

@@ -102,7 +102,7 @@
         "schoolGradeId": "Die Schulstufe ist erforderlich",
         "teachingLanguage": "Die Unterrichtssprache ist erforderlich",
         "studyLevel": "Das Bildungsniveau ist erforderlich",
-        "condition": "Der Zustand ist für Bücher erforderlich",
+        "condition": "Der Zustand ist für Ausrüstung erforderlich",
         "images": "Mindestens ein Bild ist erforderlich",
         "publisher": "Der Verlag ist für Bücher erforderlich",
         "edition": "Die Ausgabe ist für Bücher erforderlich",

@@ -84,7 +84,7 @@
         "schoolGradeId": "Le niveau scolaire est requis",
         "teachingLanguage": "La langue d'enseignement est requise",
         "studyLevel": "Le niveau d'étude est requis",
-        "condition": "L'état est requis pour les livres",
+        "condition": "L'état est requis pour les fournitures",
         "images": "Au moins une image est requise",
         "publisher": "L'éditeur est requis pour les livres",
         "edition": "L'édition est requise pour les livres",
