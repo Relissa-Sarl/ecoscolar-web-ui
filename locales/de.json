@@ -51,7 +51,11 @@
         "resume": "Wiederaufnehmen",
         "expired": "Abgelaufen",
         "sold": "Verkauft"
-      }
+      },
+      "deleteConfirmTitle": "Sind Sie sicher, dass Sie diese Anzeige löschen möchten?",
+      "deleteConfirmMessage": "Diese Aktion ist unwiderruflich. Die Anzeige wird dauerhaft von der Plattform entfernt.",
+      "cancel": "Abbrechen",
+      "confirm": "Löschen"
     }
   },
   "createAdvert": {
@@ -129,7 +133,7 @@
         "isbnFormat": "Das ISBN-Format ist ungültig",
         "authorLength": "Der Autorname darf 150 Zeichen nicht überschreiten",
         "publisherLength": "Der Verlagsname darf 150 Zeichen nicht überschreiten",
-        "editionLength": "Die Ausgabe darf 100 Zeichen nicht überschreiten",
+        "editionLength": "Die Ausgabe darf 150 Zeichen nicht überschreiten",
         "imageSize": "Jedes Bild muss kleiner als 5MB sein",
         "imageType": "Dateityp für das Bild ist nicht erlaubt",
         "imageCount": "Sie können maximal 10 Bilder hochladen"

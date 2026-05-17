@@ -124,7 +124,7 @@ const validateForm = (): boolean => {
     if (form.value.description.length < 10) {
         errors.value.description = $t('createAdvert.error.invalid.descriptionLengthMin')
     }
-    if (form.value.description.length > 5000) {
+    if (form.value.description.length > 2000) {
         errors.value.description = $t('createAdvert.error.invalid.descriptionLengthMax')
     }
     
@@ -448,7 +448,7 @@ const handleSubmit = () => {
                                 <p v-show="errors.teachingLanguage != null" class="mt-1 min-h-5 text-sm text-red-500">{{ errors.teachingLanguage }}</p>
                             </div>
                             <div v-show="category == 'tutoring'">
-                                <label class="mb-2 block text-sm font-medium text-gray-600" for="isbn">
+                                <label class="mb-2 block text-sm font-medium text-gray-600" for="studyLevel">
                                     {{ $t('createAdvert.form.studyLevel') }}
                                 </label>
                                 <div class="relative">
@@ -479,7 +479,7 @@ const handleSubmit = () => {
                                     {{ $t('createAdvert.form.price') }}
                                 </label>
                                 <div class="flex items-center overflow-hidden rounded-xl border border-gray-200 bg-white focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 dark:bg-gray-800 dark:border-gray-400">
-                                    <input v-model="form.price" class="w-full bg-transparent px-4 py-3 text-sm outline-none dark:text-gray-300" id="price" placeholder="0.00" type="number" step="0.01"/>
+                                    <input v-model.number="form.price" class="w-full bg-transparent px-4 py-3 text-sm outline-none dark:text-gray-300" id="price" placeholder="0.00" type="number" step="0.01"/>
                                     <span class="px-4 text-sm font-medium text-gray-500">
                                         CHF
                                     </span>
