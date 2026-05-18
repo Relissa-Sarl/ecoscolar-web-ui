@@ -16,6 +16,67 @@
     "title": "Mon Panier",
     "empty": "Votre panier est vide pour le moment"
   },
+  "catalog": {
+    "hero": {
+      "title": "Repérez vos prochaines affaires scolaires.",
+      "subtitle": "Recherche par ISBN, titre ou auteur pour comparer les meilleures offres de manuels et de matériel.",
+      "search_placeholder": "Ex. 978-3-16-148410-0, « Biologie » · option + Entrée…",
+      "search_cta": "Rechercher"
+    },
+    "filters": {
+      "title": "Filtres",
+      "subtitle": "Affinez votre recherche.",
+      "mobile_toggle": "Afficher / masquer les filtres",
+      "category_legend": "Type d’annonce",
+      "category_supplies": "Tout le matériel",
+      "category_textbooks": "Manuels scolaires",
+      "category_tutoring": "Cours & soutien",
+      "show_all": "Tout afficher",
+      "grade_heading": "Niveau scolaire",
+      "grade_primary": "Primaire",
+      "grade_secondary": "Secondaire",
+      "grade_maturity": "Maturité",
+      "grade_university": "Supérieur",
+      "subject_heading": "Matière",
+      "subject_math": "Mathématiques",
+      "subject_french": "Français",
+      "subject_german": "Allemand",
+      "reset": "Réinitialiser les filtres"
+    },
+    "banner": {
+      "api_error_retry": "Le catalogue ne s’est pas synchronisé avec le serveur. Vérifiez l’API puis actualisez la page.",
+      "loading": "Chargement des annonces disponibles…",
+      "fallback_demo": "Les données suivantes sont un jeu de démonstration (réponse API vide ou indisponible).",
+      "online": "Catalogue à jour depuis le dernier chargement réussi."
+    },
+    "list": {
+      "title": "Explorer les annonces",
+      "subtitle_near": "{count} résultats · périmètre indicatif postal {zip}"
+    },
+    "sort": {
+      "label": "Trier",
+      "recent": "Plus récent",
+      "price_asc": "Prix ↑",
+      "price_desc": "Prix ↓"
+    },
+    "empty": {
+      "title": "Aucun résultat ne correspond à vos critères.",
+      "hint": "Élargissez la recherche ou réinitialisez les filtres.",
+      "reset_filters": "Réinitialiser tout"
+    },
+    "pagination": {
+      "label": "Pagination des résultats"
+    },
+    "card": {
+      "alt_image": "visuel de l’annonce",
+      "hourly": "Tarif",
+      "demo_rating": "4,9/5 démo",
+      "book_lesson": "Réserver"
+    },
+    "fab": {
+      "place_advert": "Déposer une annonce"
+    }
+  },
   "advert": {
     "actions": {
       "buy_now": "Acheter maintenant",
@@ -42,6 +103,11 @@
       "removing": "Retrait...",
       "view_advert": "Voir l'annonce"
     }
+  },
+  "header": {
+    "nav_shop": "Boutique",
+    "nav_tutoring": "Répétiteurs",
+    "nav_about": "À propos"
   },
   "common": {
     "back_to_home": "← Retour à l'accueil",

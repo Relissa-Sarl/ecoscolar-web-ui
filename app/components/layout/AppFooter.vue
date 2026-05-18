@@ -4,7 +4,7 @@ const localePath = useLocalePath()
 
 <template>
   <footer
-    class="p-8 border-t border-gray-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-900"
+    class="border-t border-slate-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-900"
     role="contentinfo"
   >
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
