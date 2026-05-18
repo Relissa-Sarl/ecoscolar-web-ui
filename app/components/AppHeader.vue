@@ -23,7 +23,8 @@ const localePath = useLocalePath()
         :class="locale === l.code
           ? 'font-bold bg-gray-200 border-gray-400 dark:bg-gray-700 dark:border-gray-500'
           : 'bg-transparent border-gray-300 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800'"
-        @click="setLocale(l.code)">
+        @click="setLocale(l.code)"
+      >
         {{ l.code.toUpperCase() }}
       </button>
     </div>

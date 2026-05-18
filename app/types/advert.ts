@@ -1,5 +1,5 @@
-import type { AdvertStatus } from "@/utils/enum/advertStatus"
-import type { AdvertType } from "@/utils/enum/advertType"
+import type { AdvertStatus } from '@/utils/enum/advertStatus'
+import type { AdvertType } from '@/utils/enum/advertType'
 
 export interface Condition {
   icon: string
@@ -56,14 +56,14 @@ export interface Advert {
 }
 
 export interface MyAdvert {
-    id: number;
-    type: AdvertType;
-    title: string;
-    price: number;
-    publicationDate: Date;
-    notificationDate: Date;
-    status: AdvertStatus;
-    userId: number;
-    sellerPseudo: string;
-    primaryImage: string;
+  id: number
+  type: AdvertType
+  title: string
+  price: number
+  publicationDate: Date
+  notificationDate: Date
+  status: AdvertStatus
+  userId: number
+  sellerPseudo: string
+  primaryImage: string
 }
