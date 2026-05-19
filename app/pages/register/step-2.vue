@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import ProfileForm from "~/components/account/ProfileForm.vue";
-</script>
-
 <template>
   <div class="max-w-2xl mx-auto py-12 px-4">
     <header class="mb-8 text-center">
@@ -13,6 +9,6 @@ import ProfileForm from "~/components/account/ProfileForm.vue";
       </p>
     </header>
 
-    <ProfileForm />
+    <AccountProfileForm />
   </div>
 </template>
