@@ -22,10 +22,3 @@ export interface UpdateProfileInput {
   birthdayDate: string
   spokenLanguages: SpokenLanguage[]
 }
-
-export interface UserToken {
-  tokenType: string
-  accessToken: string
-  expiresIn: number
-  refreshToken: string
-}

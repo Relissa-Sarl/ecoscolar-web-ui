@@ -1,4 +1,4 @@
-import type { User, UpdateProfileInput, UserToken } from '~/types/user'
+import type { User, UpdateProfileInput } from '~/types/user'
 import { useApi } from '../composables/useApi'
 
 type ApiClient = typeof useApi
@@ -12,7 +12,7 @@ const USER_PATH = '/user'
 */
 export interface UserService {
   register: (email: string, password: string) => Promise<undefined>
-  login: (email: string, password: string) => Promise<UserToken>
+  login: (email: string, password: string) => Promise<undefined>
   logout: () => Promise<undefined>
   getMyProfile: () => Promise<User>
   updateProfile: (input: UpdateProfileInput) => Promise<User>
@@ -47,10 +47,10 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
    * Log in a user with the provided email and password, and retrieve an authentication token upon successful login.
    * @param email The email address of the user attempting to log in.
    * @param password The password for the user account. This will be sent to the API for authentication.
-   * @returns A promise that resolves to a UserToken object containing the authentication token and related information if the login is successful. The API is expected to validate the credentials and return the appropriate token response.
+   * @returns A promise that resolves to an undefined value if the login is successful. The API is expected to validate the credentials and return the appropriate response.
    */
   const login = async (email: string, password: string) =>
-    apiClient<UserToken>(`${AUTH_PATH}/login?useCookies=true`, {
+    apiClient<undefined>(`${AUTH_PATH}/login?useCookies=true`, {
       method: 'POST',
       body: { email, password }
     })
