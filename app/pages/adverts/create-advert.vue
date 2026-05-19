@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { AdvertCondition } from '~/utils/enum/advertCondition'
+import { AdvertLanguage } from '~/utils/enum/advertLanguage'
+import { AdvertType } from '~/utils/enum/advertType'
 
 const uploadedFiles = ref<File[]>([])
-const category = ref('supply')
+const category = ref(AdvertType.PRODUCT)
 const errors = ref<{ [key: string]: string }>({})
 const form = ref({
   title: '',
@@ -12,7 +14,7 @@ const form = ref({
 
   subjectId: 1,
   schoolGradeId: 1,
-  teachingLanguage: 1,
+  teachingLanguage: AdvertLanguage.FR,
   studyLevel: '',
 
   condition: AdvertCondition.NEW,
@@ -22,8 +24,8 @@ const form = ref({
   publisher: '',
   edition: '',
   isbn: '',
-  bookCategoryId: 0,
-  writtenLanguage: 1
+  bookCategoryId: 1,
+  writtenLanguage: AdvertLanguage.FR
 })
 
 const handleImageUpload = (event: Event) => {
@@ -57,7 +59,7 @@ const validateForm = (): boolean => {
   }
 
   switch (category.value) {
-    case 'tutoring':
+    case AdvertType.SERVICE:
       if (!form.value.subjectId) {
         errors.value.subjectId = $t('createAdvert.error.empty.subjectId')
       }
@@ -71,7 +73,7 @@ const validateForm = (): boolean => {
         errors.value.studyLevel = $t('createAdvert.error.empty.studyLevel')
       }
       break
-    case 'supply':
+    case AdvertType.PRODUCT:
       if (!form.value.condition) {
         errors.value.condition = $t('createAdvert.error.empty.condition')
       }
@@ -79,7 +81,7 @@ const validateForm = (): boolean => {
         errors.value.images = $t('createAdvert.error.empty.images')
       }
       break
-    case 'books':
+    case AdvertType.BOOK:
       if (!form.value.condition) {
         errors.value.condition = $t('createAdvert.error.empty.condition')
       }
@@ -148,25 +150,26 @@ const validateForm = (): boolean => {
 
   const maxFileSize = 5 * 1024 * 1024 // 5MB
   switch (category.value) {
-    case 'tutoring':
+    case AdvertType.SERVICE:
       if (form.value.subjectId < 1) {
         errors.value.subjectId = $t('createAdvert.error.invalid.subjectId')
       }
       if (form.value.schoolGradeId < 1) {
         errors.value.schoolGradeId = $t('createAdvert.error.invalid.schoolGradeId')
       }
-      if (form.value.teachingLanguage < 1) {
+      if (!form.value.teachingLanguage) {
         errors.value.teachingLanguage = $t('createAdvert.error.invalid.teachingLanguage')
       }
       if (form.value.studyLevel.length > 50) {
         errors.value.studyLevel = $t('createAdvert.error.invalid.studyLevelLength')
       }
       break
-    case 'books':
+    case AdvertType.BOOK:
       if (form.value.bookCategoryId < 0) {
         errors.value.bookCategoryId = $t('createAdvert.error.invalid.bookCategoryId')
       }
-      if (form.value.writtenLanguage < 1) {
+      // writtenLanguage may be a string (from select/input). Ensure numeric comparison.
+      if (form.value.writtenLanguage) {
         errors.value.writtenLanguage = $t('createAdvert.error.invalid.writtenLanguage')
       }
       // ISBN validation (books only)
@@ -200,7 +203,7 @@ const validateForm = (): boolean => {
         errors.value.images = $t('createAdvert.error.invalid.imageCount')
       }
       break
-    case 'supply':
+    case AdvertType.PRODUCT:
       // File size validation
       uploadedFiles.value.forEach((file) => {
         if (file.size > maxFileSize) {
@@ -228,23 +231,23 @@ const handleSubmit = () => {
   }
   let formData = new Object()
   switch (category.value) {
-    case 'supply':
+    case AdvertType.PRODUCT:
       formData = {
         title: form.value.title,
         description: form.value.description,
         price: form.value.price,
-        userId: 'user.value.id',
+        userId: 1,
         condition: form.value.condition,
         pictures: form.value.pictures
       }
       // Call API to create supply advert with form.value
       break
-    case 'books':
+    case AdvertType.BOOK:
       formData = {
         title: form.value.title,
         description: form.value.description,
         price: form.value.price,
-        userId: 'user.value.id',
+        userId: 1,
         condition: form.value.condition,
         pictures: form.value.pictures,
         author: form.value.author,
@@ -256,12 +259,12 @@ const handleSubmit = () => {
       }
       // Call API to create book advert with form.value
       break
-    case 'tutoring':
+    case AdvertType.SERVICE:
       formData = {
         title: form.value.title,
         description: form.value.description,
         price: form.value.price,
-        userId: 'user.value.id',
+        userId: 1,
         subjectId: form.value.subjectId,
         schoolGradeId: form.value.schoolGradeId,
         teachingLanguage: form.value.teachingLanguage,
@@ -317,14 +320,15 @@ const handleSubmit = () => {
             <div>
               <label class="mb-2 block text-sm font-medium text-gray-600">Type de catégorie</label>
               <div class="grid gap-3 sm:grid-cols-3">
-                <label class="cursor-pointer"><input
-                                                id="cat-supply"
-                                                v-model="category"
-                                                class="peer sr-only"
-                                                name="category"
-                                                type="radio"
-                                                value="supply"
-                                              >
+                <label class="cursor-pointer">
+                  <input
+                    id="cat-supply"
+                    v-model="category"
+                    class="peer sr-only"
+                    name="category"
+                    type="radio"
+                    :value="AdvertType.PRODUCT"
+                  >
                   <div class="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-4 transition peer-checked:border-primary peer-checked:bg-primary/5 dark:bg-gray-800 dark:border-gray-400">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -340,17 +344,18 @@ const handleSubmit = () => {
                         d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
                       />
                     </svg>
-                    <span class="font-medium text-gray-600 dark:text-gray-300">{{ $t('createAdvert.form.supplies') }}</span>
+                    <span class="font-medium text-gray-600 dark:text-gray-300">{{ $t('advertTypes.product') }}</span>
                   </div>
                 </label>
-                <label class="cursor-pointer"><input
-                                                id="cat-books"
-                                                v-model="category"
-                                                class="peer sr-only"
-                                                name="category"
-                                                type="radio"
-                                                value="books"
-                                              >
+                <label class="cursor-pointer">
+                  <input
+                    id="cat-books"
+                    v-model="category"
+                    class="peer sr-only"
+                    name="category"
+                    type="radio"
+                    :value="AdvertType.BOOK"
+                  >
                   <div class="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-4 transition peer-checked:border-primary peer-checked:bg-primary/5 dark:bg-gray-800 dark:border-gray-400">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -366,7 +371,7 @@ const handleSubmit = () => {
                         d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
                       />
                     </svg>
-                    <span class="font-medium text-gray-600 dark:text-gray-300">{{ $t('createAdvert.form.books') }}</span>
+                    <span class="font-medium text-gray-600 dark:text-gray-300">{{ $t('advertTypes.book') }}</span>
                   </div>
                 </label>
                 <label class="cursor-pointer">
@@ -376,7 +381,7 @@ const handleSubmit = () => {
                     class="peer sr-only"
                     name="category"
                     type="radio"
-                    value="tutoring"
+                    :value="AdvertType.SERVICE"
                   >
                   <div class="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-4 transition peer-checked:border-primary peer-checked:bg-primary/5 dark:bg-gray-800 dark:border-gray-400">
                     <svg
@@ -393,7 +398,7 @@ const handleSubmit = () => {
                         d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
                       />
                     </svg>
-                    <span class="font-medium text-gray-600 dark:text-gray-300">{{ $t('createAdvert.form.tutoring') }}</span>
+                    <span class="font-medium text-gray-600 dark:text-gray-300">{{ $t('advertTypes.service') }}</span>
                   </div>
                 </label>
               </div>
@@ -443,7 +448,7 @@ const handleSubmit = () => {
                   {{ errors.title || ' ' }}
                 </p>
               </div>
-              <div v-show="category == 'supply' || category == 'books'">
+              <div v-show="category == AdvertType.PRODUCT || category == AdvertType.BOOK">
                 <label
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="condition"
@@ -456,13 +461,13 @@ const handleSubmit = () => {
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
                 >
                   <option :value="AdvertCondition.NEW">
-                    Neuf
+                    {{ $t('advertConditions.new') }}
                   </option>
                   <option :value="AdvertCondition.LIKE_NEW">
-                    Plus ou moins neuf
+                    {{ $t('advertConditions.likeNew') }}
                   </option>
                   <option :value="AdvertCondition.USED">
-                    Usé
+                    {{ $t('advertConditions.used') }}
                   </option>
                 </select>
                 <p
@@ -472,7 +477,7 @@ const handleSubmit = () => {
                   {{ errors.condition }}
                 </p>
               </div>
-              <div v-show="category == 'books'">
+              <div v-show="category == AdvertType.BOOK">
                 <label
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="author"
@@ -493,7 +498,7 @@ const handleSubmit = () => {
                   {{ errors.author }}
                 </p>
               </div>
-              <div v-show="category == 'books'">
+              <div v-show="category == AdvertType.BOOK">
                 <label
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="publisher"
@@ -514,7 +519,7 @@ const handleSubmit = () => {
                   {{ errors.publisher }}
                 </p>
               </div>
-              <div v-show="category == 'books'">
+              <div v-show="category == AdvertType.BOOK">
                 <label
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="edition"
@@ -535,7 +540,7 @@ const handleSubmit = () => {
                   {{ errors.edition }}
                 </p>
               </div>
-              <div v-show="category == 'books'">
+              <div v-show="category == AdvertType.BOOK">
                 <label
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="isbn"
@@ -577,7 +582,7 @@ const handleSubmit = () => {
                   {{ errors.isbn }}
                 </p>
               </div>
-              <div v-show="category == 'books'">
+              <div v-show="category == AdvertType.BOOK">
                 <label
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="bookCategoryId"
@@ -589,23 +594,29 @@ const handleSubmit = () => {
                   v-model="form.bookCategoryId"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
                 >
-                  <option value="0">
-                    Toutes matières / Non applicable
+                  <option :value="1">
+                    {{ $t('advertCategories.none') }}
                   </option>
-                  <option value="1">
-                    Mathématiques
+                  <option :value="2">
+                    {{ $t('advertCategories.math') }}
                   </option>
-                  <option value="2">
-                    Français
+                  <option :value="3">
+                    {{ $t('advertCategories.french') }}
                   </option>
-                  <option value="3">
-                    Histoire-Géo
+                  <option :value="4">
+                    {{ $t('advertCategories.german') }}
                   </option>
-                  <option value="4">
-                    Physique-Chimie
+                  <option :value="5">
+                    {{ $t('advertCategories.italian') }}
                   </option>
-                  <option value="5">
-                    Langues
+                  <option :value="6">
+                    {{ $t('advertCategories.history') }}
+                  </option>
+                  <option :value="7">
+                    {{ $t('advertCategories.physics') }}
+                  </option>
+                  <option :value="8">
+                    {{ $t('advertCategories.languages') }}
                   </option>
                 </select>
                 <p
@@ -615,7 +626,7 @@ const handleSubmit = () => {
                   {{ errors.bookCategoryId }}
                 </p>
               </div>
-              <div v-show="category == 'books'">
+              <div v-show="category == AdvertType.BOOK">
                 <label
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="writtenLanguage"
@@ -627,14 +638,14 @@ const handleSubmit = () => {
                   v-model="form.writtenLanguage"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
                 >
-                  <option value="1">
-                    Français
+                  <option :value="AdvertLanguage.FR">
+                    {{ $t('fr') }}
                   </option>
-                  <option value="2">
-                    Allemand
+                  <option :value="AdvertLanguage.DE">
+                    {{ $t('de') }}
                   </option>
-                  <option value="3">
-                    Italien
+                  <option :value="AdvertLanguage.IT">
+                    {{ $t('it') }}
                   </option>
                 </select>
                 <p
@@ -644,7 +655,7 @@ const handleSubmit = () => {
                   {{ errors.writtenLanguage }}
                 </p>
               </div>
-              <div v-show="category == 'tutoring'">
+              <div v-show="category == AdvertType.SERVICE">
                 <label
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="subjectId"
@@ -656,23 +667,29 @@ const handleSubmit = () => {
                   v-model="form.subjectId"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
                 >
-                  <option value="1">
-                    Toutes matières / Non applicable
+                  <option :value="1">
+                    {{ $t('advertCategories.none') }}
                   </option>
-                  <option value="2">
-                    Mathématiques
+                  <option :value="2">
+                    {{ $t('advertCategories.math') }}
                   </option>
-                  <option value="3">
-                    Français
+                  <option :value="3">
+                    {{ $t('advertCategories.french') }}
                   </option>
-                  <option value="4">
-                    Histoire-Géo
+                  <option :value="4">
+                    {{ $t('advertCategories.german') }}
                   </option>
-                  <option value="5">
-                    Physique-Chimie
+                  <option :value="5">
+                    {{ $t('advertCategories.italian') }}
                   </option>
-                  <option value="6">
-                    Langues
+                  <option :value="6">
+                    {{ $t('advertCategories.history') }}
+                  </option>
+                  <option :value="7">
+                    {{ $t('advertCategories.physics') }}
+                  </option>
+                  <option :value="8">
+                    {{ $t('advertCategories.languages') }}
                   </option>
                 </select>
                 <p
@@ -682,7 +699,7 @@ const handleSubmit = () => {
                   {{ errors.subjectId }}
                 </p>
               </div>
-              <div v-show="category == 'tutoring'">
+              <div v-show="category == AdvertType.SERVICE">
                 <label
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="schoolGradeId"
@@ -694,17 +711,17 @@ const handleSubmit = () => {
                   v-model="form.schoolGradeId"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
                 >
-                  <option value="1">
-                    Primaire
+                  <option :value="1">
+                    {{ $t('advertSchoolGrade.primary') }}
                   </option>
-                  <option value="2">
-                    Collège
+                  <option :value="2">
+                    {{ $t('advertSchoolGrade.middle') }}
                   </option>
-                  <option value="3">
-                    Lycée
+                  <option :value="3">
+                    {{ $t('advertSchoolGrade.high') }}
                   </option>
-                  <option value="4">
-                    Supérieur
+                  <option :value="4">
+                    {{ $t('advertSchoolGrade.higher') }}
                   </option>
                 </select>
                 <p
@@ -714,7 +731,7 @@ const handleSubmit = () => {
                   {{ errors.schoolGradeId }}
                 </p>
               </div>
-              <div v-show="category == 'tutoring'">
+              <div v-show="category == AdvertType.SERVICE">
                 <label
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="teachingLanguage"
@@ -726,14 +743,14 @@ const handleSubmit = () => {
                   v-model="form.teachingLanguage"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
                 >
-                  <option value="1">
-                    Français
+                  <option :value="AdvertLanguage.FR">
+                    {{ $t('fr') }}
                   </option>
-                  <option value="2">
-                    Allemand
+                  <option :value="AdvertLanguage.DE">
+                    {{ $t('de') }}
                   </option>
-                  <option value="3">
-                    Italien
+                  <option :value="AdvertLanguage.IT">
+                    {{ $t('it') }}
                   </option>
                 </select>
                 <p
@@ -743,7 +760,7 @@ const handleSubmit = () => {
                   {{ errors.teachingLanguage }}
                 </p>
               </div>
-              <div v-show="category == 'tutoring'">
+              <div v-show="category == AdvertType.SERVICE">
                 <label
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="studyLevel"
@@ -835,7 +852,7 @@ const handleSubmit = () => {
           </section>
 
           <section
-            v-show="category == 'supply' || category == 'books'"
+            v-show="category == AdvertType.PRODUCT || category == AdvertType.BOOK"
             class="rounded-2xl border border-dashed border-gray-300 bg-gray-50/60 dark:border-gray-400 dark:bg-gray-800 dark:text-gray-400 p-5"
           >
             <h2 class="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-300">

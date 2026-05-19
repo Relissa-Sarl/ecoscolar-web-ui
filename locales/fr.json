@@ -1,4 +1,33 @@
 {
+  "fr": "Français",
+  "de": "Allemand",
+  "it": "Italien",
+  "advertTypes": {
+    "book": "Livre",
+    "product": "Fourniture",
+    "service": "Service de tutorat"
+  },
+  "advertConditions": {
+    "new": "Neuf",
+    "likeNew": "Plus ou moins neuf",
+    "used": "Usagé"
+  },
+  "advertCategories": {
+    "none": "Toutes matières / Non applicable",
+    "math": "Mathématiques",
+    "french": "Français",
+    "german": "Allemand",
+    "italian": "Italien",
+    "history": "Histoire-Géographie",
+    "physics": "Physique-Chimie",
+    "languages": "Langues"
+  },
+  "advertSchoolGrade": {
+    "primary": "Primaire",
+    "middle": "Collège",
+    "high": "Lycée",
+    "higher": "Supérieur"
+  },
   "home": {
     "welcome": "Bonjour,",
     "subtitle": "Prêt à donner une seconde vie à vos fournitures scolaires ?",
@@ -46,9 +75,6 @@
     "description": "Partagez vos ressources éducatives avec la communauté EcoScolar.",
     "form": {
       "information": "Informations sur l'annonce",
-      "supplies": "Fournitures",
-      "books": "Livres",
-      "tutoring": "Tutorat",
       "detailedInformation": "Informations détaillées",
       "title": "Titre",
       "condition": "État",
@@ -129,9 +155,6 @@
     "loading": "Chargement de l'annonce...",
     "form": {
       "information": "Informations sur l'annonce",
-      "supplies": "Fournitures",
-      "books": "Livres",
-      "tutoring": "Tutorat",
       "detailedInformation": "Informations détaillées",
       "title": "Titre",
       "condition": "État",
@@ -163,7 +186,6 @@
     },
     "error": {
       "empty": {
-        "category": "La catégorie est requise",
         "title": "Le titre est requis",
         "description": "La description est requise",
         "price": "Le prix est requis",

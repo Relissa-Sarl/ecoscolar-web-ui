@@ -1,6 +1,7 @@
 import type { AdvertStatus } from '@/utils/enum/advertStatus'
 import type { AdvertType } from '@/utils/enum/advertType'
-import type { AdvertCondition } from '~/utils/enum/advertCondition'
+import type { AdvertCondition } from '@/utils/enum/advertCondition'
+import type { AdvertLanguage } from '~/utils/enum/advertLanguage'
 
 export interface Condition {
   icon: string
@@ -80,7 +81,7 @@ export interface ModifyAdvertForm {
 
   subjectId: number | null
   schoolGradeId: number | null
-  teachingLanguage: number | null
+  teachingLanguage: AdvertLanguage | null
   studyLevel: string | null
 
   condition: AdvertCondition | null
@@ -90,5 +91,5 @@ export interface ModifyAdvertForm {
   edition: string | null
   isbn: string | null
   bookCategoryId: number | null
-  writtenLanguage: number | null
+  writtenLanguage: AdvertLanguage | null
 }

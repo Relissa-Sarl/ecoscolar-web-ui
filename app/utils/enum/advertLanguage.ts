@@ -1,5 +1,5 @@
 export enum AdvertLanguage {
-  FR = 'Français',
-  DE = 'Deutsch',
-  IT = 'Italiano'
+  FR = 'FR',
+  DE = 'DE',
+  IT = 'IT'
 }

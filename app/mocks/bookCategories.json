@@ -1,27 +1,27 @@
 [
     {
-        "BookCategoryId": 1,
-        "Name": "Mathématiques",
-        "Description": "Livres de mathématiques pour tous les niveaux scolaires"
+        "bookCategoryId": 1,
+        "name": "Mathématiques",
+        "description": "Livres de mathématiques pour tous les niveaux scolaires"
     },
     {
-        "BookCategoryId": 2,
-        "Name": "Français",
-        "Description": "Livres de français pour tous les niveaux scolaires"
+        "bookCategoryId": 2,
+        "name": "Français",
+        "description": "Livres de français pour tous les niveaux scolaires"
     },
     {
-        "BookCategoryId": 3,
-        "Name": "Histoire-Géographie",
-        "Description": "Livres d'histoire-géographie pour tous les niveaux scolaires"
+        "bookCategoryId": 3,
+        "name": "Histoire-Géographie",
+        "description": "Livres d'histoire-géographie pour tous les niveaux scolaires"
     },
     {
-        "BookCategoryId": 4,
-        "Name": "Physique-Chimie",
-        "Description": "Livres de physique-chimie pour tous les niveaux scolaires"
+        "bookCategoryId": 4,
+        "name": "Physique-Chimie",
+        "description": "Livres de physique-chimie pour tous les niveaux scolaires"
     },
     {
-        "BookCategoryId": 5,
-        "Name": "Langues",
-        "Description": "Livres de langues pour tous les niveaux scolaires"
+        "bookCategoryId": 5,
+        "name": "Langues",
+        "description": "Livres de langues pour tous les niveaux scolaires"
     }
 ]

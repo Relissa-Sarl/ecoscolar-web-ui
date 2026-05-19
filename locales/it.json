@@ -1,4 +1,33 @@
 {
+  "fr": "francese",
+  "de": "tedesco",
+  "it": "italiano",
+  "advertTypes": {
+    "book": "Libro",
+    "product": "Fornitura",
+    "service": "Servizio di tutoraggio"
+  },
+  "advertConditions": {
+    "new": "Nuovo",
+    "likeNew": "Come nuovo",
+    "used": "Usato"
+  },
+  "advertCategories": {
+    "none": "Tutte materie / Non applicabile",
+    "math": "Matematica",
+    "french": "Francese",
+    "german": "Tedesco",
+    "italian": "Italiano",
+    "history": "Storia-Geografia",
+    "physics": "Fisica-Chimica",
+    "languages": "Lingue"
+  },
+  "advertSchoolGrade": {
+    "primary": "Primaria",
+    "middle": "Scuola media",
+    "high": "Scuola superiore",
+    "higher": "Istruzione superiore"
+  },
   "home": {
     "welcome": "Benvenuto,",
     "subtitle": "Pronto a dare una seconda vita al tuo materiale scolastico?",
@@ -147,9 +176,6 @@
     "loading": "Caricamento dell'annuncio...",
     "form": {
       "information": "Informazioni sull'annuncio",
-      "supplies": "Forniture",
-      "books": "Libri",
-      "tutoring": "Tutoraggio",
       "detailedInformation": "Informazioni dettagliate",
       "title": "Titolo",
       "condition": "Stato",
@@ -181,7 +207,6 @@
     },
     "error": {
       "empty": {
-        "category": "La categoria è obbligatoria",
         "title": "Il titolo è obbligatorio",
         "description": "La descrizione è obbligatoria",
         "price": "Il prezzo è obbligatorio",

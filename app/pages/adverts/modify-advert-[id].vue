@@ -5,6 +5,7 @@ import type { ModifyAdvertForm } from '~/types/advert'
 import { AdvertCondition } from '~/utils/enum/advertCondition'
 import { AdvertStatus } from '~/utils/enum/advertStatus'
 import { AdvertType } from '~/utils/enum/advertType'
+import { AdvertLanguage } from '~/utils/enum/advertLanguage'
 
 const route = useRoute()
 const id = Array.isArray(route.params.id) ? Number(route.params.id[0]) : Number(route.params.id)
@@ -28,7 +29,7 @@ const adverts = ref<ModifyAdvertForm[]>([
     edition: '3rd Edition',
     isbn: '978-7-2238-5998-1',
     bookCategoryId: 1,
-    writtenLanguage: 3
+    writtenLanguage: AdvertLanguage.IT
   },
   {
     id: 2,
@@ -61,7 +62,7 @@ const adverts = ref<ModifyAdvertForm[]>([
     userId: 1,
     subjectId: 1,
     schoolGradeId: 3,
-    teachingLanguage: 2,
+    teachingLanguage: AdvertLanguage.DE,
     studyLevel: 'High School/Secondary',
     condition: null,
     author: null,
@@ -89,7 +90,7 @@ const adverts = ref<ModifyAdvertForm[]>([
     edition: '1st Edition',
     isbn: '978-8-0897-7695-5',
     bookCategoryId: 2,
-    writtenLanguage: 1
+    writtenLanguage: AdvertLanguage.FR
   }
 ])
 const advert = ref<ModifyAdvertForm>()
@@ -104,7 +105,7 @@ const form = ref({
   description: advert.value?.description,
   price: advert.value?.price,
 
-  subjectId: advert.value?.schoolGradeId || null,
+  subjectId: advert.value?.subjectId || null,
   schoolGradeId: advert.value?.schoolGradeId || null,
   teachingLanguage: advert.value?.teachingLanguage || null,
   studyLevel: advert.value?.studyLevel || null,
@@ -256,7 +257,7 @@ const validateForm = (): boolean => {
       if (form.value.schoolGradeId && form.value.schoolGradeId < 1) {
         errors.value.schoolGradeId = $t('modifyAdvert.error.invalid.schoolGradeId')
       }
-      if (form.value.teachingLanguage && form.value.teachingLanguage < 1) {
+      if (!form.value.teachingLanguage) {
         errors.value.teachingLanguage = $t('modifyAdvert.error.invalid.teachingLanguage')
       }
       if (form.value.studyLevel && form.value.studyLevel.length > 50) {
@@ -267,7 +268,7 @@ const validateForm = (): boolean => {
       if (form.value.bookCategoryId && form.value.bookCategoryId < 0) {
         errors.value.bookCategoryId = $t('modifyAdvert.error.invalid.bookCategoryId')
       }
-      if (form.value.writtenLanguage && form.value.writtenLanguage < 1) {
+      if (!form.value.writtenLanguage) {
         errors.value.writtenLanguage = $t('modifyAdvert.error.invalid.writtenLanguage')
       }
       // ISBN validation (books only)
@@ -334,7 +335,7 @@ const handleSubmit = () => {
         title: form.value.title,
         description: form.value.description,
         price: form.value.price,
-        userId: 'user.value.id',
+        userId: 1,
         condition: form.value.condition
       }
       // Call API to create supply advert with form.value
@@ -344,7 +345,7 @@ const handleSubmit = () => {
         title: form.value.title,
         description: form.value.description,
         price: form.value.price,
-        userId: 'user.value.id',
+        userId: 1,
         condition: form.value.condition,
         author: form.value.author,
         publisher: form.value.publisher,
@@ -360,7 +361,7 @@ const handleSubmit = () => {
         title: form.value.title,
         description: form.value.description,
         price: form.value.price,
-        userId: 'user.value.id',
+        userId: 1,
         subjectId: form.value.subjectId,
         schoolGradeId: form.value.schoolGradeId,
         teachingLanguage: form.value.teachingLanguage,
@@ -426,7 +427,7 @@ vueOnMounted(() => {
             {{ $t('modifyAdvert.existingAdvert') }}
           </p>
           <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-300">
-            {{ $t('modifyAdvert.modifyAdvert') }}
+            {{ $t('modifyAdvert.modifyAdvert') }} {{ advert?.title ? `: ${advert.title}` : '' }}
           </h1>
           <p class="mt-2 max-w-2xl text-sm text-gray-500">
             {{ $t('modifyAdvert.description') }}
@@ -486,14 +487,14 @@ vueOnMounted(() => {
                   v-model="form.condition"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
                 >
-                  <option value="NEW">
-                    Neuf
+                  <option :value="AdvertCondition.NEW">
+                    {{ $t('advertConditions.new') }}
                   </option>
-                  <option value="LIKE_NEW">
-                    Plus ou moins neuf
+                  <option :value="AdvertCondition.LIKE_NEW">
+                    {{ $t('advertConditions.likeNew') }}
                   </option>
-                  <option value="USED">
-                    Usé
+                  <option :value="AdvertCondition.USED">
+                    {{ $t('advertConditions.used') }}
                   </option>
                 </select>
                 <p
@@ -620,23 +621,29 @@ vueOnMounted(() => {
                   v-model="form.bookCategoryId"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
                 >
-                  <option value="0">
-                    Toutes matières / Non applicable
+                  <option :value="1">
+                    {{ $t('advertCategories.none') }}
                   </option>
-                  <option value="1">
-                    Mathématiques
+                  <option :value="2">
+                    {{ $t('advertCategories.math') }}
                   </option>
-                  <option value="2">
-                    Français
+                  <option :value="3">
+                    {{ $t('advertCategories.french') }}
                   </option>
-                  <option value="3">
-                    Histoire-Géo
+                  <option :value="4">
+                    {{ $t('advertCategories.german') }}
                   </option>
-                  <option value="4">
-                    Physique-Chimie
+                  <option :value="5">
+                    {{ $t('advertCategories.italian') }}
                   </option>
-                  <option value="5">
-                    Langues
+                  <option :value="6">
+                    {{ $t('advertCategories.history') }}
+                  </option>
+                  <option :value="7">
+                    {{ $t('advertCategories.physics') }}
+                  </option>
+                  <option :value="8">
+                    {{ $t('advertCategories.languages') }}
                   </option>
                 </select>
                 <p
@@ -658,14 +665,14 @@ vueOnMounted(() => {
                   v-model="form.writtenLanguage"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
                 >
-                  <option value="1">
-                    Français
+                  <option :value="AdvertLanguage.FR">
+                    {{ $t('fr') }}
                   </option>
-                  <option value="2">
-                    Allemand
+                  <option :value="AdvertLanguage.DE">
+                    {{ $t('de') }}
                   </option>
-                  <option value="3">
-                    Italien
+                  <option :value="AdvertLanguage.IT">
+                    {{ $t('it') }}
                   </option>
                 </select>
                 <p
@@ -687,23 +694,29 @@ vueOnMounted(() => {
                   v-model="form.subjectId"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
                 >
-                  <option value="1">
-                    Toutes matières / Non applicable
+                  <option :value="1">
+                    {{ $t('advertCategories.none') }}
                   </option>
-                  <option value="2">
-                    Mathématiques
+                  <option :value="2">
+                    {{ $t('advertCategories.math') }}
                   </option>
-                  <option value="3">
-                    Français
+                  <option :value="3">
+                    {{ $t('advertCategories.french') }}
                   </option>
-                  <option value="4">
-                    Histoire-Géo
+                  <option :value="4">
+                    {{ $t('advertCategories.german') }}
                   </option>
-                  <option value="5">
-                    Physique-Chimie
+                  <option :value="5">
+                    {{ $t('advertCategories.italian') }}
                   </option>
-                  <option value="6">
-                    Langues
+                  <option :value="6">
+                    {{ $t('advertCategories.history') }}
+                  </option>
+                  <option :value="7">
+                    {{ $t('advertCategories.physics') }}
+                  </option>
+                  <option :value="8">
+                    {{ $t('advertCategories.languages') }}
                   </option>
                 </select>
                 <p
@@ -725,17 +738,17 @@ vueOnMounted(() => {
                   v-model="form.schoolGradeId"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
                 >
-                  <option value="1">
-                    Primaire
+                  <option :value="1">
+                    {{ $t('advertSchoolGrade.primary') }}
                   </option>
-                  <option value="2">
-                    Collège
+                  <option :value="2">
+                    {{ $t('advertSchoolGrade.middle') }}
                   </option>
-                  <option value="3">
-                    Lycée
+                  <option :value="3">
+                    {{ $t('advertSchoolGrade.high') }}
                   </option>
-                  <option value="4">
-                    Supérieur
+                  <option :value="4">
+                    {{ $t('advertSchoolGrade.higher') }}
                   </option>
                 </select>
                 <p
@@ -757,14 +770,14 @@ vueOnMounted(() => {
                   v-model="form.teachingLanguage"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
                 >
-                  <option value="1">
-                    Français
+                  <option :value="AdvertLanguage.FR">
+                    {{ $t('fr') }}
                   </option>
-                  <option value="2">
-                    Allemand
+                  <option :value="AdvertLanguage.DE">
+                    {{ $t('de') }}
                   </option>
-                  <option value="3">
-                    Italien
+                  <option :value="AdvertLanguage.IT">
+                    {{ $t('it') }}
                   </option>
                 </select>
                 <p

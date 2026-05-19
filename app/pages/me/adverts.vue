@@ -192,7 +192,7 @@ const adverts = ref<MyAdvert[]>([
               <!-- Action Buttons -->
               <div class="flex gap-3 border-t border-gray-200 px-5 py-3 dark:border-gray-800">
                 <NuxtLink
-                  :to="`/adverts/modify-advert-${advert.id}`"
+                  :to="localePath(`/adverts/modify-advert-${advert.id}`)"
                   :class="['flex-1', isActionDisabled(advert.status) ? 'pointer-events-none' : '']"
                 >
                   <div :class="[isActionDisabled(advert.status) ? 'cursor-not-allowed rounded-lg bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400' : 'rounded-lg bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900', 'py-2 text-center text-sm font-medium']">

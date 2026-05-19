@@ -1,4 +1,33 @@
 {
+  "fr": "Französisch",
+  "de": "Deutsch",
+  "it": "italienisch",
+  "advertTypes": {
+    "book": "Buch",
+    "product": "Fornitura",
+    "service": "Nachhilfedienst"
+  },
+  "advertConditions": {
+    "new": "Neu",
+    "likeNew": "Wie neu",
+    "used": "Gebraucht"
+  },
+  "advertCategories": {
+    "none": "Alle Fächer / Nicht anwendbar",
+    "math": "Mathematik",
+    "french": "Französisch",
+    "german": "Deutsch",
+    "italian": "Italienisch",
+    "history": "Geschichte-Geographie",
+    "physics": "Physik-Chemie",
+    "languages": "Sprachen"
+  },
+  "advertSchoolGrade": {
+    "primary": "Primaria",
+    "middle": "Scuola media",
+    "high": "Scuola superiore",
+    "higher": "Istruzione superiore"
+  },
   "home": {
     "welcome": "Willkommen,",
     "subtitle": "Bereit, deinem Schulmaterial ein zweites Leben zu schenken?",
@@ -147,9 +176,6 @@
     "loading": "Laden der Anzeige...",
     "form": {
       "information": "Informationen zur Anzeige",
-      "supplies": "Ausrüstung",
-      "books": "Bücher",
-      "tutoring": "Nachhilfe",
       "detailedInformation": "Detaillierte Informationen",
       "title": "Titel",
       "condition": "Zustand",
@@ -181,7 +207,6 @@
     },
     "error": {
       "empty": {
-        "category": "Die Kategorie ist erforderlich",
         "title": "Der Titel ist erforderlich",
         "description": "Die Beschreibung ist erforderlich",
         "price": "Der Preis ist erforderlich",

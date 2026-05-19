@@ -1,22 +1,22 @@
 [
     {
-        "SchoolGradeId": 1,
-        "Name": "Primaire",
-        "SchoolGrade": "Niveaux scolaires de l'école primaire (1ère à 6ème année)"
+        "schoolGradeId": 1,
+        "name": "Primaire",
+        "schoolGrade": "Niveaux scolaires de l'école primaire (1ère à 6ème année)"
     },
     {
-        "SchoolGradeId": 2,
-        "Name": "Collège",
-        "SchoolGrade": "Niveaux scolaires de l'école collège (7ème à 3ème année)"
+        "schoolGradeId": 2,
+        "name": "Collège",
+        "schoolGrade": "Niveaux scolaires de l'école collège (7ème à 3ème année)"
     },
     {
-        "SchoolGradeId": 3,
-        "Name": "Lycée",
-        "SchoolGrade": "Niveaux scolaires de l'école lycée (2nde à 1ère année)"
+        "schoolGradeId": 3,
+        "name": "Lycée",
+        "schoolGrade": "Niveaux scolaires de l'école lycée (2nde à 1ère année)"
     },
     {
-        "SchoolGradeId": 4,
-        "Name": "Supérieur",
-        "SchoolGrade": "Niveaux scolaires de l'école supérieure (Licence à Master)"
+        "schoolGradeId": 4,
+        "name": "Supérieur",
+        "schoolGrade": "Niveaux scolaires de l'école supérieure (Licence à Master)"
     }
 ]
