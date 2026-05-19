@@ -124,7 +124,7 @@
   },
   "modifyAdvert": {
     "existingAdvert": "Annonce",
-    "modifyAdvert": "Modifier l'annonce ",
+    "modifyAdvert": "Modifier l'annonce",
     "description": "Partagez vos ressources éducatives avec la communauté EcoScolar.",
     "loading": "Chargement de l'annonce...",
     "form": {
