@@ -39,7 +39,6 @@ export const useUsersStore = defineStore('users', () => {
       errors.value = formatErrors(e as ApiError)
       user.value = null
       hasLoaded.value = false
-      throw e
     } finally {
       isLoading.value = false
     }
