@@ -18,6 +18,7 @@ export const useApi = <T>(
 
   return $fetch<T>(request, {
     baseURL: config.public.apiBase,
+    credentials: 'include', // Include cookies in requests for authentication
     ...fetchOptions,
 
     async onRequest({ options }) {
