@@ -442,7 +442,27 @@
     "password_label": "Mot de passe",
     "submit_button": "S'inscrire",
     "has_account": "Déjà inscrit ?",
-    "login_link": "Se connecter"
+    "login_link": "Se connecter",
+    "profile": {
+      "title": "Finalisez votre profil",
+      "subtitle": "Ces informations nous aideront à personnaliser votre expérience.",
+      "pseudo_label": "Pseudo",
+      "prenom_label": "Prénom",
+      "nom_label": "Nom",
+      "cp_label": "Code Postal",
+      "cp_placeholder": "Ex: 1000",
+      "dob_label": "Date de naissance",
+      "languages_title": "Langues parlées",
+      "languages_empty": "Aucune langue ajoutée.",
+      "language_label": "Langue",
+      "level_label": "Niveau",
+      "language_placeholder": "Choisir une langue",
+      "level_placeholder": "Choisir un niveau",
+      "level_native": "Langue maternelle",
+      "add_language": "Ajouter une langue",
+      "remove_language_aria": "Supprimer la langue numéro {index}",
+      "submit_button": "Terminer l'inscription"
+    }
   },
   "forgot_password": {
     "instruction": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
@@ -461,4 +481,5 @@
     "logged_as": "Connecté : {name}",
     "logout": "Déconnexion"
   }
+
 }
