@@ -821,6 +821,7 @@ const handleSubmit = () => {
                     placeholder="0.00"
                     type="number"
                     step="0.01"
+                    min="0"
                   >
                   <span class="px-4 text-sm font-medium text-gray-500">
                     CHF

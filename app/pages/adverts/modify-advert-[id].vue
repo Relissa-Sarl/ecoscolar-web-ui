@@ -145,7 +145,7 @@ const validateForm = (): boolean => {
     errors.value.description = $t('modifyAdvert.error.empty.description')
   }
 
-  if (form.value.price && form.value.price <= 0) {
+  if (!form.value.price || form.value.price <= 0) {
     errors.value.price = $t('modifyAdvert.error.empty.price')
   }
 
@@ -423,7 +423,7 @@ vueOnMounted(() => {
       <div class="flex-1 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900 md:p-8">
         <header class="mb-8">
           <p class="mb-2 text-sm font-medium uppercase tracking-wide text-primary">
-            {{ $t('modifyAdvert.newAdvert') }}
+            {{ $t('modifyAdvert.existingAdvert') }}
           </p>
           <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-300">
             {{ $t('modifyAdvert.modifyAdvert') }}
@@ -852,6 +852,7 @@ vueOnMounted(() => {
                     placeholder="0.00"
                     type="number"
                     step="0.01"
+                    min="0"
                   >
                   <span class="px-4 text-sm font-medium text-gray-500">
                     CHF
@@ -875,7 +876,7 @@ vueOnMounted(() => {
               class="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90"
               type="submit"
             >
-              {{ $t('modifyAdvert.form.publish') }}
+              {{ $t('modifyAdvert.form.modify') }}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -902,17 +903,6 @@ vueOnMounted(() => {
   >
     <div class="mx-auto flex max-w-7xl flex-col gap-6 xl:flex-row">
       <div class="flex-1 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900 md:p-8">
-        <header class="mb-8">
-          <p class="mb-2 text-sm font-medium uppercase tracking-wide text-primary">
-            {{ $t('modifyAdvert.newAdvert') }}
-          </p>
-          <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-300">
-            {{ $t('modifyAdvert.modifyAdvert') }}
-          </h1>
-          <p class="mt-2 max-w-2xl text-sm text-gray-500">
-            {{ $t('modifyAdvert.description') }}
-          </p>
-        </header>
         <p
           v-show="advertIsGet == false"
           class="text-center text-red-500"
