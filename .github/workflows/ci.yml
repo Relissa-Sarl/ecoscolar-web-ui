@@ -1,6 +1,10 @@
-name: Build & Test - Frontend
+name: CI Pipeline - EcoScolar frontend
 
-on: push
+on: 
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
 
 jobs:
   build-and-test:
@@ -38,14 +42,14 @@ jobs:
 
       - name: Container Launch Test
         run: |
-          # 1. Run the Docker container in detached mode, mapping port 8080 to 80
-          docker run -d -p 8080:80 --name test-container ecoscolar-frontend
+          # 1. Run the Docker container in detached mode, mapping port 3000 to 80
+          docker run -d -p 3000:80 --name test-container ecoscolar-frontend
           
           # 2. Wait 3 seconds for the container to start
           sleep 3
           
-          # 3. HTTP Request Test On Port 8080
-          curl -f http://localhost:8080/
+          # 3. HTTP Request Test On Port 3000
+          curl -f http://localhost:3000/
           
           # 4. Stop and Remove the test container
           docker rm -f test-container
