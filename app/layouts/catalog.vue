@@ -5,7 +5,7 @@
       href="#main-content"
       class="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:bg-emerald-600 focus:p-4 focus:text-white"
     >
-      Passer au contenu principal
+      {{ $t('common.skip_to_content') }}
     </a>
 
     <LayoutAppHeader />

@@ -17,6 +17,7 @@
     "empty": "Votre panier est vide pour le moment"
   },
   "catalog": {
+    "seo_title": "Catalogue | EcoScolar",
     "hero": {
       "title": "Repérez vos prochaines affaires scolaires.",
       "subtitle": "Recherche par ISBN, titre ou auteur pour comparer les meilleures offres de manuels et de matériel.",
@@ -69,9 +70,22 @@
     },
     "card": {
       "alt_image": "visuel de l’annonce",
+      "meta_supplies": "Cat. fournitures",
+      "meta_textbooks": "ISBN — disponible après scan",
+      "meta_tutoring": "Répétiteur • 4 séances mini",
       "hourly": "Tarif",
       "demo_rating": "4,9/5 démo",
       "book_lesson": "Réserver"
+    },
+    "badges": {
+      "condition": {
+        "NEW": "Neuf",
+        "USED": "Occasion",
+        "GOOD": "Bon état"
+      },
+      "service": {
+        "VERIFIED_TUTOR": "Vérifié"
+      }
     },
     "fab": {
       "place_advert": "Déposer une annonce"
@@ -106,11 +120,12 @@
   },
   "header": {
     "nav_shop": "Boutique",
-    "nav_tutoring": "Répétiteurs",
-    "nav_about": "À propos"
+    "nav_support": "Support",
+    "nav_terms": "Conditions"
   },
   "common": {
     "back_to_home": "← Retour à l'accueil",
+    "skip_to_content": "Passer au contenu principal",
     "last_updated": "Dernière mise à jour :",
     "contact_support": "Contactez le support",
     "home": "Accueil",

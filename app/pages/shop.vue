@@ -2,62 +2,46 @@
 import { computed, ref, watch } from 'vue'
 import { useLocalePath } from '#imports'
 import type {
-  AdvertCatalogApiItem,
   CatalogCategoryTab,
+  CatalogFetchResult,
+  CatalogGradeLevel,
   CatalogListing,
+  CatalogSubjectCode,
   GradeFilterState,
   SubjectFilterState
 } from '@/types/catalog'
+import catalogFallback from '@/mocks/catalogSummaries.json'
 import { getCatalogService } from '~/services/catalogService'
 import { mapCatalogApiToListings } from '~/utils/catalogMappers'
 
 definePageMeta({ layout: 'catalog' })
 
-useSeoMeta({ title: 'Catalogue EcoScolar' })
-
+const { t } = useI18n()
 const localePath = useLocalePath()
 
-
-const fallbackMock = (): AdvertCatalogApiItem[] => [
-  {
-    id: 'f0000001-0000-4000-a001-000000000001',
-    title: 'Exemple catalogue démo · fournitures',
-    price: 18.50
-  },
-  {
-    id: 'f0000002-0000-4000-a002-000000000002',
-    title: 'Manuel de mathématiques niveau gymnase',
-    price: 32.00
-  },
-  {
-    id: 'f0000003-0000-4000-a003-000000000003',
-    title: 'Calculatrice scientifique (mock)',
-    price: 52.75
-  },
-  {
-    id: 'f0000004-0000-4000-a004-000000000004',
-    title: 'Cours particuliers français • mock',
-    price: 45.00
-  }
-]
+useSeoMeta({
+  title: () => t('catalog.seo_title')
+})
 
 const catalogService = getCatalogService()
 
-const { data: rawItems, pending, error } = await useAsyncData(
+const { data: rawItems, pending } = await useAsyncData(
   'catalog-adverts',
-  async (): Promise<{ items: AdvertCatalogApiItem[]; fromFallback: boolean }> => {
+  async (): Promise<CatalogFetchResult> => {
     try {
       const rows = await catalogService.listSummaries()
       if (rows?.length)
-        return { items: rows, fromFallback: false }
-      return { items: fallbackMock(), fromFallback: true }
+        return { items: rows, fromFallback: false, hadError: false }
+      return { items: catalogFallback, fromFallback: true, hadError: false }
     } catch {
-      return { items: fallbackMock(), fromFallback: true }
+      return { items: catalogFallback, fromFallback: true, hadError: true }
     }
   }
 )
 
-const fromFallbackOnly = computed(() => !!rawItems.value?.fromFallback)
+const hadApiError = computed(() => rawItems.value?.hadError === true)
+const fromFallbackOnly = computed(() =>
+  rawItems.value?.fromFallback === true && !hadApiError.value)
 
 const listings = computed((): CatalogListing[] =>
   mapCatalogApiToListings(rawItems.value?.items ?? []))
@@ -109,35 +93,33 @@ function resetSidebar() {
 const pageSize = ref(9)
 const currentPage = ref(1)
 
-function gradeLabelMatches(filters: GradeFilterState, listing: CatalogListing): boolean {
+function gradeMatches(filters: GradeFilterState, listing: CatalogListing): boolean {
   const anyGrade = filters.primary || filters.secondary || filters.maturite || filters.superieur
   if (!anyGrade || listing.categoryTab === 'supplies')
     return true
-  const grade = listing.gradeLevelMock
-  if (!grade)
+  if (!listing.gradeLevel)
     return false
-  const mapPairs: Array<[boolean, string]> = [
-    [filters.primary, 'Primaire'],
-    [filters.secondary, 'Secondaire'],
-    [filters.maturite, 'Maturité'],
-    [filters.superieur, 'Supérieur']
+  const mapPairs: Array<[boolean, CatalogGradeLevel]> = [
+    [filters.primary, 'primary'],
+    [filters.secondary, 'secondary'],
+    [filters.maturite, 'maturity'],
+    [filters.superieur, 'university']
   ]
-  return mapPairs.some(([on, lbl]) => on && grade === lbl)
+  return mapPairs.some(([on, level]) => on && listing.gradeLevel === level)
 }
 
 function subjectMatches(filters: SubjectFilterState, listing: CatalogListing): boolean {
   const anySubject = filters.math || filters.french || filters.german
   if (!anySubject)
     return true
-  if (listing.categoryTab !== 'tutoring' || !listing.subject)
+  if (listing.categoryTab !== 'tutoring' || !listing.subjectCode)
     return true
-  if (filters.math && listing.subject.includes('Math'))
-    return true
-  if (filters.french && listing.subject.includes('Français'))
-    return true
-  if (filters.german && listing.subject.includes('Allemand'))
-    return true
-  return false
+  const mapPairs: Array<[boolean, CatalogSubjectCode]> = [
+    [filters.math, 'math'],
+    [filters.french, 'french'],
+    [filters.german, 'german']
+  ]
+  return mapPairs.some(([on, code]) => on && listing.subjectCode === code)
 }
 
 const filtered = computed(() => {
@@ -150,8 +132,7 @@ const filtered = computed(() => {
   if (activeCategory.value !== 'all')
     rows = rows.filter(row => row.categoryTab === activeCategory.value)
 
-  rows = rows.filter(row => gradeLabelMatches(grades.value, row))
-
+  rows = rows.filter(row => gradeMatches(grades.value, row))
   rows = rows.filter(row => subjectMatches(subjects.value, row))
 
   if (sortKey.value === 'price_asc')
@@ -189,18 +170,16 @@ watch(subjects, () => {
 </script>
 
 <template>
-  <!-- Fond hérité du layout catalogue (slate-50) pour éviter des aplats différents -->
   <div class="relative min-h-screen w-full max-w-none bg-transparent pb-28">
     <section class="w-full max-w-none py-2 md:py-4">
       <div class="grid w-full gap-8 lg:grid-cols-[minmax(240px,18rem)_1fr] lg:gap-10 xl:gap-12">
-        <div class="hidden lg:block invisible pointer-events-none">
-          <CatalogFiltersPanel
-            v-model:active-category="activeCategory"
-            v-model:grades="grades"
-            v-model:subjects="subjects"
-            @reset="resetSidebar()"
-          />
-        </div>
+        <CatalogFiltersPanel
+          v-model:active-category="activeCategory"
+          v-model:grades="grades"
+          v-model:subjects="subjects"
+          class="hidden lg:block"
+          @reset="resetSidebar()"
+        />
 
         <div class="min-w-0 space-y-8">
           <div class="lg:hidden">
@@ -227,7 +206,7 @@ watch(subjects, () => {
 
           <div class="rounded-3xl border border-emerald-200/60 bg-emerald-50 px-5 py-3 text-sm dark:border-emerald-900 dark:bg-emerald-950/30">
             <p
-              v-if="error"
+              v-if="hadApiError"
               class="font-medium text-amber-900 dark:text-amber-200"
             >
               {{ $t('catalog.banner.api_error_retry') }}

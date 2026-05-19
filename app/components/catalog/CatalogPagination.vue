@@ -4,7 +4,7 @@ interface Props {
   pageCount: number
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 const emit = defineEmits<{ 'update:page': [number] }>()
 </script>
 

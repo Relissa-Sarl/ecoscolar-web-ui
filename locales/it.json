@@ -17,6 +17,7 @@
     "last_updated": "Ultimo aggiornamento:",
     "contact_support": "Contatta il supporto",
     "home": "Home",
+    "skip_to_content": "Vai al contenuto principale",
     "favorites": "Preferiti",
     "breadcrumb_label": "Percorso di navigazione"
   },
@@ -39,6 +40,7 @@
     "empty": "Il tuo carrello è attualmente vuoto"
   },
   "catalog": {
+    "seo_title": "Catalogo | EcoScolar",
     "hero": {
       "title": "Trova il tuo prossimo successo scolastico.",
       "subtitle": "Cerca per ISBN, titolo o autore per confrontare le migliori offerte su manuali e materiale.",
@@ -91,9 +93,22 @@
     },
     "card": {
       "alt_image": "Immagine dell’annuncio",
+      "meta_supplies": "Cat. materiale",
+      "meta_textbooks": "ISBN — disponibile dopo scansione",
+      "meta_tutoring": "Ripetizioni • min. 4 lezioni",
       "hourly": "Tariffa",
       "demo_rating": "4.9/5 demo",
       "book_lesson": "Prenota"
+    },
+    "badges": {
+      "condition": {
+        "NEW": "Nuovo",
+        "USED": "Usato",
+        "GOOD": "Buono"
+      },
+      "service": {
+        "VERIFIED_TUTOR": "Verificato"
+      }
     },
     "fab": {
       "place_advert": "Inserisci un annuncio"
@@ -128,8 +143,8 @@
   },
   "header": {
     "nav_shop": "Negozio",
-    "nav_tutoring": "Ripetizioni",
-    "nav_about": "Chi siamo"
+    "nav_support": "Supporto",
+    "nav_terms": "Condizioni"
   },
   "support": {
     "title": "Contatta il supporto",

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { useLocalePath } from '#imports'
-import type { CatalogListing } from '@/types/catalog'
+import {
+  CATALOG_CONDITION_BADGE_CLASS,
+  CATALOG_SERVICE_BADGE_CLASS,
+  type CatalogListing
+} from '@/types/catalog'
 
 const localePath = useLocalePath()
 
@@ -15,34 +19,6 @@ defineEmits<{
   cartAdd: []
   bookLesson: []
 }>()
-
-const badgeClass = (): string => {
-  switch (props.listing.badge) {
-    case 'NEW':
-      return 'bg-emerald-600 text-white'
-    case 'USED':
-      return 'bg-amber-400 text-emerald-950'
-    case 'GOOD':
-      return 'bg-sky-400 text-emerald-950'
-    default:
-      return 'bg-emerald-800 text-white'
-  }
-}
-
-const badgeLabel = (): string => {
-  switch (props.listing.badge) {
-    case 'NEW':
-      return 'NEW'
-    case 'USED':
-      return 'USED'
-    case 'GOOD':
-      return 'GOOD'
-    case 'VERIFIED_TUTOR':
-      return 'VERIFIED'
-    default:
-      return ''
-  }
-}
 </script>
 
 <template>
@@ -55,16 +31,24 @@ const badgeLabel = (): string => {
         class="h-full w-full object-cover"
       >
       <span
+        v-if="listing.itemCondition"
         class="absolute left-3 top-3 rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide shadow-sm sm:text-[11px]"
-        :class="badgeClass()"
+        :class="CATALOG_CONDITION_BADGE_CLASS[listing.itemCondition]"
       >
-        {{ badgeLabel() }}
+        {{ $t(`catalog.badges.condition.${listing.itemCondition}`) }}
+      </span>
+      <span
+        v-else-if="listing.serviceBadge"
+        class="absolute left-3 top-3 rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide shadow-sm sm:text-[11px]"
+        :class="CATALOG_SERVICE_BADGE_CLASS[listing.serviceBadge]"
+      >
+        {{ $t(`catalog.badges.service.${listing.serviceBadge}`) }}
       </span>
     </div>
 
     <div class="flex flex-1 flex-col gap-3 p-4 sm:p-5">
       <p class="line-clamp-1 text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500 sm:text-xs">
-        {{ listing.metaLine }}
+        {{ $t(listing.metaLineKey) }}
       </p>
       <h3 class="text-lg font-bold leading-snug text-slate-900 dark:text-white">
         <NuxtLink
@@ -76,7 +60,25 @@ const badgeLabel = (): string => {
       </h3>
 
       <p class="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
-        <span aria-hidden="true">📍</span>
+        <svg
+          class="size-4 shrink-0"
+          aria-hidden="true"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+          />
+        </svg>
         {{ listing.location }}
       </p>
 
@@ -98,7 +100,20 @@ const badgeLabel = (): string => {
             :aria-label="$t('advert.actions.favorite_add')"
             @click="$emit('favoriteToggle')"
           >
-            ♡
+            <svg
+              class="size-5"
+              aria-hidden="true"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+              />
+            </svg>
           </button>
 
           <button
@@ -116,7 +131,20 @@ const badgeLabel = (): string => {
             :aria-label="$t('advert.actions.buy_now')"
             @click="$emit('cartAdd')"
           >
-            🛒
+            <svg
+              class="size-5"
+              aria-hidden="true"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+              />
+            </svg>
           </button>
         </div>
       </div>

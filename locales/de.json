@@ -17,6 +17,7 @@
     "last_updated": "Zuletzt aktualisiert:",
     "contact_support": "Support kontaktieren",
     "home": "Startseite",
+    "skip_to_content": "Zum Hauptinhalt springen",
     "favorites": "Favoriten",
     "breadcrumb_label": "Brotkrümel-Navigation"
   },
@@ -39,6 +40,7 @@
     "empty": "Ihr Warenkorb ist zur Zeit leer"
   },
   "catalog": {
+    "seo_title": "Katalog | EcoScolar",
     "hero": {
       "title": "Finden Sie Ihren akademischen Erfolg.",
       "subtitle": "Mit ISBN, Titel oder Autor Schulbücher und Material suchen und vergleichen.",
@@ -91,9 +93,22 @@
     },
     "card": {
       "alt_image": "Artikelbild",
+      "meta_supplies": "Kat. Material",
+      "meta_textbooks": "ISBN — nach Scan verfügbar",
+      "meta_tutoring": "Nachhilfe • mind. 4 Lektionen",
       "hourly": "Preis",
       "demo_rating": "4,9/5 Demo",
       "book_lesson": "Buchen"
+    },
+    "badges": {
+      "condition": {
+        "NEW": "Neu",
+        "USED": "Gebraucht",
+        "GOOD": "Gut"
+      },
+      "service": {
+        "VERIFIED_TUTOR": "Verifiziert"
+      }
     },
     "fab": {
       "place_advert": "Inserat erstellen"
@@ -128,8 +143,8 @@
   },
   "header": {
     "nav_shop": "Shop",
-    "nav_tutoring": "Nachhilfe",
-    "nav_about": "Über uns"
+    "nav_support": "Support",
+    "nav_terms": "AGB"
   },
   "support": {
     "title": "Support kontaktieren",

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "f0000001-0000-4000-a001-000000000001",
+    "title": "Exemple catalogue démo · fournitures",
+    "price": 18.5
+  },
+  {
+    "id": "f0000002-0000-4000-a002-000000000002",
+    "title": "Manuel de mathématiques niveau gymnase",
+    "price": 32
+  },
+  {
+    "id": "f0000003-0000-4000-a003-000000000003",
+    "title": "Calculatrice scientifique (mock)",
+    "price": 52.75
+  },
+  {
+    "id": "f0000004-0000-4000-a004-000000000004",
+    "title": "Cours particuliers français • mock",
+    "price": 45
+  }
+]

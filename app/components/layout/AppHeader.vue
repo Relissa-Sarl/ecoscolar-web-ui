@@ -6,8 +6,8 @@ const localePath = useLocalePath()
 const mainNav = computed(() =>
   [
     { to: localePath('/shop'), labelKey: 'header.nav_shop', slug: 'shop' },
-    { to: localePath('/support'), labelKey: 'header.nav_tutoring', slug: 'support' },
-    { to: localePath('/terms'), labelKey: 'header.nav_about', slug: 'terms' }
+    { to: localePath('/support'), labelKey: 'header.nav_support', slug: 'support' },
+    { to: localePath('/terms'), labelKey: 'header.nav_terms', slug: 'terms' }
   ] as const)
 
 const linkIsActive = (slug: string) => {
