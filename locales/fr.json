@@ -132,7 +132,13 @@
     "forgot_password": "Mot de passe oublié ?",
     "submit_button": "Se connecter",
     "no_account": "Pas encore de compte ?",
-    "register_link": "Créer un compte"
+    "register_link": "Créer un compte",
+    "errors": {
+      "Default": "Adresse e-mail ou mot de passe incorrect."
+    },
+    "status": {
+      "loading": "Connexion en cours..."
+    }
   },
   "register": {
     "title": "Créer un compte",
@@ -144,7 +150,19 @@
     "password_label": "Mot de passe",
     "submit_button": "S'inscrire",
     "has_account": "Déjà inscrit ?",
-    "login_link": "Se connecter"
+    "login_link": "Se connecter",
+    "errors": {
+      "DuplicateUserName": "Cette adresse e-mail est déjà associée à un compte.",
+      "PasswordTooShort": "Votre mot de passe doit faire au moins 6 caractères.",
+      "PasswordRequiresNonAlphanumeric": "Le mot de passe doit contenir un caractère spécial.",
+      "InvalidEmail": "L'adresse email n'est pas valide.",
+      "PasswordRequiresUpper": "Le mot de passe doit contenir une majuscule.",
+      "PasswordRequiresDigit": "Le mot de passe doit contenir un chiffre.",
+      "Default": "Une erreur inattendue est survenue. Veuillez réessayer."
+    },
+    "status": {
+      "loading": "Création de votre compte..."
+    }
   },
   "forgot_password": {
     "instruction": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.",

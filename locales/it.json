@@ -132,7 +132,13 @@
     "forgot_password": "Password dimenticata?",
     "submit_button": "Accedi",
     "no_account": "Non hai ancora un account?",
-    "register_link": "Crea un account"
+    "register_link": "Crea un account",
+    "errors": {
+      "Default": "Indirizzo e-mail o password non validi."
+    },
+    "status": {
+      "loading": "Accesso in corso..."
+    }
   },
   "register": {
     "title": "Crea un account",
@@ -144,7 +150,19 @@
     "password_label": "Password",
     "submit_button": "Iscriviti",
     "has_account": "Già iscritto?",
-    "login_link": "Accedi"
+    "login_link": "Accedi",
+    "errors": {
+      "DuplicateUserName": "Questo indirizzo e-mail è già associato a un account.",
+      "PasswordTooShort": "La password deve contenere almeno 6 caratteri.",
+      "PasswordRequiresNonAlphanumeric": "La password deve contenere un carattere speciale.",
+      "InvalidEmail": "L'indirizzo e-mail non è valido.",
+      "PasswordRequiresDigit": "La password deve contenere un numero.",
+      "PasswordRequiresUpper": "La password deve contenere una lettera maiuscola.",
+      "Default": "Si è verificato un errore imprevisto. Riprova."
+    },
+    "status": {
+      "loading": "Creazione dell'account in corso..."
+    }
   },
   "forgot_password": {
     "instruction": "Inserisci il tuo indirizzo e-mail e ti invieremo un link per reimpostare la tua password.",
