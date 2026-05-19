@@ -193,13 +193,14 @@ watch(subjects, () => {
   <div class="relative min-h-screen w-full max-w-none bg-transparent pb-28">
     <section class="w-full max-w-none py-2 md:py-4">
       <div class="grid w-full gap-8 lg:grid-cols-[minmax(240px,18rem)_1fr] lg:gap-10 xl:gap-12">
-        <CatalogFiltersPanel
-          v-model:active-category="activeCategory"
-          v-model:grades="grades"
-          v-model:subjects="subjects"
-          class="hidden lg:block"
-          @reset="resetSidebar()"
-        />
+        <div class="hidden lg:block invisible pointer-events-none">
+          <CatalogFiltersPanel
+            v-model:active-category="activeCategory"
+            v-model:grades="grades"
+            v-model:subjects="subjects"
+            @reset="resetSidebar()"
+          />
+        </div>
 
         <div class="min-w-0 space-y-8">
           <div class="lg:hidden">
