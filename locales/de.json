@@ -142,7 +142,7 @@
   },
   "modifyAdvert": {
     "existingAdvert": "Anzeige",
-    "modifyAdvert": "Anzeige bearbeiten ",
+    "modifyAdvert": "Anzeige bearbeiten",
     "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
     "loading": "Laden der Anzeige...",
     "form": {
