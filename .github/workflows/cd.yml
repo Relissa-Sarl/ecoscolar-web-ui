@@ -36,3 +36,4 @@ jobs:
             ghcr.io/relissa-sarl/ecoscolar-frontend:latest
             ghcr.io/relissa-sarl/ecoscolar-frontend:${{ github.sha }}
           platforms: linux/amd64, linux/arm64
+          driver-options: image=moby/buildkit:latest
