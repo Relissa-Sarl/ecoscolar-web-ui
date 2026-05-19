@@ -88,8 +88,10 @@
       }
     },
     "fab": {
-      "place_advert": "Déposer une annonce",
-      "me": {
+      "place_advert": "Déposer une annonce"
+    }
+  },
+  "me": {
     "adverts": {
       "title": "Mes Annonces",
       "description": "Gérez vos annonces en vente et vos services de tutorat.",
@@ -225,10 +227,15 @@
   "header": {
     "nav_shop": "Boutique",
     "nav_support": "Support",
-    "nav_terms": "Conditions"
+    "nav_terms": "Conditions",
+    "language": "Langue",
+    "cart": "Panier",
+    "login": "Connexion",
+    "profile": "Profil"
   },
   "common": {
     "back_to_home": "← Retour à l'accueil",
+    "back_to_catalog": "Retour au catalogue",
     "skip_to_content": "Passer au contenu principal",
     "last_updated": "Dernière mise à jour :",
     "contact_support": "Contactez le support",
@@ -347,7 +354,5 @@
     },
     "logged_as": "Connecté : {name}",
     "logout": "Déconnexion"
-  }
-  }
   }
 }

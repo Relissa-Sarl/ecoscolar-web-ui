@@ -250,7 +250,11 @@
   "header": {
     "nav_shop": "Shop",
     "nav_support": "Support",
-    "nav_terms": "AGB"
+    "nav_terms": "AGB",
+    "language": "Sprache",
+    "cart": "Warenkorb",
+    "login": "Anmelden",
+    "profile": "Profil"
   },
   "support": {
     "title": "Support kontaktieren",

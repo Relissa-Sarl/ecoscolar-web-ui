@@ -15,7 +15,7 @@ const localePath = useLocalePath()
     </div>
 
     <div class="flex items-center gap-2">
-      <span class="text-sm text-gray-500 dark:text-gray-400">Langue :</span>
+      <span class="text-sm text-gray-500 dark:text-gray-400">{{ $t('header.language') }}:</span>
       <button
         v-for="l in locales"
         :key="l.code"
@@ -34,13 +34,13 @@ const localePath = useLocalePath()
         :to="localePath('/cart')"
         class="text-gray-700 hover:text-indigo-600 dark:text-gray-300"
       >
-        [ Panier (0) ]
+        {{ $t('header.cart') }}
       </NuxtLink>
       <NuxtLink
         :to="localePath('/login')"
         class="text-gray-700 hover:text-indigo-600 dark:text-gray-300"
       >
-        [ Connexion ]
+        {{ $t('header.login') }}
       </NuxtLink>
     </div>
   </header>

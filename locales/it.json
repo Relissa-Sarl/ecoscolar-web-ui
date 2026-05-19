@@ -140,7 +140,7 @@
         "imageCount": "Puoi caricare solo un massimo di 10 immagini"
       }
     }
-  },  
+  },
   "cart": {
     "title": "Il mio carrello",
     "empty": "Il tuo carrello è attualmente vuoto"
@@ -250,7 +250,11 @@
   "header": {
     "nav_shop": "Negozio",
     "nav_support": "Supporto",
-    "nav_terms": "Condizioni"
+    "nav_terms": "Condizioni",
+    "language": "Lingua",
+    "cart": "Carrello",
+    "login": "Accedi",
+    "profile": "Profilo"
   },
   "support": {
     "title": "Contatta il supporto",

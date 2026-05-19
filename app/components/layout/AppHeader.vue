@@ -63,7 +63,7 @@ const linkIsActive = (slug: string) => {
         <span
           class="text-sm text-gray-500 dark:text-gray-400"
           aria-hidden="true"
-        >Langue :</span>
+        >{{ $t('header.language') }}:</span>
         <button
           v-for="l in locales"
           :key="l.code"
@@ -89,19 +89,19 @@ const linkIsActive = (slug: string) => {
           :to="localePath('/cart')"
           class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
         >
-          Panier (0)
+          {{ $t('header.cart') }}
         </NuxtLink>
         <NuxtLink
           :to="localePath('/login')"
           class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
         >
-          Connexion
+          {{ $t('header.login') }}
         </NuxtLink>
         <NuxtLink
           :to="localePath('/profile')"
           class="px-4 py-2 bg-emerald-800 text-white rounded-full hover:bg-emerald-700 transition-colors"
         >
-          Profil
+          {{ $t('header.profile') }}
         </NuxtLink>
       </div>
     </div>

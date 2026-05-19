@@ -1,5 +1,8 @@
+
 <script setup lang="ts">
+import Breadcrumb from "~/components/common/Breadcrumb.vue";
 const route = useRoute()
+const localePath = useLocalePath()
 const { data: advert } = await useAdvert(String(route.params.id))
 
 const breadcrumbItems = computed(() => [
@@ -28,11 +31,21 @@ const advertSummary = computed(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+  <div class="min-h-screen">
     <Breadcrumb :items="breadcrumbItems" />
 
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-6 py-8">
+      <!-- Bouton de retour -->
+      <div class="mb-8">
+        <NuxtLink
+          :to="localePath('/shop')"
+          class="inline-flex items-center gap-2 text-emerald-700 dark:text-emerald-400 hover:underline font-medium focus:ring-2 focus:ring-emerald-500 outline-none rounded"
+        >
+          <span aria-hidden="true">←</span> {{ $t('common.back_to_catalog') }}
+        </NuxtLink>
+      </div>
+
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Left: Image Gallery -->
         <div class="lg:col-span-2">
