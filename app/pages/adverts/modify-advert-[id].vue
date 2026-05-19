@@ -1,111 +1,197 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted as vueOnMounted } from 'vue'
+
+import type { ModifyAdvertForm } from '~/types/advert'
 import { AdvertCondition } from '~/utils/enum/advertCondition'
-import { AdvertLanguage } from '~/utils/enum/advertLanguage'
+import { AdvertStatus } from '~/utils/enum/advertStatus'
 import { AdvertType } from '~/utils/enum/advertType'
+import { AdvertLanguage } from '~/utils/enum/advertLanguage'
 
-const uploadedFiles = ref<File[]>([])
-const category = ref(AdvertType.PRODUCT)
+const route = useRoute()
+const id = Array.isArray(route.params.id) ? Number(route.params.id[0]) : Number(route.params.id)
+
+const adverts = ref<ModifyAdvertForm[]>([
+  {
+    id: 1,
+    title: 'Livre de mathématiques',
+    description: 'Livre de mathématiques pour le lycée, en bon état.',
+    price: 10,
+    type: AdvertType.BOOK,
+    status: AdvertStatus.ACTIVE,
+    userId: 1,
+    subjectId: null,
+    schoolGradeId: null,
+    teachingLanguage: null,
+    studyLevel: null,
+    condition: AdvertCondition.USED,
+    author: 'John Doe',
+    publisher: 'MathBooks Inc.',
+    edition: '3rd Edition',
+    isbn: '978-7-2238-5998-1',
+    bookCategoryId: 1,
+    writtenLanguage: AdvertLanguage.IT
+  },
+  {
+    id: 2,
+    title: 'Trousse de fournitures scolaires',
+    description: 'Trousse de fournitures scolaires complète, idéale pour la rentrée.',
+    price: 15,
+    type: AdvertType.PRODUCT,
+    status: AdvertStatus.ACTIVE,
+    userId: 1,
+    subjectId: null,
+    schoolGradeId: null,
+    teachingLanguage: null,
+    studyLevel: null,
+    condition: AdvertCondition.LIKE_NEW,
+    author: null,
+    publisher: null,
+    edition: null,
+    isbn: null,
+    bookCategoryId: null,
+    writtenLanguage: null
+
+  },
+  {
+    id: 3,
+    title: 'Cours de tutorat en mathématiques',
+    description: 'Cours de tutorat en mathématiques pour les élèves de collège et lycée.',
+    price: 20,
+    type: AdvertType.SERVICE,
+    status: AdvertStatus.ACTIVE,
+    userId: 1,
+    subjectId: 1,
+    schoolGradeId: 3,
+    teachingLanguage: AdvertLanguage.DE,
+    studyLevel: 'High School/Secondary',
+    condition: null,
+    author: null,
+    publisher: null,
+    edition: null,
+    isbn: null,
+    bookCategoryId: null,
+    writtenLanguage: null
+  },
+  {
+    id: 4,
+    title: 'Livre de français',
+    description: 'Livre de français pour le collège, en bon état.',
+    price: 8,
+    type: AdvertType.BOOK,
+    status: AdvertStatus.ACTIVE,
+    userId: 1,
+    subjectId: null,
+    schoolGradeId: null,
+    teachingLanguage: null,
+    studyLevel: null,
+    condition: AdvertCondition.NEW,
+    author: 'Marie Curie',
+    publisher: 'FrenchBooks Ltd.',
+    edition: '1st Edition',
+    isbn: '978-8-0897-7695-5',
+    bookCategoryId: 2,
+    writtenLanguage: AdvertLanguage.FR
+  }
+])
+const advert = ref<ModifyAdvertForm>()
+const advertLoading = ref(true)
+const advertIsGet = ref(true)
+// const uploadedFiles = ref<File[]>([])
+const category = ref()
 const errors = ref<{ [key: string]: string }>({})
+
 const form = ref({
-  title: '',
-  description: '',
-  price: 0,
+  title: advert.value?.title,
+  description: advert.value?.description,
+  price: advert.value?.price,
 
-  subjectId: 1,
-  schoolGradeId: 1,
-  teachingLanguage: AdvertLanguage.FR,
-  studyLevel: '',
+  subjectId: advert.value?.subjectId || null,
+  schoolGradeId: advert.value?.schoolGradeId || null,
+  teachingLanguage: advert.value?.teachingLanguage || null,
+  studyLevel: advert.value?.studyLevel || null,
 
-  condition: AdvertCondition.NEW,
-  pictures: uploadedFiles.value,
+  condition: advert.value?.condition || null,
 
-  author: '',
-  publisher: '',
-  edition: '',
-  isbn: '',
-  bookCategoryId: 1,
-  writtenLanguage: AdvertLanguage.FR
+  author: advert.value?.author || null,
+  publisher: advert.value?.publisher || null,
+  edition: advert.value?.edition || null,
+  isbn: advert.value?.isbn || null,
+  bookCategoryId: advert.value?.bookCategoryId || null,
+  writtenLanguage: advert.value?.writtenLanguage || null
 })
 
-const handleImageUpload = (event: Event) => {
-  const input = event.target as HTMLInputElement
-  if (input.files) {
-    uploadedFiles.value = Array.from(input.files)
-    form.value.pictures = uploadedFiles.value
-    errors.value.images = ''
-  }
-}
+// const handleImageUpload = (event: Event) => {
+//   const input = event.target as HTMLInputElement
+//   if (input.files) {
+//     uploadedFiles.value = Array.from(input.files)
+//     form.value.pictures = uploadedFiles.value
+//     errors.value.images = ''
+//   }
+// }
 
 const validateForm = (): boolean => {
   errors.value = {}
 
-  // Validation for empty fields
-  if (!category.value) {
-    errors.value.category = $t('createAdvert.error.empty.category')
-    return false
+  if (!form.value.title || !form.value.title.trim()) {
+    errors.value.title = $t('modifyAdvert.error.empty.title')
   }
 
-  if (!form.value.title.trim()) {
-    errors.value.title = $t('createAdvert.error.empty.title')
+  if (!form.value.description || !form.value.description.trim()) {
+    errors.value.description = $t('modifyAdvert.error.empty.description')
   }
 
-  if (!form.value.description.trim()) {
-    errors.value.description = $t('createAdvert.error.empty.description')
-  }
-
-  if (form.value.price <= 0) {
-    errors.value.price = $t('createAdvert.error.empty.price')
+  if (!form.value.price || form.value.price <= 0) {
+    errors.value.price = $t('modifyAdvert.error.empty.price')
   }
 
   switch (category.value) {
     case AdvertType.SERVICE:
       if (!form.value.subjectId) {
-        errors.value.subjectId = $t('createAdvert.error.empty.subjectId')
+        errors.value.subjectId = $t('modifyAdvert.error.empty.subjectId')
       }
       if (!form.value.schoolGradeId) {
-        errors.value.schoolGradeId = $t('createAdvert.error.empty.schoolGradeId')
+        errors.value.schoolGradeId = $t('modifyAdvert.error.empty.schoolGradeId')
       }
       if (!form.value.teachingLanguage) {
-        errors.value.teachingLanguage = $t('createAdvert.error.empty.teachingLanguage')
+        errors.value.teachingLanguage = $t('modifyAdvert.error.empty.teachingLanguage')
       }
-      if (!form.value.studyLevel.trim()) {
-        errors.value.studyLevel = $t('createAdvert.error.empty.studyLevel')
+      if (!form.value.studyLevel?.trim()) {
+        errors.value.studyLevel = $t('modifyAdvert.error.empty.studyLevel')
       }
       break
     case AdvertType.PRODUCT:
       if (!form.value.condition) {
-        errors.value.condition = $t('createAdvert.error.empty.condition')
+        errors.value.condition = $t('modifyAdvert.error.empty.condition')
       }
-      if (uploadedFiles.value.length === 0) {
-        errors.value.images = $t('createAdvert.error.empty.images')
-      }
+      // if (uploadedFiles.value.length === 0) {
+      //   errors.value.images = $t('modifyAdvert.error.empty.images')
+      // }
       break
     case AdvertType.BOOK:
       if (!form.value.condition) {
-        errors.value.condition = $t('createAdvert.error.empty.condition')
+        errors.value.condition = $t('modifyAdvert.error.empty.condition')
       }
-      if (!form.value.publisher.trim()) {
-        errors.value.publisher = $t('createAdvert.error.empty.publisher')
+      if (!form.value.publisher || !form.value.publisher.trim()) {
+        errors.value.publisher = $t('modifyAdvert.error.empty.publisher')
       }
-      if (!form.value.edition.trim()) {
-        errors.value.edition = $t('createAdvert.error.empty.edition')
+      if (!form.value.edition || !form.value.edition.trim()) {
+        errors.value.edition = $t('modifyAdvert.error.empty.edition')
       }
-      if (!form.value.isbn.trim()) {
-        errors.value.isbn = $t('createAdvert.error.empty.isbn')
+      if (!form.value.isbn || !form.value.isbn.trim()) {
+        errors.value.isbn = $t('modifyAdvert.error.empty.isbn')
       }
-      if (form.value.bookCategoryId === null || form.value.bookCategoryId === undefined) {
-        errors.value.bookCategoryId = $t('createAdvert.error.empty.bookCategoryId')
+      if (form.value.bookCategoryId === null || form.value.bookCategoryId < 0) {
+        errors.value.bookCategoryId = $t('modifyAdvert.error.empty.bookCategoryId')
       }
       if (!form.value.writtenLanguage) {
-        errors.value.writtenLanguage = $t('createAdvert.error.empty.writtenLanguage')
+        errors.value.writtenLanguage = $t('modifyAdvert.error.empty.writtenLanguage')
       }
-      if (!form.value.author.trim()) {
-        errors.value.author = $t('createAdvert.error.empty.author')
+      if (!form.value.author || !form.value.author.trim()) {
+        errors.value.author = $t('modifyAdvert.error.empty.author')
       }
-      if (uploadedFiles.value.length === 0) {
-        errors.value.images = $t('createAdvert.error.empty.images')
-      }
+      // if (uploadedFiles.value.length === 0) {
+      //   errors.value.images = $t('modifyAdvert.error.empty.images')
+      // }
       break
   }
 
@@ -116,109 +202,116 @@ const validateForm = (): boolean => {
   // Additional validations (size, SQL injection, regex format, etc.)
 
   // Title length validation
-  if (form.value.title.length < 3) {
-    errors.value.title = $t('createAdvert.error.invalid.titleLengthMin')
+  if (form.value.title && form.value.title.length < 3) {
+    errors.value.title = $t('modifyAdvert.error.invalid.titleLengthMin')
   }
-  if (form.value.title.length > 200) {
-    errors.value.title = $t('createAdvert.error.invalid.titleLengthMax')
+  if (form.value.title && form.value.title.length > 200) {
+    errors.value.title = $t('modifyAdvert.error.invalid.titleLengthMax')
   }
 
   // Description length validation
-  if (form.value.description.length < 10) {
-    errors.value.description = $t('createAdvert.error.invalid.descriptionLengthMin')
+  if (form.value.description && form.value.description.length < 10) {
+    errors.value.description = $t('modifyAdvert.error.invalid.descriptionLengthMin')
   }
-  if (form.value.description.length > 2000) {
-    errors.value.description = $t('createAdvert.error.invalid.descriptionLengthMax')
+  if (form.value.description && form.value.description.length > 2000) {
+    errors.value.description = $t('modifyAdvert.error.invalid.descriptionLengthMax')
   }
 
   // SQL injection prevention - check for suspicious patterns
   const sqlInjectionPattern = /('|(--)|;|\/\*|\*\/|xp_|sp_|exec|execute|select|insert|update|delete|drop|create|alter|union)/i
-  if (sqlInjectionPattern.test(form.value.title) || sqlInjectionPattern.test(form.value.description) || sqlInjectionPattern.test(form.value.author) || sqlInjectionPattern.test(form.value.publisher) || sqlInjectionPattern.test(form.value.edition) || sqlInjectionPattern.test(form.value.isbn) || sqlInjectionPattern.test(form.value.studyLevel)) {
-    errors.value.content = $t('createAdvert.error.invalid.sqlInjection')
+  const title = form.value.title ?? ''
+  const description = form.value.description ?? ''
+  const author = form.value.author ?? ''
+  const publisher = form.value.publisher ?? ''
+  const edition = form.value.edition ?? ''
+  const isbn = form.value.isbn ?? ''
+  const studyLevel = form.value.studyLevel ?? ''
+
+  if ((title || description || author || publisher || edition || isbn || studyLevel) && (sqlInjectionPattern.test(title) || sqlInjectionPattern.test(description) || sqlInjectionPattern.test(author) || sqlInjectionPattern.test(publisher) || sqlInjectionPattern.test(edition) || sqlInjectionPattern.test(isbn) || sqlInjectionPattern.test(studyLevel))) {
+    errors.value.content = $t('modifyAdvert.error.invalid.sqlInjection')
   }
 
   // Price validation
-  if (form.value.price < 0) {
-    errors.value.price = $t('createAdvert.error.invalid.priceNegative')
+  if (form.value.price && form.value.price < 0) {
+    errors.value.price = $t('modifyAdvert.error.invalid.priceNegative')
   }
-  if (form.value.price > 500) {
-    errors.value.price = $t('createAdvert.error.invalid.priceMax')
+  if (form.value.price && form.value.price > 500) {
+    errors.value.price = $t('modifyAdvert.error.invalid.priceMax')
   }
-  if (!/^\d+(\.\d{1,2})?$/.test(form.value.price.toString())) {
-    errors.value.price = $t('createAdvert.error.invalid.priceFormat')
+  if (form.value.price && !/^\d+(\.\d{1,2})?$/.test(form.value.price.toString())) {
+    errors.value.price = $t('modifyAdvert.error.invalid.priceFormat')
   }
 
-  const maxFileSize = 5 * 1024 * 1024 // 5MB
+  // const maxFileSize = 5 * 1024 * 1024 // 5MB
   switch (category.value) {
     case AdvertType.SERVICE:
-      if (form.value.subjectId < 1) {
-        errors.value.subjectId = $t('createAdvert.error.invalid.subjectId')
+      if (form.value.subjectId && form.value.subjectId < 1) {
+        errors.value.subjectId = $t('modifyAdvert.error.invalid.subjectId')
       }
-      if (form.value.schoolGradeId < 1) {
-        errors.value.schoolGradeId = $t('createAdvert.error.invalid.schoolGradeId')
+      if (form.value.schoolGradeId && form.value.schoolGradeId < 1) {
+        errors.value.schoolGradeId = $t('modifyAdvert.error.invalid.schoolGradeId')
       }
       if (!form.value.teachingLanguage) {
-        errors.value.teachingLanguage = $t('createAdvert.error.invalid.teachingLanguage')
+        errors.value.teachingLanguage = $t('modifyAdvert.error.invalid.teachingLanguage')
       }
-      if (form.value.studyLevel.length > 50) {
-        errors.value.studyLevel = $t('createAdvert.error.invalid.studyLevelLength')
+      if (form.value.studyLevel && form.value.studyLevel.length > 50) {
+        errors.value.studyLevel = $t('modifyAdvert.error.invalid.studyLevelLength')
       }
       break
     case AdvertType.BOOK:
-      if (form.value.bookCategoryId < 0) {
-        errors.value.bookCategoryId = $t('createAdvert.error.invalid.bookCategoryId')
+      if (form.value.bookCategoryId && form.value.bookCategoryId < 0) {
+        errors.value.bookCategoryId = $t('modifyAdvert.error.invalid.bookCategoryId')
       }
-      // writtenLanguage may be a string (from select/input). Ensure numeric comparison.
       if (!form.value.writtenLanguage) {
-        errors.value.writtenLanguage = $t('createAdvert.error.invalid.writtenLanguage')
+        errors.value.writtenLanguage = $t('modifyAdvert.error.invalid.writtenLanguage')
       }
       // ISBN validation (books only)
-      if (!/^(?:\d-\d{4}-\d{4}-\d|97[89]-\d-\d{4}-\d{4}-\d)$/.test(form.value.isbn)) {
-        errors.value.isbn = $t('createAdvert.error.invalid.isbnFormat')
+      if (form.value.isbn && !/^(?:\d-\d{4}-\d{4}-\d|97[89]-\d-\d{4}-\d{4}-\d)$/.test(form.value.isbn)) {
+        errors.value.isbn = $t('modifyAdvert.error.invalid.isbnFormat')
       }
       // Author and Publisher length validation (books only)
-      if (form.value.author.length > 150) {
-        errors.value.author = $t('createAdvert.error.invalid.authorLength')
+      if (form.value.author && form.value.author.length > 150) {
+        errors.value.author = $t('modifyAdvert.error.invalid.authorLength')
       }
-      if (form.value.publisher.length > 150) {
-        errors.value.publisher = $t('createAdvert.error.invalid.publisherLength')
+      if (form.value.publisher && form.value.publisher.length > 150) {
+        errors.value.publisher = $t('modifyAdvert.error.invalid.publisherLength')
       }
       // Edition length validation (books only)
-      if (form.value.edition.length > 150) {
-        errors.value.edition = $t('createAdvert.error.invalid.editionLength')
+      if (form.value.edition && form.value.edition.length > 150) {
+        errors.value.edition = $t('modifyAdvert.error.invalid.editionLength')
       }
       // File size validation
-      uploadedFiles.value.forEach((file) => {
-        if (file.size > maxFileSize) {
-          errors.value.images = $t('createAdvert.error.invalid.imageSize')
-        }
-        // Validate file type
-        if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
-          errors.value.images = $t('createAdvert.error.invalid.imageType')
-        }
-      })
+      // uploadedFiles.value.forEach((file) => {
+      //   if (file.size > maxFileSize) {
+      //     errors.value.images = $t('modifyAdvert.error.invalid.imageSize')
+      //   }
+      //   // Validate file type
+      //   if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
+      //     errors.value.images = $t('modifyAdvert.error.invalid.imageType')
+      //   }
+      // })
 
       // Maximum number of files validation
-      if (uploadedFiles.value.length > 10) {
-        errors.value.images = $t('createAdvert.error.invalid.imageCount')
-      }
+      // if (uploadedFiles.value.length > 10) {
+      //   errors.value.images = $t('modifyAdvert.error.invalid.imageCount')
+      // }
       break
     case AdvertType.PRODUCT:
       // File size validation
-      uploadedFiles.value.forEach((file) => {
-        if (file.size > maxFileSize) {
-          errors.value.images = $t('createAdvert.error.invalid.imageSize')
-        }
-        // Validate file type
-        if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
-          errors.value.images = $t('createAdvert.error.invalid.imageType')
-        }
-      })
+      // uploadedFiles.value.forEach((file) => {
+      //   if (file.size > maxFileSize) {
+      //     errors.value.images = $t('modifyAdvert.error.invalid.imageSize')
+      //   }
+      //   // Validate file type
+      //   if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
+      //     errors.value.images = $t('modifyAdvert.error.invalid.imageType')
+      //   }
+      // })
 
-      // Maximum number of files validation
-      if (uploadedFiles.value.length > 10) {
-        errors.value.images = $t('createAdvert.error.invalid.imageCount')
-      }
+      // // Maximum number of files validation
+      // if (uploadedFiles.value.length > 10) {
+      //   errors.value.images = $t('modifyAdvert.error.invalid.imageCount')
+      // }
       break
   }
 
@@ -237,8 +330,7 @@ const handleSubmit = () => {
         description: form.value.description,
         price: form.value.price,
         userId: 1,
-        condition: form.value.condition,
-        pictures: form.value.pictures
+        condition: form.value.condition
       }
       // Call API to create supply advert with form.value
       break
@@ -249,7 +341,6 @@ const handleSubmit = () => {
         price: form.value.price,
         userId: 1,
         condition: form.value.condition,
-        pictures: form.value.pictures,
         author: form.value.author,
         publisher: form.value.publisher,
         isbn: form.value.isbn,
@@ -276,22 +367,64 @@ const handleSubmit = () => {
   console.log('Form submitted with data:', formData)
   // return navigateTo('../me/adverts') // Redirect to adverts list after successful creation
 }
+
+vueOnMounted(() => {
+  if (!route.params.id || Number.isNaN(id) || id < 1 || id > adverts.value.length) {
+    advertIsGet.value = false
+    advertLoading.value = false
+    return
+  }
+
+  // const { data: id } = await useAdvert(String(route.params.id))
+  advert.value = adverts.value[id - 1]
+
+  if (advert.value?.userId !== 1) {
+    advertIsGet.value = false
+    advertLoading.value = false
+    return
+  }
+
+  form.value = {
+    title: advert.value?.title,
+    description: advert.value?.description,
+    price: advert.value?.price,
+
+    subjectId: advert.value?.subjectId,
+    schoolGradeId: advert.value?.schoolGradeId,
+    teachingLanguage: advert.value?.teachingLanguage,
+    studyLevel: advert.value?.studyLevel,
+
+    condition: advert.value?.condition,
+
+    author: advert.value?.author,
+    publisher: advert.value?.publisher,
+    edition: advert.value?.edition,
+    isbn: advert.value?.isbn,
+    bookCategoryId: advert.value?.bookCategoryId,
+    writtenLanguage: advert.value?.writtenLanguage
+  }
+  category.value = advert.value?.type
+  advertLoading.value = false
+})
 </script>
 
 <template>
-  <div class="min-h-screen px-4 py-6 text-gray-900 dark:text-gray-50 md:px-6 lg:px-8">
+  <div
+    v-if="advertIsGet && advertLoading == false"
+    class="min-h-screen px-4 py-6 text-gray-900 dark:text-gray-50 md:px-6 lg:px-8"
+  >
     <div class="mx-auto flex max-w-7xl flex-col gap-6 xl:flex-row">
       <!-- <AppFilter/> -->
       <div class="flex-1 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900 md:p-8">
         <header class="mb-8">
           <p class="mb-2 text-sm font-medium uppercase tracking-wide text-primary">
-            {{ $t('createAdvert.newAdvert') }}
+            {{ $t('modifyAdvert.existingAdvert') }}
           </p>
           <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-300">
-            {{ $t('createAdvert.createAdvert') }}
+            {{ $t('modifyAdvert.modifyAdvert') }} {{ advert?.title ? `: ${advert.title}` : '' }}
           </h1>
           <p class="mt-2 max-w-2xl text-sm text-gray-500">
-            {{ $t('createAdvert.description') }}
+            {{ $t('modifyAdvert.description') }}
           </p>
         </header>
 
@@ -312,122 +445,10 @@ const handleSubmit = () => {
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                />
-              </svg>
-              {{ $t('createAdvert.form.information') }}
-            </h2>
-            <div>
-              <label class="mb-2 block text-sm font-medium text-gray-600">Type de catégorie</label>
-              <div class="grid gap-3 sm:grid-cols-3">
-                <label class="cursor-pointer">
-                  <input
-                    id="cat-supply"
-                    v-model="category"
-                    class="peer sr-only"
-                    name="category"
-                    type="radio"
-                    :value="AdvertType.PRODUCT"
-                  >
-                  <div class="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-4 transition peer-checked:border-primary peer-checked:bg-primary/5 dark:bg-gray-800 dark:border-gray-400">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="size-6 text-gray-400"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-                      />
-                    </svg>
-                    <span class="font-medium text-gray-600 dark:text-gray-300">{{ $t('advertTypes.product') }}</span>
-                  </div>
-                </label>
-                <label class="cursor-pointer">
-                  <input
-                    id="cat-books"
-                    v-model="category"
-                    class="peer sr-only"
-                    name="category"
-                    type="radio"
-                    :value="AdvertType.BOOK"
-                  >
-                  <div class="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-4 transition peer-checked:border-primary peer-checked:bg-primary/5 dark:bg-gray-800 dark:border-gray-400">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="size-6 text-gray-400"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
-                      />
-                    </svg>
-                    <span class="font-medium text-gray-600 dark:text-gray-300">{{ $t('advertTypes.book') }}</span>
-                  </div>
-                </label>
-                <label class="cursor-pointer">
-                  <input
-                    id="cat-tutoring"
-                    v-model="category"
-                    class="peer sr-only"
-                    name="category"
-                    type="radio"
-                    :value="AdvertType.SERVICE"
-                  >
-                  <div class="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-4 transition peer-checked:border-primary peer-checked:bg-primary/5 dark:bg-gray-800 dark:border-gray-400">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="size-6 text-gray-400"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
-                      />
-                    </svg>
-                    <span class="font-medium text-gray-600 dark:text-gray-300">{{ $t('advertTypes.service') }}</span>
-                  </div>
-                </label>
-              </div>
-            </div>
-            <p
-              v-show="errors.category != null"
-              class="mt-1 min-h-5 text-sm text-red-500"
-            >
-              {{ errors.category }}
-            </p>
-          </section>
-
-          <section class="rounded-2xl border border-gray-200 bg-gray-50/60 dark:border-gray-400 dark:bg-gray-800 dark:text-gray-400 p-5">
-            <h2 class="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="size-6 text-primary"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
                   d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
                 />
               </svg>
-              {{ $t('createAdvert.form.detailedInformation') }}
+              {{ $t('modifyAdvert.form.detailedInformation') }}
             </h2>
             <div class="mt-5 grid gap-5 md:grid-cols-2">
               <div class="col-span-2">
@@ -435,13 +456,13 @@ const handleSubmit = () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="title"
                 >
-                  {{ $t('createAdvert.form.title') }}
+                  {{ $t('modifyAdvert.form.title') }}
                 </label>
                 <input
                   id="title"
                   v-model="form.title"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('createAdvert.form.titlePlaceholder')"
+                  :placeholder="$t('modifyAdvert.form.titlePlaceholder')"
                   type="text"
                 >
                 <p class="mt-1 min-h-5 text-sm text-red-500">
@@ -453,7 +474,7 @@ const handleSubmit = () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="condition"
                 >
-                  {{ $t('createAdvert.form.condition') }}
+                  {{ $t('modifyAdvert.form.condition') }}
                 </label>
                 <select
                   id="condition"
@@ -482,13 +503,13 @@ const handleSubmit = () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="author"
                 >
-                  {{ $t('createAdvert.form.author') }}
+                  {{ $t('modifyAdvert.form.author') }}
                 </label>
                 <input
                   id="author"
                   v-model="form.author"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('createAdvert.form.authorPlaceholder')"
+                  :placeholder="$t('modifyAdvert.form.authorPlaceholder')"
                   type="text"
                 >
                 <p
@@ -503,13 +524,13 @@ const handleSubmit = () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="publisher"
                 >
-                  {{ $t('createAdvert.form.publisher') }}
+                  {{ $t('modifyAdvert.form.publisher') }}
                 </label>
                 <input
                   id="publisher"
                   v-model="form.publisher"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('createAdvert.form.publisherPlaceholder')"
+                  :placeholder="$t('modifyAdvert.form.publisherPlaceholder')"
                   type="text"
                 >
                 <p
@@ -524,13 +545,13 @@ const handleSubmit = () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="edition"
                 >
-                  {{ $t('createAdvert.form.edition') }}
+                  {{ $t('modifyAdvert.form.edition') }}
                 </label>
                 <input
                   id="edition"
                   v-model="form.edition"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('createAdvert.form.editionPlaceholder')"
+                  :placeholder="$t('modifyAdvert.form.editionPlaceholder')"
                   type="text"
                 >
                 <p
@@ -545,14 +566,14 @@ const handleSubmit = () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="isbn"
                 >
-                  {{ $t('createAdvert.form.isbn') }}
+                  {{ $t('modifyAdvert.form.isbn') }}
                 </label>
                 <div class="relative">
                   <input
                     id="isbn"
                     v-model="form.isbn"
                     class="w-full rounded-xl border border-gray-200 bg-white py-3 pl-10 pr-4 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                    :placeholder="$t('createAdvert.form.isbnPlaceholder')"
+                    :placeholder="$t('modifyAdvert.form.isbnPlaceholder')"
                     type="text"
                   >
                   <svg
@@ -587,7 +608,7 @@ const handleSubmit = () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="bookCategoryId"
                 >
-                  {{ $t('createAdvert.form.bookCategoryId') }}
+                  {{ $t('modifyAdvert.form.bookCategoryId') }}
                 </label>
                 <select
                   id="bookCategoryId"
@@ -631,7 +652,7 @@ const handleSubmit = () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="writtenLanguage"
                 >
-                  {{ $t('createAdvert.form.writtenLanguage') }}
+                  {{ $t('modifyAdvert.form.writtenLanguage') }}
                 </label>
                 <select
                   id="writtenLanguage"
@@ -660,7 +681,7 @@ const handleSubmit = () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="subjectId"
                 >
-                  {{ $t('createAdvert.form.subjectId') }}
+                  {{ $t('modifyAdvert.form.subjectId') }}
                 </label>
                 <select
                   id="subjectId"
@@ -704,7 +725,7 @@ const handleSubmit = () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="schoolGradeId"
                 >
-                  {{ $t('createAdvert.form.schoolGradeId') }}
+                  {{ $t('modifyAdvert.form.schoolGradeId') }}
                 </label>
                 <select
                   id="schoolGradeId"
@@ -736,7 +757,7 @@ const handleSubmit = () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="teachingLanguage"
                 >
-                  {{ $t('createAdvert.form.teachingLanguage') }}
+                  {{ $t('modifyAdvert.form.teachingLanguage') }}
                 </label>
                 <select
                   id="teachingLanguage"
@@ -765,14 +786,14 @@ const handleSubmit = () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="studyLevel"
                 >
-                  {{ $t('createAdvert.form.studyLevel') }}
+                  {{ $t('modifyAdvert.form.studyLevel') }}
                 </label>
                 <div class="relative">
                   <input
                     id="studyLevel"
                     v-model="form.studyLevel"
                     class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                    :placeholder="$t('createAdvert.form.studyLevelPlaceholder')"
+                    :placeholder="$t('modifyAdvert.form.studyLevelPlaceholder')"
                     type="text"
                   >
                 </div>
@@ -788,13 +809,13 @@ const handleSubmit = () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="description"
                 >
-                  {{ $t('createAdvert.form.description') }}
+                  {{ $t('modifyAdvert.form.description') }}
                 </label>
                 <textarea
                   id="description"
                   v-model="form.description"
                   class="min-h-32 w-full resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('createAdvert.form.descriptionPlaceholder')"
+                  :placeholder="$t('modifyAdvert.form.descriptionPlaceholder')"
                   rows="4"
                 />
                 <p class="mt-1 min-h-5 text-sm text-red-500">
@@ -820,7 +841,7 @@ const handleSubmit = () => {
                   d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z"
                 />
               </svg>
-              {{ $t('createAdvert.form.sales') }}
+              {{ $t('modifyAdvert.form.sales') }}
             </h2>
             <div class="mt-5 grid gap-5 md:grid-cols-3">
               <div>
@@ -828,7 +849,7 @@ const handleSubmit = () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="price"
                 >
-                  {{ $t('createAdvert.form.price') }}
+                  {{ $t('modifyAdvert.form.price') }}
                 </label>
                 <div class="flex items-center overflow-hidden rounded-xl border border-gray-200 bg-white focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 dark:bg-gray-800 dark:border-gray-400">
                   <input
@@ -851,88 +872,6 @@ const handleSubmit = () => {
             </div>
           </section>
 
-          <section
-            v-show="category == AdvertType.PRODUCT || category == AdvertType.BOOK"
-            class="rounded-2xl border border-dashed border-gray-300 bg-gray-50/60 dark:border-gray-400 dark:bg-gray-800 dark:text-gray-400 p-5"
-          >
-            <h2 class="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="size-6 text-primary"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
-                />
-              </svg>
-              {{ $t('createAdvert.form.images') }}
-            </h2>
-            <label class="mt-5 flex flex-col items-center justify-center gap-3 rounded-2xl border border-gray-200 bg-white px-6 py-10 text-center cursor-pointer dark:bg-gray-800 dark:border-gray-400">
-              <input
-                id="images"
-                type="file"
-                multiple
-                accept="image/*"
-                class="hidden"
-                @change="handleImageUpload"
-              >
-              <div class="rounded-full bg-primary/10 p-4 text-primary">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="size-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z"
-                  />
-                </svg>
-              </div>
-              <div v-if="uploadedFiles.length == 0">
-                <p class="text-sm font-semibold text-gray-900 dark:text-gray-300">
-                  {{ $t('createAdvert.form.uploadImages') }}
-                </p>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                  {{ $t('createAdvert.form.dragDrop') }}
-                </p>
-              </div>
-              <div
-                v-else
-                class="space-y-2"
-              >
-                <p class="text-sm font-semibold text-gray-900 dark:text-gray-300">
-                  {{ uploadedFiles.length }} {{ $t('createAdvert.form.uploadedImages') }}
-                </p>
-                <ul class="text-sm text-gray-500 dark:text-gray-400 list-disc list-inside">
-                  <li
-                    v-for="file in uploadedFiles"
-                    :key="file.name"
-                  >{{ file.name }}</li>
-                </ul>
-              </div>
-            </label>
-            <p
-              v-show="errors.images != null"
-              class="mt-2 min-h-5 text-sm text-red-500"
-            >
-              {{ errors.images }}
-            </p>
-          </section>
-
           <p
             v-show="errors.content != null"
             class="mt-2 min-h-5 text-sm flex justify-center text-red-500"
@@ -944,7 +883,7 @@ const handleSubmit = () => {
               class="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90"
               type="submit"
             >
-              {{ $t('createAdvert.form.publish') }}
+              {{ $t('modifyAdvert.form.modify') }}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -962,6 +901,30 @@ const handleSubmit = () => {
             </button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+  <div
+    v-else
+    class="min-h-screen px-4 py-6 text-gray-900 dark:text-gray-50 md:px-6 lg:px-8"
+  >
+    <div class="mx-auto flex max-w-7xl flex-col gap-6 xl:flex-row">
+      <div class="flex-1 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900 md:p-8">
+        <p
+          v-show="advertIsGet == false"
+          class="text-center text-red-500"
+        >
+          {{ $t('modifyAdvert.error.invalidId') }}
+        </p>
+        <div
+          v-show="advertLoading == true"
+          class="flex flex-col items-center justify-center gap-4"
+        >
+          <div class="h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-primary dark:border-gray-600 dark:border-t-primary" />
+          <span class="text-center text-gray-500">
+            {{ $t('modifyAdvert.loading') }}
+          </span>
+        </div>
       </div>
     </div>
   </div>
