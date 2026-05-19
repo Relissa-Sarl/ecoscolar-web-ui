@@ -142,7 +142,7 @@
   },
   "modifyAdvert": {
     "existingAdvert": "Annuncio",
-    "modifyAdvert": "Modifica l'annuncio ",
+    "modifyAdvert": "Modifica l'annuncio",
     "description": "Condividi le tue risorse didattiche con la comunità EcoScolar.",
     "loading": "Caricamento dell'annuncio...",
     "form": {
