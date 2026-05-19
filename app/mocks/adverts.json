@@ -17,7 +17,7 @@
     "edition": "3rd Edition",
     "isbn": "978-7-2238-5998-1",
     "bookCategoryId": 1,
-    "writtenLanguage": 3
+    "writtenLanguage": "IT"
   },
   {
     "id": 2,
@@ -50,7 +50,7 @@
     "userId": 1,
     "subjectId": 1,
     "schoolGradeId": 3,
-    "teachingLanguage": 2,
+    "teachingLanguage": "DE",
     "studyLevel": "High School/Secondary",
     "condition": null,
     "author": null,
@@ -78,7 +78,7 @@
     "edition": "1st Edition",
     "isbn": "978-8-0897-7695-5",
     "bookCategoryId": 2,
-    "writtenLanguage": 1
+    "writtenLanguage": "FR"
   },
   {
     "id": 5,
@@ -102,8 +102,8 @@
   },
   {
     "id": 6,
-    "title": "Livre d\"anglais",
-    "description": "Livre d\"anglais pour le lycée, en bon état.",
+    "title": "Livre d'anglais",
+    "description": "Livre d'anglais pour le lycée, en bon état.",
     "price": 18,
     "type": "BOOK",
     "status": "SOLD",
@@ -118,6 +118,6 @@
     "edition": "2nd Edition",
     "isbn": "978-1-7191-9214-9",
     "bookCategoryId": 3,
-    "writtenLanguage": 2
+    "writtenLanguage": "IT"
   }
 ]

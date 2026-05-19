@@ -1,7 +1,7 @@
 import type { AdvertStatus } from '@/utils/enum/advertStatus'
 import type { AdvertType } from '@/utils/enum/advertType'
 import type { AdvertCondition } from '@/utils/enum/advertCondition'
-import type { AdvertLanguage } from '~/utils/enum/advertLanguage'
+import type { AdvertLanguage } from '@/utils/enum/advertLanguage'
 
 export interface Condition {
   icon: string

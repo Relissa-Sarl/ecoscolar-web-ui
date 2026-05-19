@@ -169,7 +169,7 @@ const validateForm = (): boolean => {
         errors.value.bookCategoryId = $t('createAdvert.error.invalid.bookCategoryId')
       }
       // writtenLanguage may be a string (from select/input). Ensure numeric comparison.
-      if (form.value.writtenLanguage) {
+      if (!form.value.writtenLanguage) {
         errors.value.writtenLanguage = $t('createAdvert.error.invalid.writtenLanguage')
       }
       // ISBN validation (books only)

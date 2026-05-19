@@ -132,12 +132,6 @@ const form = ref({
 const validateForm = (): boolean => {
   errors.value = {}
 
-  // Validation for empty fields
-  if (!category.value) {
-    errors.value.category = $t('modifyAdvert.error.empty.category')
-    return false
-  }
-
   if (!form.value.title || !form.value.title.trim()) {
     errors.value.title = $t('modifyAdvert.error.empty.title')
   }
