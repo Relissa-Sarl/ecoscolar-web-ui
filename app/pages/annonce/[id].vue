@@ -1,6 +1,6 @@
-
 <script setup lang="ts">
-import Breadcrumb from "~/components/common/Breadcrumb.vue";
+import Breadcrumb from '~/components/common/Breadcrumb.vue'
+
 const route = useRoute()
 const localePath = useLocalePath()
 const { data: advert } = await useAdvert(String(route.params.id))
