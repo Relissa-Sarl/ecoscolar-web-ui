@@ -4,7 +4,7 @@ import { useApi } from '../composables/useApi'
 type ApiClient = typeof useApi
 
 const AUTH_PATH = '/auth'
-const USER_PATH = '/user'
+const USER_PATH = '/users'
 
 /**
 * Interface defining the contract of the UserService,

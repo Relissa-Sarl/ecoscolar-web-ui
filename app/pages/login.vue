@@ -1,5 +1,9 @@
 <script setup lang="ts">
 const localePath = useLocalePath()
+
+definePageMeta({
+  middleware: 'guest'
+})
 </script>
 
 <template>
