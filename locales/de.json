@@ -18,7 +18,9 @@
     "contact_support": "Support kontaktieren",
     "home": "Startseite",
     "favorites": "Favoriten",
-    "breadcrumb_label": "Brotkrümel-Navigation"
+    "breadcrumb_label": "Brotkrümel-Navigation",
+    "login": "Anmelden",
+    "profile": "Profil"
   },
   "error": {
     "not_found": {

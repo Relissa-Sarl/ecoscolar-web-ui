@@ -49,7 +49,9 @@
     "contact_support": "Contactez le support",
     "home": "Accueil",
     "favorites": "Favoris",
-    "breadcrumb_label": "Fil d'Ariane"
+    "breadcrumb_label": "Fil d'Ariane",
+    "login": "Connexion",
+    "profile": "Profil"
   },
   "error": {
     "not_found": {

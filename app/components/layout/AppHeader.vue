@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const { locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
+
+const userStore = useUsersStore()
 </script>
 
 <template>
@@ -57,20 +59,31 @@ const localePath = useLocalePath()
           :to="localePath('/cart')"
           class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
         >
-          Panier (0)
+          {{ $t('common.cart') }}
         </NuxtLink>
-        <NuxtLink
-          :to="localePath('/login')"
-          class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
+
+        <!-- Display login link if user is not authenticated -->
+        <template
+          v-if="!userStore.isAuthenticated"
         >
-          Connexion
-        </NuxtLink>
-        <NuxtLink
-          :to="localePath('/profile')"
-          class="px-4 py-2 bg-emerald-800 text-white rounded-full hover:bg-emerald-700 transition-colors"
+          <NuxtLink
+            :to="localePath('/login')"
+            class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
+          >
+            {{ $t('common.login') }}
+          </NuxtLink>
+        </template>
+        <!-- Display profile link if user is authenticated -->
+        <template
+          v-else
         >
-          Profil
-        </NuxtLink>
+          <NuxtLink
+            :to="localePath('/profile')"
+            class="px-4 py-2 bg-emerald-800 text-white rounded-full hover:bg-emerald-700 transition-colors"
+          >
+            {{ $t('common.profile') }}
+          </NuxtLink>
+        </template>
       </div>
     </div>
   </header>

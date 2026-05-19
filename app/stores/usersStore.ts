@@ -67,6 +67,11 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
+  /**
+   * Log in a user with the provided email and password by calling the UserService's login method.
+   * @param email The email address of the user to log in.
+   * @param password The password for the user account.
+   */
   const login = async (email: string, password: string) => {
     isLoading.value = true
     errors.value = null
