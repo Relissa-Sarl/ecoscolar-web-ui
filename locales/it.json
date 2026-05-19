@@ -17,6 +17,7 @@
     "last_updated": "Ultimo aggiornamento:",
     "contact_support": "Contatta il supporto",
     "home": "Home",
+    "skip_to_content": "Vai al contenuto principale",
     "favorites": "Preferiti",
     "breadcrumb_label": "Percorso di navigazione"
   },
@@ -144,6 +145,81 @@
     "title": "Il mio carrello",
     "empty": "Il tuo carrello è attualmente vuoto"
   },
+  "catalog": {
+    "seo_title": "Catalogo | EcoScolar",
+    "hero": {
+      "title": "Trova il tuo prossimo successo scolastico.",
+      "subtitle": "Cerca per ISBN, titolo o autore per confrontare le migliori offerte su manuali e materiale.",
+      "search_placeholder": "Es. 978…, titolo dell’articolo · Invio …",
+      "search_cta": "Cerca"
+    },
+    "filters": {
+      "title": "Filtri",
+      "subtitle": "Restringi i risultati.",
+      "mobile_toggle": "Mostra / nascondi filtri",
+      "category_legend": "Tipo di annuncio",
+      "category_supplies": "Tutto il materiale",
+      "category_textbooks": "Manuali",
+      "category_tutoring": "Ripetizioni",
+      "show_all": "Mostra tutto",
+      "grade_heading": "Livello",
+      "grade_primary": "Elementare",
+      "grade_secondary": "Media",
+      "grade_maturity": "Maturità",
+      "grade_university": "Superiore",
+      "subject_heading": "Materia",
+      "subject_math": "Matematica",
+      "subject_french": "Francese",
+      "subject_german": "Tedesco",
+      "reset": "Azzera i filtri"
+    },
+    "banner": {
+      "api_error_retry": "Impossibile sincronizzare il catalogo. Controlla l’API e aggiorna la pagina.",
+      "loading": "Caricamento annunci…",
+      "fallback_demo": "Dati di dimostrazione (API vuota o non disponibile).",
+      "online": "Catalogo aggiornato dopo l’ultimo caricamento corretto."
+    },
+    "list": {
+      "title": "Sfoglia gli annunci",
+      "subtitle_near": "{count} risultati · CAP indicativo {zip}"
+    },
+    "sort": {
+      "label": "Ordina",
+      "recent": "Più recenti",
+      "price_asc": "Prezzo ↑",
+      "price_desc": "Prezzo ↓"
+    },
+    "empty": {
+      "title": "Nessun risultato.",
+      "hint": "Modifica ricerca o filtri.",
+      "reset_filters": "Azzera tutto"
+    },
+    "pagination": {
+      "label": "Paginazione"
+    },
+    "card": {
+      "alt_image": "Immagine dell’annuncio",
+      "meta_supplies": "Cat. materiale",
+      "meta_textbooks": "ISBN — disponibile dopo scansione",
+      "meta_tutoring": "Ripetizioni • min. 4 lezioni",
+      "hourly": "Tariffa",
+      "demo_rating": "4.9/5 demo",
+      "book_lesson": "Prenota"
+    },
+    "badges": {
+      "condition": {
+        "NEW": "Nuovo",
+        "USED": "Usato",
+        "GOOD": "Buono"
+      },
+      "service": {
+        "VERIFIED_TUTOR": "Verificato"
+      }
+    },
+    "fab": {
+      "place_advert": "Inserisci un annuncio"
+    }
+  },
   "advert": {
     "actions": {
       "buy_now": "Acquista ora",
@@ -170,6 +246,11 @@
       "removing": "Rimozione...",
       "view_advert": "Vedi l'annuncio"
     }
+  },
+  "header": {
+    "nav_shop": "Negozio",
+    "nav_support": "Supporto",
+    "nav_terms": "Condizioni"
   },
   "support": {
     "title": "Contatta il supporto",

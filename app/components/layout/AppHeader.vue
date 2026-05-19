@@ -1,14 +1,27 @@
 <script setup lang="ts">
+const route = useRoute()
 const { locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
+
+const mainNav = computed(() =>
+  [
+    { to: localePath('/shop'), labelKey: 'header.nav_shop', slug: 'shop' },
+    { to: localePath('/support'), labelKey: 'header.nav_support', slug: 'support' },
+    { to: localePath('/terms'), labelKey: 'header.nav_terms', slug: 'terms' }
+  ] as const)
+
+const linkIsActive = (slug: string) => {
+  const parts = route.path.split('/').filter(Boolean)
+  return parts[parts.length - 1] === slug
+}
 </script>
 
 <template>
-  <header class="flex items-center justify-between p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-900 dark:border-gray-800">
+  <header class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
     <div>
       <NuxtLink
         :to="localePath('/')"
-        class="flex items-center gap-2 text-xl font-bold text-emerald-900 dark:text-emerald-100 hover:opacity-80 transition-opacity"
+        class="flex items-center gap-2 text-xl font-bold text-emerald-900 transition-opacity hover:opacity-80 dark:text-emerald-100"
         aria-label="EcoScolar - Retour à l'accueil"
       >
         <svg
@@ -23,7 +36,26 @@ const localePath = useLocalePath()
       </NuxtLink>
     </div>
 
-    <div class="flex items-center gap-6">
+    <nav
+      class="order-3 flex w-full items-center gap-6 text-sm font-semibold md:order-none md:flex-1 md:justify-center md:w-auto lg:justify-start lg:pl-6"
+      aria-label="Navigation principale"
+    >
+      <NuxtLink
+        v-for="link in mainNav"
+        :key="link.slug"
+        :to="link.to"
+        class="border-b-2 border-transparent pb-0.5 text-gray-700 transition hover:text-emerald-800 dark:text-gray-300 dark:hover:text-emerald-400"
+        :class="
+          linkIsActive(link.slug)
+            ? 'border-emerald-800 text-emerald-900 dark:border-emerald-400 dark:text-white'
+            : ''
+        "
+      >
+        {{ $t(link.labelKey) }}
+      </NuxtLink>
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-4 sm:gap-6">
       <nav
         class="flex items-center gap-2"
         aria-label="Sélecteur de langue"

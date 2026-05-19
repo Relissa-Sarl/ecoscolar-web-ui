@@ -16,7 +16,80 @@
     "title": "Mon Panier",
     "empty": "Votre panier est vide pour le moment"
   },
-  "me": {
+  "catalog": {
+    "seo_title": "Catalogue | EcoScolar",
+    "hero": {
+      "title": "Repérez vos prochaines affaires scolaires.",
+      "subtitle": "Recherche par ISBN, titre ou auteur pour comparer les meilleures offres de manuels et de matériel.",
+      "search_placeholder": "Ex. 978-3-16-148410-0, « Biologie » · option + Entrée…",
+      "search_cta": "Rechercher"
+    },
+    "filters": {
+      "title": "Filtres",
+      "subtitle": "Affinez votre recherche.",
+      "mobile_toggle": "Afficher / masquer les filtres",
+      "category_legend": "Type d’annonce",
+      "category_supplies": "Tout le matériel",
+      "category_textbooks": "Manuels scolaires",
+      "category_tutoring": "Cours & soutien",
+      "show_all": "Tout afficher",
+      "grade_heading": "Niveau scolaire",
+      "grade_primary": "Primaire",
+      "grade_secondary": "Secondaire",
+      "grade_maturity": "Maturité",
+      "grade_university": "Supérieur",
+      "subject_heading": "Matière",
+      "subject_math": "Mathématiques",
+      "subject_french": "Français",
+      "subject_german": "Allemand",
+      "reset": "Réinitialiser les filtres"
+    },
+    "banner": {
+      "api_error_retry": "Le catalogue ne s’est pas synchronisé avec le serveur. Vérifiez l’API puis actualisez la page.",
+      "loading": "Chargement des annonces disponibles…",
+      "fallback_demo": "Les données suivantes sont un jeu de démonstration (réponse API vide ou indisponible).",
+      "online": "Catalogue à jour depuis le dernier chargement réussi."
+    },
+    "list": {
+      "title": "Explorer les annonces",
+      "subtitle_near": "{count} résultats · périmètre indicatif postal {zip}"
+    },
+    "sort": {
+      "label": "Trier",
+      "recent": "Plus récent",
+      "price_asc": "Prix ↑",
+      "price_desc": "Prix ↓"
+    },
+    "empty": {
+      "title": "Aucun résultat ne correspond à vos critères.",
+      "hint": "Élargissez la recherche ou réinitialisez les filtres.",
+      "reset_filters": "Réinitialiser tout"
+    },
+    "pagination": {
+      "label": "Pagination des résultats"
+    },
+    "card": {
+      "alt_image": "visuel de l’annonce",
+      "meta_supplies": "Cat. fournitures",
+      "meta_textbooks": "ISBN — disponible après scan",
+      "meta_tutoring": "Répétiteur • 4 séances mini",
+      "hourly": "Tarif",
+      "demo_rating": "4,9/5 démo",
+      "book_lesson": "Réserver"
+    },
+    "badges": {
+      "condition": {
+        "NEW": "Neuf",
+        "USED": "Occasion",
+        "GOOD": "Bon état"
+      },
+      "service": {
+        "VERIFIED_TUTOR": "Vérifié"
+      }
+    },
+    "fab": {
+      "place_advert": "Déposer une annonce",
+      "me": {
     "adverts": {
       "title": "Mes Annonces",
       "description": "Gérez vos annonces en vente et vos services de tutorat.",
@@ -149,8 +222,14 @@
       "view_advert": "Voir l'annonce"
     }
   },
+  "header": {
+    "nav_shop": "Boutique",
+    "nav_support": "Support",
+    "nav_terms": "Conditions"
+  },
   "common": {
     "back_to_home": "← Retour à l'accueil",
+    "skip_to_content": "Passer au contenu principal",
     "last_updated": "Dernière mise à jour :",
     "contact_support": "Contactez le support",
     "home": "Accueil",
@@ -268,5 +347,7 @@
     },
     "logged_as": "Connecté : {name}",
     "logout": "Déconnexion"
+  }
+  }
   }
 }

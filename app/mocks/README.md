@@ -15,6 +15,7 @@ Données de simulation utilisées tant que les vraies routes de l'API .NET
 | Fichier | Entité | Consommé par |
 |---|---|---|
 | `advert.json` | `Advert` | `app/composables/useAdvert.ts` |
+| `catalogSummaries.json` | `AdvertCatalogApiItem[]` | `app/pages/shop.vue` (fallback démo) |
 | `favorites.json` | `FavoriteAdvert[]` | `app/services/favoritesService.ts` |
 
 ## À supprimer quand
