@@ -37,7 +37,7 @@ const linkIsActive = (slug: string) => {
     </div>
 
     <nav
-      class="order-3 flex w-full items-center gap-6 text-sm font-semibold md:order-none md:flex-1 md:justify-center md:w-auto lg:justify-start lg:pl-6"
+      class="order-3 flex w-full items-center gap-6 text-sm font-semibold md:order-0 md:flex-1 md:justify-center md:w-auto lg:justify-start lg:pl-6"
       aria-label="Navigation principale"
     >
       <NuxtLink
