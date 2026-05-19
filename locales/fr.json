@@ -89,7 +89,7 @@
     },
     "fab": {
       "place_advert": "Déposer une annonce",
-  "me": {
+      "me": {
     "adverts": {
       "title": "Mes Annonces",
       "description": "Gérez vos annonces en vente et vos services de tutorat.",
@@ -347,5 +347,7 @@
     },
     "logged_as": "Connecté : {name}",
     "logout": "Déconnexion"
+  }
+  }
   }
 }
