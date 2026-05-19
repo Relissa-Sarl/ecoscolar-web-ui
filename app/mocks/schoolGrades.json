@@ -1,0 +1,22 @@
+[
+    {
+        "schoolGradeId": 1,
+        "name": "Primaire",
+        "schoolGrade": "Niveaux scolaires de l'école primaire (1ère à 6ème année)"
+    },
+    {
+        "schoolGradeId": 2,
+        "name": "Collège",
+        "schoolGrade": "Niveaux scolaires de l'école collège (7ème à 3ème année)"
+    },
+    {
+        "schoolGradeId": 3,
+        "name": "Lycée",
+        "schoolGrade": "Niveaux scolaires de l'école lycée (2nde à 1ère année)"
+    },
+    {
+        "schoolGradeId": 4,
+        "name": "Supérieur",
+        "schoolGrade": "Niveaux scolaires de l'école supérieure (Licence à Master)"
+    }
+]
