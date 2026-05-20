@@ -59,7 +59,7 @@ const usersStore = useUsersStore()
           :to="localePath('/cart')"
           class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
         >
-          {{ $t('common.cart') }}
+          {{ $t('cart.title') }}
         </NuxtLink>
 
         <!-- Display login link if user is not authenticated -->
