@@ -9,6 +9,11 @@ export interface User {
   spokenLanguages: SpokenLanguage[]
 }
 
+export interface PublicUser {
+  id: string
+  nickname: string
+}
+
 export interface SpokenLanguage {
   language: string
   level: string

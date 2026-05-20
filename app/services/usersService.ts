@@ -1,4 +1,4 @@
-import type { User, UpdateProfileInput } from '~/types/user'
+import type { User, UpdateProfileInput, PublicUser } from '~/types/user'
 import { useApi } from '../composables/useApi'
 
 type ApiClient = typeof useApi
@@ -16,6 +16,7 @@ export interface UserService {
   logout: () => Promise<undefined>
   getMyProfile: () => Promise<User>
   updateProfile: (input: UpdateProfileInput) => Promise<User>
+  getPublicProfile: (id: string) => Promise<PublicUser>
 }
 
 /**
@@ -82,12 +83,20 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
         body: input
       })
 
+  /**
+   * Retrieve the public profile of a user by their ID.
+   * @param id The unique identifier of the user whose public profile is being requested.
+   * @returns A promise that resolves to a PublicUser object containing the public information of the user.
+   */
+  const getPublicProfile = async (id: string) => apiClient<PublicUser>(`${USER_PATH}/${id}`)
+
   return {
     register,
     login,
     logout,
     getMyProfile,
-    updateProfile
+    updateProfile,
+    getPublicProfile
   }
 }
 

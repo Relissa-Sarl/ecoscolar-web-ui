@@ -182,5 +182,18 @@
     },
     "logged_as": "Connecté : {name}",
     "logout": "Déconnexion"
+  },
+  "languages": {
+    "en": "Anglais",
+    "fr": "Français",
+    "de": "Allemand",
+    "it": "Italien"
+  },
+  "profile": {
+    "language": "Langue",
+    "location": "Localisation",
+    "alerts": "Alertes",
+    "favorites": "Favoris",
+    "sales": "Ventes"
   }
 }

@@ -6,6 +6,10 @@ import type { User } from '~/types/user'
 import { getUserService } from '~/services/usersService'
 import type ApiError from '~/types/apiError'
 
+/**
+ * Pinia store for managing user authentication and profile state.
+ * This store provides reactive state properties and actions for user registration, login, profile fetching, and error handling.
+ */
 export const useUsersStore = defineStore('users', () => {
   const user = ref<User | null>(null)
   const isLoading = ref(false)
