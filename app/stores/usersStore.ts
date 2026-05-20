@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import type { User } from '~/types/user'
+import type { UpdateProfileInput, User } from '~/types/user'
 
 import { getUserService } from '~/services/usersService'
 import type ApiError from '~/types/apiError'
@@ -96,6 +96,23 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
+  /**
+   * Update the current user's profile with the provided input by calling the UserService's updateProfile method.
+   * @param input An object containing the fields to update in the user's profile, such as nickname, firstName, lastName, postalCode, birthdayDate, and spokenLanguages.
+   */
+  const updateProfile = async (input: UpdateProfileInput) => {
+    isLoading.value = true
+    errors.value = null
+
+    try {
+      user.value = await service.updateProfile(input)
+    } catch (e) {
+      errors.value = formatErrors(e as ApiError)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   return {
     user,
     isLoading,
@@ -104,8 +121,8 @@ export const useUsersStore = defineStore('users', () => {
     isAuthenticated,
     fetchProfile,
     register,
-    login
+    login,
     // logout,
-    // updateProfile
+    updateProfile
   }
 })
