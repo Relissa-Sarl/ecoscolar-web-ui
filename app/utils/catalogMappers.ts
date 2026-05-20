@@ -1,10 +1,26 @@
 import type { AdvertCatalogApiItem, CatalogListing } from '../types/catalog'
 import { CatalogItemCondition, CatalogServiceBadge } from '../types/catalog'
+import { AdvertType } from './enum/advertType'
 
-/** Catégorisation déterministe pour la démo jusqu’à champs métier réels depuis l’API. */
+function assertNever(value: never): never {
+  throw new Error(`Unknown advert type: ${String(value)}`)
+}
+
+function categoryTabFromApiType(type: AdvertCatalogApiItem['type']): CatalogListing['categoryTab'] {
+  switch (type) {
+    case AdvertType.BOOK:
+      return 'textbooks'
+    case AdvertType.PRODUCT:
+      return 'supplies'
+    case AdvertType.SERVICE:
+      return 'tutoring'
+    default:
+      return assertNever(type)
+  }
+}
+
 export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): CatalogListing {
-  const tabs = ['supplies', 'textbooks', 'tutoring'] as const satisfies CatalogListing['categoryTab'][]
-  const categoryTab = tabs[index % tabs.length]!
+  const categoryTab = categoryTabFromApiType(item.type)
 
   const gradeLevels = ['primary', 'secondary', 'maturity', 'university'] as const
   const subjectCodes = ['math', 'french', 'german'] as const

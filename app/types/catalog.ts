@@ -1,8 +1,15 @@
-/** Réponse brute du catalogue GET /api/v1/adverts (contrat ASP.NET sérialise Guid en chaîne). */
+import type { AdvertType } from '@/utils/enum/advertType'
+
+/** Réponse brute GET /api/v1/adverts/summary (Guid sérialisé en string). */
 export interface AdvertCatalogApiItem {
   id: string
   title: string
   price: number
+  type: AdvertType
+  isbn?: string | null
+  category?: string | null
+  subject?: string | null
+  grade?: string | null
 }
 
 export type CatalogCategoryTab = 'all' | 'textbooks' | 'supplies' | 'tutoring'
