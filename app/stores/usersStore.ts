@@ -136,6 +136,13 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
+  /**
+   * Format the errors returned from the API into a user-friendly array of error messages.
+   */
+  const clearErrors = () => {
+    errors.value = null
+  }
+
   return {
     user,
     isLoading,
@@ -146,6 +153,7 @@ export const useUsersStore = defineStore('users', () => {
     register,
     login,
     logout,
-    updateProfile
+    updateProfile,
+    clearErrors
   }
 })

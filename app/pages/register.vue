@@ -4,6 +4,12 @@ const localePath = useLocalePath()
 definePageMeta({
   middleware: 'guest'
 })
+
+const usersStore = useUsersStore()
+
+onMounted(() => {
+  usersStore.clearErrors()
+})
 </script>
 
 <template>
