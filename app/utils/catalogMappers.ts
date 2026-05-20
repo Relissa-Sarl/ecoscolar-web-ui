@@ -1,6 +1,10 @@
 import type { AdvertCatalogApiItem, CatalogListing } from '../types/catalog'
 import { CatalogItemCondition, CatalogServiceBadge } from '../types/catalog'
-import { AdvertType } from '../utils/enum/advertType'
+import { AdvertType } from './enum/advertType'
+
+function assertNever(value: never): never {
+  throw new Error(`Unknown advert type: ${String(value)}`)
+}
 
 function categoryTabFromApiType(type: AdvertCatalogApiItem['type']): CatalogListing['categoryTab'] {
   switch (type) {
@@ -10,6 +14,8 @@ function categoryTabFromApiType(type: AdvertCatalogApiItem['type']): CatalogList
       return 'supplies'
     case AdvertType.SERVICE:
       return 'tutoring'
+    default:
+      return assertNever(type)
   }
 }
 
