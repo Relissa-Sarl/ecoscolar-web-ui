@@ -1,4 +1,5 @@
 import type { Advert } from '@/types/advert'
+import type { AdvertCatalogDetailApiItem } from '@/types/catalog'
 import { AdvertType } from '@/utils/enum/advertType'
 import { getCatalogService } from '~/services/catalogService'
 import { getAdvertService } from '~/services/advertService'
@@ -8,11 +9,19 @@ import {
   mapCatalogSummaryToAdvert,
   mapProductToAdvert,
   mapServiceToAdvert
-} from '~/utils/enum/advertDetailMappers'
+} from '~/utils/advertDetailMappers'
+
+function isNotFoundError(error: unknown): boolean {
+  if (typeof error !== 'object' || error === null)
+    return false
+
+  const fetchError = error as { statusCode?: number, response?: { status?: number } }
+  return fetchError.statusCode === 404 || fetchError.response?.status === 404
+}
 
 async function loadAdvertFromTypedEndpoint(
   advertService: ReturnType<typeof getAdvertService>,
-  summary: Awaited<ReturnType<ReturnType<typeof getCatalogService>['getDetail']>>,
+  summary: AdvertCatalogDetailApiItem,
   advertId: string,
   numericId: number
 ): Promise<Advert> {
@@ -51,8 +60,10 @@ export const useAdvert = (advertId: string) => {
           advertId,
           numericId
         )
-      } catch {
-        return mapCatalogSummaryToAdvert(summary)
+      } catch (error) {
+        if (isNotFoundError(error))
+          return mapCatalogSummaryToAdvert(summary)
+        throw error
       }
     }
   )
