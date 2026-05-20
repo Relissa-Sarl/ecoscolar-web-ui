@@ -337,6 +337,7 @@
     "language": "Lingua",
     "cart": "Carrello",
     "login": "Accedi",
+    "logout": "Esci",
     "profile": "Profilo"
   },
   "common": {

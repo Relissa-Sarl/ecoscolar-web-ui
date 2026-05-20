@@ -337,6 +337,7 @@
     "language": "Langue",
     "cart": "Panier",
     "login": "Connexion",
+    "logout": "Déconnexion",
     "profile": "Profil"
   },
   "common": {
@@ -347,10 +348,7 @@
     "contact_support": "Contactez le support",
     "home": "Accueil",
     "favorites": "Favoris",
-    "breadcrumb_label": "Fil d'Ariane",
-    "login": "Connexion",
-    "logout": "Déconnexion",
-    "profile": "Profil"
+    "breadcrumb_label": "Fil d'Ariane"
   },
   "error": {
     "not_found": {
@@ -502,5 +500,4 @@
     "logged_as": "Connecté : {name}",
     "logout": "Déconnexion"
   }
-
 }
