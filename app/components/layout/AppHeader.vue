@@ -5,9 +5,7 @@ const localePath = useLocalePath()
 
 const mainNav = computed(() =>
   [
-    { to: localePath('/shop'), labelKey: 'header.nav_shop', slug: 'shop' },
-    { to: localePath('/support'), labelKey: 'header.nav_support', slug: 'support' },
-    { to: localePath('/terms'), labelKey: 'header.nav_terms', slug: 'terms' }
+    { to: localePath('/shop'), labelKey: 'header.nav_shop', slug: 'shop' }
   ] as const)
 
 const linkIsActive = (slug: string) => {
@@ -98,7 +96,7 @@ const linkIsActive = (slug: string) => {
           {{ $t('header.login') }}
         </NuxtLink>
         <NuxtLink
-          :to="localePath('/profile')"
+          :to="localePath('/me/profile')"
           class="px-4 py-2 bg-emerald-800 text-white rounded-full hover:bg-emerald-700 transition-colors"
         >
           {{ $t('header.profile') }}
