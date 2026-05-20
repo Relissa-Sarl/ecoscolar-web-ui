@@ -21,6 +21,6 @@ onMounted(async () => {
 <template>
   <ProfileInfos
     :user="user"
-    :is-own-profile="true"
+    :is-own-profile="false"
   />
 </template>

@@ -85,8 +85,8 @@ export const useUsersStore = defineStore('users', () => {
       user.value = await service.getMyProfile()
       hasLoaded.value = true
 
-      // Redirect to home page after successful login
-      await navigateTo('/')
+      // Redirect to profile page after successful login
+      await navigateTo('/me/profile')
     } catch (e) {
       errors.value = formatErrors(e as ApiError)
     } finally {
@@ -132,7 +132,7 @@ export const useUsersStore = defineStore('users', () => {
       isLoading.value = false
 
       // Redirect to profile page after successful profile update
-      await navigateTo('/profile')
+      await navigateTo('/me/profile')
     }
   }
 
