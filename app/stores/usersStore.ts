@@ -5,6 +5,7 @@ import type { UpdateProfileInput, User } from '~/types/user'
 
 import { getUserService } from '~/services/usersService'
 import type ApiError from '~/types/apiError'
+import { lo } from '@nuxt/ui/runtime/locale/index.js'
 
 /**
  * Pinia store for managing user authentication and profile state.
@@ -58,14 +59,11 @@ export const useUsersStore = defineStore('users', () => {
     try {
       // Call the register method of the user service
       await service.register(email, password)
+      await login(email, password)
     } catch (e) {
       errors.value = formatErrors(e as ApiError)
     } finally {
       isLoading.value = false
-
-      // Redirect to login page after successful registration
-      if (!errors.value)
-        await navigateTo('/login')
     }
   }
 
@@ -80,7 +78,6 @@ export const useUsersStore = defineStore('users', () => {
 
     try {
       await service.login(email, password)
-      console.log('Login successful')
       // Fetch the user's profile after successful login to populate the user state
       user.value = await service.getMyProfile()
       hasLoaded.value = true

@@ -4,7 +4,7 @@ export default defineNuxtRouteMiddleware((to) => {
   const usersStore = useUsersStore()
   const localePath = useLocalePath()
 
-  const allowedRoutes = ['/', '/register/step-2', '/support', '/terms', '/privacy']
+  const allowedRoutes = ['/register/step-2', '/support', '/terms', '/privacy']
   const normalizedPath = to.path.replace(/^\/(it|de)(?=\/|$)/, '') || '/'
 
   // If the user is already on an allowlisted page, we don't want to redirect them again
