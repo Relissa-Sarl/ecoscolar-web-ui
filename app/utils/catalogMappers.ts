@@ -1,10 +1,21 @@
 import type { AdvertCatalogApiItem, CatalogListing } from '../types/catalog'
 import { CatalogItemCondition, CatalogServiceBadge } from '../types/catalog'
 
-/** Catégorisation déterministe pour la démo jusqu’à champs métier réels depuis l’API. */
+function categoryTabFromApiType(type: AdvertCatalogApiItem['type']): CatalogListing['categoryTab'] {
+  switch (type) {
+    case 'BOOK':
+      return 'textbooks'
+    case 'PRODUCT':
+      return 'supplies'
+    case 'SERVICE':
+      return 'tutoring'
+    default:
+      return 'supplies'
+  }
+}
+
 export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): CatalogListing {
-  const tabs = ['supplies', 'textbooks', 'tutoring'] as const satisfies CatalogListing['categoryTab'][]
-  const categoryTab = tabs[index % tabs.length]!
+  const categoryTab = categoryTabFromApiType(item.type)
 
   const gradeLevels = ['primary', 'secondary', 'maturity', 'university'] as const
   const subjectCodes = ['math', 'french', 'german'] as const

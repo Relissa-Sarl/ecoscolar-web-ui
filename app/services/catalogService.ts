@@ -3,10 +3,15 @@ import { useApi } from '../composables/useApi'
 
 type ApiClient = typeof useApi
 
-const CATALOG_SUMMARIES_PATH = '/v1/adverts'
+const CATALOG_SUMMARIES_PATH = '/v1/adverts/summary'
+
+export interface CatalogSearchParams {
+  q?: string
+  isbn?: string
+}
 
 export interface CatalogService {
-  listSummaries: () => Promise<AdvertCatalogApiItem[]>
+  listSummaries: (params?: CatalogSearchParams) => Promise<AdvertCatalogApiItem[]>
 }
 
 export interface CatalogServiceDependencies {
@@ -14,8 +19,8 @@ export interface CatalogServiceDependencies {
 }
 
 export function createCatalogService({ apiClient }: CatalogServiceDependencies): CatalogService {
-  const listSummaries = () => apiClient<AdvertCatalogApiItem[]>(CATALOG_SUMMARIES_PATH)
-
+  const listSummaries = (params?: CatalogSearchParams) =>
+    apiClient<AdvertCatalogApiItem[]>(CATALOG_SUMMARIES_PATH, { query: params })
   return { listSummaries }
 }
 

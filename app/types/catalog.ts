@@ -3,6 +3,11 @@ export interface AdvertCatalogApiItem {
   id: string
   title: string
   price: number
+  type: 'BOOK' | 'PRODUCT' | 'SERVICE'
+  isbn?: string | null
+  category?: string | null
+  subject?: string | null
+  grade?: string | null
 }
 
 export type CatalogCategoryTab = 'all' | 'textbooks' | 'supplies' | 'tutoring'
