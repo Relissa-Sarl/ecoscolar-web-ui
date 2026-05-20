@@ -9,8 +9,6 @@ function categoryTabFromApiType(type: AdvertCatalogApiItem['type']): CatalogList
       return 'supplies'
     case 'SERVICE':
       return 'tutoring'
-    default:
-      return 'supplies'
   }
 }
 

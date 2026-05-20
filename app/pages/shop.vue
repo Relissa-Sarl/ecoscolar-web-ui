@@ -133,6 +133,13 @@ function subjectMatches(filters: SubjectFilterState, listing: CatalogListing): b
 const filtered = computed(() => {
   let rows = [...listings.value]
 
+  const shouldApplyLocalSearch =
+    rawItems.value?.fromFallback === true || hadApiError.value
+  const normalizedSearch = appliedSearch.value.trim().toLowerCase()
+  if (shouldApplyLocalSearch && normalizedSearch) {
+    rows = rows.filter(row => row.title.toLowerCase().includes(normalizedSearch))
+  }
+
   if (activeCategory.value !== 'all')
     rows = rows.filter(row => row.categoryTab === activeCategory.value)
 
