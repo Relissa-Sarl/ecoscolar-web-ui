@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const form = ref({ name: '', email: '', password: '' })
 const handleRegister = () => {
-  // TODO: call register API with form fields and handle validation errors
+  // TODO: call register API with form fields and handle validation errors,
 }
 </script>
 
