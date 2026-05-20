@@ -12,6 +12,11 @@ export interface AdvertCatalogApiItem {
   grade?: string | null
 }
 
+export interface AdvertCatalogDetailApiItem extends AdvertCatalogApiItem {
+  description: string
+  imageUrl?: string | null
+}
+
 export type CatalogCategoryTab = 'all' | 'textbooks' | 'supplies' | 'tutoring'
 
 /** État d’un article physique (fournitures / manuels). */

@@ -309,6 +309,22 @@
       "favorite_add": "Zu Favoriten hinzufügen",
       "favorite_remove": "Aus Favoriten entfernen",
       "notify": "Benachrichtige mich"
+    },
+    "detail": {
+      "featured": "Empfohlen",
+      "current_price": "Aktueller Preis",
+      "isbn": "ISBN-13",
+      "category": "Kategorie",
+      "subject": "Fach",
+      "grade": "Stufe",
+      "study_level": "Lernniveau",
+      "condition_details": "Zustandsdetails",
+      "description": "Beschreibung",
+      "public_questions": "Öffentliche Fragen",
+      "questions_count": "{count} Frage(n) gestellt",
+      "ask_placeholder": "Stellen Sie dem Verkäufer eine Frage…",
+      "view_profile": "Profil ansehen",
+      "seller_badge": "Verkäufer"
     }
   },
   "favorites": {

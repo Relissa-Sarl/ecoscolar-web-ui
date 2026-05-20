@@ -55,6 +55,7 @@ export interface Advert {
   seller: Seller
   questions?: Question[]
   answers?: Answer[]
+  type: AdvertType
 }
 
 export interface MyAdvert {
@@ -92,4 +93,64 @@ export interface ModifyAdvertForm {
   isbn: string | null
   bookCategoryId: number | null
   writtenLanguage: AdvertLanguage | null
+}
+
+/** GET /api/v1/adverts/books/{id} */
+export interface BookReadApiItem {
+  id: number
+  title: string
+  description: string
+  price: number
+  publicationDate: string
+  notificationDate: string
+  status: AdvertStatus
+  userId: string
+  sellerPseudo: string
+  pictures: string[]
+  condition: AdvertCondition
+  bookCategoryId: number
+  bookCategoryLabel: string
+  isbn: string
+  author: string
+  publisher: string
+  edition: string
+  writtenLanguage: AdvertLanguage
+  weight?: number | null
+}
+
+/** GET /api/v1/adverts/products/{id} */
+export interface ProductReadApiItem {
+  id: number
+  title: string
+  description: string
+  price: number
+  publicationDate: string
+  notificationDate: string
+  status: AdvertStatus
+  userId: string
+  sellerPseudo: string
+  pictures: string[]
+  condition: AdvertCondition
+  weight?: number | null
+  productCategoryId?: number | null
+  productCategoryLabel?: string | null
+}
+
+/** GET /api/v1/adverts/services/{id} */
+export interface ServiceReadApiItem {
+  id: number
+  title: string
+  description: string
+  price: number
+  publicationDate: string
+  notificationDate: string
+  status: AdvertStatus
+  userId: string
+  sellerPseudo: string
+  subjectId: number
+  subjectLabel: string
+  schoolGradeId: number
+  schoolGradeLabel: string
+  teachingLanguage: AdvertLanguage
+  studyLevel: string
 }

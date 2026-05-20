@@ -22,7 +22,10 @@ defineEmits<{
       <p class="font-medium text-gray-900 dark:text-white">
         {{ seller.username }}
       </p>
-      <p class="text-sm text-gray-500 dark:text-gray-400">
+      <p
+        v-if="seller.zip"
+        class="text-sm text-gray-500 dark:text-gray-400"
+      >
         📍 {{ seller.zip }}
       </p>
     </div>
@@ -31,7 +34,7 @@ defineEmits<{
       variant="outline"
       @click="$emit('view-profile')"
     >
-      View Profile
+      {{ $t('advert.detail.view_profile') }}
     </UButton>
   </div>
 </template>

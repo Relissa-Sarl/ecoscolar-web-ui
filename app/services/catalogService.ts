@@ -1,4 +1,4 @@
-import type { AdvertCatalogApiItem } from '../types/catalog'
+import type { AdvertCatalogApiItem, AdvertCatalogDetailApiItem } from '../types/catalog'
 import { useApi } from '../composables/useApi'
 
 type ApiClient = typeof useApi
@@ -12,6 +12,7 @@ export interface CatalogSearchParams {
 
 export interface CatalogService {
   listSummaries: (params?: CatalogSearchParams) => Promise<AdvertCatalogApiItem[]>
+  getDetail: (id: string) => Promise<AdvertCatalogDetailApiItem>
 }
 
 export interface CatalogServiceDependencies {
@@ -21,7 +22,9 @@ export interface CatalogServiceDependencies {
 export function createCatalogService({ apiClient }: CatalogServiceDependencies): CatalogService {
   const listSummaries = (params?: CatalogSearchParams) =>
     apiClient<AdvertCatalogApiItem[]>(CATALOG_SUMMARIES_PATH, { query: params })
-  return { listSummaries }
+  const getDetail = (id: string) =>
+    apiClient<AdvertCatalogDetailApiItem>(`${CATALOG_SUMMARIES_PATH}/${id}`)
+  return { listSummaries, getDetail }
 }
 
 export function getCatalogService(): CatalogService {

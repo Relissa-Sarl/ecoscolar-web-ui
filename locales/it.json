@@ -309,6 +309,22 @@
       "favorite_add": "Aggiungi ai preferiti",
       "favorite_remove": "Rimuovi dai preferiti",
       "notify": "Avvisami"
+    },
+    "detail": {
+      "featured": "In evidenza",
+      "current_price": "Prezzo attuale",
+      "isbn": "ISBN-13",
+      "category": "Categoria",
+      "subject": "Materia",
+      "grade": "Livello",
+      "study_level": "Livello di studio",
+      "condition_details": "Dettagli sulle condizioni",
+      "description": "Descrizione",
+      "public_questions": "Domande pubbliche",
+      "questions_count": "{count} domanda/e posta/e",
+      "ask_placeholder": "Fai una domanda al venditore…",
+      "view_profile": "Vedi profilo",
+      "seller_badge": "Venditore"
     }
   },
   "favorites": {
