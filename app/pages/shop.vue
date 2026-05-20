@@ -38,9 +38,7 @@ const { data: rawItems, pending } = await useAsyncData(
 
     try {
       const rows = await catalogService.listSummaries(params)
-      if (rows?.length)
-        return { items: rows, fromFallback: false, hadError: false }
-      return { items: catalogFallback, fromFallback: true, hadError: false }
+      return { items: rows, fromFallback: false, hadError: false }
     } catch {
       return { items: catalogFallback, fromFallback: true, hadError: true }
     }
