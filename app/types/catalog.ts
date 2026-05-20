@@ -5,7 +5,8 @@ export interface AdvertCatalogApiItem {
   id: string
   title: string
   price: number
-  type: AdvertType  isbn?: string | null
+  type: AdvertType
+  isbn?: string | null
   category?: string | null
   subject?: string | null
   grade?: string | null
