@@ -160,7 +160,7 @@
       "PasswordRequiresNonAlphanumeric": "Ihr Passwort muss ein Sonderzeichen enthalten.",
       "InvalidEmail": "Die E-Mail-Adresse ist ungültig.",
       "PasswordRequiresDigit": "Ihr Passwort muss eine Zahl enthalten.",
-      "PasswordRequiresUpper": "Ihr Passwort muss eine Großbuchstaben enthalten.",
+      "PasswordRequiresUpper": "Ihr Passwort muss einen Großbuchstaben enthalten.",
       "Default": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
     },
     "status": {
