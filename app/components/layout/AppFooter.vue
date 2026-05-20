@@ -32,7 +32,7 @@ const localePath = useLocalePath()
               :to="localePath('/support')"
               class="hover:underline focus:ring-2 focus:ring-emerald-500 outline-none"
             >
-              Support
+              {{ $t('support.title') }}
             </NuxtLink>
           </li>
           <li>
@@ -40,7 +40,7 @@ const localePath = useLocalePath()
               :to="localePath('/terms')"
               class="hover:underline focus:ring-2 focus:ring-emerald-500 outline-none"
             >
-              Terms of Service
+              {{ $t('terms.title') }}
             </NuxtLink>
           </li>
           <li>
@@ -48,7 +48,7 @@ const localePath = useLocalePath()
               :to="localePath('/privacy')"
               class="hover:underline focus:ring-2 focus:ring-emerald-500 outline-none"
             >
-              Privacy
+              {{ $t('privacy.title') }}
             </NuxtLink>
           </li>
         </ul>

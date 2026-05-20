@@ -12,7 +12,7 @@ const props = defineProps<{
   listing: CatalogListing
 }>()
 
-const detailLink = computed(() => localePath(`/annonce/${props.listing.id}`))
+const detailLink = computed(() => localePath(`/adverts/${props.listing.id}`))
 
 defineEmits<{
   favoriteToggle: []
