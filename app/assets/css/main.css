@@ -16,3 +16,9 @@
   --color-green-900: #0A5331;
   --color-green-950: #052E16;
 }
+
+@layer components {
+  .form-input {
+    @apply w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all;
+  }
+}

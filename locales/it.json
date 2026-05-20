@@ -1,7 +1,7 @@
 {
-  "fr": "francese",
-  "de": "tedesco",
-  "it": "italiano",
+  "fr": "Francese",
+  "de": "Tedesco",
+  "it": "Italiano",
   "advertTypes": {
     "book": "Libro",
     "product": "Fornitura",
@@ -41,27 +41,83 @@
     "impact_text": "Scopri come stai aiutando il pianeta.",
     "impact_unit": "risparmiati"
   },
-  "common": {
-    "back_to_home": "← Torna alla home",
-    "last_updated": "Ultimo aggiornamento:",
-    "contact_support": "Contatta il supporto",
-    "home": "Home",
-    "skip_to_content": "Vai al contenuto principale",
-    "favorites": "Preferiti",
-    "breadcrumb_label": "Percorso di navigazione"
+  "cart": {
+    "title": "Il mio carrello",
+    "empty": "Il tuo carrello è attualmente vuoto"
   },
-  "error": {
-    "not_found": {
-      "title": "Pagina non trovata",
-      "message": "La pagina richiesta non esiste oppure è stata spostata."
+  "catalog": {
+    "seo_title": "Catalogo | EcoScolar",
+    "hero": {
+      "title": "Trova il tuo prossimo successo scolastico.",
+      "subtitle": "Cerca per ISBN, titolo o autore per confrontare le migliori offerte su manuali e materiale.",
+      "search_placeholder": "Es. 978…, titolo dell’articolo · Invio …",
+      "search_cta": "Cerca"
     },
-    "generic": {
-      "title": "Si è verificato un errore",
-      "message": "Si è verificato un errore imprevisto."
+    "filters": {
+      "title": "Filtri",
+      "subtitle": "Restringi i risultati.",
+      "mobile_toggle": "Mostra / nascondi filtri",
+      "category_legend": "Tipo di annuncio",
+      "category_supplies": "Tutto il materiale",
+      "category_textbooks": "Manuali",
+      "category_tutoring": "Ripetizioni",
+      "show_all": "Mostra tutto",
+      "grade_heading": "Livello",
+      "grade_primary": "Elementare",
+      "grade_secondary": "Media",
+      "grade_maturity": "Maturità",
+      "grade_university": "Superiore",
+      "subject_heading": "Materia",
+      "subject_math": "Matematica",
+      "subject_french": "Francese",
+      "subject_german": "Tedesco",
+      "reset": "Azzera i filtri"
     },
-    "actions": {
-      "back_home": "Torna alla home",
-      "contact_support": "Contatta il supporto"
+    "banner": {
+      "api_error_retry": "Impossibile sincronizzare il catalogo. Controlla l’API e aggiorna la pagina.",
+      "loading": "Caricamento annunci…",
+      "fallback_demo": "Dati di dimostrazione (API vuota o non disponibile).",
+      "online": "Catalogo aggiornato dopo l’ultimo caricamento corretto."
+    },
+    "list": {
+      "title": "Sfoglia gli annunci",
+      "subtitle_near": "{count} risultati · CAP indicativo {zip}"
+    },
+    "sort": {
+      "label": "Ordina",
+      "recent": "Più recenti",
+      "price_asc": "Prezzo ↑",
+      "price_desc": "Prezzo ↓"
+    },
+    "empty": {
+      "title": "Nessun risultato.",
+      "hint": "Modifica ricerca o filtri.",
+      "reset_filters": "Azzera tutto"
+    },
+    "pagination": {
+      "label": "Paginazione"
+    },
+    "card": {
+      "alt_image": "Immagine dell’annuncio",
+      "meta_supplies": "Cat. materiale",
+      "meta_textbooks": "ISBN — disponibile dopo scansione",
+      "meta_tutoring": "Ripetizioni • min. 4 lezioni",
+      "hourly": "Tariffa",
+      "demo_rating": "4.9/5 demo",
+      "book_lesson": "Prenota"
+    },
+    "badges": {
+      "condition": {
+        "NEW": "Nuovo",
+        "USED": "Usato",
+        "GOOD": "Buono"
+      },
+      "service": {
+        "VERIFIED_TUTOR": "Verificato"
+      }
+    },
+    "fab": {
+      "place_advert": "Inserisci un annuncio"
     }
   },
   "me": {
@@ -94,9 +150,6 @@
     "description": "Condividi le tue risorse didattiche con la comunità EcoScolar.",
     "form": {
       "information": "Informazioni sull'annuncio",
-      "supplies": "Forniture",
-      "books": "Libri",
-      "tutoring": "Tutoraggio",
       "detailedInformation": "Informazioni dettagliate",
       "title": "Titolo",
       "condition": "Stato",
@@ -249,85 +302,6 @@
       },
       "invalidId": "ID dell'annuncio non valido"
     }
-  },  
-  "cart": {
-    "title": "Il mio carrello",
-    "empty": "Il tuo carrello è attualmente vuoto"
-  },
-  "catalog": {
-    "seo_title": "Catalogo | EcoScolar",
-    "hero": {
-      "title": "Trova il tuo prossimo successo scolastico.",
-      "subtitle": "Cerca per ISBN, titolo o autore per confrontare le migliori offerte su manuali e materiale.",
-      "search_placeholder": "Es. 978…, titolo dell’articolo · Invio …",
-      "search_cta": "Cerca"
-    },
-    "filters": {
-      "title": "Filtri",
-      "subtitle": "Restringi i risultati.",
-      "mobile_toggle": "Mostra / nascondi filtri",
-      "category_legend": "Tipo di annuncio",
-      "category_supplies": "Tutto il materiale",
-      "category_textbooks": "Manuali",
-      "category_tutoring": "Ripetizioni",
-      "show_all": "Mostra tutto",
-      "grade_heading": "Livello",
-      "grade_primary": "Elementare",
-      "grade_secondary": "Media",
-      "grade_maturity": "Maturità",
-      "grade_university": "Superiore",
-      "subject_heading": "Materia",
-      "subject_math": "Matematica",
-      "subject_french": "Francese",
-      "subject_german": "Tedesco",
-      "reset": "Azzera i filtri"
-    },
-    "banner": {
-      "api_error_retry": "Impossibile sincronizzare il catalogo. Controlla l’API e aggiorna la pagina.",
-      "loading": "Caricamento annunci…",
-      "fallback_demo": "Dati di dimostrazione (API vuota o non disponibile).",
-      "online": "Catalogo aggiornato dopo l’ultimo caricamento corretto."
-    },
-    "list": {
-      "title": "Sfoglia gli annunci",
-      "subtitle_near": "{count} risultati · CAP indicativo {zip}"
-    },
-    "sort": {
-      "label": "Ordina",
-      "recent": "Più recenti",
-      "price_asc": "Prezzo ↑",
-      "price_desc": "Prezzo ↓"
-    },
-    "empty": {
-      "title": "Nessun risultato.",
-      "hint": "Modifica ricerca o filtri.",
-      "reset_filters": "Azzera tutto"
-    },
-    "pagination": {
-      "label": "Paginazione"
-    },
-    "card": {
-      "alt_image": "Immagine dell’annuncio",
-      "meta_supplies": "Cat. materiale",
-      "meta_textbooks": "ISBN — disponibile dopo scansione",
-      "meta_tutoring": "Ripetizioni • min. 4 lezioni",
-      "hourly": "Tariffa",
-      "demo_rating": "4.9/5 demo",
-      "book_lesson": "Prenota"
-    },
-    "badges": {
-      "condition": {
-        "NEW": "Nuovo",
-        "USED": "Usato",
-        "GOOD": "Buono"
-      },
-      "service": {
-        "VERIFIED_TUTOR": "Verificato"
-      }
-    },
-    "fab": {
-      "place_advert": "Inserisci un annuncio"
-    }
   },
   "advert": {
     "actions": {
@@ -357,9 +331,37 @@
     }
   },
   "header": {
-    "nav_shop": "Negozio",
+    "nav_shop": "Boutique",
     "nav_support": "Supporto",
-    "nav_terms": "Condizioni"
+    "nav_terms": "Condizioni",
+    "language": "Lingua",
+    "cart": "Carrello",
+    "login": "Accedi",
+    "profile": "Profilo"
+  },
+  "common": {
+    "back_to_home": "← Torna alla home",
+    "back_to_catalog": "← Torna al catalogo",
+    "skip_to_content": "Vai al contenuto principale",
+    "last_updated": "Ultimo aggiornamento:",
+    "contact_support": "Contatta il supporto",
+    "home": "Home",
+    "favorites": "Preferiti",
+    "breadcrumb_label": "Percorso di navigazione"
+  },
+  "error": {
+    "not_found": {
+      "title": "Pagina non trovata",
+      "message": "La pagina richiesta non esiste oppure è stata spostata."
+    },
+    "generic": {
+      "title": "Si è verificato un errore",
+      "message": "Si è verificato un errore imprevisto."
+    },
+    "actions": {
+      "back_home": "Torna alla home",
+      "contact_support": "Contatta il supporto"
+    }
   },
   "support": {
     "title": "Contatta il supporto",
@@ -440,7 +442,27 @@
     "password_label": "Password",
     "submit_button": "Iscriviti",
     "has_account": "Già iscritto?",
-    "login_link": "Accedi"
+    "login_link": "Accedi",
+    "profile": {
+      "title": "Completa il tuo profilo",
+      "subtitle": "Queste informazioni ci aiuteranno a personalizzare la tua esperienza.",
+      "pseudo_label": "Nickname",
+      "prenom_label": "Nome",
+      "nom_label": "Cognome",
+      "cp_label": "Codice Postale",
+      "cp_placeholder": "Es: 1000",
+      "dob_label": "Data di nascita",
+      "languages_title": "Lingue parlate",
+      "languages_empty": "Nessuna lingua aggiunta.",
+      "language_label": "Lingua",
+      "level_label": "Livello",
+      "language_placeholder": "Scegli una lingua",
+      "level_placeholder": "Scegli un livello",
+      "level_native": "Madrelingua",
+      "add_language": "Aggiungi una lingua",
+      "remove_language_aria": "Rimuovi la lingua numero {index}",
+      "submit_button": "Completa la registrazione"
+    }
   },
   "forgot_password": {
     "instruction": "Inserisci il tuo indirizzo e-mail e ti invieremo un link per reimpostare la tua password.",
