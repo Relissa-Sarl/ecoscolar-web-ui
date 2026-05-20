@@ -1,4 +1,33 @@
 {
+  "fr": "francese",
+  "de": "tedesco",
+  "it": "italiano",
+  "advertTypes": {
+    "book": "Libro",
+    "product": "Fornitura",
+    "service": "Servizio di tutoraggio"
+  },
+  "advertConditions": {
+    "new": "Nuovo",
+    "likeNew": "Come nuovo",
+    "used": "Usato"
+  },
+  "advertCategories": {
+    "none": "Tutte materie / Non applicabile",
+    "math": "Matematica",
+    "french": "Francese",
+    "german": "Tedesco",
+    "italian": "Italiano",
+    "history": "Storia-Geografia",
+    "physics": "Fisica-Chimica",
+    "languages": "Lingue"
+  },
+  "advertSchoolGrade": {
+    "primary": "Primaria",
+    "middle": "Scuola media",
+    "high": "Scuola superiore",
+    "higher": "Istruzione superiore"
+  },
   "home": {
     "welcome": "Benvenuto,",
     "subtitle": "Pronto a dare una seconda vita al tuo materiale scolastico?",
@@ -141,6 +170,86 @@
       }
     }
   },
+  "modifyAdvert": {
+    "existingAdvert": "Annuncio",
+    "modifyAdvert": "Modifica l'annuncio",
+    "description": "Condividi le tue risorse didattiche con la comunità EcoScolar.",
+    "loading": "Caricamento dell'annuncio...",
+    "form": {
+      "information": "Informazioni sull'annuncio",
+      "detailedInformation": "Informazioni dettagliate",
+      "title": "Titolo",
+      "condition": "Stato",
+      "titlePlaceholder": "Esempio: Libro di matematica",
+      "author": "Autore",
+      "authorPlaceholder": "Esempio: Tolkiens",
+      "publisher": "Editore",
+      "publisherPlaceholder": "Esempio: Gallimard",
+      "edition": "Edizione",
+      "editionPlaceholder": "Esempio: 3ª edizione",
+      "isbn": "ISBN",
+      "bookCategoryId": "Categoria del libro",
+      "writtenLanguage": "Lingua scritta",
+      "isbnPlaceholder": "978-...",
+      "subjectId": "Materia",
+      "schoolGradeId": "Livello scolastico",
+      "teachingLanguage": "Lingua di insegnamento",
+      "studyLevel": "Livello di studio",
+      "studyLevelPlaceholder": "Esempio: Liceo",
+      "description": "Descrizione",
+      "descriptionPlaceholder": "Descrivi lo stato dell'oggetto, le sue funzionalità o il contenuto del tuo corso...",
+      "sales": "Vendita",
+      "price": "Prezzo",
+      "images": "Immagini",
+      "uploadImages": "Carica immagini del tuo annuncio",
+      "dragDrop": "Trascina e rilascia o clicca per selezionare i file",
+      "uploadedImages": "Immagini caricate",
+      "modify": "Modifica l'annuncio"
+    },
+    "error": {
+      "empty": {
+        "title": "Il titolo è obbligatorio",
+        "description": "La descrizione è obbligatoria",
+        "price": "Il prezzo è obbligatorio",
+        "subjectId": "La materia è obbligatoria",
+        "schoolGradeId": "Il livello scolastico è obbligatorio",
+        "teachingLanguage": "La lingua di insegnamento è richiesta",
+        "studyLevel": "Il livello di studio è obbligatorio",
+        "condition": "Lo stato è richiesto per le forniture",
+        "images": "È richiesta almeno un'immagine",
+        "publisher": "L'editore è richiesto per i libri",
+        "edition": "L'edizione è richiesta per i libri",
+        "isbn": "L'ISBN è richiesto per i libri",
+        "bookCategoryId": "La categoria del libro è richiesta per i libri",
+        "writtenLanguage": "La lingua scritta è richiesta per i libri",
+        "author": "L'autore è richiesto per i libri"
+      },
+      "invalid": {
+        "titleLengthMin": "Il titolo deve contenere almeno 3 caratteri",
+        "titleLengthMax": "Il titolo non deve superare 200 caratteri",
+        "descriptionLengthMin": "La descrizione deve contenere almeno 10 caratteri",
+        "descriptionLengthMax": "La descrizione non deve superare 2000 caratteri",
+        "sqlInjection": "Il campo non deve contenere caratteri speciali non consentiti",
+        "priceNegative": "Il prezzo deve essere maggiore di zero",
+        "priceMax": "Il prezzo non deve superare 500€",
+        "priceFormat": "Il prezzo deve essere un numero valido con al massimo due decimali",
+        "subjectId": "La materia selezionata non è valida",
+        "schoolGradeId": "Il livello scolastico selezionato non è valido",
+        "teachingLanguage": "La lingua di insegnamento selezionata non è valida",
+        "studyLevelLength": "Il livello di studio non deve superare 50 caratteri",
+        "bookCategoryId": "La categoria del libro selezionata non è valida",
+        "writtenLanguage": "La lingua selezionata non è valida",
+        "isbnFormat": "Il formato dell'ISBN non è valido",
+        "authorLength": "Il nome dell'autore non deve superare 150 caratteri",
+        "publisherLength": "Il nome dell'editore non deve superare 150 caratteri",
+        "editionLength": "L'edizione non deve superare 150 caratteri",
+        "imageSize": "Ogni immagine deve essere inferiore a 5MB",
+        "imageType": "Formato di file non autorizzato per l'immagine",
+        "imageCount": "Puoi caricare solo un massimo di 10 immagini"
+      },
+      "invalidId": "ID dell'annuncio non valido"
+    }
+  },  
   "cart": {
     "title": "Il mio carrello",
     "empty": "Il tuo carrello è attualmente vuoto"

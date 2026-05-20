@@ -1,5 +1,5 @@
 export enum AdvertType {
-  BOOK = 'book',
-  PRODUCT = 'product',
-  SERVICE = 'service'
+  BOOK = 'BOOK',
+  PRODUCT = 'PRODUCT',
+  SERVICE = 'SERVICE'
 }
