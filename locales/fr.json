@@ -51,6 +51,7 @@
     "favorites": "Favoris",
     "breadcrumb_label": "Fil d'Ariane",
     "login": "Connexion",
+    "logout": "Déconnexion",
     "profile": "Profil"
   },
   "error": {

@@ -97,6 +97,28 @@ export const useUsersStore = defineStore('users', () => {
   }
 
   /**
+   * Log out the currently authenticated user by calling the UserService's logout method, and clear the user state upon successful logout.
+   */
+  const logout = async () => {
+    isLoading.value = true
+    errors.value = null
+
+    try {
+      await service.logout()
+    } catch (e) {
+      errors.value = formatErrors(e as ApiError)
+    } finally {
+      // Clear the user state and reset the store's state after logout
+      user.value = null
+      hasLoaded.value = false
+      isLoading.value = false
+
+      // Redirect to home page after logout
+      await navigateTo('/login')
+    }
+  }
+
+  /**
    * Update the current user's profile with the provided input by calling the UserService's updateProfile method.
    * @param input An object containing the fields to update in the user's profile, such as nickname, firstName, lastName, postalCode, birthdayDate, and spokenLanguages.
    */
@@ -106,13 +128,13 @@ export const useUsersStore = defineStore('users', () => {
 
     try {
       user.value = await service.updateProfile(input)
-
-      // Redirect to profile page after successful profile update
-      await navigateTo('/profile')
     } catch (e) {
       errors.value = formatErrors(e as ApiError)
     } finally {
       isLoading.value = false
+
+      // Redirect to profile page after successful profile update
+      await navigateTo('/profile')
     }
   }
 
@@ -125,7 +147,7 @@ export const useUsersStore = defineStore('users', () => {
     fetchProfile,
     register,
     login,
-    // logout,
+    logout,
     updateProfile
   }
 })
