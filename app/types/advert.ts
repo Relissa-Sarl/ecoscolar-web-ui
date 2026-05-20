@@ -1,3 +1,8 @@
+import type { AdvertStatus } from '@/utils/enum/advertStatus'
+import type { AdvertType } from '@/utils/enum/advertType'
+import type { AdvertCondition } from '@/utils/enum/advertCondition'
+import type { AdvertLanguage } from '@/utils/enum/advertLanguage'
+
 export interface Condition {
   icon: string
   text: string
@@ -50,4 +55,41 @@ export interface Advert {
   seller: Seller
   questions?: Question[]
   answers?: Answer[]
+}
+
+export interface MyAdvert {
+  id: number
+  type: AdvertType
+  title: string
+  price: number
+  publicationDate: Date
+  notificationDate: Date
+  status: AdvertStatus
+  userId: number
+  sellerPseudo: string
+  primaryImage: string
+}
+
+export interface ModifyAdvertForm {
+  id: number
+  title: string
+  description: string
+  price: number
+  type: AdvertType
+  status: AdvertStatus
+  userId: number
+
+  subjectId: number | null
+  schoolGradeId: number | null
+  teachingLanguage: AdvertLanguage | null
+  studyLevel: string | null
+
+  condition: AdvertCondition | null
+
+  author: string | null
+  publisher: string | null
+  edition: string | null
+  isbn: string | null
+  bookCategoryId: number | null
+  writtenLanguage: AdvertLanguage | null
 }

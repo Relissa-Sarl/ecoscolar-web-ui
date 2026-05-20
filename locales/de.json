@@ -1,4 +1,33 @@
 {
+  "fr": "Französisch",
+  "de": "Deutsch",
+  "it": "Italienisch",
+  "advertTypes": {
+    "book": "Buch",
+    "product": "Ausrüstung",
+    "service": "Nachhilfedienst"
+  },
+  "advertConditions": {
+    "new": "Neu",
+    "likeNew": "Wie neu",
+    "used": "Gebraucht"
+  },
+  "advertCategories": {
+    "none": "Alle Fächer / Nicht anwendbar",
+    "math": "Mathematik",
+    "french": "Französisch",
+    "german": "Deutsch",
+    "italian": "Italienisch",
+    "history": "Geschichte-Geographie",
+    "physics": "Physik-Chemie",
+    "languages": "Sprachen"
+  },
+  "advertSchoolGrade": {
+    "primary": "Primaria",
+    "middle": "Scuola media",
+    "high": "Scuola superiore",
+    "higher": "Istruzione superiore"
+  },
   "home": {
     "welcome": "Willkommen,",
     "subtitle": "Bereit, deinem Schulmaterial ein zweites Leben zu schenken?",
@@ -12,34 +41,267 @@
     "impact_text": "Entdecke, wie du dem Planeten hilfst.",
     "impact_unit": "eingespart"
   },
-  "common": {
-    "back_to_home": "← Zurück zur Startseite",
-    "last_updated": "Zuletzt aktualisiert:",
-    "contact_support": "Support kontaktieren",
-    "home": "Startseite",
-    "favorites": "Favoriten",
-    "breadcrumb_label": "Brotkrümel-Navigation",
-    "login": "Anmelden",
-    "logout": "Abmelden",
-    "profile": "Profil"
-  },
-  "error": {
-    "not_found": {
-      "title": "Seite nicht gefunden",
-      "message": "Die angeforderte Seite existiert nicht oder wurde verschoben."
-    },
-    "generic": {
-      "title": "Ein Fehler ist aufgetreten",
-      "message": "Ein unerwarteter Fehler ist aufgetreten."
-    },
-    "actions": {
-      "back_home": "Zurück zur Startseite",
-      "contact_support": "Support kontaktieren"
-    }
-  },
   "cart": {
     "title": "Mein Warenkorb",
     "empty": "Ihr Warenkorb ist zur Zeit leer"
+  },
+  "catalog": {
+    "seo_title": "Katalog | EcoScolar",
+    "hero": {
+      "title": "Finden Sie Ihren akademischen Erfolg.",
+      "subtitle": "Mit ISBN, Titel oder Autor Schulbücher und Material suchen und vergleichen.",
+      "search_placeholder": "z. B. ISBN, Titel… · Eingabetaste",
+      "search_cta": "Suchen"
+    },
+    "filters": {
+      "title": "Filter",
+      "subtitle": "Suchergebnis eingrenzen.",
+      "mobile_toggle": "Filter anzeigen/ausblenden",
+      "category_legend": "Anzeigentyp",
+      "category_supplies": "Material & Zubehör",
+      "category_textbooks": "Schulbücher",
+      "category_tutoring": "Nachhilfe",
+      "show_all": "Alles anzeigen",
+      "grade_heading": "Schulstufe",
+      "grade_primary": "Primar",
+      "grade_secondary": "Sekundar",
+      "grade_maturity": "Maturität",
+      "grade_university": "Höhere Schule/FH",
+      "subject_heading": "Fach",
+      "subject_math": "Mathematik",
+      "subject_french": "Französisch",
+      "subject_german": "Deutsch",
+      "reset": "Filter zurücksetzen"
+    },
+    "banner": {
+      "api_error_retry": "Der Katalog konnte nicht geladen werden. API prüfen und Seite neu laden.",
+      "loading": "Inserate werden geladen…",
+      "fallback_demo": "Demo-Daten (API leer oder nicht erreichbar).",
+      "online": "Katalog seit letztem erfolgreichen Abruf aktuell."
+    },
+    "list": {
+      "title": "Inserate durchsuchen",
+      "subtitle_near": "{count} Treffer · PLZ Hinweis {zip}"
+    },
+    "sort": {
+      "label": "Sortieren",
+      "recent": "Neueste",
+      "price_asc": "Preis ↑",
+      "price_desc": "Preis ↓"
+    },
+    "empty": {
+      "title": "Keine passenden Einträge.",
+      "hint": "Suche oder Filter anpassen.",
+      "reset_filters": "Alles zurücksetzen"
+    },
+    "pagination": {
+      "label": "Seiten"
+    },
+    "card": {
+      "alt_image": "Artikelbild",
+      "meta_supplies": "Kat. Material",
+      "meta_textbooks": "ISBN — nach Scan verfügbar",
+      "meta_tutoring": "Nachhilfe • mind. 4 Lektionen",
+      "hourly": "Preis",
+      "demo_rating": "4,9/5 Demo",
+      "book_lesson": "Buchen"
+    },
+    "badges": {
+      "condition": {
+        "NEW": "Neu",
+        "USED": "Gebraucht",
+        "GOOD": "Gut"
+      },
+      "service": {
+        "VERIFIED_TUTOR": "Verifiziert"
+      }
+    },
+    "fab": {
+      "place_advert": "Inserat erstellen"
+    }
+  },
+  "me": {
+    "adverts": {
+      "title": "Meine Anzeigen",
+      "description": "Verwalten Sie Ihre Verkaufsanzeigen und Ihre Nachhilfeleistungen.",
+      "empty": "Sie haben noch keine Anzeigen veröffentlicht",
+      "add": "Eine neue Anzeige aufgeben",
+      "filters": {
+        "all": "Alles",
+        "book": "Bücher",
+        "supplies": "Ausrüstung",
+        "tutoring": "Nachhilfe"
+      },
+      "actions": {
+        "edit": "Bearbeiten",
+        "resume": "Wiederaufnehmen",
+        "expired": "Abgelaufen",
+        "sold": "Verkauft"
+      },
+      "deleteConfirmTitle": "Sind Sie sicher, dass Sie diese Anzeige löschen möchten?",
+      "deleteConfirmMessage": "Diese Aktion ist unwiderruflich. Die Anzeige wird dauerhaft von der Plattform entfernt.",
+      "cancel": "Abbrechen",
+      "confirm": "Löschen"
+    }
+  },
+  "createAdvert": {
+    "newAdvert": "Neue Anzeige",
+    "createAdvert": "Anzeige erstellen",
+    "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
+    "form": {
+      "information": "Informationen zur Anzeige",
+      "detailedInformation": "Detaillierte Informationen",
+      "title": "Titel",
+      "condition": "Zustand",
+      "titlePlaceholder": "Beispiel: Buch der Mathematik",
+      "author": "Autor",
+      "authorPlaceholder": "Beispiel: Tolkiens",
+      "publisher": "Verlag",
+      "publisherPlaceholder": "Beispiel: Gallimard",
+      "edition": "Ausgabe",
+      "editionPlaceholder": "Beispiel: 3. Ausgabe",
+      "isbn": "ISBN",
+      "bookCategoryId": "Buchkategorie",
+      "writtenLanguage": "Schriftsprache",
+      "isbnPlaceholder": "978-...",
+      "subjectId": "Fach",
+      "schoolGradeId": "Schulstufe",
+      "teachingLanguage": "Unterrichtssprache",
+      "studyLevel": "Bildungsniveau",
+      "studyLevelPlaceholder": "Beispiel: Gymnasium",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Beschreiben Sie den Zustand des Artikels, seine Funktionen oder den Inhalt Ihres Kurses...",
+      "sales": "Verkauf",
+      "price": "Preis",
+      "images": "Bilder",
+      "uploadImages": "Bilder für Ihre Anzeige hochladen",
+      "dragDrop": "Ziehen Sie Dateien hierher oder klicken Sie zum Auswählen",
+      "uploadedImages": "Hochgeladene Bilder",
+      "publish": "Anzeige veröffentlichen"
+    },
+    "error": {
+      "empty": {
+        "category": "Die Kategorie ist erforderlich",
+        "title": "Der Titel ist erforderlich",
+        "description": "Die Beschreibung ist erforderlich",
+        "price": "Der Preis ist erforderlich",
+        "subjectId": "Das Fach ist erforderlich",
+        "schoolGradeId": "Die Schulstufe ist erforderlich",
+        "teachingLanguage": "Die Unterrichtssprache ist erforderlich",
+        "studyLevel": "Das Bildungsniveau ist erforderlich",
+        "condition": "Der Zustand ist für Ausrüstung erforderlich",
+        "images": "Mindestens ein Bild ist erforderlich",
+        "publisher": "Der Verlag ist für Bücher erforderlich",
+        "edition": "Die Ausgabe ist für Bücher erforderlich",
+        "isbn": "Die ISBN ist für Bücher erforderlich",
+        "bookCategoryId": "Die Buchkategorie ist für Bücher erforderlich",
+        "writtenLanguage": "Die Schriftsprache ist für Bücher erforderlich",
+        "author": "Der Autor ist für Bücher erforderlich"
+      },
+      "invalid": {
+        "titleLengthMin": "Der Titel muss mindestens 3 Zeichen enthalten",
+        "titleLengthMax": "Der Titel darf nicht mehr als 200 Zeichen enthalten",
+        "descriptionLengthMin": "Die Beschreibung muss mindestens 10 Zeichen enthalten",
+        "descriptionLengthMax": "Die Beschreibung darf nicht mehr als 2000 Zeichen enthalten",
+        "sqlInjection": "Das Feld darf keine verbotenen Sonderzeichen enthalten",
+        "priceNegative": "Der Preis muss größer als null sein",
+        "priceMax": "Der Preis darf 500€ nicht überschreiten",
+        "priceFormat": "Der Preis muss eine gültige Zahl mit maximal zwei Dezimalstellen sein",
+        "subjectId": "Die ausgewählte Fach ist nicht gültig",
+        "schoolGradeId": "Die ausgewählte Schulstufe ist nicht gültig",
+        "teachingLanguage": "Die ausgewählte Unterrichtssprache ist nicht gültig",
+        "studyLevelLength": "Das ausgewählte Bildungsniveau darf 50 Zeichen nicht überschreiten",
+        "bookCategoryId": "Die ausgewählte Buchkategorie ist nicht gültig",
+        "writtenLanguage": "Die ausgewählte Schriftsprache ist nicht gültig",
+        "isbnFormat": "Das ISBN-Format ist ungültig",
+        "authorLength": "Der Autorname darf 150 Zeichen nicht überschreiten",
+        "publisherLength": "Der Verlagsname darf 150 Zeichen nicht überschreiten",
+        "editionLength": "Die Ausgabe darf 150 Zeichen nicht überschreiten",
+        "imageSize": "Jedes Bild muss kleiner als 5MB sein",
+        "imageType": "Dateityp für das Bild ist nicht erlaubt",
+        "imageCount": "Sie können maximal 10 Bilder hochladen"
+      }
+    }
+  },
+  "modifyAdvert": {
+    "existingAdvert": "Anzeige",
+    "modifyAdvert": "Anzeige bearbeiten",
+    "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
+    "loading": "Laden der Anzeige...",
+    "form": {
+      "information": "Informationen zur Anzeige",
+      "detailedInformation": "Detaillierte Informationen",
+      "title": "Titel",
+      "condition": "Zustand",
+      "titlePlaceholder": "Beispiel: Buch der Mathematik",
+      "author": "Autor",
+      "authorPlaceholder": "Beispiel: Tolkiens",
+      "publisher": "Verlag",
+      "publisherPlaceholder": "Beispiel: Gallimard",
+      "edition": "Ausgabe",
+      "editionPlaceholder": "Beispiel: 3. Ausgabe",
+      "isbn": "ISBN",
+      "bookCategoryId": "Buchkategorie",
+      "writtenLanguage": "Schriftsprache",
+      "isbnPlaceholder": "978-...",
+      "subjectId": "Fach",
+      "schoolGradeId": "Schulstufe",
+      "teachingLanguage": "Unterrichtssprache",
+      "studyLevel": "Bildungsniveau",
+      "studyLevelPlaceholder": "Beispiel: Gymnasium",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Beschreiben Sie den Zustand des Artikels, seine Funktionen oder den Inhalt Ihres Kurses...",
+      "sales": "Verkauf",
+      "price": "Preis",
+      "images": "Bilder",
+      "uploadImages": "Bilder für Ihre Anzeige hochladen",
+      "dragDrop": "Ziehen Sie Dateien hierher oder klicken Sie zum Auswählen",
+      "uploadedImages": "Hochgeladene Bilder",
+      "modify": "Anzeige bearbeiten"
+    },
+    "error": {
+      "empty": {
+        "title": "Der Titel ist erforderlich",
+        "description": "Die Beschreibung ist erforderlich",
+        "price": "Der Preis ist erforderlich",
+        "subjectId": "Das Fach ist erforderlich",
+        "schoolGradeId": "Die Schulstufe ist erforderlich",
+        "teachingLanguage": "Die Unterrichtssprache ist erforderlich",
+        "studyLevel": "Das Bildungsniveau ist erforderlich",
+        "condition": "Der Zustand ist für Ausrüstung erforderlich",
+        "images": "Mindestens ein Bild ist erforderlich",
+        "publisher": "Der Verlag ist für Bücher erforderlich",
+        "edition": "Die Ausgabe ist für Bücher erforderlich",
+        "isbn": "Die ISBN ist für Bücher erforderlich",
+        "bookCategoryId": "Die Buchkategorie ist für Bücher erforderlich",
+        "writtenLanguage": "Die Schriftsprache ist für Bücher erforderlich",
+        "author": "Der Autor ist für Bücher erforderlich"
+      },
+      "invalid": {
+        "titleLengthMin": "Der Titel muss mindestens 3 Zeichen enthalten",
+        "titleLengthMax": "Der Titel darf nicht mehr als 200 Zeichen enthalten",
+        "descriptionLengthMin": "Die Beschreibung muss mindestens 10 Zeichen enthalten",
+        "descriptionLengthMax": "Die Beschreibung darf nicht mehr als 2000 Zeichen enthalten",
+        "sqlInjection": "Das Feld darf keine verbotenen Sonderzeichen enthalten",
+        "priceNegative": "Der Preis muss größer als null sein",
+        "priceMax": "Der Preis darf 500€ nicht überschreiten",
+        "priceFormat": "Der Preis muss eine gültige Zahl mit maximal zwei Dezimalstellen sein",
+        "subjectId": "Die ausgewählte Fach ist nicht gültig",
+        "schoolGradeId": "Die ausgewählte Schulstufe ist nicht gültig",
+        "teachingLanguage": "Die ausgewählte Unterrichtssprache ist nicht gültig",
+        "studyLevelLength": "Das ausgewählte Bildungsniveau darf 50 Zeichen nicht überschreiten",
+        "bookCategoryId": "Die ausgewählte Buchkategorie ist nicht gültig",
+        "writtenLanguage": "Die ausgewählte Schriftsprache ist nicht gültig",
+        "isbnFormat": "Das ISBN-Format ist ungültig",
+        "authorLength": "Der Autorname darf 150 Zeichen nicht überschreiten",
+        "publisherLength": "Der Verlagsname darf 150 Zeichen nicht überschreiten",
+        "editionLength": "Die Ausgabe darf 150 Zeichen nicht überschreiten",
+        "imageSize": "Jedes Bild muss kleiner als 5MB sein",
+        "imageType": "Dateityp für das Bild ist nicht erlaubt",
+        "imageCount": "Sie können maximal 10 Bilder hochladen"
+      },
+      "invalidId": "Ungültige Anzeigen-ID"
+    }
   },
   "advert": {
     "actions": {
@@ -66,6 +328,39 @@
       "remove": "Entfernen",
       "removing": "Wird entfernt...",
       "view_advert": "Anzeige ansehen"
+    }
+  },
+  "header": {
+    "nav_shop": "Shop",
+    "nav_support": "Support",
+    "nav_terms": "AGB",
+    "language": "Sprache",
+    "cart": "Warenkorb",
+    "login": "Anmelden",
+    "profile": "Profil"
+  },
+  "common": {
+    "back_to_home": "← Zurück zur Startseite",
+    "back_to_catalog": "← Zurück zum Katalog",
+    "skip_to_content": "Zum Hauptinhalt springen",
+    "last_updated": "Zuletzt aktualisiert:",
+    "contact_support": "Support kontaktieren",
+    "home": "Startseite",
+    "favorites": "Favoriten",
+    "breadcrumb_label": "Brotkrümel-Navigation"
+  },
+  "error": {
+    "not_found": {
+      "title": "Seite nicht gefunden",
+      "message": "Die angeforderte Seite existiert nicht oder wurde verschoben."
+    },
+    "generic": {
+      "title": "Ein Fehler ist aufgetreten",
+      "message": "Ein unerwarteter Fehler ist aufgetreten."
+    },
+    "actions": {
+      "back_home": "Zurück zur Startseite",
+      "contact_support": "Support kontaktieren"
     }
   },
   "support": {
@@ -154,6 +449,26 @@
     "submit_button": "Registrieren",
     "has_account": "Bereits registriert?",
     "login_link": "Anmelden",
+    "profile": {
+      "title": "Vervollständigen Sie Ihr Profil",
+      "subtitle": "Diese Informationen helfen uns, Ihre Erfahrung zu personalisieren.",
+      "pseudo_label": "Benutzername",
+      "prenom_label": "Vorname",
+      "nom_label": "Nachname",
+      "cp_label": "Postleitzahl",
+      "cp_placeholder": "z.B. 1000",
+      "dob_label": "Geburtsdatum",
+      "languages_title": "Gesprochene Sprachen",
+      "languages_empty": "Keine Sprache hinzugefügt.",
+      "language_label": "Sprache",
+      "level_label": "Niveau",
+      "language_placeholder": "Sprache auswählen",
+      "level_placeholder": "Niveau auswählen",
+      "level_native": "Muttersprache",
+      "add_language": "Sprache hinzufügen",
+      "remove_language_aria": "Sprache Nummer {index} entfernen",
+      "submit_button": "Registrierung abschließen"
+    },
     "errors": {
       "DuplicateUserName": "Diese E-Mail-Adresse ist bereits mit einem Konto verknüpft.",
       "PasswordTooShort": "Ihr Passwort muss mindestens 6 Zeichen lang sein.",
