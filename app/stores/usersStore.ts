@@ -106,6 +106,9 @@ export const useUsersStore = defineStore('users', () => {
 
     try {
       user.value = await service.updateProfile(input)
+
+      // Redirect to profile page after successful profile update
+      await navigateTo('/profile')
     } catch (e) {
       errors.value = formatErrors(e as ApiError)
     } finally {
