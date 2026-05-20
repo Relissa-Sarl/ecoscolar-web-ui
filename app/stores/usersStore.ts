@@ -32,15 +32,13 @@ export const useUsersStore = defineStore('users', () => {
       return user.value
 
     isLoading.value = true
-    errors.value = null
 
     try {
       // Call the getMyProfile method of the user service to fetch the user's profile from the API
       user.value = await service.getMyProfile()
       hasLoaded.value = true
-    } catch (e) {
-      // If an error occurs while fetching the user's profile, format the error messages and update the store's state accordingly
-      errors.value = formatErrors(e as ApiError)
+    } catch {
+      // ignore error details here; reset user state
       user.value = null
       hasLoaded.value = false
     } finally {
