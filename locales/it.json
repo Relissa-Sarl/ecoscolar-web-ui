@@ -338,7 +338,8 @@
     "cart": "Carrello",
     "login": "Accedi",
     "logout": "Esci",
-    "profile": "Profilo"
+    "profile": "Profilo",
+    "favorites": "Preferiti"
   },
   "common": {
     "back_to_home": "← Torna alla home",
@@ -499,5 +500,11 @@
     },
     "logged_as": "Connesso: {name}",
     "logout": "Disconnessione"
+  },
+  "profile": {
+    "language": "Lingue",
+    "location": "Localizzazione",
+    "favorites": "Preferiti",
+    "sales": "Vendite"
   }
 }

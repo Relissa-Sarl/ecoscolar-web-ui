@@ -338,7 +338,8 @@
     "cart": "Warenkorb",
     "login": "Anmelden",
     "logout": "Abmelden",
-    "profile": "Profil"
+    "profile": "Profil",
+    "favorites": "Favoriten"
   },
   "common": {
     "back_to_home": "← Zurück zur Startseite",
@@ -499,5 +500,11 @@
     },
     "logged_as": "Angemeldet: {name}",
     "logout": "Abmelden"
+  },
+  "profile": {
+    "language": "Sprachen",
+    "location": "Standort",
+    "favorites": "Favoriten",
+    "sales": "Verkäufe"
   }
 }

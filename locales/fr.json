@@ -338,7 +338,8 @@
     "cart": "Panier",
     "login": "Connexion",
     "logout": "Déconnexion",
-    "profile": "Profil"
+    "profile": "Profil",
+    "favorites": "Favoris"
   },
   "common": {
     "back_to_home": "← Retour à l'accueil",
@@ -499,5 +500,11 @@
     },
     "logged_as": "Connecté : {name}",
     "logout": "Déconnexion"
+  },
+  "profile": {
+    "language": "Langues",
+    "location": "Localisation",
+    "favorites": "Favoris",
+    "sales": "Ventes"
   }
 }
