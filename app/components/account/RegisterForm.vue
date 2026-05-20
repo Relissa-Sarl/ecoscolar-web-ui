@@ -1,8 +1,13 @@
 <script setup lang="ts">
-const registerForm = ref({ email: '', password: '' })
-
 const usersStore = useUsersStore()
 
+// Initialize the registration form with empty email and password fields
+const registerForm = ref({ email: '', password: '' })
+
+/**
+ * Handle the registration form submission by calling the register
+ * method of the users store with the email and password from the form.
+ */
 const handleRegister = async () => {
   await usersStore.register(registerForm.value.email, registerForm.value.password)
 }

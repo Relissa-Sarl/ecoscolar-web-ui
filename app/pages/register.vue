@@ -1,12 +1,19 @@
 <script setup lang="ts">
 const localePath = useLocalePath()
+const usersStore = useUsersStore()
 
+/**
+ * Define the page metadata to specify that this page should only
+ * be accessible to guests (unauthenticated users) by using the 'guest' middleware.
+ */
 definePageMeta({
   middleware: 'guest'
 })
 
-const usersStore = useUsersStore()
-
+/**
+ * When the component is mounted, clear any existing error messages in
+ * the users store to ensure a clean state for the registration form.
+ */
 onMounted(() => {
   usersStore.clearErrors()
 })

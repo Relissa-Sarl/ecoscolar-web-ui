@@ -1,10 +1,13 @@
 <script setup lang="ts">
 const localePath = useLocalePath()
-
 const userStore = useUsersStore()
 
+// Initialize the login form with empty email and password fields
 const loginForm = ref({ email: '', password: '' })
 
+/**
+ * Handle the login form submission by calling the login method of the users store with the email and password from the form.
+ */
 const handleLogin = async () => {
   await userStore.login(loginForm.value.email, loginForm.value.password)
 }
