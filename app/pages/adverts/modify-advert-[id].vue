@@ -6,6 +6,7 @@ import { AdvertCondition } from '~/utils/enum/advertCondition'
 import { AdvertStatus } from '~/utils/enum/advertStatus'
 import { AdvertType } from '~/utils/enum/advertType'
 import { AdvertLanguage } from '~/utils/enum/advertLanguage'
+import { getAdvertService } from '~/services/advertService'
 
 const route = useRoute()
 const id = Array.isArray(route.params.id) ? Number(route.params.id[0]) : Number(route.params.id)
@@ -368,44 +369,56 @@ const handleSubmit = () => {
   // return navigateTo('../me/adverts') // Redirect to adverts list after successful creation
 }
 
-vueOnMounted(() => {
-  if (!route.params.id || Number.isNaN(id) || id < 1 || id > adverts.value.length) {
+  // adverts/id en get
+  // adverts/products/id ou adverts/services/id ou adverts/books/id en put
+
+vueOnMounted(async () => {
+  if (!route.params.id || Number.isNaN(id) || id < 1) {
     advertIsGet.value = false
     advertLoading.value = false
     return
   }
 
-  // const { data: id } = await useAdvert(String(route.params.id))
-  advert.value = adverts.value[id - 1]
+  try {
+    const advertService = getAdvertService()
+    const fetchedAdvert = await advertService.getAdvert(id)
 
-  if (advert.value?.userId !== 1) {
+    if (fetchedAdvert && fetchedAdvert.userId !== 1) {
+      advertIsGet.value = false
+      advertLoading.value = false
+      return
+    }
+
+    advert.value = fetchedAdvert
+
+    form.value = {
+      title: advert.value?.title,
+      description: advert.value?.description,
+      price: advert.value?.price,
+
+      subjectId: advert.value?.subjectId,
+      schoolGradeId: advert.value?.schoolGradeId,
+      teachingLanguage: advert.value?.teachingLanguage,
+      studyLevel: advert.value?.studyLevel,
+
+      condition: advert.value?.condition,
+
+      author: advert.value?.author,
+      publisher: advert.value?.publisher,
+      edition: advert.value?.edition,
+      isbn: advert.value?.isbn,
+      bookCategoryId: advert.value?.bookCategoryId,
+      writtenLanguage: advert.value?.writtenLanguage
+    }
+    category.value = advert.value?.type
+  } catch (error) {
+    console.error('Error fetching advert from backend:', error)
     advertIsGet.value = false
+  } finally {
     advertLoading.value = false
-    return
   }
-
-  form.value = {
-    title: advert.value?.title,
-    description: advert.value?.description,
-    price: advert.value?.price,
-
-    subjectId: advert.value?.subjectId,
-    schoolGradeId: advert.value?.schoolGradeId,
-    teachingLanguage: advert.value?.teachingLanguage,
-    studyLevel: advert.value?.studyLevel,
-
-    condition: advert.value?.condition,
-
-    author: advert.value?.author,
-    publisher: advert.value?.publisher,
-    edition: advert.value?.edition,
-    isbn: advert.value?.isbn,
-    bookCategoryId: advert.value?.bookCategoryId,
-    writtenLanguage: advert.value?.writtenLanguage
-  }
-  category.value = advert.value?.type
-  advertLoading.value = false
 })
+
 </script>
 
 <template>

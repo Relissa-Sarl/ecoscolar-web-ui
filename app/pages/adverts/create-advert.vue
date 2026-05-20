@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { AdvertCondition } from '~/utils/enum/advertCondition'
 import { AdvertLanguage } from '~/utils/enum/advertLanguage'
 import { AdvertType } from '~/utils/enum/advertType'
+import { getAdvertService } from '~/services/advertService'
 
 const uploadedFiles = ref<File[]>([])
 const category = ref(AdvertType.PRODUCT)
@@ -225,56 +226,66 @@ const validateForm = (): boolean => {
   return Object.keys(errors.value).length === 0
 }
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (!validateForm()) {
     return
   }
-  let formData = new Object()
-  switch (category.value) {
-    case AdvertType.PRODUCT:
-      formData = {
-        title: form.value.title,
-        description: form.value.description,
-        price: form.value.price,
-        userId: 1,
-        condition: form.value.condition,
-        pictures: form.value.pictures
+
+  const advertService = getAdvertService()
+
+  try {
+    switch (category.value) {
+      case AdvertType.PRODUCT: {
+        const formData = {
+          title: form.value.title,
+          description: form.value.description,
+          price: form.value.price,
+          userId: 1,
+          condition: form.value.condition,
+          pictures: form.value.pictures
+        }
+        await advertService.createProductAdvert(formData)
+        break
       }
-      // Call API to create supply advert with form.value
-      break
-    case AdvertType.BOOK:
-      formData = {
-        title: form.value.title,
-        description: form.value.description,
-        price: form.value.price,
-        userId: 1,
-        condition: form.value.condition,
-        pictures: form.value.pictures,
-        author: form.value.author,
-        publisher: form.value.publisher,
-        isbn: form.value.isbn,
-        bookCategoryId: form.value.bookCategoryId,
-        writtenLanguage: form.value.writtenLanguage,
-        edition: form.value.edition
+      case AdvertType.BOOK: {
+        const formData = {
+          title: form.value.title,
+          description: form.value.description,
+          price: form.value.price,
+          userId: 1,
+          condition: form.value.condition,
+          pictures: form.value.pictures,
+          author: form.value.author,
+          publisher: form.value.publisher,
+          isbn: form.value.isbn,
+          bookCategoryId: form.value.bookCategoryId,
+          writtenLanguage: form.value.writtenLanguage,
+          edition: form.value.edition
+        }
+        await advertService.createBookAdvert(formData)
+        break
       }
-      // Call API to create book advert with form.value
-      break
-    case AdvertType.SERVICE:
-      formData = {
-        title: form.value.title,
-        description: form.value.description,
-        price: form.value.price,
-        userId: 1,
-        subjectId: form.value.subjectId,
-        schoolGradeId: form.value.schoolGradeId,
-        teachingLanguage: form.value.teachingLanguage,
-        studyLevel: form.value.studyLevel
+      case AdvertType.SERVICE: {
+        const formData = {
+          title: form.value.title,
+          description: form.value.description,
+          price: form.value.price,
+          userId: 1,
+          subjectId: form.value.subjectId,
+          schoolGradeId: form.value.schoolGradeId,
+          teachingLanguage: form.value.teachingLanguage,
+          studyLevel: form.value.studyLevel
+        }
+        await advertService.createServiceAdvert(formData)
+        break
       }
-      // Call API to create tutoring advert with form.value
-      break
+    }
+
+    return navigateTo('../me/adverts') // Redirect to adverts list after successful creation
+  } catch (error) {
+    console.error('Error creating advert:', error)
+    errors.value.content = $t('createAdvert.error.creationFailed') || 'Une erreur est survenue lors de la création de l\'annonce.'
   }
-  console.log('Form submitted with data:', formData)
-  // return navigateTo('../me/adverts') // Redirect to adverts list after successful creation
 }
 </script>
 

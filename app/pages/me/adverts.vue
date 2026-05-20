@@ -115,6 +115,10 @@ const adverts = ref<MyAdvert[]>([
     primaryImage: 'book3.jpg'
   }
 ])
+
+// users/me/adverts en get
+// adverts/id en delete
+
 </script>
 
 <template>
