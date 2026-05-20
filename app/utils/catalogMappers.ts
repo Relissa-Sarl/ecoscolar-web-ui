@@ -1,13 +1,14 @@
 import type { AdvertCatalogApiItem, CatalogListing } from '../types/catalog'
 import { CatalogItemCondition, CatalogServiceBadge } from '../types/catalog'
+import { AdvertType } from '../utils/enum/advertType'
 
 function categoryTabFromApiType(type: AdvertCatalogApiItem['type']): CatalogListing['categoryTab'] {
   switch (type) {
-    case 'BOOK':
+    case AdvertType.BOOK:
       return 'textbooks'
-    case 'PRODUCT':
+    case AdvertType.PRODUCT:
       return 'supplies'
-    case 'SERVICE':
+    case AdvertType.SERVICE:
       return 'tutoring'
   }
 }
