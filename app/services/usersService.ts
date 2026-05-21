@@ -92,8 +92,7 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
    */
   const getPublicProfile = async (id: string) => apiClient<PublicUser>(`${USER_PATH}/${id}`)
 
-  
-  const getMeAdvert = async() => apiClient<ModifyAdvertForm[]>(`${USER_PATH}/me/adverts`)
+  const getMeAdvert = async () => apiClient<ModifyAdvertForm[]>(`${USER_PATH}/me/adverts`)
 
   return {
     register,
