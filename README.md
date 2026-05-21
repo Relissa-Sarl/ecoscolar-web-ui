@@ -132,8 +132,16 @@ docker compose up -d
 Front en dev avec la bonne base URL :
 
 ```powershell
+# Windows PowerShell
 cd ecoscolar-web-ui
 $env:NUXT_PUBLIC_API_BASE = "http://localhost:8080/api"
+pnpm dev --port 3000
+```
+
+```bash
+# macOS / Linux
+cd ecoscolar-web-ui
+export NUXT_PUBLIC_API_BASE=http://localhost:8080/api
 pnpm dev --port 3000
 ```
 
@@ -156,8 +164,15 @@ pnpm test:coverage
 pnpm test:watch
 
 # E2E Playwright (serveur dev requis sur PLAYWRIGHT_BASE_URL)
+```powershell
+# Windows PowerShell
 $env:PLAYWRIGHT_BASE_URL = "http://localhost:3000"
 pnpm test:e2e
+```
+
+```bash
+# macOS / Linux
+PLAYWRIGHT_BASE_URL=http://localhost:3000 pnpm test:e2e
 ```
 
 ## Sprint T8 — tests par sous-tâche

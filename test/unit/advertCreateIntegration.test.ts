@@ -118,4 +118,30 @@ describe('T4-6 · création annonces (advertService → API)', () => {
       })
     })
   })
+
+  describe('propagation erreurs API', () => {
+    it('propage le rejet apiClient pour createBookAdvert', async () => {
+      const apiError = new Error('API indisponible')
+      const apiClient = vi.fn().mockRejectedValue(apiError)
+      const service = createAdvertService({ apiClient })
+
+      await expect(service.createBookAdvert({ title: 'Test' })).rejects.toThrow('API indisponible')
+    })
+
+    it('propage le rejet apiClient pour createProductAdvert', async () => {
+      const apiError = new Error('API indisponible')
+      const apiClient = vi.fn().mockRejectedValue(apiError)
+      const service = createAdvertService({ apiClient })
+
+      await expect(service.createProductAdvert({ title: 'Test' })).rejects.toThrow('API indisponible')
+    })
+
+    it('propage le rejet apiClient pour createServiceAdvert', async () => {
+      const apiError = new Error('API indisponible')
+      const apiClient = vi.fn().mockRejectedValue(apiError)
+      const service = createAdvertService({ apiClient })
+
+      await expect(service.createServiceAdvert({ title: 'Test' })).rejects.toThrow('API indisponible')
+    })
+  })
 })
