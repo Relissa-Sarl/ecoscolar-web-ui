@@ -74,7 +74,7 @@ const validateForm = (): boolean => {
         errors.value.subjectId = $t('modifyAdvert.error.empty.subjectId')
       }
       if (!form.value.schoolLevelId) {
-        errors.value.schoolLevelId = $t('modifyAdvert.error.empty.schoolLevelId')
+        errors.value.schoolLevelId = $t('modifyAdvert.error.empty.schoolGradeId')
       }
       if (!form.value.teachingLanguage) {
         errors.value.teachingLanguage = $t('modifyAdvert.error.empty.teachingLanguage')
