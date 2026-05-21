@@ -53,7 +53,7 @@ const advertSummary = computed(() => {
   return {
     id: advert.value.id,
     title: advert.value.title,
-    category: advert.value.category,
+    type: advert.value.type,
     condition: advert.value.condition,
     price: advert.value.price,
     image: advert.value.image || advert.value.images?.[0] || ''

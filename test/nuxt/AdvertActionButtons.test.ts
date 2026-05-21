@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { ref } from 'vue'
 import ActionButtons from '~/components/advert/ActionButtons.vue'
+import { AdvertType } from '~/utils/enum/advertType'
 
 const favoriteIds = ref<string[]>([])
 const storeMock = {
@@ -34,7 +35,7 @@ describe('AdvertActionButtons', () => {
         advert: {
           id: 'advert-1',
           title: 'Biology: A Global Approach, 12th Edition',
-          category: 'Textbooks',
+          type: AdvertType.BOOK,
           condition: 'NEW CONDITION',
           price: 84.5,
           image: 'https://example.com/image.jpg'
@@ -55,7 +56,7 @@ describe('AdvertActionButtons', () => {
       advert: {
         id: 'advert-1',
         title: 'Biology: A Global Approach, 12th Edition',
-        category: 'Textbooks',
+        type: AdvertType.BOOK,
         condition: 'NEW CONDITION',
         price: 84.5,
         image: 'https://example.com/image.jpg'

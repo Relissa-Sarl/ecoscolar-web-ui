@@ -18,7 +18,7 @@ export interface FavoritesServiceDependencies {
   apiClient: ApiClient
 }
 
-const FAVORITES_PATH = '/favorites'
+const FAVORITES_PATH = '/users/me/favorites'
 
 export function createFavoritesService({ apiClient }: FavoritesServiceDependencies): FavoritesService {
   // /favorites

@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useLocalePath } from '#imports'
 import { useFavoritesStore } from '~/stores/favoritesStore'
+import { getFavoriteAdvertId } from '~/types/favorite'
 
 const localePath = useLocalePath()
 const favoritesStore = useFavoritesStore()
@@ -74,7 +75,7 @@ const handleToggleFavorite = async (advertId: string) => {
           v-for="item in favorites"
           :key="item.id"
           :item="item"
-          :removing="removingAdvertId === item.advertId"
+          :removing="removingAdvertId === getFavoriteAdvertId(item)"
           @toggle-favorite="handleToggleFavorite"
         />
       </div>
