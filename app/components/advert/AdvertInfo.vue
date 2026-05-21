@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { AdvertCondition } from '@/utils/enum/advertCondition'
+
 interface Props {
   condition: string
   featured: boolean
@@ -11,14 +13,20 @@ interface Props {
 const props = defineProps<Props>()
 const { t } = useI18n()
 
+function parseAdvertCondition(value: string): AdvertCondition | null {
+  const normalized = value.trim().toUpperCase().replace(/ /g, '_')
+  if ((Object.values(AdvertCondition) as string[]).includes(normalized))
+    return normalized as AdvertCondition
+  return null
+}
+
 const conditionLabel = computed(() => {
-  const normalized = props.condition.trim().toUpperCase().replace(/_/g, ' ')
-  switch (normalized) {
-    case 'NEW':
+  switch (parseAdvertCondition(props.condition)) {
+    case AdvertCondition.NEW:
       return t('advertConditions.new')
-    case 'LIKE NEW':
+    case AdvertCondition.LIKE_NEW:
       return t('advertConditions.likeNew')
-    case 'USED':
+    case AdvertCondition.USED:
       return t('advertConditions.used')
     default:
       return props.condition
