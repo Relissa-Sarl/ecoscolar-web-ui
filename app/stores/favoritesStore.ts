@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { FavoriteAdvert, FavoriteAdvertInput } from '../types/favorite'
+import { getFavoriteAdvertId, type FavoriteAdvert, type FavoriteAdvertInput } from '../types/favorite'
 import { getFavoritesService } from '../services/favoritesService'
 
 export interface ToggleFavoriteResult {
@@ -16,32 +16,37 @@ export const useFavoritesStore = defineStore('favorites', () => {
   const hasLoaded = ref(false)
   // Message d'erreur en cas de problème lors du chargement ou de la mise à jour des favoris
   const error = ref<string | null>(null)
-  const favoriteIds = computed(() => new Set(favorites.value.map(favorite => favorite.advertId)))
+  const favoriteIds = computed(() => new Set(favorites.value.map(getFavoriteAdvertId)))
   const service = getFavoritesService()
   const isFavorite = (advertId: string) => favoriteIds.value.has(advertId)
   // Permet d'ajouter ou mettre à jour un favori dans le store
   const upsertFavorite = (favorite: FavoriteAdvert) => {
-    const index = favorites.value.findIndex(item => item.advertId === favorite.advertId)
+    const favoriteId = getFavoriteAdvertId(favorite)
+    const index = favorites.value.findIndex(item => getFavoriteAdvertId(item) === favoriteId)
     if (index >= 0) {
       favorites.value[index] = favorite
       return
     }
     favorites.value = [favorite, ...favorites.value]
   }
-  // Créé un FavoriteAdvert pour le mettre dans le store
-  const createLocalFavorite = (input: FavoriteAdvertInput): FavoriteAdvert => ({
-    id: `fav-${input.advertId}`,
-    advertId: input.advertId,
-    createdAt: new Date().toISOString(),
-    advert: input.advert ?? {
-      id: input.advertId,
-      title: input.advertId,
-      category: '',
-      condition: '',
-      price: 0,
-      image: ''
+  // Créé un FavoriteAdvert pour le mettre dans le store (optimiste après toggle)
+  const createLocalFavorite = (input: FavoriteAdvertInput): FavoriteAdvert => {
+    const id = typeof input.advertId === 'number' ? input.advertId : Number(input.advertId)
+    const now = new Date().toISOString()
+    const summary = input.advert
+    return {
+      id,
+      type: summary?.type ?? '',
+      title: summary?.title ?? String(input.advertId),
+      price: summary?.price ?? 0,
+      publicationDate: now,
+      notificationDate: now,
+      status: '',
+      userId: '',
+      sellerPseudo: '',
+      primaryImage: summary?.image ?? ''
     }
-  })
+  }
   const loadFavorites = async (force = false) => {
     if (hasLoaded.value && !force) {
       return favorites.value
@@ -68,7 +73,9 @@ export const useFavoritesStore = defineStore('favorites', () => {
     if (result.isFavorite) {
       upsertFavorite(createLocalFavorite(input))
     } else {
-      favorites.value = favorites.value.filter(favorite => favorite.advertId !== result.advertId)
+      favorites.value = favorites.value.filter(
+        favorite => getFavoriteAdvertId(favorite) !== result.advertId
+      )
     }
     hasLoaded.value = true
     return result
