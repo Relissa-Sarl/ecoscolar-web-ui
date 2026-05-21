@@ -177,7 +177,8 @@
       "uploadImages": "Téléchargez des images de votre annonce",
       "dragDrop": "Glissez-déposez ou cliquez pour sélectionner des fichiers",
       "uploadedImages": "images téléchargées",
-      "publish": "Publier l'annonce"
+      "publish": "Publier l'annonce",
+      "cancel": "Annuler"
     },
     "error": {
       "empty": {
@@ -257,7 +258,8 @@
       "uploadImages": "Téléchargez des images de votre annonce",
       "dragDrop": "Glissez-déposez ou cliquez pour sélectionner des fichiers",
       "uploadedImages": "images téléchargées",
-      "modify": "Modifier l'annonce"
+      "modify": "Modifier l'annonce",
+      "cancel": "Annuler"
     },
     "error": {
       "empty": {

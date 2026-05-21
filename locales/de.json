@@ -177,7 +177,8 @@
       "uploadImages": "Bilder für Ihre Anzeige hochladen",
       "dragDrop": "Ziehen Sie Dateien hierher oder klicken Sie zum Auswählen",
       "uploadedImages": "Hochgeladene Bilder",
-      "publish": "Anzeige veröffentlichen"
+      "publish": "Anzeige veröffentlichen",
+      "cancel": "Abbrechen"
     },
     "error": {
       "empty": {
@@ -257,7 +258,8 @@
       "uploadImages": "Bilder für Ihre Anzeige hochladen",
       "dragDrop": "Ziehen Sie Dateien hierher oder klicken Sie zum Auswählen",
       "uploadedImages": "Hochgeladene Bilder",
-      "modify": "Anzeige bearbeiten"
+      "modify": "Anzeige bearbeiten",
+      "cancel": "Abbrechen"
     },
     "error": {
       "empty": {

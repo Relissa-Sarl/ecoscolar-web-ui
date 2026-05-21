@@ -177,7 +177,8 @@
       "uploadImages": "Carica immagini del tuo annuncio",
       "dragDrop": "Trascina e rilascia o clicca per selezionare i file",
       "uploadedImages": "Immagini caricate",
-      "publish": "Pubblica l'annuncio"
+      "publish": "Pubblica l'annuncio",
+      "cancel": "Annulla"
     },
     "error": {
       "empty": {
@@ -257,7 +258,8 @@
       "uploadImages": "Carica immagini del tuo annuncio",
       "dragDrop": "Trascina e rilascia o clicca per selezionare i file",
       "uploadedImages": "Immagini caricate",
-      "modify": "Modifica l'annuncio"
+      "modify": "Modifica l'annuncio",
+      "cancel": "Annulla"
     },
     "error": {
       "empty": {

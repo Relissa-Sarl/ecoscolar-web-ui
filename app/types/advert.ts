@@ -66,7 +66,7 @@ export interface MyAdvert {
   publicationDate: Date
   notificationDate: Date
   status: AdvertStatus
-  userId: number
+  userId: string
   sellerPseudo: string
   primaryImage: string
 }
@@ -78,12 +78,12 @@ export interface ModifyAdvertForm {
   price: number
   type: AdvertType
   status: AdvertStatus
-  userId: number
+  userId: string
 
   subjectId: number | null
   schoolGradeId: number | null
   teachingLanguage: AdvertLanguage | null
-  studyLevel: string | null
+  specificStudyLevel: string | null
 
   condition: AdvertCondition | null
 
