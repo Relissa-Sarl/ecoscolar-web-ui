@@ -474,11 +474,11 @@
     "profile": {
       "title": "Vervollständigen Sie Ihr Profil",
       "subtitle": "Diese Informationen helfen uns, Ihre Erfahrung zu personalisieren.",
-      "pseudo_label": "Benutzername",
-      "prenom_label": "Vorname",
-      "nom_label": "Nachname",
-      "cp_label": "Postleitzahl",
-      "cp_placeholder": "z.B. 1000",
+      "nickname_label": "Benutzername",
+      "firstName_label": "Vorname",
+      "lastName_label": "Nachname",
+      "pc_label": "Postleitzahl",
+      "pc_placeholder": "z.B. 1000",
       "dob_label": "Geburtsdatum",
       "languages_title": "Gesprochene Sprachen",
       "languages_empty": "Keine Sprache hinzugefügt.",
@@ -526,6 +526,25 @@
     "language": "Sprachen",
     "location": "Standort",
     "favorites": "Favoriten",
-    "sales": "Verkäufe"
+    "sales": "Verkäufe",
+    "edit": "Profil bearbeiten",
+    "settings" : {
+      "title": "Mein Profil bearbeiten",
+      "subtitle": "Aktualisieren Sie Ihre persönlichen Informationen für eine personalisierte Erfahrung.",
+      "nickname_label": "Benutzername",
+      "firstName_label": "Vorname",
+      "lastName_label": "Nachname",
+      "pc_label": "Postleitzahl",
+      "dob_label": "Geburtsdatum",
+      "languages_title": "Gesprochene Sprachen",
+      "language_label": "Sprache",
+      "level_label": "Niveau",
+      "level_native": "Muttersprache",
+      "add_language": "Sprache hinzufügen",
+      "submit_button": "Änderungen speichern",
+      "language_placeholder": "Sprache auswählen",
+      "level_placeholder": "Niveau auswählen",
+      "pc_placeholder": "z.B. 1000"
+    }
   }
 }
