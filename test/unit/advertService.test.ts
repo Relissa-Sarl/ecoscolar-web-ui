@@ -38,7 +38,7 @@ describe('advertService', () => {
 
     await service.getBook(1)
 
-    expect(apiClient).toHaveBeenCalledWith('/v1/adverts/books/1')
+    expect(apiClient).toHaveBeenCalledWith('/adverts/books/1')
   })
 
   it('loads product detail by id', async () => {
@@ -54,7 +54,7 @@ describe('advertService', () => {
 
     await service.getProduct(2)
 
-    expect(apiClient).toHaveBeenCalledWith('/v1/adverts/products/2')
+    expect(apiClient).toHaveBeenCalledWith('/adverts/products/2')
   })
 
   it('loads service detail by id', async () => {
@@ -72,6 +72,6 @@ describe('advertService', () => {
 
     await service.getService(3)
 
-    expect(apiClient).toHaveBeenCalledWith('/v1/adverts/services/3')
+    expect(apiClient).toHaveBeenCalledWith('/adverts/services/3')
   })
 })
