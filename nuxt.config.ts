@@ -32,7 +32,10 @@ export default defineNuxtConfig({
     }
   },
   routeRules: {
-    '/': { prerender: true }
+    '/': { prerender: true },
+    '/shop': { prerender: true },
+    '/de/shop': { prerender: true },
+    '/it/shop': { prerender: true }
   },
   compatibilityDate: '2025-01-15',
   typescript: {

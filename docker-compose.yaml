@@ -3,7 +3,11 @@ services:
   # Frontend microservices
   # -----------------------------
   ecoscolar-frontend:
-    build: .
+    build:
+      context: .
+      args:
+        NUXT_PUBLIC_API_BASE: ${NUXT_PUBLIC_API_BASE:-http://localhost:8080/api}
+        NUXT_PUBLIC_ENABLE_JWT: ${NUXT_PUBLIC_ENABLE_JWT:-false}
     container_name: ecoscolar-frontend
     networks:
       - frontend

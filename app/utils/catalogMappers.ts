@@ -6,21 +6,33 @@ function assertNever(value: never): never {
   throw new Error(`Unknown advert type: ${String(value)}`)
 }
 
-function categoryTabFromApiType(type: AdvertCatalogApiItem['type']): CatalogListing['categoryTab'] {
+/** Valeurs API catalogue (<see cref="CatalogAdvertTypeCodes"/> côté .NET). */
+function normalizeAdvertType(type: AdvertCatalogApiItem['type'] | 'Books'): AdvertType {
   switch (type) {
+    case 'Books':
+      return AdvertType.BOOK
+    case AdvertType.BOOK:
+    case AdvertType.PRODUCT:
+    case AdvertType.SERVICE:
+      return type
+    default:
+      return assertNever(type as never)
+  }
+}
+
+function categoryTabFromApiType(type: AdvertCatalogApiItem['type'] | 'Books'): CatalogListing['categoryTab'] {
+  switch (normalizeAdvertType(type)) {
     case AdvertType.BOOK:
       return 'textbooks'
     case AdvertType.PRODUCT:
       return 'supplies'
     case AdvertType.SERVICE:
       return 'tutoring'
-    default:
-      return assertNever(type)
   }
 }
 
 export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): CatalogListing {
-  const categoryTab = categoryTabFromApiType(item.type)
+  const categoryTab = categoryTabFromApiType(item.type as AdvertCatalogApiItem['type'] | 'Books')
 
   const gradeLevels = ['primary', 'secondary', 'maturity', 'university'] as const
   const subjectCodes = ['math', 'french', 'german'] as const

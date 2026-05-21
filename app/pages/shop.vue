@@ -13,7 +13,6 @@ import type {
 } from '@/types/catalog'
 
 import catalogFallbackJson from '@/mocks/catalogSummaries.json'
-import { getCatalogService } from '~/services/catalogService'
 import { mapCatalogApiToListings } from '~/utils/catalogMappers'
 
 definePageMeta({ layout: 'catalog' })
@@ -26,23 +25,33 @@ useSeoMeta({
   title: () => t('catalog.seo_title')
 })
 
-const catalogService = getCatalogService()
-const appliedSearch = ref('')
+const config = useRuntimeConfig()
+const route = useRoute()
 
-const { data: rawItems, pending } = await useAsyncData(
+function readRouteSearchQuery(): string {
+  const q = route.query.q
+  return typeof q === 'string' ? q.trim() : ''
+}
+
+const appliedSearch = ref(readRouteSearchQuery())
+
+async function loadCatalogSummaries(search: string): Promise<CatalogFetchResult> {
+  const query = search ? { q: search } : undefined
+
+  try {
+    const rows = await $fetch<AdvertCatalogApiItem[]>('/v1/adverts/summary', {
+      baseURL: config.public.apiBase,
+      query
+    })
+    return { items: rows, fromFallback: false, hadError: false }
+  } catch {
+    return { items: catalogFallback, fromFallback: true, hadError: true }
+  }
+}
+
+const { data: rawItems, pending, refresh } = await useAsyncData(
   'catalog-adverts',
-  async (): Promise<CatalogFetchResult> => {
-    const params = appliedSearch.value
-      ? { q: appliedSearch.value }
-      : undefined
-
-    try {
-      const rows = await catalogService.listSummaries(params)
-      return { items: rows, fromFallback: false, hadError: false }
-    } catch {
-      return { items: catalogFallback, fromFallback: true, hadError: true }
-    }
-  },
+  () => loadCatalogSummaries(appliedSearch.value),
   { watch: [appliedSearch] }
 )
 
@@ -69,8 +78,15 @@ const subjects = ref<SubjectFilterState>({
 })
 
 const sortKey = ref<'recent' | 'price_asc' | 'price_desc'>('recent')
-const draftSearch = ref('')
+const draftSearch = ref(readRouteSearchQuery())
 const searchLoading = computed(() => pending.value)
+
+watch(() => route.query.q, () => {
+  const q = readRouteSearchQuery()
+  draftSearch.value = q
+  appliedSearch.value = q
+  currentPage.value = 1
+})
 
 function applySearchFromBanner() {
   appliedSearch.value = draftSearch.value.trim()

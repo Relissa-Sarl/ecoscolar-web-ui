@@ -15,7 +15,8 @@
     "test:unit": "vitest --project unit",
     "test:nuxt": "vitest --project nuxt",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:remote": "playwright test test/e2e/shop-book-search.spec.ts"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.105",
