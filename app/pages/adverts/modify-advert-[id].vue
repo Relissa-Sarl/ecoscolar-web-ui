@@ -296,7 +296,7 @@ const handleSubmit = async () => {
     await navigateTo(localePath('/me/adverts')) // Redirect to adverts list after successful creation
   } catch (error) {
     console.error('Error creating advert:', error)
-    errors.value.content = $t('modifyAdvert.modificationFailed')
+    errors.value.content = $t('modifyAdvert.error.modificationFailed')
   }
 }
 
