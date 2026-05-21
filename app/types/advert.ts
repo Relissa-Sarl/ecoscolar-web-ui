@@ -83,7 +83,7 @@ export interface ModifyAdvertForm {
   subjectId: number | null
   schoolGradeId: number | null
   teachingLanguage: AdvertLanguage | null
-  specificStudyLevel: string | null
+  studyLevel: string | null
 
   condition: AdvertCondition | null
 
