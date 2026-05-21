@@ -28,6 +28,21 @@ RUN pnpm build
 # Nginx server for production ---
 FROM nginx:stable-alpine as production-stage
 
+# Configure Nginx to support SPA routing fallback
+RUN printf 'server {\n\
+    listen 80;\n\
+    server_name localhost;\n\
+    location / {\n\
+        root /usr/share/nginx/html;\n\
+        index index.html index.htm;\n\
+        try_files $uri $uri/ /index.html;\n\
+    }\n\
+    error_page 500 502 503 504 /50x.html;\n\
+    location = /50x.html {\n\
+        root /usr/share/nginx/html;\n\
+    }\n\
+}\n' > /etc/nginx/conf.d/default.conf
+
 # Copy the compiled files from the previous stage to the Nginx directory
 COPY --from=build-stage /app/.output/public/. /usr/share/nginx/html/
 

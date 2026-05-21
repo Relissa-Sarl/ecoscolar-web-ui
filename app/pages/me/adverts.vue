@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import type { MyAdvert } from '@/types/advert'
 import { AdvertType } from '@/utils/enum/advertType'
 import { AdvertStatus } from '@/utils/enum/advertStatus'
+import { getAdvertService } from '~/services/advertService'
+import { getUserService } from '~/services/usersService'
 
 const localePath = useLocalePath()
 
@@ -33,12 +35,18 @@ const deleteAdvert = (id: number) => {
   showDeleteConfirm.value = true
   advertToDelete.value = adverts.value.find(advert => advert.id === id) || null
 }
-const confirmDelete = () => {
+const confirmDelete = async () => {
   if (advertToDelete.value) {
-    // Call API to delete advert
-    adverts.value = adverts.value.filter(advert => advert.id !== advertToDelete.value?.id)
-    showDeleteConfirm.value = false
-    advertToDelete.value = null
+    try {
+      const service = getAdvertService()
+      await service.deleteAdvert(advertToDelete.value.id)
+      adverts.value = adverts.value.filter(advert => advert.id !== advertToDelete.value?.id)
+    } catch (error) {
+      console.error('Error deleting advert:', error)
+    } finally {
+      showDeleteConfirm.value = false
+      advertToDelete.value = null
+    }
   }
 }
 const adverts = ref<MyAdvert[]>([
@@ -115,6 +123,16 @@ const adverts = ref<MyAdvert[]>([
     primaryImage: 'book3.jpg'
   }
 ])
+
+onMounted(async () => {
+  try {
+    const service = getUserService()
+    const fetchedAdverts = await service.getMeAdvert()
+    adverts.value = fetchedAdverts as unknown as MyAdvert[]
+  } catch (error) {
+    console.error('Error fetching my adverts:', error)
+  }
+})
 </script>
 
 <template>

@@ -3,96 +3,13 @@ import { ref, onMounted as vueOnMounted } from 'vue'
 
 import type { ModifyAdvertForm } from '~/types/advert'
 import { AdvertCondition } from '~/utils/enum/advertCondition'
-import { AdvertStatus } from '~/utils/enum/advertStatus'
 import { AdvertType } from '~/utils/enum/advertType'
 import { AdvertLanguage } from '~/utils/enum/advertLanguage'
+import { getAdvertService } from '~/services/advertService'
 
 const route = useRoute()
 const id = Array.isArray(route.params.id) ? Number(route.params.id[0]) : Number(route.params.id)
 
-const adverts = ref<ModifyAdvertForm[]>([
-  {
-    id: 1,
-    title: 'Livre de mathématiques',
-    description: 'Livre de mathématiques pour le lycée, en bon état.',
-    price: 10,
-    type: AdvertType.BOOK,
-    status: AdvertStatus.ACTIVE,
-    userId: 1,
-    subjectId: null,
-    schoolGradeId: null,
-    teachingLanguage: null,
-    studyLevel: null,
-    condition: AdvertCondition.USED,
-    author: 'John Doe',
-    publisher: 'MathBooks Inc.',
-    edition: '3rd Edition',
-    isbn: '978-7-2238-5998-1',
-    bookCategoryId: 1,
-    writtenLanguage: AdvertLanguage.IT
-  },
-  {
-    id: 2,
-    title: 'Trousse de fournitures scolaires',
-    description: 'Trousse de fournitures scolaires complète, idéale pour la rentrée.',
-    price: 15,
-    type: AdvertType.PRODUCT,
-    status: AdvertStatus.ACTIVE,
-    userId: 1,
-    subjectId: null,
-    schoolGradeId: null,
-    teachingLanguage: null,
-    studyLevel: null,
-    condition: AdvertCondition.LIKE_NEW,
-    author: null,
-    publisher: null,
-    edition: null,
-    isbn: null,
-    bookCategoryId: null,
-    writtenLanguage: null
-
-  },
-  {
-    id: 3,
-    title: 'Cours de tutorat en mathématiques',
-    description: 'Cours de tutorat en mathématiques pour les élèves de collège et lycée.',
-    price: 20,
-    type: AdvertType.SERVICE,
-    status: AdvertStatus.ACTIVE,
-    userId: 1,
-    subjectId: 1,
-    schoolGradeId: 3,
-    teachingLanguage: AdvertLanguage.DE,
-    studyLevel: 'High School/Secondary',
-    condition: null,
-    author: null,
-    publisher: null,
-    edition: null,
-    isbn: null,
-    bookCategoryId: null,
-    writtenLanguage: null
-  },
-  {
-    id: 4,
-    title: 'Livre de français',
-    description: 'Livre de français pour le collège, en bon état.',
-    price: 8,
-    type: AdvertType.BOOK,
-    status: AdvertStatus.ACTIVE,
-    userId: 1,
-    subjectId: null,
-    schoolGradeId: null,
-    teachingLanguage: null,
-    studyLevel: null,
-    condition: AdvertCondition.NEW,
-    author: 'Marie Curie',
-    publisher: 'FrenchBooks Ltd.',
-    edition: '1st Edition',
-    isbn: '978-8-0897-7695-5',
-    bookCategoryId: 2,
-    writtenLanguage: AdvertLanguage.FR
-  }
-])
 const advert = ref<ModifyAdvertForm>()
 const advertLoading = ref(true)
 const advertIsGet = ref(true)
@@ -368,43 +285,54 @@ const handleSubmit = () => {
   // return navigateTo('../me/adverts') // Redirect to adverts list after successful creation
 }
 
-vueOnMounted(() => {
-  if (!route.params.id || Number.isNaN(id) || id < 1 || id > adverts.value.length) {
+// adverts/id en get
+// adverts/products/id ou adverts/services/id ou adverts/books/id en put
+
+vueOnMounted(async () => {
+  if (!route.params.id || Number.isNaN(id) || id < 1) {
     advertIsGet.value = false
     advertLoading.value = false
     return
   }
 
-  // const { data: id } = await useAdvert(String(route.params.id))
-  advert.value = adverts.value[id - 1]
+  try {
+    const advertService = getAdvertService()
+    const fetchedAdvert = await advertService.getAdvert(id)
 
-  if (advert.value?.userId !== 1) {
+    if (fetchedAdvert && fetchedAdvert.userId !== 1) {
+      advertIsGet.value = false
+      advertLoading.value = false
+      return
+    }
+
+    advert.value = fetchedAdvert
+
+    form.value = {
+      title: advert.value?.title,
+      description: advert.value?.description,
+      price: advert.value?.price,
+
+      subjectId: advert.value?.subjectId,
+      schoolGradeId: advert.value?.schoolGradeId,
+      teachingLanguage: advert.value?.teachingLanguage,
+      studyLevel: advert.value?.studyLevel,
+
+      condition: advert.value?.condition,
+
+      author: advert.value?.author,
+      publisher: advert.value?.publisher,
+      edition: advert.value?.edition,
+      isbn: advert.value?.isbn,
+      bookCategoryId: advert.value?.bookCategoryId,
+      writtenLanguage: advert.value?.writtenLanguage
+    }
+    category.value = advert.value?.type
+  } catch (error) {
+    console.error('Error fetching advert from backend:', error)
     advertIsGet.value = false
+  } finally {
     advertLoading.value = false
-    return
   }
-
-  form.value = {
-    title: advert.value?.title,
-    description: advert.value?.description,
-    price: advert.value?.price,
-
-    subjectId: advert.value?.subjectId,
-    schoolGradeId: advert.value?.schoolGradeId,
-    teachingLanguage: advert.value?.teachingLanguage,
-    studyLevel: advert.value?.studyLevel,
-
-    condition: advert.value?.condition,
-
-    author: advert.value?.author,
-    publisher: advert.value?.publisher,
-    edition: advert.value?.edition,
-    isbn: advert.value?.isbn,
-    bookCategoryId: advert.value?.bookCategoryId,
-    writtenLanguage: advert.value?.writtenLanguage
-  }
-  category.value = advert.value?.type
-  advertLoading.value = false
 })
 </script>
 
