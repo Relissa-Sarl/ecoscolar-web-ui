@@ -485,7 +485,8 @@
       "level_native": "Langue maternelle",
       "add_language": "Ajouter une langue",
       "remove_language_aria": "Supprimer la langue numéro {index}",
-      "submit_button": "Terminer l'inscription"
+      "submit_button": "Terminer l'inscription",
+      "language_duplicate": "Vous avez déjà ajouté la langue '{language}' à votre profil."
     },
     "errors": {
       "DuplicateUserName": "Cette adresse e-mail est déjà associée à un compte.",
