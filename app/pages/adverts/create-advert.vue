@@ -281,7 +281,7 @@ const handleSubmit = async () => {
           subjectId: form.value.subjectId,
           schoolLevelId: form.value.schoolGradeId,
           teachingLanguage: form.value.teachingLanguage,
-          specificStudyLevel : form.value.studyLevel
+          specificStudyLevel: form.value.studyLevel
         }
         await advertService.createServiceAdvert(formData)
         break
