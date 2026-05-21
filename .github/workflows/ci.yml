@@ -1,0 +1,53 @@
+name: CI Pipeline - EcoScolar frontend
+
+on: 
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: latest
+
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile --shamefully-hoist --ignore-workspace
+
+      - name: Nuxt Type Preparation
+        run: pnpm nuxi prepare
+
+      - name: Lint
+        run: pnpm run lint
+      
+      - name: Nuxt Build
+        run: pnpm build
+
+      - name: Docker Build Test
+        run: docker build -t ecoscolar-frontend .
+
+      - name: Container Launch Test
+        run: |
+          # 1. Run the Docker container in detached mode, mapping port 3000 to 80
+          docker run -d -p 3000:80 --name test-container ecoscolar-frontend
+          
+          # 2. Wait 3 seconds for the container to start
+          sleep 3
+          
+          # 3. HTTP Request Test On Port 3000
+          curl -f http://localhost:3000/
+          
+          # 4. Stop and Remove the test container
+          docker rm -f test-container

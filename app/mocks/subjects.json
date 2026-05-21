@@ -1,0 +1,27 @@
+[
+    {
+        "subjectId": 1,
+        "name": "Mathématiques",
+        "subject": "Cours et ressources pour les mathématiques."
+    },
+    {
+        "subjectId": 2,
+        "name": "Français",
+        "subject": "Cours et ressources pour les français."
+    },
+    {
+        "subjectId": 3,
+        "name": "Histoire-Géographie",
+        "subject": "Cours et ressources pour les histoire-géographie."
+    },
+    {
+        "subjectId": 4,
+        "name": "Physique-Chimie",
+        "subject": "Cours et ressources pour les physique-chimie."
+    },
+    {
+        "subjectId": 5,
+        "name": "Langues",
+        "subject": "Cours et ressources pour les langues."
+    }
+]

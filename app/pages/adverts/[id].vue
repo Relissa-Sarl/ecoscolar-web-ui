@@ -1,0 +1,140 @@
+<script setup lang="ts">
+import Breadcrumb from '~/components/common/Breadcrumb.vue'
+import { AdvertType } from '@/utils/enum/advertType'
+
+const route = useRoute()
+const localePath = useLocalePath()
+const { t } = useI18n()
+const { data: advert } = await useAdvert(String(route.params.id))
+
+const breadcrumbItems = computed(() => [
+  { label: t('header.nav_shop'), to: localePath('/shop') },
+  { label: advert.value?.category || '', to: undefined },
+  { label: advert.value?.title || '', to: undefined }
+])
+
+const showAuthors = computed(() =>
+  advert.value?.type === AdvertType.BOOK && !!advert.value.authors)
+
+const showCondition = computed(() =>
+  advert.value != null
+  && advert.value.type !== AdvertType.SERVICE
+  && !!advert.value.condition)
+
+const showMetadata = computed(() => {
+  if (!advert.value)
+    return false
+
+  const { type, isbn, subject, grade, school, category } = advert.value
+
+  if (type === AdvertType.BOOK)
+    return !!isbn
+  if (type === AdvertType.PRODUCT)
+    return !!category
+  if (type === AdvertType.SERVICE)
+    return !!(subject || grade || school)
+
+  return false
+})
+
+const showConditionDetails = computed(() =>
+  (advert.value?.conditions?.length ?? 0) > 0)
+
+const showPublicQuestions = computed(() =>
+  (advert.value?.questions?.length ?? 0) > 0)
+
+const handleAskQuestion = (_text: string) => {
+  // TODO: send question to API
+}
+
+const advertSummary = computed(() => {
+  if (!advert.value) return null
+
+  return {
+    id: advert.value.id,
+    title: advert.value.title,
+    type: advert.value.type,
+    condition: advert.value.condition,
+    price: advert.value.price,
+    image: advert.value.image || advert.value.images?.[0] || ''
+  }
+})
+</script>
+
+<template>
+  <div class="min-h-screen">
+    <Breadcrumb :items="breadcrumbItems" />
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <div class="mb-8">
+        <NuxtLink
+          :to="localePath('/shop')"
+          class="inline-flex items-center gap-2 text-emerald-700 dark:text-emerald-400 hover:underline font-medium focus:ring-2 focus:ring-emerald-500 outline-none rounded"
+        >
+          <span aria-hidden="true">←</span> {{ $t('common.back_to_catalog') }}
+        </NuxtLink>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2">
+          <AdvertGallery
+            :images="advert?.images || []"
+            :title="advert?.title || ''"
+          />
+        </div>
+
+        <div class="lg:col-span-1">
+          <AdvertInfo
+            v-if="advert"
+            :condition="showCondition ? advert.condition : ''"
+            :featured="advert.featured"
+            :title="advert.title"
+            :authors="showAuthors ? advert.authors : ''"
+            :price="advert.price"
+            :old-price="advert.oldPrice"
+          />
+          <AdvertMetadata
+            v-if="advert && showMetadata"
+            :isbn="advert.type === AdvertType.BOOK ? advert.isbn : ''"
+            :category="advert.type === AdvertType.PRODUCT ? advert.category : ''"
+            :subject="advert.type === AdvertType.SERVICE ? advert.subject : ''"
+            :grade="advert.type === AdvertType.SERVICE ? advert.grade : ''"
+            :school="advert.type === AdvertType.SERVICE ? advert.school : ''"
+          />
+          <AdvertSellerCard
+            v-if="advert && advert.seller.username"
+            :seller="advert.seller"
+            @view-profile="() => {}"
+          />
+          <AdvertActionButtons
+            :advert="advertSummary"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12">
+        <div class="lg:col-span-2">
+          <AdvertDescription :description="advert?.description || ''" />
+        </div>
+
+        <AdvertConditionDetails
+          v-if="showConditionDetails"
+          :conditions="advert?.conditions || []"
+        />
+      </div>
+
+      <div
+        v-if="showPublicQuestions"
+        class="mt-12"
+      >
+        <AdvertPublicQuestions
+          v-if="advert"
+          :seller="advert.seller"
+          :questions="advert.questions || []"
+          :answers="advert.answers || []"
+          @ask-question="handleAskQuestion"
+        />
+      </div>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "type": "BOOK",
+    "title": "Biology: A Global Approach, 12th Edition",
+    "price": 84.5,
+    "publicationDate": "2026-05-14T12:00:00.000Z",
+    "notificationDate": "2026-05-14T12:00:00.000Z",
+    "status": "PUBLISHED",
+    "userId": "user-1",
+    "sellerPseudo": "seller-1",
+    "primaryImage": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&h=800&fit=crop"
+  },
+  {
+    "id": 2,
+    "type": "BOOK",
+    "title": "Mathematics Workbook",
+    "price": 24.9,
+    "publicationDate": "2026-05-15T09:30:00.000Z",
+    "notificationDate": "2026-05-15T09:30:00.000Z",
+    "status": "PUBLISHED",
+    "userId": "user-1",
+    "sellerPseudo": "seller-2",
+    "primaryImage": "https://images.unsplash.com/photo-1513258496099-48168024aec0?w=600&h=800&fit=crop"
+  }
+]
