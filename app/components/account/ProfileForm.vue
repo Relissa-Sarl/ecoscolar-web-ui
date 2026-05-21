@@ -6,14 +6,23 @@ const { t } = useI18n()
 
 const usersStore = useUsersStore()
 
-// --- Références pour les champs du formulaire ---
-const nickname = ref('')
-const lastName = ref('')
-const firstName = ref('')
-const postalCode = ref('')
-const birthdayDate = ref('')
-
 const spokenLanguages = ref<SpokenLanguage[]>([])
+
+// Reactive form data for the profile, initialized with the current user's information if available
+const profileForm = ref({
+  nickname: usersStore.user?.nickname || '',
+  firstName: usersStore.user?.firstName || '',
+  lastName: usersStore.user?.lastName || '',
+  postalCode: usersStore.user?.location.postalCode || '',
+  birthdayDate: usersStore.user?.birthdayDate || ''
+})
+
+if (usersStore.user?.isOnboarded) {
+  console.log(usersStore.user)
+  spokenLanguages.value = usersStore.user?.spokenLanguages || []
+}
+
+console.log('ProfileForm - user:', usersStore.user)
 
 const languageOptions = [
   { value: 'fr', text: 'fr' },
@@ -60,11 +69,7 @@ const onLanguageChange = (index: number) => {
  */
 const handleSubmit = () => {
   const formData = {
-    nickname: nickname.value,
-    postalCode: postalCode.value,
-    firstName: firstName.value,
-    lastName: lastName.value,
-    birthdayDate: birthdayDate.value,
+    ...profileForm.value,
     spokenLanguages: spokenLanguages.value.filter(l => l.language && l.level)
   }
 
@@ -87,7 +92,7 @@ const handleSubmit = () => {
         </label>
         <input
           id="profile-pseudo"
-          v-model="nickname"
+          v-model="profileForm.nickname"
           type="text"
           required
           class="form-input"
@@ -103,7 +108,7 @@ const handleSubmit = () => {
         </label>
         <input
           id="profile-prenom"
-          v-model="firstName"
+          v-model="profileForm.firstName"
           type="text"
           required
           class="form-input"
@@ -119,7 +124,7 @@ const handleSubmit = () => {
         </label>
         <input
           id="profile-nom"
-          v-model="lastName"
+          v-model="profileForm.lastName"
           type="text"
           required
           class="form-input"
@@ -135,7 +140,7 @@ const handleSubmit = () => {
         </label>
         <input
           id="profile-cp"
-          v-model="postalCode"
+          v-model="profileForm.postalCode"
           type="text"
           pattern="[1-9][0-9]{3}"
           :placeholder="$t('register.profile.cp_placeholder')"
@@ -153,7 +158,7 @@ const handleSubmit = () => {
         </label>
         <input
           id="profile-dob"
-          v-model="birthdayDate"
+          v-model="profileForm.birthdayDate"
           type="date"
           required
           class="form-input"
