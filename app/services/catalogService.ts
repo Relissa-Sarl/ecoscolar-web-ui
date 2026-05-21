@@ -3,7 +3,7 @@ import { useApi } from '../composables/useApi'
 
 type ApiClient = typeof useApi
 
-const CATALOG_SUMMARIES_PATH = '/v1/adverts/summary'
+const CATALOG_SUMMARIES_PATH = '/adverts/summary'
 
 export interface CatalogSearchParams {
   q?: string

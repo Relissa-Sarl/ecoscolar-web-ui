@@ -4,6 +4,7 @@ import type { MyAdvert } from '@/types/advert'
 import { AdvertType } from '@/utils/enum/advertType'
 import { AdvertStatus } from '@/utils/enum/advertStatus'
 import { getAdvertService } from '~/services/advertService'
+import { getUserService } from '~/services/usersService'
 
 const localePath = useLocalePath()
 
@@ -125,7 +126,7 @@ const adverts = ref<MyAdvert[]>([
 
 onMounted(async () => {
   try {
-    const service = getAdvertService()
+    const service = getUserService()
     const fetchedAdverts = await service.getMeAdvert()
     adverts.value = fetchedAdverts as unknown as MyAdvert[]
   } catch (error) {
