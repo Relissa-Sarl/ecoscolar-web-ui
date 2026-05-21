@@ -362,8 +362,8 @@
     "favorites": "Favoriten"
   },
   "common": {
-    "back_to_home": "← Zurück zur Startseite",
-    "back_to_catalog": "← Zurück zum Katalog",
+    "back_to_home": "Zurück zur Startseite",
+    "back_to_catalog": "Zurück zum Katalog",
     "skip_to_content": "Zum Hauptinhalt springen",
     "last_updated": "Zuletzt aktualisiert:",
     "contact_support": "Support kontaktieren",

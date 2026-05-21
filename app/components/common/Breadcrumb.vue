@@ -8,7 +8,10 @@ interface Props {
   items: BreadcrumbItem[]
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+const visibleItems = computed(() =>
+  props.items.filter(item => item.label.trim().length > 0))
 </script>
 
 <template>
@@ -16,7 +19,7 @@ defineProps<Props>()
     <nav :aria-label="$t('common.breadcrumb_label')">
       <ol class="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
         <li
-          v-for="(item, idx) in items"
+          v-for="(item, idx) in visibleItems"
           :key="idx"
           class="flex items-center gap-2"
         >
@@ -29,13 +32,13 @@ defineProps<Props>()
           </NuxtLink>
           <span
             v-else
-            :aria-current="idx === items.length - 1 ? 'page' : undefined"
+            :aria-current="idx === visibleItems.length - 1 ? 'page' : undefined"
             class="text-gray-900 dark:text-gray-100 font-medium"
           >
             {{ item.label }}
           </span>
           <span
-            v-if="idx < items.length - 1"
+            v-if="idx < visibleItems.length - 1"
             aria-hidden="true"
             class="text-gray-400"
           >/</span>
