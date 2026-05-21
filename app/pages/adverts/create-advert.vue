@@ -291,7 +291,7 @@ const handleSubmit = async () => {
     await navigateTo(localePath('/me/adverts')) // Redirect to adverts list after successful creation
   } catch (error) {
     console.error('Error creating advert:', error)
-    errors.value.content = $t('createAdvert.creationFailed')
+    errors.value.content = $t('createAdvert.error.creationFailed')
   }
 }
 </script>
