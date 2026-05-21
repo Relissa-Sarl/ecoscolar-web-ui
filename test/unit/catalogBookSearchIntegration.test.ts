@@ -46,7 +46,7 @@ describe('T8-4 · intégration recherche livre (catalogService → API → mappe
     const rows = await service.listSummaries({ q: isbn })
     const listings = mapCatalogApiToListings(rows)
 
-    expect(apiClient).toHaveBeenCalledWith('/v1/adverts/summary', { query: { q: isbn } })
+    expect(apiClient).toHaveBeenCalledWith('/adverts/summary', { query: { q: isbn } })
     expect(listings).toHaveLength(1)
     expect(listings[0].title).toBe('Exemple annonce 3')
     expect(listings[0].categoryTab).toBe('textbooks')
@@ -82,7 +82,7 @@ describe('T8-4 · intégration recherche livre (catalogService → API → mappe
     const rows = await service.listSummaries()
     const listings = mapCatalogApiToListings(rows)
 
-    expect(apiClient).toHaveBeenCalledWith('/v1/adverts/summary', { query: undefined })
+    expect(apiClient).toHaveBeenCalledWith('/adverts/summary', { query: undefined })
     expect(listings).toHaveLength(4)
     expect(listings.filter(l => l.categoryTab === 'textbooks')).toHaveLength(3)
   })

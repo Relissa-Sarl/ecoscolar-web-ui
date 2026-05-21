@@ -16,7 +16,7 @@ describe('catalogService', () => {
     const summaries = await service.listSummaries()
 
     expect(summaries).toHaveLength(1)
-    expect(apiClient).toHaveBeenCalledWith('/v1/adverts/summary', { query: undefined })
+    expect(apiClient).toHaveBeenCalledWith('/adverts/summary', { query: undefined })
   })
 
   it('passes q as query param', async () => {
@@ -25,7 +25,7 @@ describe('catalogService', () => {
 
     await service.listSummaries({ q: 'math' })
 
-    expect(apiClient).toHaveBeenCalledWith('/v1/adverts/summary', {
+    expect(apiClient).toHaveBeenCalledWith('/adverts/summary', {
       query: { q: 'math' }
     })
   })
@@ -45,7 +45,7 @@ describe('catalogService', () => {
 
     expect(result).toEqual(detail)
     expect(apiClient).toHaveBeenCalledWith(
-      '/v1/adverts/summary/6d4b9d4a-1dd1-4a38-8d68-7af4d9cb3c01'
+      '/adverts/summary/6d4b9d4a-1dd1-4a38-8d68-7af4d9cb3c01'
     )
   })
 })

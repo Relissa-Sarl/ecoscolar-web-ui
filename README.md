@@ -117,3 +117,77 @@ docker compose down
 # 🛡️ Qualité du code
 L'application est protégée par ESLint en mode strict.
 Si la CI (GitHub Actions) échoue sur votre Pull Request à cause du formatage, lancez `pnpm run lint --fix` en local, commitez le résultat, et la CI passera au vert !
+
+# 🧪 Tests
+
+## Prérequis (tests d'intégration catalogue / shop)
+
+API gateway Docker sur le port `8080` :
+
+```powershell
+cd ecoscolar-web-api
+docker compose up -d
+```
+
+Front en dev avec la bonne base URL :
+
+```powershell
+# Windows PowerShell
+cd ecoscolar-web-ui
+$env:NUXT_PUBLIC_API_BASE = "http://localhost:8080/api"
+pnpm dev --port 3000
+```
+
+```bash
+# macOS / Linux
+cd ecoscolar-web-ui
+export NUXT_PUBLIC_API_BASE=http://localhost:8080/api
+pnpm dev --port 3000
+```
+
+## Commandes générales
+
+```powershell
+# Toute la suite Vitest (unit + nuxt)
+pnpm test
+
+# Unités seules
+pnpm test:unit
+
+# Composants / pages Nuxt (mountSuspended, etc.)
+pnpm test:nuxt
+
+# Couverture
+pnpm test:coverage
+
+# Mode watch
+pnpm test:watch
+
+# E2E Playwright (serveur dev requis sur PLAYWRIGHT_BASE_URL)
+```powershell
+# Windows PowerShell
+$env:PLAYWRIGHT_BASE_URL = "http://localhost:3000"
+pnpm test:e2e
+```
+
+```bash
+# macOS / Linux
+PLAYWRIGHT_BASE_URL=http://localhost:3000 pnpm test:e2e
+```
+
+## Sprint T8 — tests par sous-tâche
+
+| Tâche | Fichiers | Commande |
+|-------|----------|----------|
+| **T8-1** Login API | `test/unit/loginApiIntegration.test.ts` | `pnpm exec vitest run test/unit/loginApiIntegration.test.ts` |
+| **T8-2** Route JWT | `test/unit/jwtProtectedRouteIntegration.test.ts` | `pnpm exec vitest run test/unit/jwtProtectedRouteIntegration.test.ts` |
+| **T4-6 / T8-3** Création annonces | `test/unit/advertCreateIntegration.test.ts` | `pnpm exec vitest run test/unit/advertCreateIntegration.test.ts` |
+| **T8-4** Recherche livre | `test/unit/catalogBookSearchIntegration.test.ts`, `test/nuxt/shopBookSearchIntegration.test.ts` | `pnpm exec vitest run test/unit/catalogBookSearchIntegration.test.ts test/nuxt/shopBookSearchIntegration.test.ts` |
+| **T8-5** Inscription → annonce | `test/unit/registerToAdvertIntegration.test.ts` | `pnpm exec vitest run test/unit/registerToAdvertIntegration.test.ts` |
+| **T8-6** Accessibilité S1 | `test/nuxt/lighthouseS1Accessibility.test.ts` | `pnpm exec vitest run test/nuxt/lighthouseS1Accessibility.test.ts` |
+
+Lancer **tous les tests T8 front** en une fois :
+
+```powershell
+pnpm exec vitest run test/unit/loginApiIntegration.test.ts test/unit/jwtProtectedRouteIntegration.test.ts test/unit/advertCreateIntegration.test.ts test/unit/registerToAdvertIntegration.test.ts test/unit/catalogBookSearchIntegration.test.ts test/nuxt/shopBookSearchIntegration.test.ts test/nuxt/lighthouseS1Accessibility.test.ts
+```

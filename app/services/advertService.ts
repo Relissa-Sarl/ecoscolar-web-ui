@@ -58,13 +58,13 @@ export function createAdvertService({ apiClient }: AdvertServiceDependencies): A
   }
 
   const createProductAdvert = async (data: CreateAdvertData): Promise<void> => {
-    apiClient<unknown>(`${ADVERTS_PATH}/products`, { method: 'POST', body: data })
+    await apiClient<unknown>(`${ADVERTS_PATH}/products`, { method: 'POST', body: data })
   }
   const createServiceAdvert = async (data: CreateAdvertData): Promise<void> => {
-    apiClient<unknown>(`${ADVERTS_PATH}/services`, { method: 'POST', body: data })
+    await apiClient<unknown>(`${ADVERTS_PATH}/services`, { method: 'POST', body: data })
   }
   const createBookAdvert = async (data: CreateAdvertData): Promise<void> => {
-    apiClient<unknown>(`${ADVERTS_PATH}/books`, { method: 'POST', body: data })
+    await apiClient<unknown>(`${ADVERTS_PATH}/books`, { method: 'POST', body: data })
   }
 
   const deleteAdvert = async (id: number): Promise<void> => {
