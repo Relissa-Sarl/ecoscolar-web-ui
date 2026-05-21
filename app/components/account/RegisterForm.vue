@@ -1,10 +1,6 @@
 <script setup lang="ts">
 const usersStore = useUsersStore()
 
-definePageMeta({
-  middleware: 'auth'
-})
-
 // Initialize the registration form with empty email and password fields
 const registerForm = ref({ email: '', password: '' })
 
