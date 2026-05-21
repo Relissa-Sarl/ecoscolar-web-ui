@@ -4,6 +4,8 @@ import type { PublicUser, User } from '~/types/user'
 import LanguagesComponent from './private/LanguagesComponent.vue'
 import LocationComponent from './private/LocationComponent.vue'
 
+const localePath = useLocalePath()
+
 /**
  * Props definition for the ProfileInfos component.
  */
@@ -61,7 +63,7 @@ const displayName = computed(() => {
 
     <nav class="w-full flex flex-col gap-5">
       <NuxtLink
-        to="/favorites"
+        :to="localePath('/favorites')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
       >
         <svg
@@ -82,7 +84,7 @@ const displayName = computed(() => {
       </NuxtLink>
 
       <NuxtLink
-        to="/me/adverts"
+        :to="localePath('/me/adverts')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
       >
         <svg

@@ -20,6 +20,8 @@ export const useUsersStore = defineStore('users', () => {
 
   const isAuthenticated = computed(() => !!user.value)
 
+  const localePath = useLocalePath()
+
   /**
    * Fetch the profile of the currently authenticated user by calling the UserService's getMyProfile method.
    * @param force If true, forces a reload of the user's profile from the API even if it has already been loaded.
@@ -82,7 +84,7 @@ export const useUsersStore = defineStore('users', () => {
       hasLoaded.value = true
 
       // Redirect to profile page after successful login
-      await navigateTo('/me/profile')
+      await navigateTo(localePath('/me/profile'))
     } catch (e) {
       errors.value = formatErrors(e as ApiError)
     } finally {
@@ -108,7 +110,7 @@ export const useUsersStore = defineStore('users', () => {
       isLoading.value = false
 
       // Redirect to home page after logout
-      await navigateTo('/login')
+      await navigateTo(localePath('/login'))
     }
   }
 
@@ -128,7 +130,7 @@ export const useUsersStore = defineStore('users', () => {
       isLoading.value = false
 
       // Redirect to profile page after successful profile update
-      await navigateTo('/me/profile')
+      await navigateTo(localePath('/me/profile'))
     }
   }
 
