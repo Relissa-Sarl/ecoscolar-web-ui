@@ -18,18 +18,18 @@ export const useApi = <T>(
 
   return $fetch<T>(request, {
     baseURL: config.public.apiBase,
+    credentials: 'include', // Include cookies in requests for authentication
     ...fetchOptions,
 
     async onRequest({ options }) {
       const headers = new Headers(options.headers)
 
-      // Check JWT if it is enabled
-      if (config.public.enableJwt && !skipAuth) {
-        // TODO : After the JWT implementation
-        /* const token = authStore.token
-        if (token) {
-          headers.set('Authorization', `Bearer ${token}`)
-        } */
+      // If we're on the server, forward the incoming request's cookies to the API
+      // to maintain the session
+      if (import.meta.server) {
+        const reqHeaders = useRequestHeaders(['cookie'])
+        if (reqHeaders.cookie)
+          headers.set('cookie', reqHeaders.cookie)
       }
 
       options.headers = headers

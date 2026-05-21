@@ -353,7 +353,9 @@
     "language": "Langue",
     "cart": "Panier",
     "login": "Connexion",
-    "profile": "Profil"
+    "logout": "Déconnexion",
+    "profile": "Profil",
+    "favorites": "Favoris"
   },
   "common": {
     "back_to_home": "← Retour à l'accueil",
@@ -446,7 +448,13 @@
     "forgot_password": "Mot de passe oublié ?",
     "submit_button": "Se connecter",
     "no_account": "Pas encore de compte ?",
-    "register_link": "Créer un compte"
+    "register_link": "Créer un compte",
+    "errors": {
+      "Default": "Adresse e-mail ou mot de passe incorrect."
+    },
+    "status": {
+      "loading": "Connexion en cours..."
+    }
   },
   "register": {
     "title": "Créer un compte",
@@ -478,6 +486,18 @@
       "add_language": "Ajouter une langue",
       "remove_language_aria": "Supprimer la langue numéro {index}",
       "submit_button": "Terminer l'inscription"
+    },
+    "errors": {
+      "DuplicateUserName": "Cette adresse e-mail est déjà associée à un compte.",
+      "PasswordTooShort": "Votre mot de passe doit faire au moins 6 caractères.",
+      "PasswordRequiresNonAlphanumeric": "Le mot de passe doit contenir un caractère spécial.",
+      "InvalidEmail": "L'adresse email n'est pas valide.",
+      "PasswordRequiresUpper": "Le mot de passe doit contenir une majuscule.",
+      "PasswordRequiresDigit": "Le mot de passe doit contenir un chiffre.",
+      "Default": "Une erreur inattendue est survenue. Veuillez réessayer."
+    },
+    "status": {
+      "loading": "Création de votre compte..."
     }
   },
   "forgot_password": {
@@ -496,6 +516,11 @@
     },
     "logged_as": "Connecté : {name}",
     "logout": "Déconnexion"
+  },
+  "profile": {
+    "language": "Langues",
+    "location": "Localisation",
+    "favorites": "Favoris",
+    "sales": "Ventes"
   }
-
 }
