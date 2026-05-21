@@ -35,10 +35,10 @@ const addLanguage = () => {
 
 /**
  * Remove a language from the list
- * @param lang language to remove
+ * @param index language index to remove
  */
-const removeLanguage = (lang: string) => {
-  spokenLanguages.value = spokenLanguages.value.filter(l => l.language !== lang)
+const removeLanguage = (index: number) => {
+  spokenLanguages.value.splice(index, 1)
 }
 
 /**
@@ -243,7 +243,7 @@ const handleSubmit = () => {
           type="button"
           class="px-3 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/50 rounded-md"
           :aria-label="$t('register.profile.remove_language_aria', { index: index + 1 })"
-          @click="removeLanguage(lang.language)"
+          @click="removeLanguage(index)"
         >
           &times;
         </button>
