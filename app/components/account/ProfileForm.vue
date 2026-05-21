@@ -16,9 +16,9 @@ const birthdayDate = ref('')
 const spokenLanguages = ref<SpokenLanguage[]>([])
 
 const languageOptions = [
-  { value: 'fr', text: t('fr') },
-  { value: 'de', text: t('de') },
-  { value: 'it', text: t('it') }
+  { value: 'fr', text: 'fr' },
+  { value: 'de', text: 'de' },
+  { value: 'it', text: 'it' }
 ]
 
 const levelOptions = ['maternelle', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2']
@@ -205,7 +205,7 @@ const handleSubmit = () => {
               :key="opt.value"
               :value="opt.value"
             >
-              {{ opt.text }}
+              {{ $t(opt.text) }}
             </option>
           </select>
         </div>
