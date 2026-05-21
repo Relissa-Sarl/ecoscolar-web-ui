@@ -44,23 +44,14 @@ const removeLanguage = (index: number) => {
 /**
  * Manage language selection
  * @param lang selected language
- * @param index index of the row being changed
  */
-const onLanguageChange = (lang: string, index?: number) => {
-  // If the same language is selected more than once, reset the duplicate row and alert the user
-  if (spokenLanguages.value.filter(l => l.language === lang).length > 1) {
-    const duplicateIndex =
-      typeof index === 'number'
-        ? index
-        : spokenLanguages.value.reduce((lastIndex, currentLanguage, currentIndex) => {
-            return currentLanguage.language === lang ? currentIndex : lastIndex
-          }, -1)
-
-    if (duplicateIndex !== -1 && spokenLanguages.value[duplicateIndex]) {
-      // reset the language that was just selected to avoid deleting a previous row
-      spokenLanguages.value[duplicateIndex].language = ''
-      alert(t('register.profile.language_duplicate', { language: t(lang) }))
-    }
+const onLanguageChange = (index: number) => {
+  // If the same language is selected more than once, remove the duplicate and alert the user
+  const selectedLang = spokenLanguages.value[index]?.language
+  const duplicateIndex = spokenLanguages.value.findIndex((l, i) => l.language === selectedLang && i !== index)
+  if (duplicateIndex !== -1 && selectedLang) {
+    spokenLanguages.value.splice(duplicateIndex, 1)
+    alert(t('register.profile.language_duplicate', { language: t(selectedLang) }))
   }
 }
 
@@ -199,7 +190,7 @@ const handleSubmit = () => {
             v-model="lang.language"
             required
             class="form-input"
-            @change="onLanguageChange(lang.language)"
+            @change="onLanguageChange(index)"
           >
             <option
               value=""
