@@ -11,7 +11,6 @@ export default defineNuxtConfig({
     'nuxt-zod-i18n',
     '@nuxtjs/google-fonts'
   ],
-  ssr: false,
   devtools: {
     enabled: true
   },
