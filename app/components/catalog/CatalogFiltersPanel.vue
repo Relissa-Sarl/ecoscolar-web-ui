@@ -5,6 +5,9 @@ const grades = defineModel<GradeFilterState>('grades', { required: true })
 const subjects = defineModel<SubjectFilterState>('subjects', { required: true })
 const activeCategory = defineModel<CatalogCategoryTab>('activeCategory', { required: true })
 
+/** Sprint 1 — filtres niveau / matière masqués tant que T6 (données de référence) n'est pas livré. */
+const showAdvancedFilters = false
+
 defineEmits<{
   reset: []
 }>()
@@ -106,7 +109,10 @@ defineEmits<{
       </button>
     </fieldset>
 
-    <div class="border-t border-slate-100 pt-4 dark:border-slate-800">
+    <div
+      v-if="showAdvancedFilters"
+      class="border-t border-slate-100 pt-4 dark:border-slate-800"
+    >
       <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
         {{ $t('catalog.filters.grade_heading') }}
       </p>
@@ -154,7 +160,10 @@ defineEmits<{
       </ul>
     </div>
 
-    <div class="border-t border-slate-100 pt-4 dark:border-slate-800">
+    <div
+      v-if="showAdvancedFilters"
+      class="border-t border-slate-100 pt-4 dark:border-slate-800"
+    >
       <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
         {{ $t('catalog.filters.subject_heading') }}
       </p>

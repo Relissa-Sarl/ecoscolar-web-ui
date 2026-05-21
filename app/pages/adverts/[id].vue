@@ -7,11 +7,21 @@ const localePath = useLocalePath()
 const { t } = useI18n()
 const { data: advert } = await useAdvert(String(route.params.id))
 
-const breadcrumbItems = computed(() => [
-  { label: t('header.nav_shop'), to: localePath('/shop') },
-  { label: advert.value?.category || '', to: undefined },
-  { label: advert.value?.title || '', to: undefined }
-])
+const breadcrumbItems = computed(() => {
+  const items: Array<{ label: string, to?: string }> = [
+    { label: t('header.nav_shop'), to: localePath('/shop') }
+  ]
+
+  const category = advert.value?.category?.trim()
+  if (category)
+    items.push({ label: category })
+
+  const title = advert.value?.title?.trim()
+  if (title)
+    items.push({ label: title })
+
+  return items
+})
 
 const showAuthors = computed(() =>
   advert.value?.type === AdvertType.BOOK && !!advert.value.authors)
