@@ -539,7 +539,8 @@
       "add_language": "Sprache hinzufügen",
       "submit_button": "Änderungen speichern",
       "language_placeholder": "Sprache auswählen",
-      "level_placeholder": "Niveau auswählen"
+      "level_placeholder": "Niveau auswählen",
+      "pc_placeholder": "z.B. 1000"
     }
   }
 }

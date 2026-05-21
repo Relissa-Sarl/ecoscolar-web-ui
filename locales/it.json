@@ -539,7 +539,8 @@
       "add_language": "Aggiungi una lingua",
       "submit_button": "Salva le modifiche",
       "language_placeholder": "Scegli una lingua",
-      "level_placeholder": "Scegli un livello"
+      "level_placeholder": "Scegli un livello",
+      "pc_placeholder": "Es: 1000"
     }
   }
 }
