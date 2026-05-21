@@ -15,6 +15,6 @@ definePageMeta({
       </p>
     </header>
 
-    <AccountProfileForm />
+    <AccountProfileForm :traduction-base-path="'profile.settings'" />
   </div>
 </template>

@@ -9,6 +9,6 @@
       </p>
     </header>
 
-    <AccountProfileForm />
+    <AccountProfileForm :traduction-base-path="'register.profile'" />
   </div>
 </template>

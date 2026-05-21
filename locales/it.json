@@ -470,11 +470,11 @@
     "profile": {
       "title": "Completa il tuo profilo",
       "subtitle": "Queste informazioni ci aiuteranno a personalizzare la tua esperienza.",
-      "pseudo_label": "Nickname",
-      "prenom_label": "Nome",
-      "nom_label": "Cognome",
-      "cp_label": "Codice Postale",
-      "cp_placeholder": "Es: 1000",
+      "nickname_label": "Nickname",
+      "firstName_label": "Nome",
+      "lastName_label": "Cognome",
+      "pc_label": "Codice Postale",
+      "pc_placeholder": "Es: 1000",
       "dob_label": "Data di nascita",
       "languages_title": "Lingue parlate",
       "languages_empty": "Nessuna lingua aggiunta.",
@@ -523,6 +523,23 @@
     "location": "Localizzazione",
     "favorites": "Preferiti",
     "sales": "Vendite",
-    "edit": "Modifica profilo"
+    "edit": "Modifica profilo",
+    "settings" : {
+      "title": "Modifica il mio profilo",
+      "subtitle": "Aggiorna le tue informazioni personali per un'esperienza personalizzata.",
+      "nickname_label": "Nickname",
+      "firstName_label": "Nome",
+      "lastName_label": "Cognome",
+      "pc_label": "Codice Postale",
+      "dob_label": "Data di nascita",
+      "languages_title": "Lingue parlate",
+      "language_label": "Lingua",
+      "level_label": "Livello",
+      "level_native": "Madrelingua",
+      "add_language": "Aggiungi una lingua",
+      "submit_button": "Salva le modifiche",
+      "language_placeholder": "Scegli una lingua",
+      "level_placeholder": "Scegli un livello"
+    }
   }
 }

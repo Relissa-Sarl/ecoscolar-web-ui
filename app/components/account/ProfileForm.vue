@@ -2,6 +2,12 @@
 import { ref } from 'vue'
 import type { SpokenLanguage } from '~/types/user'
 
+interface Props {
+  traductionBasePath: string
+}
+
+const props = defineProps<Props>()
+
 const { t } = useI18n()
 
 const usersStore = useUsersStore()
@@ -13,7 +19,7 @@ const profileForm = ref({
   nickname: usersStore.user?.nickname || '',
   firstName: usersStore.user?.firstName || '',
   lastName: usersStore.user?.lastName || '',
-  postalCode: usersStore.user?.location.postalCode || '',
+  postalCode: usersStore.user?.location?.postalCode || '',
   birthdayDate: usersStore.user?.birthdayDate || ''
 })
 
@@ -21,8 +27,6 @@ if (usersStore.user?.isOnboarded) {
   console.log(usersStore.user)
   spokenLanguages.value = usersStore.user?.spokenLanguages || []
 }
-
-console.log('ProfileForm - user:', usersStore.user)
 
 const languageOptions = [
   { value: 'fr', text: 'fr' },
@@ -60,7 +64,7 @@ const onLanguageChange = (index: number) => {
   const duplicateIndex = spokenLanguages.value.findIndex((l, i) => l.language === selectedLang && i !== index)
   if (duplicateIndex !== -1 && selectedLang) {
     spokenLanguages.value.splice(duplicateIndex, 1)
-    alert(t('register.profile.language_duplicate', { language: t(selectedLang) }))
+    alert(t(`${props.traductionBasePath}.language_duplicate`, { language: t(selectedLang) }))
   }
 }
 
@@ -85,13 +89,13 @@ const handleSubmit = () => {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="flex flex-col gap-2">
         <label
-          for="profile-pseudo"
+          for="profile-nickname"
           class="text-sm font-bold text-slate-700 dark:text-slate-300"
         >
-          {{ $t('register.profile.pseudo_label') }}
+          {{ $t(`${props.traductionBasePath}.nickname_label`) }}
         </label>
         <input
-          id="profile-pseudo"
+          id="profile-nickname"
           v-model="profileForm.nickname"
           type="text"
           required
@@ -101,13 +105,13 @@ const handleSubmit = () => {
 
       <div class="flex flex-col gap-2">
         <label
-          for="profile-prenom"
+          for="profile-firstName"
           class="text-sm font-bold text-slate-700 dark:text-slate-300"
         >
-          {{ $t('register.profile.prenom_label') }}
+          {{ $t(`${props.traductionBasePath}.firstName_label`) }}
         </label>
         <input
-          id="profile-prenom"
+          id="profile-firstName"
           v-model="profileForm.firstName"
           type="text"
           required
@@ -117,13 +121,13 @@ const handleSubmit = () => {
 
       <div class="flex flex-col gap-2">
         <label
-          for="profile-nom"
+          for="profile-lastName"
           class="text-sm font-bold text-slate-700 dark:text-slate-300"
         >
-          {{ $t('register.profile.nom_label') }}
+          {{ $t(`${props.traductionBasePath}.lastName_label`) }}
         </label>
         <input
-          id="profile-nom"
+          id="profile-lastName"
           v-model="profileForm.lastName"
           type="text"
           required
@@ -133,17 +137,17 @@ const handleSubmit = () => {
 
       <div class="flex flex-col gap-2">
         <label
-          for="profile-cp"
+          for="profile-pc"
           class="text-sm font-bold text-slate-700 dark:text-slate-300"
         >
-          {{ $t('register.profile.cp_label') }}
+          {{ $t(`${props.traductionBasePath}.pc_label`) }}
         </label>
         <input
-          id="profile-cp"
+          id="profile-pc"
           v-model="profileForm.postalCode"
           type="text"
           pattern="[1-9][0-9]{3}"
-          :placeholder="$t('register.profile.cp_placeholder')"
+          :placeholder="$t(`${props.traductionBasePath}.pc_placeholder`)"
           required
           class="form-input"
         >
@@ -154,7 +158,7 @@ const handleSubmit = () => {
           for="profile-dob"
           class="text-sm font-bold text-slate-700 dark:text-slate-300"
         >
-          {{ $t('register.profile.dob_label') }}
+          {{ $t(`${props.traductionBasePath}.dob_label`) }}
         </label>
         <input
           id="profile-dob"
@@ -168,14 +172,14 @@ const handleSubmit = () => {
 
     <div class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
       <h3 class="text-sm font-bold text-slate-700 dark:text-slate-300">
-        {{ $t('register.profile.languages_title') }}
+        {{ $t(`${props.traductionBasePath}.languages_title`) }}
       </h3>
 
       <div
         v-if="spokenLanguages.length === 0"
         class="text-sm text-slate-500"
       >
-        {{ $t('register.profile.languages_empty') }}
+        {{ $t(`${props.traductionBasePath}.languages_empty`) }}
       </div>
 
       <div
@@ -188,7 +192,7 @@ const handleSubmit = () => {
             :for="`lang-select-${index}`"
             class="sr-only"
           >
-            {{ $t('register.profile.language_label') }}
+            {{ $t(`${props.traductionBasePath}.language_label`) }}
           </label>
           <select
             :id="`lang-select-${index}`"
@@ -201,7 +205,7 @@ const handleSubmit = () => {
               value=""
               disabled
             >
-              {{ $t('register.profile.language_placeholder') }}
+              {{ $t(`${props.traductionBasePath}.language_placeholder`) }}
             </option>
             <option
               v-for="opt in languageOptions"
@@ -218,7 +222,7 @@ const handleSubmit = () => {
             :for="`level-select-${index}`"
             class="sr-only"
           >
-            {{ $t('register.profile.level_label') }}
+            {{ $t(`${props.traductionBasePath}.level_label`) }}
           </label>
           <select
             :id="`level-select-${index}`"
@@ -230,14 +234,14 @@ const handleSubmit = () => {
               value=""
               disabled
             >
-              {{ $t('register.profile.level_placeholder') }}
+              {{ $t(`${props.traductionBasePath}.level_placeholder`) }}
             </option>
             <option
               v-for="lvl in levelOptions"
               :key="lvl"
               :value="lvl"
             >
-              {{ lvl === 'maternelle' ? $t('register.profile.level_native') : lvl }}
+              {{ lvl === 'maternelle' ? $t(`${props.traductionBasePath}.level_native`) : lvl }}
             </option>
           </select>
         </div>
@@ -245,7 +249,7 @@ const handleSubmit = () => {
         <button
           type="button"
           class="px-3 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/50 rounded-md"
-          :aria-label="$t('register.profile.remove_language_aria', { index: index + 1 })"
+          :aria-label="$t(`${props.traductionBasePath}.remove_language_aria`, { index: index + 1 })"
           @click="removeLanguage(index)"
         >
           &times;
@@ -257,7 +261,7 @@ const handleSubmit = () => {
         class="text-sm font-bold text-emerald-800 dark:text-emerald-400 hover:underline"
         @click="addLanguage"
       >
-        + {{ $t('register.profile.add_language') }}
+        + {{ $t(`${props.traductionBasePath}.add_language`) }}
       </button>
     </div>
 
@@ -265,7 +269,7 @@ const handleSubmit = () => {
       type="submit"
       class="w-full bg-emerald-800 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-lg transition-colors focus:ring-4 focus:ring-emerald-500/50 outline-none"
     >
-      {{ $t('register.profile.submit_button') }}
+      {{ $t(`${props.traductionBasePath}.submit_button`) }}
     </button>
   </form>
 </template>
