@@ -44,14 +44,21 @@ const removeLanguage = (index: number) => {
 /**
  * Manage language selection
  * @param lang selected language
+ * @param index index of the row being changed
  */
-const onLanguageChange = (lang: string) => {
-  // If the same language is selected more than once, remove the duplicate and alert the user
+const onLanguageChange = (lang: string, index?: number) => {
+  // If the same language is selected more than once, reset the duplicate row and alert the user
   if (spokenLanguages.value.filter(l => l.language === lang).length > 1) {
-    const index = spokenLanguages.value.findIndex(l => l.language === lang)
-    if (index !== -1 && spokenLanguages.value[index]) {
-      // remove the language that was just selected to avoid duplicates
-      spokenLanguages.value.splice(index, 1)
+    const duplicateIndex =
+      typeof index === 'number'
+        ? index
+        : spokenLanguages.value.reduce((lastIndex, currentLanguage, currentIndex) => {
+            return currentLanguage.language === lang ? currentIndex : lastIndex
+          }, -1)
+
+    if (duplicateIndex !== -1 && spokenLanguages.value[duplicateIndex]) {
+      // reset the language that was just selected to avoid deleting a previous row
+      spokenLanguages.value[duplicateIndex].language = ''
       alert(t('register.profile.language_duplicate', { language: t(lang) }))
     }
   }
