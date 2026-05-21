@@ -1,6 +1,6 @@
 import type { User, UpdateProfileInput, PublicUser } from '~/types/user'
 import { useApi } from '../composables/useApi'
-import type { ModifyAdvertForm } from '~/types/advert'
+import type { MyAdvert } from '~/types/advert'
 
 type ApiClient = typeof useApi
 
@@ -18,7 +18,7 @@ export interface UserService {
   getMyProfile: () => Promise<User>
   updateProfile: (input: UpdateProfileInput) => Promise<User>
   getPublicProfile: (id: string) => Promise<PublicUser>
-  getMeAdvert: () => Promise<ModifyAdvertForm[]>
+  getMeAdvert: () => Promise<MyAdvert[]>
 }
 
 /**
@@ -92,7 +92,7 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
    */
   const getPublicProfile = async (id: string) => apiClient<PublicUser>(`${USER_PATH}/${id}`)
 
-  const getMeAdvert = async () => apiClient<ModifyAdvertForm[]>(`${USER_PATH}/me/adverts`)
+  const getMeAdvert = async () => apiClient<MyAdvert[]>(`${USER_PATH}/me/adverts`)
 
   return {
     register,

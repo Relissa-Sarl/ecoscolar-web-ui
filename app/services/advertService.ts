@@ -11,19 +11,13 @@ type ApiClient = typeof useApi
 
 const ADVERTS_PATH = '/adverts'
 
+export type CreateAdvertData = Partial<ModifyAdvertForm> & { pictures?: File[] }
+
 export interface AdvertService {
   getBook: (id: number) => Promise<BookReadApiItem>
   getProduct: (id: number) => Promise<ProductReadApiItem>
   getService: (id: number) => Promise<ServiceReadApiItem>
-}
 
-export interface AdvertServiceDependencies {
-  apiClient: ApiClient
-}
-
-export type CreateAdvertData = Partial<ModifyAdvertForm> & { pictures?: File[] }
-
-export interface AdvertService {
   getAdvert: (id: number) => Promise<ModifyAdvertForm>
 
   updateProductAdvert: (id: number, data: Partial<ModifyAdvertForm>) => Promise<void>

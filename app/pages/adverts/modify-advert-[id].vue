@@ -80,7 +80,7 @@ const validateForm = (): boolean => {
         errors.value.teachingLanguage = $t('modifyAdvert.error.empty.teachingLanguage')
       }
       if (!form.value.specificStudyLevel?.trim()) {
-        errors.value.specificStudyLevel = $t('modifyAdvert.error.empty.specificStudyLevel')
+        errors.value.specificStudyLevel = $t('modifyAdvert.error.empty.studyLevel')
       }
       break
     case AdvertType.PRODUCT:
@@ -296,7 +296,7 @@ const handleSubmit = async () => {
     await navigateTo(localePath('/me/adverts')) // Redirect to adverts list after successful creation
   } catch (error) {
     console.error('Error creating advert:', error)
-    errors.value.content = $t('createAdvert.error.creationFailed') || 'Une erreur est survenue lors de la création de l\'annonce.'
+    errors.value.content = $t('modifyAdvert.modificationFailed')
   }
 }
 
@@ -752,10 +752,10 @@ vueOnMounted(async () => {
                   >
                 </div>
                 <p
-                  v-show="errors.studyLevel != null"
+                  v-show="errors.specificStudyLevel != null"
                   class="mt-1 min-h-5 text-sm text-red-500"
                 >
-                  {{ errors.studyLevel }}
+                  {{ errors.specificStudyLevel }}
                 </p>
               </div>
               <div class="md:col-span-2">

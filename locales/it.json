@@ -221,7 +221,8 @@
         "imageSize": "Ogni immagine deve essere inferiore a 5MB",
         "imageType": "Formato di file non autorizzato per l'immagine",
         "imageCount": "Puoi caricare solo un massimo di 10 immagini"
-      }
+      },
+      "creationFailed": "Si è verificato un errore durante la creazione dell'annuncio. Riprova."
     }
   },
   "modifyAdvert": {
@@ -302,7 +303,8 @@
         "imageType": "Formato di file non autorizzato per l'immagine",
         "imageCount": "Puoi caricare solo un massimo di 10 immagini"
       },
-      "invalidId": "ID dell'annuncio non valido"
+      "invalidId": "ID dell'annuncio non valido",
+      "modificationFailed": "Si è verificato un errore durante la modifica dell'annuncio. Riprova."
     }
   },
   "advert": {

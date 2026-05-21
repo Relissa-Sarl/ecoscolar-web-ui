@@ -78,7 +78,7 @@ const validateForm = (): boolean => {
         errors.value.teachingLanguage = $t('createAdvert.error.empty.teachingLanguage')
       }
       if (!form.value.studyLevel.trim()) {
-        errors.value.studyLevel = $t('createAdvert.error.empty.studyLevel')
+        errors.value.specificStudyLevel = $t('createAdvert.error.empty.studyLevel')
       }
       break
     case AdvertType.PRODUCT:
@@ -169,7 +169,7 @@ const validateForm = (): boolean => {
         errors.value.teachingLanguage = $t('createAdvert.error.invalid.teachingLanguage')
       }
       if (form.value.studyLevel.length > 50) {
-        errors.value.studyLevel = $t('createAdvert.error.invalid.studyLevelLength')
+        errors.value.specificStudyLevel = $t('createAdvert.error.invalid.studyLevelLength')
       }
       break
     case AdvertType.BOOK:
@@ -279,9 +279,9 @@ const handleSubmit = async () => {
           price: form.value.price,
           userId: userStore.user?.id,
           subjectId: form.value.subjectId,
-          schoolGradeId: form.value.schoolGradeId,
+          schoolLevelId: form.value.schoolGradeId,
           teachingLanguage: form.value.teachingLanguage,
-          studyLevel: form.value.studyLevel
+          specificStudyLevel : form.value.studyLevel
         }
         await advertService.createServiceAdvert(formData)
         break
@@ -291,7 +291,7 @@ const handleSubmit = async () => {
     await navigateTo(localePath('/me/adverts')) // Redirect to adverts list after successful creation
   } catch (error) {
     console.error('Error creating advert:', error)
-    errors.value.content = $t('createAdvert.error.creationFailed') || 'Une erreur est survenue lors de la création de l\'annonce.'
+    errors.value.content = $t('createAdvert.creationFailed')
   }
 }
 </script>
@@ -795,10 +795,10 @@ const handleSubmit = async () => {
                   >
                 </div>
                 <p
-                  v-show="errors.studyLevel != null"
+                  v-show="errors.specificStudyLevel != null"
                   class="mt-1 min-h-5 text-sm text-red-500"
                 >
-                  {{ errors.studyLevel }}
+                  {{ errors.specificStudyLevel }}
                 </p>
               </div>
               <div class="md:col-span-2">
@@ -962,7 +962,7 @@ const handleSubmit = async () => {
               :to="localePath('/me/adverts')"
               class="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
             >
-              {{ $t('modifyAdvert.form.cancel') }}
+              {{ $t('createAdvert.form.cancel') }}
             </NuxtLink>
             <button
               class="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90"

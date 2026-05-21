@@ -59,7 +59,7 @@ onMounted(async () => {
   try {
     const service = getUserService()
     const fetchedAdverts = await service.getMeAdvert()
-    adverts.value = fetchedAdverts as unknown as MyAdvert[]
+    adverts.value = fetchedAdverts as MyAdvert[]
   } catch (error) {
     console.error('Error fetching my adverts:', error)
   }
