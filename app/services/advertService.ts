@@ -5,7 +5,7 @@ import type {
   ModifyAdvertForm
 } from '../types/advert'
 
-import type { useApi } from '../composables/useApi'
+import { useApi } from '../composables/useApi'
 
 type ApiClient = typeof useApi
 
@@ -97,4 +97,8 @@ export function createAdvertService({ apiClient }: AdvertServiceDependencies): A
 
     deleteAdvert
   }
+}
+
+export function getAdvertService() {
+  return createAdvertService({ apiClient: useApi as ApiClient })
 }
