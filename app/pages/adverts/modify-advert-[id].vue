@@ -247,51 +247,57 @@ const handleSubmit = async () => {
     return
   }
   let formData = new Object()
-  switch (category.value) {
-    case AdvertType.PRODUCT:
-      formData = {
-        title: form.value.title,
-        description: form.value.description,
-        price: form.value.price,
-        userId: userStore.user?.id,
-        condition: form.value.condition
-      }
-      
-      await getAdvertService().updateProductAdvert(id, formData as Partial<ModifyAdvertForm>)
-      break
-    case AdvertType.BOOK:
-      formData = {
-        title: form.value.title,
-        description: form.value.description,
-        price: form.value.price,
-        userId: userStore.user?.id,
-        condition: form.value.condition,
-        author: form.value.author,
-        publisher: form.value.publisher,
-        isbn: form.value.isbn,
-        categoryId: form.value.bookCategoryId,
-        writtenLanguage: form.value.writtenLanguage,
-        edition: form.value.edition
-      }
-      
-      await getAdvertService().updateBookAdvert(id, formData as Partial<ModifyAdvertForm>)
-      break
-    case AdvertType.SERVICE:
-      formData = {
-        title: form.value.title,
-        description: form.value.description,
-        price: form.value.price,
-        userId: userStore.user?.id,
-        subjectId: form.value.subjectId,
-        schoolLevelId: form.value.schoolLevelId,
-        teachingLanguage: form.value.teachingLanguage,
-        specificStudyLevel: form.value.specificStudyLevel
-      }
-      
-      await getAdvertService().updateServiceAdvert(id, formData as Partial<ModifyAdvertForm>)
-      break
+
+  try{
+    switch (category.value) {
+      case AdvertType.PRODUCT:
+        formData = {
+          title: form.value.title,
+          description: form.value.description,
+          price: form.value.price,
+          userId: userStore.user?.id,
+          condition: form.value.condition
+        }
+        
+        await getAdvertService().updateProductAdvert(id, formData as Partial<ModifyAdvertForm>)
+        break
+      case AdvertType.BOOK:
+        formData = {
+          title: form.value.title,
+          description: form.value.description,
+          price: form.value.price,
+          userId: userStore.user?.id,
+          condition: form.value.condition,
+          author: form.value.author,
+          publisher: form.value.publisher,
+          isbn: form.value.isbn,
+          categoryId: form.value.bookCategoryId,
+          writtenLanguage: form.value.writtenLanguage,
+          edition: form.value.edition
+        }
+        
+        await getAdvertService().updateBookAdvert(id, formData as Partial<ModifyAdvertForm>)
+        break
+      case AdvertType.SERVICE:
+        formData = {
+          title: form.value.title,
+          description: form.value.description,
+          price: form.value.price,
+          userId: userStore.user?.id,
+          subjectId: form.value.subjectId,
+          schoolLevelId: form.value.schoolLevelId,
+          teachingLanguage: form.value.teachingLanguage,
+          specificStudyLevel: form.value.specificStudyLevel
+        }
+        
+        await getAdvertService().updateServiceAdvert(id, formData as Partial<ModifyAdvertForm>)
+        break
+    }
+    await navigateTo(localePath('/me/adverts')) // Redirect to adverts list after successful creation
+  } catch (error) {
+    console.error('Error creating advert:', error)
+    errors.value.content = $t('createAdvert.error.creationFailed') || 'Une erreur est survenue lors de la création de l\'annonce.'
   }
-  await navigateTo(localePath('/me/adverts')) // Redirect to adverts list after successful creation
 }
 
 // adverts/id en get
