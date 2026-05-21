@@ -1,7 +1,7 @@
 import type { Advert } from '@/types/advert'
 import { getCatalogService } from '~/services/catalogService'
 import { getAdvertService } from '~/services/advertService'
-import { loadAdvertData } from '~/utils/advertLoader'
+import { loadAdvertData } from '~/services/advertLoader'
 
 export const useAdvert = (advertId: string) => {
   const catalogService = getCatalogService()

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { loadAdvertData } from '../../app/utils/advertLoader'
+import { loadAdvertData } from '../../app/services/advertLoader'
 import { AdvertCondition } from '../../app/utils/enum/advertCondition'
 import { AdvertLanguage } from '../../app/utils/enum/advertLanguage'
 import { AdvertStatus } from '../../app/utils/enum/advertStatus'
