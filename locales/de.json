@@ -177,7 +177,8 @@
       "uploadImages": "Bilder für Ihre Anzeige hochladen",
       "dragDrop": "Ziehen Sie Dateien hierher oder klicken Sie zum Auswählen",
       "uploadedImages": "Hochgeladene Bilder",
-      "publish": "Anzeige veröffentlichen"
+      "publish": "Anzeige veröffentlichen",
+      "cancel": "Abbrechen"
     },
     "error": {
       "empty": {
@@ -220,7 +221,8 @@
         "imageSize": "Jedes Bild muss kleiner als 5MB sein",
         "imageType": "Dateityp für das Bild ist nicht erlaubt",
         "imageCount": "Sie können maximal 10 Bilder hochladen"
-      }
+      },
+      "creationFailed": "Beim Erstellen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
     }
   },
   "modifyAdvert": {
@@ -257,7 +259,8 @@
       "uploadImages": "Bilder für Ihre Anzeige hochladen",
       "dragDrop": "Ziehen Sie Dateien hierher oder klicken Sie zum Auswählen",
       "uploadedImages": "Hochgeladene Bilder",
-      "modify": "Anzeige bearbeiten"
+      "modify": "Anzeige bearbeiten",
+      "cancel": "Abbrechen"
     },
     "error": {
       "empty": {
@@ -300,7 +303,8 @@
         "imageType": "Dateityp für das Bild ist nicht erlaubt",
         "imageCount": "Sie können maximal 10 Bilder hochladen"
       },
-      "invalidId": "Ungültige Anzeigen-ID"
+      "invalidId": "Ungültige Anzeigen-ID",
+      "modificationFailed": "Beim Bearbeiten der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
     }
   },
   "advert": {
@@ -485,7 +489,8 @@
       "level_native": "Muttersprache",
       "add_language": "Sprache hinzufügen",
       "remove_language_aria": "Sprache Nummer {index} entfernen",
-      "submit_button": "Registrierung abschließen"
+      "submit_button": "Registrierung abschließen",
+      "language_duplicate": "Sie haben bereits die Sprache '{language}' zu Ihrem Profil hinzugefügt."
     },
     "errors": {
       "DuplicateUserName": "Diese E-Mail-Adresse ist bereits mit einem Konto verknüpft.",

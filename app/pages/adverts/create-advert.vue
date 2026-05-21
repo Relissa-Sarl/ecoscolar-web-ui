@@ -5,7 +5,14 @@ import { AdvertLanguage } from '~/utils/enum/advertLanguage'
 import { AdvertType } from '~/utils/enum/advertType'
 import { getAdvertService } from '~/services/advertService'
 
-const uploadedFiles = ref<File[]>([])
+const userStore = useUsersStore()
+const localePath = useLocalePath()
+
+definePageMeta({
+  middleware: 'auth'
+})
+
+// const uploadedFiles = ref<File[]>([])
 const category = ref(AdvertType.PRODUCT)
 const errors = ref<{ [key: string]: string }>({})
 const form = ref({
@@ -19,7 +26,7 @@ const form = ref({
   studyLevel: '',
 
   condition: AdvertCondition.NEW,
-  pictures: uploadedFiles.value,
+  // pictures: uploadedFiles.value,
 
   author: '',
   publisher: '',
@@ -29,14 +36,14 @@ const form = ref({
   writtenLanguage: AdvertLanguage.FR
 })
 
-const handleImageUpload = (event: Event) => {
-  const input = event.target as HTMLInputElement
-  if (input.files) {
-    uploadedFiles.value = Array.from(input.files)
-    form.value.pictures = uploadedFiles.value
-    errors.value.images = ''
-  }
-}
+// const handleImageUpload = (event: Event) => {
+//   const input = event.target as HTMLInputElement
+//   if (input.files) {
+//     uploadedFiles.value = Array.from(input.files)
+//     form.value.pictures = uploadedFiles.value
+//     errors.value.images = ''
+//   }
+// }
 
 const validateForm = (): boolean => {
   errors.value = {}
@@ -71,16 +78,16 @@ const validateForm = (): boolean => {
         errors.value.teachingLanguage = $t('createAdvert.error.empty.teachingLanguage')
       }
       if (!form.value.studyLevel.trim()) {
-        errors.value.studyLevel = $t('createAdvert.error.empty.studyLevel')
+        errors.value.specificStudyLevel = $t('createAdvert.error.empty.studyLevel')
       }
       break
     case AdvertType.PRODUCT:
       if (!form.value.condition) {
         errors.value.condition = $t('createAdvert.error.empty.condition')
       }
-      if (uploadedFiles.value.length === 0) {
-        errors.value.images = $t('createAdvert.error.empty.images')
-      }
+      // if (uploadedFiles.value.length === 0) {
+      //   errors.value.images = $t('createAdvert.error.empty.images')
+      // }
       break
     case AdvertType.BOOK:
       if (!form.value.condition) {
@@ -104,9 +111,9 @@ const validateForm = (): boolean => {
       if (!form.value.author.trim()) {
         errors.value.author = $t('createAdvert.error.empty.author')
       }
-      if (uploadedFiles.value.length === 0) {
-        errors.value.images = $t('createAdvert.error.empty.images')
-      }
+      // if (uploadedFiles.value.length === 0) {
+      //   errors.value.images = $t('createAdvert.error.empty.images')
+      // }
       break
   }
 
@@ -149,7 +156,7 @@ const validateForm = (): boolean => {
     errors.value.price = $t('createAdvert.error.invalid.priceFormat')
   }
 
-  const maxFileSize = 5 * 1024 * 1024 // 5MB
+  // const maxFileSize = 5 * 1024 * 1024 // 5MB
   switch (category.value) {
     case AdvertType.SERVICE:
       if (form.value.subjectId < 1) {
@@ -162,7 +169,7 @@ const validateForm = (): boolean => {
         errors.value.teachingLanguage = $t('createAdvert.error.invalid.teachingLanguage')
       }
       if (form.value.studyLevel.length > 50) {
-        errors.value.studyLevel = $t('createAdvert.error.invalid.studyLevelLength')
+        errors.value.specificStudyLevel = $t('createAdvert.error.invalid.studyLevelLength')
       }
       break
     case AdvertType.BOOK:
@@ -189,37 +196,37 @@ const validateForm = (): boolean => {
         errors.value.edition = $t('createAdvert.error.invalid.editionLength')
       }
       // File size validation
-      uploadedFiles.value.forEach((file) => {
-        if (file.size > maxFileSize) {
-          errors.value.images = $t('createAdvert.error.invalid.imageSize')
-        }
-        // Validate file type
-        if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
-          errors.value.images = $t('createAdvert.error.invalid.imageType')
-        }
-      })
+      // uploadedFiles.value.forEach((file) => {
+      //   if (file.size > maxFileSize) {
+      //     errors.value.images = $t('createAdvert.error.invalid.imageSize')
+      //   }
+      //   // Validate file type
+      //   if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
+      //     errors.value.images = $t('createAdvert.error.invalid.imageType')
+      //   }
+      // })
 
-      // Maximum number of files validation
-      if (uploadedFiles.value.length > 10) {
-        errors.value.images = $t('createAdvert.error.invalid.imageCount')
-      }
+      // // Maximum number of files validation
+      // if (uploadedFiles.value.length > 10) {
+      //   errors.value.images = $t('createAdvert.error.invalid.imageCount')
+      // }
       break
     case AdvertType.PRODUCT:
       // File size validation
-      uploadedFiles.value.forEach((file) => {
-        if (file.size > maxFileSize) {
-          errors.value.images = $t('createAdvert.error.invalid.imageSize')
-        }
-        // Validate file type
-        if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
-          errors.value.images = $t('createAdvert.error.invalid.imageType')
-        }
-      })
+      // uploadedFiles.value.forEach((file) => {
+      //   if (file.size > maxFileSize) {
+      //     errors.value.images = $t('createAdvert.error.invalid.imageSize')
+      //   }
+      //   // Validate file type
+      //   if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
+      //     errors.value.images = $t('createAdvert.error.invalid.imageType')
+      //   }
+      // })
 
-      // Maximum number of files validation
-      if (uploadedFiles.value.length > 10) {
-        errors.value.images = $t('createAdvert.error.invalid.imageCount')
-      }
+      // // Maximum number of files validation
+      // if (uploadedFiles.value.length > 10) {
+      //   errors.value.images = $t('createAdvert.error.invalid.imageCount')
+      // }
       break
   }
 
@@ -240,9 +247,9 @@ const handleSubmit = async () => {
           title: form.value.title,
           description: form.value.description,
           price: form.value.price,
-          userId: 1,
-          condition: form.value.condition,
-          pictures: form.value.pictures
+          userId: userStore.user?.id,
+          condition: form.value.condition
+          // pictures: form.value.pictures
         }
         await advertService.createProductAdvert(formData)
         break
@@ -252,13 +259,13 @@ const handleSubmit = async () => {
           title: form.value.title,
           description: form.value.description,
           price: form.value.price,
-          userId: 1,
+          userId: userStore.user?.id,
           condition: form.value.condition,
-          pictures: form.value.pictures,
+          // pictures: form.value.pictures,
           author: form.value.author,
           publisher: form.value.publisher,
           isbn: form.value.isbn,
-          bookCategoryId: form.value.bookCategoryId,
+          categoryId: form.value.bookCategoryId,
           writtenLanguage: form.value.writtenLanguage,
           edition: form.value.edition
         }
@@ -270,21 +277,21 @@ const handleSubmit = async () => {
           title: form.value.title,
           description: form.value.description,
           price: form.value.price,
-          userId: 1,
+          userId: userStore.user?.id,
           subjectId: form.value.subjectId,
-          schoolGradeId: form.value.schoolGradeId,
+          schoolLevelId: form.value.schoolGradeId,
           teachingLanguage: form.value.teachingLanguage,
-          studyLevel: form.value.studyLevel
+          specificStudyLevel: form.value.studyLevel
         }
         await advertService.createServiceAdvert(formData)
         break
       }
     }
 
-    return navigateTo('../me/adverts') // Redirect to adverts list after successful creation
+    await navigateTo(localePath('/me/adverts')) // Redirect to adverts list after successful creation
   } catch (error) {
     console.error('Error creating advert:', error)
-    errors.value.content = $t('createAdvert.error.creationFailed') || 'Une erreur est survenue lors de la création de l\'annonce.'
+    errors.value.content = $t('createAdvert.error.creationFailed')
   }
 }
 </script>
@@ -788,10 +795,10 @@ const handleSubmit = async () => {
                   >
                 </div>
                 <p
-                  v-show="errors.studyLevel != null"
+                  v-show="errors.specificStudyLevel != null"
                   class="mt-1 min-h-5 text-sm text-red-500"
                 >
-                  {{ errors.studyLevel }}
+                  {{ errors.specificStudyLevel }}
                 </p>
               </div>
               <div class="md:col-span-2">
@@ -862,7 +869,7 @@ const handleSubmit = async () => {
             </div>
           </section>
 
-          <section
+          <!-- <section
             v-show="category == AdvertType.PRODUCT || category == AdvertType.BOOK"
             class="rounded-2xl border border-dashed border-gray-300 bg-gray-50/60 dark:border-gray-400 dark:bg-gray-800 dark:text-gray-400 p-5"
           >
@@ -942,7 +949,7 @@ const handleSubmit = async () => {
             >
               {{ errors.images }}
             </p>
-          </section>
+          </section> -->
 
           <p
             v-show="errors.content != null"
@@ -950,7 +957,13 @@ const handleSubmit = async () => {
           >
             {{ errors.content }}
           </p>
-          <div class="flex justify-end">
+          <div class="flex justify-between">
+            <NuxtLink
+              :to="localePath('/me/adverts')"
+              class="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+            >
+              {{ $t('createAdvert.form.cancel') }}
+            </NuxtLink>
             <button
               class="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90"
               type="submit"

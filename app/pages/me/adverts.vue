@@ -8,6 +8,10 @@ import { getUserService } from '~/services/usersService'
 
 const localePath = useLocalePath()
 
+definePageMeta({
+  middleware: 'auth'
+})
+
 const filters = ref<string[]>([$t('me.adverts.filters.all'), $t('me.adverts.filters.book'), $t('me.adverts.filters.supplies'), $t('me.adverts.filters.tutoring')])
 
 const filterBy = ref<string>($t('me.adverts.filters.all'))
@@ -49,86 +53,13 @@ const confirmDelete = async () => {
     }
   }
 }
-const adverts = ref<MyAdvert[]>([
-  {
-    id: 1,
-    title: 'Livre de mathématiques',
-    price: 10,
-    type: AdvertType.BOOK,
-    status: AdvertStatus.ACTIVE,
-    publicationDate: new Date('2024-06-01'),
-    notificationDate: new Date('2026-06-01'),
-    userId: 1,
-    sellerPseudo: 'John Doe',
-    primaryImage: 'book.jpg'
-  },
-  {
-    id: 2,
-    title: 'Trousse de fournitures scolaires',
-    price: 15,
-    type: AdvertType.PRODUCT,
-    status: AdvertStatus.ACTIVE,
-    publicationDate: new Date('2024-06-05'),
-    notificationDate: new Date('2026-06-05'),
-    userId: 1,
-    sellerPseudo: 'John Doe',
-    primaryImage: 'supplies.jpg'
-  },
-  {
-    id: 3,
-    title: 'Cours de tutorat en mathématiques',
-    price: 20,
-    type: AdvertType.SERVICE,
-    status: AdvertStatus.ACTIVE,
-    publicationDate: new Date('2024-06-10'),
-    notificationDate: new Date('2026-06-10'),
-    userId: 1,
-    sellerPseudo: 'John Doe',
-    primaryImage: 'tutoring.jpg'
-  },
-  {
-    id: 4,
-    title: 'Livre de français',
-    price: 8,
-    type: AdvertType.BOOK,
-    status: AdvertStatus.PAUSED,
-    publicationDate: new Date('2024-06-15'),
-    notificationDate: new Date('2026-06-15'),
-    userId: 1,
-    sellerPseudo: 'John Doe',
-    primaryImage: 'book2.jpg'
-  },
-  {
-    id: 5,
-    title: 'Ancien cartable en bon état',
-    price: 25,
-    type: AdvertType.PRODUCT,
-    status: AdvertStatus.EXPIRED,
-    publicationDate: new Date('2024-06-20'),
-    notificationDate: new Date('2026-06-20'),
-    userId: 1,
-    sellerPseudo: 'John Doe',
-    primaryImage: 'backpack.jpg'
-  },
-  {
-    id: 6,
-    title: 'Livre d\'anglais',
-    price: 18,
-    type: AdvertType.BOOK,
-    status: AdvertStatus.SOLD,
-    publicationDate: new Date('2024-06-25'),
-    notificationDate: new Date('2026-06-25'),
-    userId: 1,
-    sellerPseudo: 'John Doe',
-    primaryImage: 'book3.jpg'
-  }
-])
+const adverts = ref<MyAdvert[]>([])
 
 onMounted(async () => {
   try {
     const service = getUserService()
     const fetchedAdverts = await service.getMeAdvert()
-    adverts.value = fetchedAdverts as unknown as MyAdvert[]
+    adverts.value = fetchedAdverts as MyAdvert[]
   } catch (error) {
     console.error('Error fetching my adverts:', error)
   }
@@ -185,6 +116,7 @@ onMounted(async () => {
               <!-- Image -->
               <div class="aspect-4/3 overflow-hidden bg-gray-300 dark:bg-gray-800">
                 <img
+                  v-if="advert.primaryImage"
                   :src="advert.primaryImage"
                   alt="Image de l'annonce"
                   class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
