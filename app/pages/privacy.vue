@@ -1,11 +1,26 @@
 <script setup lang="ts">
-const { t } = useI18n()
+import { computed } from 'vue'
+import { useI18n, useLocalePath } from '#imports'
+
+const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
 const breadcrumbItems = computed(() => [
   { label: t('common.home'), to: localePath('/') },
   { label: t('privacy.title') }
 ])
+
+const lastUpdatedDate = new Date(Date.UTC(2026, 4, 21)) // Note: months are 0-indexed in JavaScript
+
+// Formate la date manuellement en utilisant l'API Intl
+const formattedDate = computed(() => {
+  return new Intl.DateTimeFormat(locale.value, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC'
+  }).format(lastUpdatedDate)
+})
 </script>
 
 <template>
@@ -21,7 +36,7 @@ const breadcrumbItems = computed(() => [
           {{ $t('privacy.title') }}
         </h1>
         <p class="text-sm text-slate-500 dark:text-slate-400 mt-4">
-          {{ $t('common.last_updated') }} <time datetime="2024-05-20">20 Mai 2024</time>
+          {{ $t('common.last_updated') }} <time datetime="2026-05-21">{{ formattedDate }}</time>
         </p>
       </header>
 

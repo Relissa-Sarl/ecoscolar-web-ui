@@ -41,6 +41,7 @@ Tout service doit utiliser le wrapper `useApi` (`app/composables/useApi.ts`) pou
 | Fichier | API cible | Statut |
 |---|---|---|
 | `favoritesService.ts` | API .NET des favoris (relation user ↔ advert) | Implémenté avec bascule mock/réel |
+| `advertLoader.ts` | Orchestration catalogue summary + endpoints typés (book/product/service) | Implémenté |
 
 ## À ne pas confondre
 
