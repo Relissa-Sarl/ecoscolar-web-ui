@@ -79,6 +79,41 @@ git push
 ```
 Ouvrir une Pull Request (PR) sur GitHub vers la branche `develop`.
 
+# 🐳 Déploiement avec Docker
+
+Le projet est configuré pour être conteneurisé facilement en mode production (Nuxt standalone).
+
+## Prérequis
+
+Modifiez le fichier .env.exemple ou créé un fichier .env et copier-coller le code suivant
+
+```bash
+NUXT_PUBLIC_API_BASE='https://dummyjson.com'
+NUXT_PUBLIC_ENABLE_JWT='false'
+NGINX_PORT=3000
+```
+## 1. Cloner et Construire l'image
+
+Assurez-vous d'avoir Docker installé sur votre machine. Lancez la commande suivante à la racine du projet :
+
+```bash
+docker compose build
+```
+
+## 2. Lancer le container
+
+Tapez ensuite cette commande pour lancer le container
+```bash
+docker compose up -d
+```
+
+## 3. Fermer le container
+
+Lorsque vous avez fini d'utiliser le container, tapez la commande suivante pour le fermer correctement
+```bash
+docker compose down
+```
+
 # 🛡️ Qualité du code
 L'application est protégée par ESLint en mode strict.
 Si la CI (GitHub Actions) échoue sur votre Pull Request à cause du formatage, lancez `pnpm run lint --fix` en local, commitez le résultat, et la CI passera au vert !
