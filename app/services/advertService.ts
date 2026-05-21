@@ -54,27 +54,27 @@ export function createAdvertService({ apiClient }: AdvertServiceDependencies): A
   const getAdvert = async (id: number) => apiClient<ModifyAdvertForm>(`${ADVERTS_PATH}/${id}`)
 
   const updateProductAdvert = async (id: number, data: Partial<ModifyAdvertForm>): Promise<void> => {
-   apiClient<unknown>(`${ADVERTS_PATH}/products/${id}`, { method: 'PUT', body: data })
+    apiClient<unknown>(`${ADVERTS_PATH}/products/${id}`, { method: 'PUT', body: data })
   }
   const updateServiceAdvert = async (id: number, data: Partial<ModifyAdvertForm>): Promise<void> => {
-   apiClient<unknown>(`${ADVERTS_PATH}/services/${id}`, { method: 'PUT', body: data })
+    apiClient<unknown>(`${ADVERTS_PATH}/services/${id}`, { method: 'PUT', body: data })
   }
   const updateBookAdvert = async (id: number, data: Partial<ModifyAdvertForm>): Promise<void> => {
-   apiClient<unknown>(`${ADVERTS_PATH}/books/${id}`, { method: 'PUT', body: data })
+    apiClient<unknown>(`${ADVERTS_PATH}/books/${id}`, { method: 'PUT', body: data })
   }
 
   const createProductAdvert = async (data: CreateAdvertData): Promise<void> => {
-   apiClient<unknown>(`${ADVERTS_PATH}/products`, { method: 'POST', body: data })
+    apiClient<unknown>(`${ADVERTS_PATH}/products`, { method: 'POST', body: data })
   }
   const createServiceAdvert = async (data: CreateAdvertData): Promise<void> => {
-   apiClient<unknown>(`${ADVERTS_PATH}/services`, { method: 'POST', body: data })
+    apiClient<unknown>(`${ADVERTS_PATH}/services`, { method: 'POST', body: data })
   }
   const createBookAdvert = async (data: CreateAdvertData): Promise<void> => {
-   apiClient<unknown>(`${ADVERTS_PATH}/books`, { method: 'POST', body: data })
+    apiClient<unknown>(`${ADVERTS_PATH}/books`, { method: 'POST', body: data })
   }
 
   const deleteAdvert = async (id: number): Promise<void> => {
-   apiClient<unknown>(`${ADVERTS_PATH}/${id}`, { method: 'DELETE' })
+    apiClient<unknown>(`${ADVERTS_PATH}/${id}`, { method: 'DELETE' })
   }
 
   return {

@@ -115,7 +115,7 @@ onMounted(async () => {
             <div class="group h-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-gray-950">
               <!-- Image -->
               <div class="aspect-4/3 overflow-hidden bg-gray-300 dark:bg-gray-800">
-                <img 
+                <img
                   v-if="advert.primaryImage"
                   :src="advert.primaryImage"
                   alt="Image de l'annonce"

@@ -12,7 +12,7 @@ definePageMeta({
   middleware: 'auth'
 })
 
-//const uploadedFiles = ref<File[]>([])
+// const uploadedFiles = ref<File[]>([])
 const category = ref(AdvertType.PRODUCT)
 const errors = ref<{ [key: string]: string }>({})
 const form = ref({
@@ -26,7 +26,7 @@ const form = ref({
   studyLevel: '',
 
   condition: AdvertCondition.NEW,
-  //pictures: uploadedFiles.value,
+  // pictures: uploadedFiles.value,
 
   author: '',
   publisher: '',
@@ -156,7 +156,7 @@ const validateForm = (): boolean => {
     errors.value.price = $t('createAdvert.error.invalid.priceFormat')
   }
 
-  //const maxFileSize = 5 * 1024 * 1024 // 5MB
+  // const maxFileSize = 5 * 1024 * 1024 // 5MB
   switch (category.value) {
     case AdvertType.SERVICE:
       if (form.value.subjectId < 1) {
@@ -248,8 +248,8 @@ const handleSubmit = async () => {
           description: form.value.description,
           price: form.value.price,
           userId: userStore.user?.id,
-          condition: form.value.condition,
-          //pictures: form.value.pictures
+          condition: form.value.condition
+          // pictures: form.value.pictures
         }
         await advertService.createProductAdvert(formData)
         break
@@ -261,7 +261,7 @@ const handleSubmit = async () => {
           price: form.value.price,
           userId: userStore.user?.id,
           condition: form.value.condition,
-          //pictures: form.value.pictures,
+          // pictures: form.value.pictures,
           author: form.value.author,
           publisher: form.value.publisher,
           isbn: form.value.isbn,
@@ -961,7 +961,7 @@ const handleSubmit = async () => {
             <NuxtLink
               :to="localePath('/me/adverts')"
               class="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-              >
+            >
               {{ $t('modifyAdvert.form.cancel') }}
             </NuxtLink>
             <button

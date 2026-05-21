@@ -248,7 +248,7 @@ const handleSubmit = async () => {
   }
   let formData = new Object()
 
-  try{
+  try {
     switch (category.value) {
       case AdvertType.PRODUCT:
         formData = {
@@ -258,7 +258,7 @@ const handleSubmit = async () => {
           userId: userStore.user?.id,
           condition: form.value.condition
         }
-        
+
         await getAdvertService().updateProductAdvert(id, formData as Partial<ModifyAdvertForm>)
         break
       case AdvertType.BOOK:
@@ -275,7 +275,7 @@ const handleSubmit = async () => {
           writtenLanguage: form.value.writtenLanguage,
           edition: form.value.edition
         }
-        
+
         await getAdvertService().updateBookAdvert(id, formData as Partial<ModifyAdvertForm>)
         break
       case AdvertType.SERVICE:
@@ -289,7 +289,7 @@ const handleSubmit = async () => {
           teachingLanguage: form.value.teachingLanguage,
           specificStudyLevel: form.value.specificStudyLevel
         }
-        
+
         await getAdvertService().updateServiceAdvert(id, formData as Partial<ModifyAdvertForm>)
         break
     }
@@ -836,7 +836,7 @@ vueOnMounted(async () => {
             <NuxtLink
               :to="localePath('/me/adverts')"
               class="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-              >
+            >
               {{ $t('modifyAdvert.form.cancel') }}
             </NuxtLink>
             <button
