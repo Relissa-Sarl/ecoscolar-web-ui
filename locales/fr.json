@@ -177,7 +177,8 @@
       "uploadImages": "Téléchargez des images de votre annonce",
       "dragDrop": "Glissez-déposez ou cliquez pour sélectionner des fichiers",
       "uploadedImages": "images téléchargées",
-      "publish": "Publier l'annonce"
+      "publish": "Publier l'annonce",
+      "cancel": "Annuler"
     },
     "error": {
       "empty": {
@@ -220,7 +221,8 @@
         "imageSize": "Chaque image doit être inférieure à 5MB",
         "imageType": "Format de fichier non autorisé pour l'image",
         "imageCount": "Vous ne pouvez télécharger que 10 images maximum"
-      }
+      },
+      "creationFailed": "Une erreur est survenue lors de la création de l'annonce. Veuillez réessayer."
     }
   },
   "modifyAdvert": {
@@ -257,7 +259,8 @@
       "uploadImages": "Téléchargez des images de votre annonce",
       "dragDrop": "Glissez-déposez ou cliquez pour sélectionner des fichiers",
       "uploadedImages": "images téléchargées",
-      "modify": "Modifier l'annonce"
+      "modify": "Modifier l'annonce",
+      "cancel": "Annuler"
     },
     "error": {
       "empty": {
@@ -300,7 +303,8 @@
         "imageType": "Format de fichier non autorisé pour l'image",
         "imageCount": "Vous ne pouvez télécharger que 10 images maximum"
       },
-      "invalidId": "ID de l'annonce invalide"
+      "invalidId": "ID de l'annonce invalide",
+      "modificationFailed": "Une erreur est survenue lors de la modification de l'annonce. Veuillez réessayer."
     }
   },
   "advert": {

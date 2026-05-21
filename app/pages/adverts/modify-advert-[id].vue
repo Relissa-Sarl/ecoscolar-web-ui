@@ -3,97 +3,21 @@ import { ref, onMounted as vueOnMounted } from 'vue'
 
 import type { ModifyAdvertForm } from '~/types/advert'
 import { AdvertCondition } from '~/utils/enum/advertCondition'
-import { AdvertStatus } from '~/utils/enum/advertStatus'
 import { AdvertType } from '~/utils/enum/advertType'
 import { AdvertLanguage } from '~/utils/enum/advertLanguage'
+import { getAdvertService } from '~/services/advertService'
 
 const route = useRoute()
+const localePath = useLocalePath()
+const userStore = useUsersStore()
+
+definePageMeta({
+  middleware: 'auth'
+})
+
 const id = Array.isArray(route.params.id) ? Number(route.params.id[0]) : Number(route.params.id)
 
-const adverts = ref<ModifyAdvertForm[]>([
-  {
-    id: 1,
-    title: 'Livre de mathématiques',
-    description: 'Livre de mathématiques pour le lycée, en bon état.',
-    price: 10,
-    type: AdvertType.BOOK,
-    status: AdvertStatus.ACTIVE,
-    userId: 1,
-    subjectId: null,
-    schoolGradeId: null,
-    teachingLanguage: null,
-    studyLevel: null,
-    condition: AdvertCondition.USED,
-    author: 'John Doe',
-    publisher: 'MathBooks Inc.',
-    edition: '3rd Edition',
-    isbn: '978-7-2238-5998-1',
-    bookCategoryId: 1,
-    writtenLanguage: AdvertLanguage.IT
-  },
-  {
-    id: 2,
-    title: 'Trousse de fournitures scolaires',
-    description: 'Trousse de fournitures scolaires complète, idéale pour la rentrée.',
-    price: 15,
-    type: AdvertType.PRODUCT,
-    status: AdvertStatus.ACTIVE,
-    userId: 1,
-    subjectId: null,
-    schoolGradeId: null,
-    teachingLanguage: null,
-    studyLevel: null,
-    condition: AdvertCondition.LIKE_NEW,
-    author: null,
-    publisher: null,
-    edition: null,
-    isbn: null,
-    bookCategoryId: null,
-    writtenLanguage: null
-
-  },
-  {
-    id: 3,
-    title: 'Cours de tutorat en mathématiques',
-    description: 'Cours de tutorat en mathématiques pour les élèves de collège et lycée.',
-    price: 20,
-    type: AdvertType.SERVICE,
-    status: AdvertStatus.ACTIVE,
-    userId: 1,
-    subjectId: 1,
-    schoolGradeId: 3,
-    teachingLanguage: AdvertLanguage.DE,
-    studyLevel: 'High School/Secondary',
-    condition: null,
-    author: null,
-    publisher: null,
-    edition: null,
-    isbn: null,
-    bookCategoryId: null,
-    writtenLanguage: null
-  },
-  {
-    id: 4,
-    title: 'Livre de français',
-    description: 'Livre de français pour le collège, en bon état.',
-    price: 8,
-    type: AdvertType.BOOK,
-    status: AdvertStatus.ACTIVE,
-    userId: 1,
-    subjectId: null,
-    schoolGradeId: null,
-    teachingLanguage: null,
-    studyLevel: null,
-    condition: AdvertCondition.NEW,
-    author: 'Marie Curie',
-    publisher: 'FrenchBooks Ltd.',
-    edition: '1st Edition',
-    isbn: '978-8-0897-7695-5',
-    bookCategoryId: 2,
-    writtenLanguage: AdvertLanguage.FR
-  }
-])
-const advert = ref<ModifyAdvertForm>()
+const advert = ref()
 const advertLoading = ref(true)
 const advertIsGet = ref(true)
 // const uploadedFiles = ref<File[]>([])
@@ -106,9 +30,9 @@ const form = ref({
   price: advert.value?.price,
 
   subjectId: advert.value?.subjectId || null,
-  schoolGradeId: advert.value?.schoolGradeId || null,
+  schoolLevelId: advert.value?.schoolGradeId || null,
   teachingLanguage: advert.value?.teachingLanguage || null,
-  studyLevel: advert.value?.studyLevel || null,
+  specificStudyLevel: advert.value?.studyLevel || null,
 
   condition: advert.value?.condition || null,
 
@@ -149,14 +73,14 @@ const validateForm = (): boolean => {
       if (!form.value.subjectId) {
         errors.value.subjectId = $t('modifyAdvert.error.empty.subjectId')
       }
-      if (!form.value.schoolGradeId) {
-        errors.value.schoolGradeId = $t('modifyAdvert.error.empty.schoolGradeId')
+      if (!form.value.schoolLevelId) {
+        errors.value.schoolLevelId = $t('modifyAdvert.error.empty.schoolGradeId')
       }
       if (!form.value.teachingLanguage) {
         errors.value.teachingLanguage = $t('modifyAdvert.error.empty.teachingLanguage')
       }
-      if (!form.value.studyLevel?.trim()) {
-        errors.value.studyLevel = $t('modifyAdvert.error.empty.studyLevel')
+      if (!form.value.specificStudyLevel?.trim()) {
+        errors.value.specificStudyLevel = $t('modifyAdvert.error.empty.studyLevel')
       }
       break
     case AdvertType.PRODUCT:
@@ -225,9 +149,9 @@ const validateForm = (): boolean => {
   const publisher = form.value.publisher ?? ''
   const edition = form.value.edition ?? ''
   const isbn = form.value.isbn ?? ''
-  const studyLevel = form.value.studyLevel ?? ''
+  const specificStudyLevel = form.value.specificStudyLevel ?? ''
 
-  if ((title || description || author || publisher || edition || isbn || studyLevel) && (sqlInjectionPattern.test(title) || sqlInjectionPattern.test(description) || sqlInjectionPattern.test(author) || sqlInjectionPattern.test(publisher) || sqlInjectionPattern.test(edition) || sqlInjectionPattern.test(isbn) || sqlInjectionPattern.test(studyLevel))) {
+  if ((title || description || author || publisher || edition || isbn || specificStudyLevel) && (sqlInjectionPattern.test(title) || sqlInjectionPattern.test(description) || sqlInjectionPattern.test(author) || sqlInjectionPattern.test(publisher) || sqlInjectionPattern.test(edition) || sqlInjectionPattern.test(isbn) || sqlInjectionPattern.test(specificStudyLevel))) {
     errors.value.content = $t('modifyAdvert.error.invalid.sqlInjection')
   }
 
@@ -248,14 +172,14 @@ const validateForm = (): boolean => {
       if (form.value.subjectId && form.value.subjectId < 1) {
         errors.value.subjectId = $t('modifyAdvert.error.invalid.subjectId')
       }
-      if (form.value.schoolGradeId && form.value.schoolGradeId < 1) {
-        errors.value.schoolGradeId = $t('modifyAdvert.error.invalid.schoolGradeId')
+      if (form.value.schoolLevelId && form.value.schoolLevelId < 1) {
+        errors.value.schoolLevelId = $t('modifyAdvert.error.invalid.schoolGradeId')
       }
       if (!form.value.teachingLanguage) {
         errors.value.teachingLanguage = $t('modifyAdvert.error.invalid.teachingLanguage')
       }
-      if (form.value.studyLevel && form.value.studyLevel.length > 50) {
-        errors.value.studyLevel = $t('modifyAdvert.error.invalid.studyLevelLength')
+      if (form.value.specificStudyLevel && form.value.specificStudyLevel.length > 50) {
+        errors.value.specificStudyLevel = $t('modifyAdvert.error.invalid.studyLevelLength')
       }
       break
     case AdvertType.BOOK:
@@ -318,93 +242,123 @@ const validateForm = (): boolean => {
   return Object.keys(errors.value).length === 0
 }
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (!validateForm()) {
     return
   }
   let formData = new Object()
-  switch (category.value) {
-    case AdvertType.PRODUCT:
-      formData = {
-        title: form.value.title,
-        description: form.value.description,
-        price: form.value.price,
-        userId: 1,
-        condition: form.value.condition
-      }
-      // Call API to create supply advert with form.value
-      break
-    case AdvertType.BOOK:
-      formData = {
-        title: form.value.title,
-        description: form.value.description,
-        price: form.value.price,
-        userId: 1,
-        condition: form.value.condition,
-        author: form.value.author,
-        publisher: form.value.publisher,
-        isbn: form.value.isbn,
-        bookCategoryId: form.value.bookCategoryId,
-        writtenLanguage: form.value.writtenLanguage,
-        edition: form.value.edition
-      }
-      // Call API to create book advert with form.value
-      break
-    case AdvertType.SERVICE:
-      formData = {
-        title: form.value.title,
-        description: form.value.description,
-        price: form.value.price,
-        userId: 1,
-        subjectId: form.value.subjectId,
-        schoolGradeId: form.value.schoolGradeId,
-        teachingLanguage: form.value.teachingLanguage,
-        studyLevel: form.value.studyLevel
-      }
-      // Call API to create tutoring advert with form.value
-      break
+
+  try {
+    switch (category.value) {
+      case AdvertType.PRODUCT:
+        formData = {
+          title: form.value.title,
+          description: form.value.description,
+          price: form.value.price,
+          userId: userStore.user?.id,
+          condition: form.value.condition
+        }
+
+        await getAdvertService().updateProductAdvert(id, formData as Partial<ModifyAdvertForm>)
+        break
+      case AdvertType.BOOK:
+        formData = {
+          title: form.value.title,
+          description: form.value.description,
+          price: form.value.price,
+          userId: userStore.user?.id,
+          condition: form.value.condition,
+          author: form.value.author,
+          publisher: form.value.publisher,
+          isbn: form.value.isbn,
+          categoryId: form.value.bookCategoryId,
+          writtenLanguage: form.value.writtenLanguage,
+          edition: form.value.edition
+        }
+
+        await getAdvertService().updateBookAdvert(id, formData as Partial<ModifyAdvertForm>)
+        break
+      case AdvertType.SERVICE:
+        formData = {
+          title: form.value.title,
+          description: form.value.description,
+          price: form.value.price,
+          userId: userStore.user?.id,
+          subjectId: form.value.subjectId,
+          schoolLevelId: form.value.schoolLevelId,
+          teachingLanguage: form.value.teachingLanguage,
+          specificStudyLevel: form.value.specificStudyLevel
+        }
+
+        await getAdvertService().updateServiceAdvert(id, formData as Partial<ModifyAdvertForm>)
+        break
+    }
+    await navigateTo(localePath('/me/adverts')) // Redirect to adverts list after successful creation
+  } catch (error) {
+    console.error('Error creating advert:', error)
+    errors.value.content = $t('modifyAdvert.error.modificationFailed')
   }
-  console.log('Form submitted with data:', formData)
-  // return navigateTo('../me/adverts') // Redirect to adverts list after successful creation
 }
 
-vueOnMounted(() => {
-  if (!route.params.id || Number.isNaN(id) || id < 1 || id > adverts.value.length) {
+// adverts/id en get
+// adverts/products/id ou adverts/services/id ou adverts/books/id en put
+
+vueOnMounted(async () => {
+  if (!route.params.id || Number.isNaN(id) || id < 1) {
     advertIsGet.value = false
     advertLoading.value = false
     return
   }
 
-  // const { data: id } = await useAdvert(String(route.params.id))
-  advert.value = adverts.value[id - 1]
+  try {
+    const advertService = getAdvertService()
+    const fetchedAdvert = await advertService.getAdvert(id)
 
-  if (advert.value?.userId !== 1) {
+    if (fetchedAdvert && fetchedAdvert.userId !== userStore.user?.id) {
+      advertIsGet.value = false
+      advertLoading.value = false
+      return
+    }
+
+    advert.value = fetchedAdvert
+    category.value = advert.value?.type
+    switch (advert.value?.type) {
+      case AdvertType.PRODUCT:
+        advert.value = await advertService.getProduct(id)
+        break
+      case AdvertType.BOOK:
+        advert.value = await advertService.getBook(id)
+        break
+      case AdvertType.SERVICE:
+        advert.value = await advertService.getService(id)
+        break
+    }
+
+    form.value = {
+      title: advert.value?.title,
+      description: advert.value?.description,
+      price: advert.value?.price,
+
+      subjectId: advert.value?.subjectId,
+      schoolLevelId: advert.value?.schoolGradeId,
+      teachingLanguage: advert.value?.teachingLanguage,
+      specificStudyLevel: advert.value?.studyLevel,
+
+      condition: advert.value?.condition,
+
+      author: advert.value?.author,
+      publisher: advert.value?.publisher,
+      edition: advert.value?.edition,
+      isbn: advert.value?.isbn,
+      bookCategoryId: advert.value?.bookCategoryId,
+      writtenLanguage: advert.value?.writtenLanguage
+    }
+  } catch (error) {
+    console.error('Error fetching advert from backend:', error)
     advertIsGet.value = false
+  } finally {
     advertLoading.value = false
-    return
   }
-
-  form.value = {
-    title: advert.value?.title,
-    description: advert.value?.description,
-    price: advert.value?.price,
-
-    subjectId: advert.value?.subjectId,
-    schoolGradeId: advert.value?.schoolGradeId,
-    teachingLanguage: advert.value?.teachingLanguage,
-    studyLevel: advert.value?.studyLevel,
-
-    condition: advert.value?.condition,
-
-    author: advert.value?.author,
-    publisher: advert.value?.publisher,
-    edition: advert.value?.edition,
-    isbn: advert.value?.isbn,
-    bookCategoryId: advert.value?.bookCategoryId,
-    writtenLanguage: advert.value?.writtenLanguage
-  }
-  category.value = advert.value?.type
-  advertLoading.value = false
 })
 </script>
 
@@ -723,13 +677,13 @@ vueOnMounted(() => {
               <div v-show="category == AdvertType.SERVICE">
                 <label
                   class="mb-2 block text-sm font-medium text-gray-600"
-                  for="schoolGradeId"
+                  for="schoolLevelId"
                 >
                   {{ $t('modifyAdvert.form.schoolGradeId') }}
                 </label>
                 <select
-                  id="schoolGradeId"
-                  v-model="form.schoolGradeId"
+                  id="schoolLevelId"
+                  v-model="form.schoolLevelId"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
                 >
                   <option :value="1">
@@ -746,10 +700,10 @@ vueOnMounted(() => {
                   </option>
                 </select>
                 <p
-                  v-show="errors.schoolGradeId != null"
+                  v-show="errors.schoolLevelId != null"
                   class="mt-1 min-h-5 text-sm text-red-500"
                 >
-                  {{ errors.schoolGradeId }}
+                  {{ errors.schoolLevelId }}
                 </p>
               </div>
               <div v-show="category == AdvertType.SERVICE">
@@ -791,17 +745,17 @@ vueOnMounted(() => {
                 <div class="relative">
                   <input
                     id="studyLevel"
-                    v-model="form.studyLevel"
+                    v-model="form.specificStudyLevel"
                     class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
                     :placeholder="$t('modifyAdvert.form.studyLevelPlaceholder')"
                     type="text"
                   >
                 </div>
                 <p
-                  v-show="errors.studyLevel != null"
+                  v-show="errors.specificStudyLevel != null"
                   class="mt-1 min-h-5 text-sm text-red-500"
                 >
-                  {{ errors.studyLevel }}
+                  {{ errors.specificStudyLevel }}
                 </p>
               </div>
               <div class="md:col-span-2">
@@ -878,7 +832,13 @@ vueOnMounted(() => {
           >
             {{ errors.content }}
           </p>
-          <div class="flex justify-end">
+          <div class="flex justify-between">
+            <NuxtLink
+              :to="localePath('/me/adverts')"
+              class="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+            >
+              {{ $t('modifyAdvert.form.cancel') }}
+            </NuxtLink>
             <button
               class="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90"
               type="submit"
