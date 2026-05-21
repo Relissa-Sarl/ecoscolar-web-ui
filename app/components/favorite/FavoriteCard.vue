@@ -14,7 +14,7 @@ const emit = defineEmits<{
 }>()
 const localePath = useLocalePath()
 const advertId = computed(() => getFavoriteAdvertId(props.item))
-const openAdvertLink = computed(() => localePath(`/annonce/${advertId.value}`))
+const openAdvertLink = computed(() => localePath(`/adverts/${advertId.value}`))
 </script>
 
 <template>
