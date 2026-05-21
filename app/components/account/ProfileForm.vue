@@ -24,7 +24,6 @@ const profileForm = ref({
 })
 
 if (usersStore.user?.isOnboarded) {
-  console.log(usersStore.user)
   spokenLanguages.value = usersStore.user?.spokenLanguages || []
 }
 
