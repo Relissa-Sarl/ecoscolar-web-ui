@@ -31,10 +31,10 @@ const submitQuestion = () => {
   <div class="bg-white dark:bg-gray-950 p-8 rounded-lg border border-gray-200 dark:border-gray-800">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-        Public Questions
+        {{ $t('advert.detail.public_questions') }}
       </h2>
       <p class="text-sm text-gray-500 dark:text-gray-400">
-        {{ questions.length }} Questions asked
+        {{ $t('advert.detail.questions_count', { count: questions.length }) }}
       </p>
     </div>
 
@@ -43,7 +43,7 @@ const submitQuestion = () => {
       <input
         v-model="questionInput"
         type="text"
-        placeholder="Ask the seller a question..."
+        :placeholder="$t('advert.detail.ask_placeholder')"
         class="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-600"
       >
       <UButton
@@ -103,7 +103,7 @@ const submitQuestion = () => {
                   {{ answer.answerer }} <span
                     v-if="answer.isSeller"
                     class="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-1 rounded ml-2"
-                  >SELLER</span>
+                  >{{ $t('advert.detail.seller_badge') }}</span>
                 </p>
                 <p class="text-xs text-gray-500 dark:text-gray-400">
                   {{ answer.timestamp }}

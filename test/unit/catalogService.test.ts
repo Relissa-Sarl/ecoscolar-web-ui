@@ -29,4 +29,23 @@ describe('catalogService', () => {
       query: { q: 'math' }
     })
   })
+
+  it('loads catalog detail by guid', async () => {
+    const detail = {
+      id: '6d4b9d4a-1dd1-4a38-8d68-7af4d9cb3c01',
+      title: 'Exemple annonce 1',
+      price: 12.5,
+      type: AdvertType.BOOK,
+      description: 'Données de démonstration'
+    }
+    const apiClient = vi.fn().mockResolvedValueOnce(detail)
+    const service = createCatalogService({ apiClient })
+
+    const result = await service.getDetail('6d4b9d4a-1dd1-4a38-8d68-7af4d9cb3c01')
+
+    expect(result).toEqual(detail)
+    expect(apiClient).toHaveBeenCalledWith(
+      '/v1/adverts/summary/6d4b9d4a-1dd1-4a38-8d68-7af4d9cb3c01'
+    )
+  })
 })

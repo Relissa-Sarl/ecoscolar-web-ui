@@ -309,6 +309,22 @@
       "favorite_add": "Ajouter aux favoris",
       "favorite_remove": "Retirer des favoris",
       "notify": "M’alerter"
+    },
+    "detail": {
+      "featured": "En vedette",
+      "current_price": "Prix actuel",
+      "isbn": "ISBN-13",
+      "category": "Catégorie",
+      "subject": "Matière",
+      "grade": "Niveau",
+      "study_level": "Niveau d’étude",
+      "condition_details": "Détails de l’état",
+      "description": "Description",
+      "public_questions": "Questions publiques",
+      "questions_count": "{count} question(s) posée(s)",
+      "ask_placeholder": "Posez une question au vendeur…",
+      "view_profile": "Voir le profil",
+      "seller_badge": "Vendeur"
     }
   },
   "favorites": {
