@@ -10,14 +10,15 @@ const breadcrumbItems = computed(() => [
   { label: t('privacy.title') }
 ])
 
-const lastUpdatedDate = new Date('2026-05-21')
+const lastUpdatedDate = new Date(Date.UTC(2026, 4, 21)) // Note: months are 0-indexed in JavaScript
 
 // Formate la date manuellement en utilisant l'API Intl
 const formattedDate = computed(() => {
   return new Intl.DateTimeFormat(locale.value, {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
+    timeZone: 'UTC'
   }).format(lastUpdatedDate)
 })
 </script>
