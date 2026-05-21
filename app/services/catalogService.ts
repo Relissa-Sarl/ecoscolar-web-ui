@@ -1,12 +1,18 @@
-import type { AdvertCatalogApiItem } from '../types/catalog'
+import type { AdvertCatalogApiItem, AdvertCatalogDetailApiItem } from '../types/catalog'
 import { useApi } from '../composables/useApi'
 
 type ApiClient = typeof useApi
 
-const CATALOG_SUMMARIES_PATH = '/v1/adverts'
+const CATALOG_SUMMARIES_PATH = '/v1/adverts/summary'
+
+export interface CatalogSearchParams {
+  q?: string
+  isbn?: string
+}
 
 export interface CatalogService {
-  listSummaries: () => Promise<AdvertCatalogApiItem[]>
+  listSummaries: (params?: CatalogSearchParams) => Promise<AdvertCatalogApiItem[]>
+  getDetail: (id: string) => Promise<AdvertCatalogDetailApiItem>
 }
 
 export interface CatalogServiceDependencies {
@@ -14,9 +20,11 @@ export interface CatalogServiceDependencies {
 }
 
 export function createCatalogService({ apiClient }: CatalogServiceDependencies): CatalogService {
-  const listSummaries = () => apiClient<AdvertCatalogApiItem[]>(CATALOG_SUMMARIES_PATH)
-
-  return { listSummaries }
+  const listSummaries = (params?: CatalogSearchParams) =>
+    apiClient<AdvertCatalogApiItem[]>(CATALOG_SUMMARIES_PATH, { query: params })
+  const getDetail = (id: string) =>
+    apiClient<AdvertCatalogDetailApiItem>(`${CATALOG_SUMMARIES_PATH}/${id}`)
+  return { listSummaries, getDetail }
 }
 
 export function getCatalogService(): CatalogService {

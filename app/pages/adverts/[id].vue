@@ -1,21 +1,52 @@
 <script setup lang="ts">
 import Breadcrumb from '~/components/common/Breadcrumb.vue'
+import { AdvertType } from '@/utils/enum/advertType'
 
 const route = useRoute()
 const localePath = useLocalePath()
+const { t } = useI18n()
 const { data: advert } = await useAdvert(String(route.params.id))
 
 const breadcrumbItems = computed(() => [
-  { label: 'Shop', to: '/' },
+  { label: t('header.nav_shop'), to: localePath('/shop') },
   { label: advert.value?.category || '', to: undefined },
   { label: advert.value?.title || '', to: undefined }
 ])
+
+const showAuthors = computed(() =>
+  advert.value?.type === AdvertType.BOOK && !!advert.value.authors)
+
+const showCondition = computed(() =>
+  advert.value != null
+  && advert.value.type !== AdvertType.SERVICE
+  && !!advert.value.condition)
+
+const showMetadata = computed(() => {
+  if (!advert.value)
+    return false
+
+  const { type, isbn, subject, grade, school, category } = advert.value
+
+  if (type === AdvertType.BOOK)
+    return !!isbn
+  if (type === AdvertType.PRODUCT)
+    return !!category
+  if (type === AdvertType.SERVICE)
+    return !!(subject || grade || school)
+
+  return false
+})
+
+const showConditionDetails = computed(() =>
+  (advert.value?.conditions?.length ?? 0) > 0)
+
+const showPublicQuestions = computed(() =>
+  (advert.value?.questions?.length ?? 0) > 0)
 
 const handleAskQuestion = (_text: string) => {
   // TODO: send question to API
 }
 
-// Génère un objet advert plus petit pour le passer au composant ActionButtons pour le favori
 const advertSummary = computed(() => {
   if (!advert.value) return null
 
@@ -34,9 +65,7 @@ const advertSummary = computed(() => {
   <div class="min-h-screen">
     <Breadcrumb :items="breadcrumbItems" />
 
-    <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-6 py-8">
-      <!-- Bouton de retour -->
       <div class="mb-8">
         <NuxtLink
           :to="localePath('/shop')"
@@ -47,7 +76,6 @@ const advertSummary = computed(() => {
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Left: Image Gallery -->
         <div class="lg:col-span-2">
           <AdvertGallery
             :images="advert?.images || []"
@@ -55,26 +83,26 @@ const advertSummary = computed(() => {
           />
         </div>
 
-        <!-- Right: Advert Details -->
         <div class="lg:col-span-1">
           <AdvertInfo
             v-if="advert"
-            :condition="advert.condition"
+            :condition="showCondition ? advert.condition : ''"
             :featured="advert.featured"
             :title="advert.title"
-            :authors="advert.authors"
+            :authors="showAuthors ? advert.authors : ''"
             :price="advert.price"
             :old-price="advert.oldPrice"
           />
           <AdvertMetadata
-            v-if="advert"
-            :isbn="advert.isbn"
-            :subject="advert.subject"
-            :grade="advert.grade"
-            :school="advert.school"
+            v-if="advert && showMetadata"
+            :isbn="advert.type === AdvertType.BOOK ? advert.isbn : ''"
+            :category="advert.type === AdvertType.PRODUCT ? advert.category : ''"
+            :subject="advert.type === AdvertType.SERVICE ? advert.subject : ''"
+            :grade="advert.type === AdvertType.SERVICE ? advert.grade : ''"
+            :school="advert.type === AdvertType.SERVICE ? advert.school : ''"
           />
           <AdvertSellerCard
-            v-if="advert"
+            v-if="advert && advert.seller.username"
             :seller="advert.seller"
             @view-profile="() => {}"
           />
@@ -84,18 +112,21 @@ const advertSummary = computed(() => {
         </div>
       </div>
 
-      <!-- Description Section -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12">
         <div class="lg:col-span-2">
           <AdvertDescription :description="advert?.description || ''" />
         </div>
 
-        <!-- Condition Details -->
-        <AdvertConditionDetails :conditions="advert?.conditions || []" />
+        <AdvertConditionDetails
+          v-if="showConditionDetails"
+          :conditions="advert?.conditions || []"
+        />
       </div>
 
-      <!-- Public Questions Section -->
-      <div class="mt-12">
+      <div
+        v-if="showPublicQuestions"
+        class="mt-12"
+      >
         <AdvertPublicQuestions
           v-if="advert"
           :seller="advert.seller"

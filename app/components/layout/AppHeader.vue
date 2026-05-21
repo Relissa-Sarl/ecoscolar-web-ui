@@ -2,12 +2,11 @@
 const route = useRoute()
 const { locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
+const usersStore = useUsersStore()
 
 const mainNav = computed(() =>
   [
-    { to: localePath('/shop'), labelKey: 'header.nav_shop', slug: 'shop' },
-    { to: localePath('/support'), labelKey: 'header.nav_support', slug: 'support' },
-    { to: localePath('/terms'), labelKey: 'header.nav_terms', slug: 'terms' }
+    { to: localePath('/shop'), labelKey: 'header.nav_shop', slug: 'shop' }
   ] as const)
 
 const linkIsActive = (slug: string) => {
@@ -83,7 +82,7 @@ const linkIsActive = (slug: string) => {
           :to="localePath('/favorites')"
           class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
         >
-          {{ $t('common.favorites') }}
+          {{ $t('header.favorites') }}
         </NuxtLink>
         <NuxtLink
           :to="localePath('/cart')"
@@ -91,18 +90,49 @@ const linkIsActive = (slug: string) => {
         >
           {{ $t('header.cart') }}
         </NuxtLink>
-        <NuxtLink
-          :to="localePath('/login')"
-          class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
+
+        <!-- Display login link if user is not authenticated -->
+        <template
+          v-if="!usersStore.isAuthenticated"
         >
-          {{ $t('header.login') }}
-        </NuxtLink>
-        <NuxtLink
-          :to="localePath('/profile')"
-          class="px-4 py-2 bg-emerald-800 text-white rounded-full hover:bg-emerald-700 transition-colors"
+          <NuxtLink
+            :to="localePath('/login')"
+            class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
+          >
+            {{ $t('header.login') }}
+          </NuxtLink>
+        </template>
+        <!-- Display profile link if user is authenticated -->
+        <template
+          v-else
         >
-          {{ $t('header.profile') }}
-        </NuxtLink>
+          <NuxtLink
+            :to="localePath('/me/profile')"
+            class="px-4 py-2 bg-emerald-800 text-white rounded-full hover:bg-emerald-700 transition-colors"
+          >
+            {{ $t('header.profile') }}
+          </NuxtLink>
+          <button
+            class="flex items-center gap-2 py-2 text-sm font-semibold text-slate-500 hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400 transition-colors cursor-pointer"
+            @click="usersStore.logout()"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-5 h-5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.25"
+              />
+            </svg>
+            <span class="hidden sm:inline">{{ $t('header.logout') }}</span>
+          </button>
+        </template>
       </div>
     </div>
   </header>

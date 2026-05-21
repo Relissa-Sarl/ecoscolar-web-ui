@@ -309,6 +309,22 @@
       "favorite_add": "Zu Favoriten hinzufügen",
       "favorite_remove": "Aus Favoriten entfernen",
       "notify": "Benachrichtige mich"
+    },
+    "detail": {
+      "featured": "Empfohlen",
+      "current_price": "Aktueller Preis",
+      "isbn": "ISBN-13",
+      "category": "Kategorie",
+      "subject": "Fach",
+      "grade": "Stufe",
+      "study_level": "Lernniveau",
+      "condition_details": "Zustandsdetails",
+      "description": "Beschreibung",
+      "public_questions": "Öffentliche Fragen",
+      "questions_count": "{count} Frage(n) gestellt",
+      "ask_placeholder": "Stellen Sie dem Verkäufer eine Frage…",
+      "view_profile": "Profil ansehen",
+      "seller_badge": "Verkäufer"
     }
   },
   "favorites": {
@@ -337,7 +353,9 @@
     "language": "Sprache",
     "cart": "Warenkorb",
     "login": "Anmelden",
-    "profile": "Profil"
+    "logout": "Abmelden",
+    "profile": "Profil",
+    "favorites": "Favoriten"
   },
   "common": {
     "back_to_home": "← Zurück zur Startseite",
@@ -430,7 +448,13 @@
     "forgot_password": "Passwort vergessen?",
     "submit_button": "Anmelden",
     "no_account": "Noch kein Konto?",
-    "register_link": "Konto erstellen"
+    "register_link": "Konto erstellen",
+    "errors": {
+      "Default": "Ungültige E-Mail-Adresse oder Passwort."
+    },
+    "status": {
+      "loading": "Anmeldung läuft..."
+    }
   },
   "register": {
     "title": "Konto erstellen",
@@ -462,6 +486,18 @@
       "add_language": "Sprache hinzufügen",
       "remove_language_aria": "Sprache Nummer {index} entfernen",
       "submit_button": "Registrierung abschließen"
+    },
+    "errors": {
+      "DuplicateUserName": "Diese E-Mail-Adresse ist bereits mit einem Konto verknüpft.",
+      "PasswordTooShort": "Ihr Passwort muss mindestens 6 Zeichen lang sein.",
+      "PasswordRequiresNonAlphanumeric": "Ihr Passwort muss ein Sonderzeichen enthalten.",
+      "InvalidEmail": "Die E-Mail-Adresse ist ungültig.",
+      "PasswordRequiresDigit": "Ihr Passwort muss eine Zahl enthalten.",
+      "PasswordRequiresUpper": "Ihr Passwort muss einen Großbuchstaben enthalten.",
+      "Default": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    },
+    "status": {
+      "loading": "Kontoerstellung läuft..."
     }
   },
   "forgot_password": {
@@ -480,5 +516,11 @@
     },
     "logged_as": "Angemeldet: {name}",
     "logout": "Abmelden"
+  },
+  "profile": {
+    "language": "Sprachen",
+    "location": "Standort",
+    "favorites": "Favoriten",
+    "sales": "Verkäufe"
   }
 }

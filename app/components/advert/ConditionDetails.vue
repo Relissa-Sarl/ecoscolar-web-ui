@@ -12,7 +12,7 @@ defineProps<Props>()
 <template>
   <div class="bg-gray-100 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-800">
     <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
-      {{ title || 'Condition Details' }}
+      {{ title || $t('advert.detail.condition_details') }}
     </h2>
     <div class="space-y-3">
       <div

@@ -309,6 +309,22 @@
       "favorite_add": "Aggiungi ai preferiti",
       "favorite_remove": "Rimuovi dai preferiti",
       "notify": "Avvisami"
+    },
+    "detail": {
+      "featured": "In evidenza",
+      "current_price": "Prezzo attuale",
+      "isbn": "ISBN-13",
+      "category": "Categoria",
+      "subject": "Materia",
+      "grade": "Livello",
+      "study_level": "Livello di studio",
+      "condition_details": "Dettagli sulle condizioni",
+      "description": "Descrizione",
+      "public_questions": "Domande pubbliche",
+      "questions_count": "{count} domanda/e posta/e",
+      "ask_placeholder": "Fai una domanda al venditore…",
+      "view_profile": "Vedi profilo",
+      "seller_badge": "Venditore"
     }
   },
   "favorites": {
@@ -337,7 +353,9 @@
     "language": "Lingua",
     "cart": "Carrello",
     "login": "Accedi",
-    "profile": "Profilo"
+    "logout": "Esci",
+    "profile": "Profilo",
+    "favorites": "Preferiti"
   },
   "common": {
     "back_to_home": "← Torna alla home",
@@ -430,7 +448,13 @@
     "forgot_password": "Password dimenticata?",
     "submit_button": "Accedi",
     "no_account": "Non hai ancora un account?",
-    "register_link": "Crea un account"
+    "register_link": "Crea un account",
+    "errors": {
+      "Default": "Indirizzo e-mail o password non validi."
+    },
+    "status": {
+      "loading": "Accesso in corso..."
+    }
   },
   "register": {
     "title": "Crea un account",
@@ -462,6 +486,18 @@
       "add_language": "Aggiungi una lingua",
       "remove_language_aria": "Rimuovi la lingua numero {index}",
       "submit_button": "Completa la registrazione"
+    },
+    "errors": {
+      "DuplicateUserName": "Questo indirizzo e-mail è già associato a un account.",
+      "PasswordTooShort": "La password deve contenere almeno 6 caratteri.",
+      "PasswordRequiresNonAlphanumeric": "La password deve contenere un carattere speciale.",
+      "InvalidEmail": "L'indirizzo e-mail non è valido.",
+      "PasswordRequiresDigit": "La password deve contenere un numero.",
+      "PasswordRequiresUpper": "La password deve contenere una lettera maiuscola.",
+      "Default": "Si è verificato un errore imprevisto. Riprova."
+    },
+    "status": {
+      "loading": "Creazione dell'account in corso..."
     }
   },
   "forgot_password": {
@@ -480,5 +516,11 @@
     },
     "logged_as": "Connesso: {name}",
     "logout": "Disconnessione"
+  },
+  "profile": {
+    "language": "Lingue",
+    "location": "Localizzazione",
+    "favorites": "Preferiti",
+    "sales": "Vendite"
   }
 }

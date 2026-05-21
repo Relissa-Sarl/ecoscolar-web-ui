@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useLocalePath } from '#imports'
 import type {
+  AdvertCatalogApiItem,
   CatalogCategoryTab,
   CatalogFetchResult,
   CatalogGradeLevel,
@@ -10,12 +11,14 @@ import type {
   GradeFilterState,
   SubjectFilterState
 } from '@/types/catalog'
-import catalogFallback from '@/mocks/catalogSummaries.json'
+
+import catalogFallbackJson from '@/mocks/catalogSummaries.json'
 import { getCatalogService } from '~/services/catalogService'
 import { mapCatalogApiToListings } from '~/utils/catalogMappers'
 
 definePageMeta({ layout: 'catalog' })
 
+const catalogFallback = catalogFallbackJson as AdvertCatalogApiItem[]
 const { t } = useI18n()
 const localePath = useLocalePath()
 
@@ -24,19 +27,23 @@ useSeoMeta({
 })
 
 const catalogService = getCatalogService()
+const appliedSearch = ref('')
 
 const { data: rawItems, pending } = await useAsyncData(
   'catalog-adverts',
   async (): Promise<CatalogFetchResult> => {
+    const params = appliedSearch.value
+      ? { q: appliedSearch.value }
+      : undefined
+
     try {
-      const rows = await catalogService.listSummaries()
-      if (rows?.length)
-        return { items: rows, fromFallback: false, hadError: false }
-      return { items: catalogFallback, fromFallback: true, hadError: false }
+      const rows = await catalogService.listSummaries(params)
+      return { items: rows, fromFallback: false, hadError: false }
     } catch {
       return { items: catalogFallback, fromFallback: true, hadError: true }
     }
-  }
+  },
+  { watch: [appliedSearch] }
 )
 
 const hadApiError = computed(() => rawItems.value?.hadError === true)
@@ -63,7 +70,6 @@ const subjects = ref<SubjectFilterState>({
 
 const sortKey = ref<'recent' | 'price_asc' | 'price_desc'>('recent')
 const draftSearch = ref('')
-const appliedSearch = ref('')
 const searchLoading = computed(() => pending.value)
 
 function applySearchFromBanner() {
@@ -125,9 +131,12 @@ function subjectMatches(filters: SubjectFilterState, listing: CatalogListing): b
 const filtered = computed(() => {
   let rows = [...listings.value]
 
-  const q = appliedSearch.value.toLowerCase()
-  if (q)
-    rows = rows.filter(row => row.title.toLowerCase().includes(q))
+  const shouldApplyLocalSearch
+    = rawItems.value?.fromFallback === true || hadApiError.value
+  const normalizedSearch = appliedSearch.value.trim().toLowerCase()
+  if (shouldApplyLocalSearch && normalizedSearch) {
+    rows = rows.filter(row => row.title.toLowerCase().includes(normalizedSearch))
+  }
 
   if (activeCategory.value !== 'all')
     rows = rows.filter(row => row.categoryTab === activeCategory.value)

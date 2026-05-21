@@ -1,11 +1,15 @@
 <script setup lang="ts">
 const localePath = useLocalePath()
+const userStore = useUsersStore()
 
-const email = ref('')
-const password = ref('')
+// Initialize the login form with empty email and password fields
+const loginForm = ref({ email: '', password: '' })
 
-const handleLogin = () => {
-  // TODO: call auth API with email/password and handle errors
+/**
+ * Handle the login form submission by calling the login method of the users store with the email and password from the form.
+ */
+const handleLogin = async () => {
+  await userStore.login(loginForm.value.email, loginForm.value.password)
 }
 </script>
 
@@ -26,7 +30,7 @@ const handleLogin = () => {
       </label>
       <input
         id="login-email"
-        v-model="email"
+        v-model="loginForm.email"
         type="email"
         autocomplete="email"
         required
@@ -56,7 +60,7 @@ const handleLogin = () => {
       </div>
       <input
         id="login-password"
-        v-model="password"
+        v-model="loginForm.password"
         type="password"
         autocomplete="current-password"
         required
@@ -72,5 +76,17 @@ const handleLogin = () => {
     >
       {{ $t('login.submit_button') }}
     </button>
+    <p
+      v-if="userStore.isLoading"
+      class="mt-4 text-sm text-center text-slate-600 dark:text-slate-300"
+    >
+      {{ $t('login.status.loading') }}
+    </p>
+    <p
+      v-else-if="userStore.errors && userStore.errors.length > 0"
+      class="mt-4 text-sm text-red-600 dark:text-red-400"
+    >
+      {{ $t('login.errors.' + userStore.errors[0]) }}
+    </p>
   </form>
 </template>
