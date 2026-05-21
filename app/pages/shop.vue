@@ -27,7 +27,14 @@ useSeoMeta({
 })
 
 const catalogService = getCatalogService()
-const appliedSearch = ref('')
+const route = useRoute()
+
+function readRouteSearchQuery(): string {
+  const q = route.query.q
+  return typeof q === 'string' ? q.trim() : ''
+}
+
+const appliedSearch = ref(readRouteSearchQuery())
 
 const { data: rawItems, pending } = await useAsyncData(
   'catalog-adverts',
@@ -69,8 +76,15 @@ const subjects = ref<SubjectFilterState>({
 })
 
 const sortKey = ref<'recent' | 'price_asc' | 'price_desc'>('recent')
-const draftSearch = ref('')
+const draftSearch = ref(readRouteSearchQuery())
 const searchLoading = computed(() => pending.value)
+
+watch(() => route.query.q, () => {
+  const q = readRouteSearchQuery()
+  draftSearch.value = q
+  appliedSearch.value = q
+  currentPage.value = 1
+})
 
 function applySearchFromBanner() {
   appliedSearch.value = draftSearch.value.trim()
