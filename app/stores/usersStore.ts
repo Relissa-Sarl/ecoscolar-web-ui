@@ -5,7 +5,6 @@ import type { UpdateProfileInput, User } from '~/types/user'
 
 import { getUserService } from '~/services/usersService'
 import type ApiError from '~/types/apiError'
-import { lo } from '@nuxt/ui/runtime/locale/index.js'
 
 /**
  * Pinia store for managing user authentication and profile state.

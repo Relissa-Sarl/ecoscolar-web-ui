@@ -78,7 +78,8 @@ const handleLogin = async () => {
     </button>
     <p
       v-if="userStore.isLoading"
-      class="mt-4 text-sm text-center text-slate-600 dark:text-slate-300">
+      class="mt-4 text-sm text-center text-slate-600 dark:text-slate-300"
+    >
       {{ $t('login.status.loading') }}
     </p>
     <p
