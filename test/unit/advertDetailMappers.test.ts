@@ -21,13 +21,13 @@ const baseReadItem = {
   sellerPseudo: 'vendeur_test'
 }
 
-const catalogGuid = '00000001-0000-0000-0000-000000000000'
+const catalogId = '1'
 
 describe('advertDetailMappers', () => {
   describe('mapCatalogSummaryToAdvert', () => {
     it('maps summary fields and uses imageUrl when provided', () => {
       const advert = mapCatalogSummaryToAdvert({
-        id: '6d4b9d4a-1dd1-4a38-8d68-7af4d9cb3c01',
+        id: 1,
         title: 'Annonce mock',
         price: 12.5,
         type: AdvertType.BOOK,
@@ -37,7 +37,7 @@ describe('advertDetailMappers', () => {
         imageUrl: 'https://example.com/cover.jpg'
       })
 
-      expect(advert.id).toBe('6d4b9d4a-1dd1-4a38-8d68-7af4d9cb3c01')
+      expect(advert.id).toBe('1')
       expect(advert.type).toBe(AdvertType.BOOK)
       expect(advert.title).toBe('Annonce mock')
       expect(advert.price).toBe(12.5)
@@ -51,14 +51,14 @@ describe('advertDetailMappers', () => {
 
     it('falls back to picsum when no imageUrl is provided', () => {
       const advert = mapCatalogSummaryToAdvert({
-        id: '6d4b9d4a-1dd1-4a38-8d68-7af4d9cb3c01',
+        id: 1,
         title: 'Annonce mock',
         price: 10,
         type: AdvertType.PRODUCT,
         description: 'Sans image'
       })
 
-      expect(advert.image).toContain('picsum.photos/seed/ecoscolar_6d4b9d4a/')
+      expect(advert.image).toContain('picsum.photos/seed/ecoscolar_1/')
       expect(advert.images[0]).toBe(advert.image)
     })
   })
@@ -77,9 +77,9 @@ describe('advertDetailMappers', () => {
         publisher: 'Editeur',
         edition: '2',
         writtenLanguage: AdvertLanguage.FR
-      }, catalogGuid)
+      }, catalogId)
 
-      expect(advert.id).toBe(catalogGuid)
+      expect(advert.id).toBe(catalogId)
       expect(advert.type).toBe(AdvertType.BOOK)
       expect(advert.authors).toBe('Auteur')
       expect(advert.category).toBe('Sciences')
@@ -100,7 +100,7 @@ describe('advertDetailMappers', () => {
         condition: AdvertCondition.USED,
         productCategoryId: 3,
         productCategoryLabel: 'Fournitures'
-      }, catalogGuid)
+      }, catalogId)
 
       expect(advert.type).toBe(AdvertType.PRODUCT)
       expect(advert.category).toBe('Fournitures')
@@ -121,14 +121,14 @@ describe('advertDetailMappers', () => {
         schoolGradeLabel: 'Collège',
         teachingLanguage: AdvertLanguage.FR,
         studyLevel: 'Cycle 1'
-      }, catalogGuid)
+      }, catalogId)
 
       expect(advert.type).toBe(AdvertType.SERVICE)
       expect(advert.subject).toBe('Maths')
       expect(advert.grade).toBe('Collège')
       expect(advert.school).toBe('Cycle 1')
       expect(advert.condition).toBe('')
-      expect(advert.image).toContain('picsum.photos/seed/ecoscolar_00000001/')
+      expect(advert.image).toContain('picsum.photos/seed/ecoscolar_1/')
     })
   })
 })

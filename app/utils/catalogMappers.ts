@@ -27,12 +27,12 @@ export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): Ca
   const conditions = [CatalogItemCondition.New, CatalogItemCondition.Used, CatalogItemCondition.Good]
 
   const base = {
-    id: item.id,
+    id: String(item.id),
     title: item.title,
     price: item.price,
     categoryTab,
     location: `${1005 + index} Lausanne`,
-    imageUrl: `https://picsum.photos/seed/ecoscolar_${item.id.replace(/-/g, '').slice(0, 8)}_400/520/440`
+    imageUrl: `https://picsum.photos/seed/ecoscolar_${String(item.id)}_400/520/440`
   }
 
   if (categoryTab === 'supplies') {
