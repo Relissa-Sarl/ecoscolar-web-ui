@@ -15,11 +15,16 @@ import type {
 import catalogFallbackJson from '@/mocks/catalogSummaries.json'
 import { getCatalogService } from '~/services/catalogService'
 import { mapCatalogApiToListings } from '~/utils/catalogMappers'
+import { useSearchAlertsStore } from '~/stores/searchAlertsStore'
+import { hasSearchCriteria } from '~/types/searchAlert'
 
 definePageMeta({ layout: 'catalog' })
 
-/** Sprint 1 HERMES : panneau filtres masqué jusqu'à livraison complète. */
 const showCatalogFiltersPanel = false
+
+const toast = useToast()
+const searchAlertsStore = useSearchAlertsStore()
+const isSavingAlert = ref(false)
 
 const catalogFallback = catalogFallbackJson as AdvertCatalogApiItem[]
 const { t } = useI18n()
@@ -31,6 +36,26 @@ useSeoMeta({
 
 const catalogService = getCatalogService()
 const appliedSearch = ref('')
+
+const currentSearchCriteria = computed(() => ({
+  q: appliedSearch.value.trim() || undefined
+}))
+
+const canSaveSearchAlert = computed(() =>
+  hasSearchCriteria(currentSearchCriteria.value))
+
+async function saveSearchAlert() {
+  if (!canSaveSearchAlert.value || isSavingAlert.value) return
+  isSavingAlert.value = true
+  try {
+    await searchAlertsStore.createAlert(currentSearchCriteria.value)
+    toast.add({ title: t('searchAlerts.saved'), color: 'success' })
+  } catch {
+    toast.add({ title: t('searchAlerts.save_error'), color: 'error' })
+  } finally {
+    isSavingAlert.value = false
+  }
+}
 
 const { data: rawItems, pending } = await useAsyncData(
   'catalog-adverts',
@@ -222,6 +247,20 @@ watch(subjects, () => {
             :loading="searchLoading"
             @search="runSearchFromBanner()"
           />
+
+          <div
+            v-if="canSaveSearchAlert"
+            class="flex justify-end"
+          >
+            <button
+              type="button"
+              class="rounded-xl border border-emerald-200 bg-white px-4 py-2 text-sm font-medium text-emerald-800 transition hover:bg-emerald-50 disabled:opacity-60 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200"
+              :disabled="isSavingAlert"
+              @click="saveSearchAlert"
+            >
+              {{ isSavingAlert ? $t('searchAlerts.saving') : $t('searchAlerts.save') }}
+            </button>
+          </div>
 
           <div class="rounded-3xl border border-emerald-200/60 bg-emerald-50 px-5 py-3 text-sm dark:border-emerald-900 dark:bg-emerald-950/30">
             <p

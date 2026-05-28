@@ -350,6 +350,29 @@
       "view_advert": "Vedi l'annuncio"
     }
   },
+  "searchAlerts": {
+    "title": "I miei avvisi di ricerca",
+    "subtitle": "Ricerche salvate",
+    "save": "Salva questa ricerca",
+    "saving": "Salvataggio…",
+    "saved": "Ricerca salvata",
+    "save_error": "Impossibile salvare la ricerca",
+    "empty": {
+      "title": "Nessun avviso per ora",
+      "message": "Salva una ricerca dal negozio per ritrovarla qui."
+    },
+    "status": {
+      "loading": "Caricamento avvisi…",
+      "error": "Impossibile caricare i tuoi avvisi."
+    },
+    "actions": {
+      "back_to_shop": "Torna al negozio",
+      "browse_shop": "Esplora il negozio",
+      "delete": "Elimina",
+      "deleting": "Eliminazione…",
+      "run_search": "Ripeti la ricerca"
+    }
+  },
   "header": {
     "nav_shop": "Negozio",
     "nav_support": "Supporto",
