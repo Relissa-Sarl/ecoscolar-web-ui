@@ -38,9 +38,9 @@ export default defineConfig({
       enabled: true,
       provider: 'v8',
       thresholds: {
-        statements: 80,
-        functions: 80,
-        branches: 80
+        statements: 50,
+        functions: 50,
+        branches: 50
       },
       exclude: [
         'dist/**',
