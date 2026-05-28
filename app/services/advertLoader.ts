@@ -3,7 +3,6 @@ import type { AdvertCatalogDetailApiItem } from '@/types/catalog'
 import type { AdvertService } from '@/services/advertService'
 import type { CatalogService } from '@/services/catalogService'
 import { AdvertType } from '@/utils/enum/advertType'
-import { tryParseCatalogAdvertId } from '@/utils/catalogGuid'
 import {
   mapBookToAdvert,
   mapCatalogSummaryToAdvert,
@@ -17,6 +16,13 @@ export function isNotFoundError(error: unknown): boolean {
 
   const fetchError = error as { statusCode?: number, response?: { status?: number } }
   return fetchError.statusCode === 404 || fetchError.response?.status === 404
+}
+
+function parseAdvertId(advertId: string): number | null {
+  const numericId = Number(advertId)
+  if (!Number.isInteger(numericId) || numericId <= 0)
+    return null
+  return numericId
 }
 
 async function loadAdvertFromTypedEndpoint(
@@ -48,7 +54,7 @@ export async function loadAdvertData(
 ): Promise<Advert> {
   const summary = await catalogService.getDetail(advertId)
 
-  const numericId = tryParseCatalogAdvertId(advertId)
+  const numericId = parseAdvertId(advertId)
   if (numericId === null)
     return mapCatalogSummaryToAdvert(summary)
 

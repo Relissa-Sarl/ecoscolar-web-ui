@@ -4,7 +4,6 @@ import { AdvertCondition } from '../../app/utils/enum/advertCondition'
 import { AdvertLanguage } from '../../app/utils/enum/advertLanguage'
 import { AdvertStatus } from '../../app/utils/enum/advertStatus'
 import { AdvertType } from '../../app/utils/enum/advertType'
-import { encodeCatalogAdvertGuid } from '../helpers/catalogGuid'
 
 const mockGetDetail = vi.fn()
 const mockGetBook = vi.fn()
@@ -55,33 +54,33 @@ describe('loadAdvertData', () => {
     vi.clearAllMocks()
   })
 
-  it('loads summary only for mock catalog guids', async () => {
-    const mockGuid = '6d4b9d4a-1dd1-4a38-8d68-7af4d9cb3c01'
+  it('loads summary only when route id is not numeric', async () => {
+    const advertId = 'not-an-id'
     mockGetDetail.mockResolvedValueOnce({
-      id: mockGuid,
+      id: 1,
       type: AdvertType.BOOK,
       ...baseSummary,
       isbn: '978-mock'
     })
 
-    const advert = await loadAdvertData(mockGuid, deps)
+    const advert = await loadAdvertData(advertId, deps)
 
-    expect(mockGetDetail).toHaveBeenCalledWith(mockGuid)
+    expect(mockGetDetail).toHaveBeenCalledWith(advertId)
     expect(mockGetBook).not.toHaveBeenCalled()
     expect(advert.title).toBe('Annonce test')
     expect(advert.seller.username).toBe('')
   })
 
-  it('loads typed book detail when guid decodes to a DB id', async () => {
-    const catalogGuid = encodeCatalogAdvertGuid(1)
+  it('loads typed book detail when id is numeric', async () => {
+    const advertId = '1'
     mockGetDetail.mockResolvedValueOnce({
-      id: catalogGuid,
+      id: 1,
       type: AdvertType.BOOK,
       ...baseSummary
     })
     mockGetBook.mockResolvedValueOnce(baseBook)
 
-    const advert = await loadAdvertData(catalogGuid, deps)
+    const advert = await loadAdvertData(advertId, deps)
 
     expect(mockGetBook).toHaveBeenCalledWith(1)
     expect(advert.title).toBe('Livre complet')
@@ -89,50 +88,50 @@ describe('loadAdvertData', () => {
   })
 
   it('falls back to summary on typed endpoint 404', async () => {
-    const catalogGuid = encodeCatalogAdvertGuid(2)
+    const advertId = '2'
     mockGetDetail.mockResolvedValueOnce({
-      id: catalogGuid,
+      id: 2,
       type: AdvertType.PRODUCT,
       ...baseSummary
     })
     mockGetProduct.mockRejectedValueOnce({ statusCode: 404 })
 
-    const advert = await loadAdvertData(catalogGuid, deps)
+    const advert = await loadAdvertData(advertId, deps)
 
     expect(mockGetProduct).toHaveBeenCalledWith(2)
     expect(advert.title).toBe('Annonce test')
   })
 
   it('falls back to summary on typed endpoint response.status 404', async () => {
-    const catalogGuid = encodeCatalogAdvertGuid(7)
+    const advertId = '7'
     mockGetDetail.mockResolvedValueOnce({
-      id: catalogGuid,
+      id: 7,
       type: AdvertType.BOOK,
       ...baseSummary
     })
     mockGetBook.mockRejectedValueOnce({ response: { status: 404 } })
 
-    const advert = await loadAdvertData(catalogGuid, deps)
+    const advert = await loadAdvertData(advertId, deps)
 
     expect(advert.title).toBe('Annonce test')
   })
 
   it('rethrows non-404 errors from typed endpoints', async () => {
-    const catalogGuid = encodeCatalogAdvertGuid(3)
+    const advertId = '3'
     mockGetDetail.mockResolvedValueOnce({
-      id: catalogGuid,
+      id: 3,
       type: AdvertType.SERVICE,
       ...baseSummary
     })
     mockGetService.mockRejectedValueOnce({ statusCode: 500 })
 
-    await expect(loadAdvertData(catalogGuid, deps)).rejects.toMatchObject({ statusCode: 500 })
+    await expect(loadAdvertData(advertId, deps)).rejects.toMatchObject({ statusCode: 500 })
   })
 
   it('loads product and service endpoints based on summary type', async () => {
-    const productGuid = encodeCatalogAdvertGuid(4)
+    const productId = '4'
     mockGetDetail.mockResolvedValueOnce({
-      id: productGuid,
+      id: 4,
       type: AdvertType.PRODUCT,
       ...baseSummary
     })
@@ -152,12 +151,12 @@ describe('loadAdvertData', () => {
       productCategoryLabel: 'Fournitures'
     })
 
-    const productAdvert = await loadAdvertData(productGuid, deps)
+    const productAdvert = await loadAdvertData(productId, deps)
     expect(productAdvert.title).toBe('Produit complet')
 
-    const serviceGuid = encodeCatalogAdvertGuid(5)
+    const serviceId = '5'
     mockGetDetail.mockResolvedValueOnce({
-      id: serviceGuid,
+      id: 5,
       type: AdvertType.SERVICE,
       ...baseSummary
     })
@@ -179,7 +178,7 @@ describe('loadAdvertData', () => {
       studyLevel: 'Cycle 1'
     })
 
-    const serviceAdvert = await loadAdvertData(serviceGuid, deps)
+    const serviceAdvert = await loadAdvertData(serviceId, deps)
     expect(serviceAdvert.title).toBe('Service complet')
     expect(serviceAdvert.subject).toBe('Maths')
   })
