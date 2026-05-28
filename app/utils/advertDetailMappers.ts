@@ -37,7 +37,7 @@ function formatConditionLabel(condition: string): string {
   return condition.replace(/_/g, ' ')
 }
 
-/** GET /v1/adverts/summary/{id} — résumé catalogue (mock ou BDD). */
+/** GET /adverts/summary/{id} — résumé catalogue (mock ou BDD). */
 export function mapCatalogSummaryToAdvert(item: AdvertCatalogDetailApiItem): Advert {
   const catalogId = String(item.id)
   const { image, images } = resolveImages(undefined, catalogId, item.imageUrl)

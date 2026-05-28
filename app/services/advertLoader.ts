@@ -19,8 +19,10 @@ export function isNotFoundError(error: unknown): boolean {
 }
 
 function parseAdvertId(advertId: string): number | null {
+  if (!/^\d+$/.test(advertId))
+    return null
   const numericId = Number(advertId)
-  if (!Number.isInteger(numericId) || numericId <= 0)
+  if (numericId <= 0 || numericId > Number.MAX_SAFE_INTEGER)
     return null
   return numericId
 }

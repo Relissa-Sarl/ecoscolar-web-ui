@@ -54,7 +54,7 @@ describe('loadAdvertData', () => {
     vi.clearAllMocks()
   })
 
-  it('loads summary only when route id is not numeric', async () => {
+  it('loads summary only when route id is not a plain digit string', async () => {
     const advertId = 'not-an-id'
     mockGetDetail.mockResolvedValueOnce({
       id: 1,
@@ -69,6 +69,20 @@ describe('loadAdvertData', () => {
     expect(mockGetBook).not.toHaveBeenCalled()
     expect(advert.title).toBe('Annonce test')
     expect(advert.seller.username).toBe('')
+  })
+
+  it('loads summary only for scientific-notation-like ids', async () => {
+    const advertId = '1e3'
+    mockGetDetail.mockResolvedValueOnce({
+      id: 1,
+      type: AdvertType.BOOK,
+      ...baseSummary
+    })
+
+    const advert = await loadAdvertData(advertId, deps)
+
+    expect(mockGetBook).not.toHaveBeenCalled()
+    expect(advert.title).toBe('Annonce test')
   })
 
   it('loads typed book detail when id is numeric', async () => {
