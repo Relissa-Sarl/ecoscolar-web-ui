@@ -1,6 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: process.env.NODE_ENV !== 'production',
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui',
@@ -12,6 +11,7 @@ export default defineNuxtConfig({
     'nuxt-zod-i18n',
     '@nuxtjs/google-fonts'
   ],
+  ssr: process.env.NODE_ENV !== 'production',
   devtools: {
     enabled: true
   },
