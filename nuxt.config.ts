@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     'nuxt-zod-i18n',
     '@nuxtjs/google-fonts'
   ],
+  ssr: process.env.NODE_ENV !== 'production',
   devtools: {
     enabled: true
   },
