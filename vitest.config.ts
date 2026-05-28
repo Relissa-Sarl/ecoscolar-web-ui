@@ -36,7 +36,19 @@ export default defineConfig({
     ],
     coverage: {
       enabled: true,
-      provider: 'v8'
+      provider: 'v8',
+      thresholds: {
+        statements: 80,
+        functions: 80,
+        branches: 80
+      },
+      exclude: [
+        'dist/**',
+        '.output/**',
+        'node_modules/**',
+        '**/*.config.{ts,js}',
+        'app/assets/**'
+      ]
     }
   }
 })
