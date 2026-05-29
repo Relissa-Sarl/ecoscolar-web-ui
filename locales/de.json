@@ -144,10 +144,7 @@
       "confirm": "Löschen"
     }
   },
-  "createAdvert": {
-    "newAdvert": "Neue Anzeige",
-    "createAdvert": "Anzeige erstellen",
-    "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
+  "advertForm": {
     "form": {
       "information": "Informationen zur Anzeige",
       "detailedInformation": "Detaillierte Informationen",
@@ -221,91 +218,23 @@
         "imageSize": "Jedes Bild muss kleiner als 5MB sein",
         "imageType": "Dateityp für das Bild ist nicht erlaubt",
         "imageCount": "Sie können maximal 10 Bilder hochladen"
-      },
-      "creationFailed": "Beim Erstellen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+      }
     }
+  },
+  "createAdvert": {
+    "newAdvert": "Neue Anzeige",
+    "createAdvert": "Anzeige erstellen",
+    "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
+    "creationFailed": "Beim Erstellen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+    
   },
   "modifyAdvert": {
     "existingAdvert": "Anzeige",
     "modifyAdvert": "Anzeige bearbeiten",
     "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
     "loading": "Laden der Anzeige...",
-    "form": {
-      "information": "Informationen zur Anzeige",
-      "detailedInformation": "Detaillierte Informationen",
-      "title": "Titel",
-      "condition": "Zustand",
-      "titlePlaceholder": "Beispiel: Buch der Mathematik",
-      "author": "Autor",
-      "authorPlaceholder": "Beispiel: Tolkiens",
-      "publisher": "Verlag",
-      "publisherPlaceholder": "Beispiel: Gallimard",
-      "edition": "Ausgabe",
-      "editionPlaceholder": "Beispiel: 3. Ausgabe",
-      "isbn": "ISBN",
-      "bookCategoryId": "Buchkategorie",
-      "writtenLanguage": "Schriftsprache",
-      "isbnPlaceholder": "978-...",
-      "subjectId": "Fach",
-      "schoolGradeId": "Schulstufe",
-      "teachingLanguage": "Unterrichtssprache",
-      "studyLevel": "Bildungsniveau",
-      "studyLevelPlaceholder": "Beispiel: Gymnasium",
-      "description": "Beschreibung",
-      "descriptionPlaceholder": "Beschreiben Sie den Zustand des Artikels, seine Funktionen oder den Inhalt Ihres Kurses...",
-      "sales": "Verkauf",
-      "price": "Preis",
-      "images": "Bilder",
-      "uploadImages": "Bilder für Ihre Anzeige hochladen",
-      "dragDrop": "Ziehen Sie Dateien hierher oder klicken Sie zum Auswählen",
-      "uploadedImages": "Hochgeladene Bilder",
-      "modify": "Anzeige bearbeiten",
-      "cancel": "Abbrechen"
-    },
-    "error": {
-      "empty": {
-        "title": "Der Titel ist erforderlich",
-        "description": "Die Beschreibung ist erforderlich",
-        "price": "Der Preis ist erforderlich",
-        "subjectId": "Das Fach ist erforderlich",
-        "schoolGradeId": "Die Schulstufe ist erforderlich",
-        "teachingLanguage": "Die Unterrichtssprache ist erforderlich",
-        "studyLevel": "Das Bildungsniveau ist erforderlich",
-        "condition": "Der Zustand ist für Ausrüstung erforderlich",
-        "images": "Mindestens ein Bild ist erforderlich",
-        "publisher": "Der Verlag ist für Bücher erforderlich",
-        "edition": "Die Ausgabe ist für Bücher erforderlich",
-        "isbn": "Die ISBN ist für Bücher erforderlich",
-        "bookCategoryId": "Die Buchkategorie ist für Bücher erforderlich",
-        "writtenLanguage": "Die Schriftsprache ist für Bücher erforderlich",
-        "author": "Der Autor ist für Bücher erforderlich"
-      },
-      "invalid": {
-        "titleLengthMin": "Der Titel muss mindestens 3 Zeichen enthalten",
-        "titleLengthMax": "Der Titel darf nicht mehr als 200 Zeichen enthalten",
-        "descriptionLengthMin": "Die Beschreibung muss mindestens 10 Zeichen enthalten",
-        "descriptionLengthMax": "Die Beschreibung darf nicht mehr als 2000 Zeichen enthalten",
-        "sqlInjection": "Das Feld darf keine verbotenen Sonderzeichen enthalten",
-        "priceNegative": "Der Preis muss größer als null sein",
-        "priceMax": "Der Preis darf 500€ nicht überschreiten",
-        "priceFormat": "Der Preis muss eine gültige Zahl mit maximal zwei Dezimalstellen sein",
-        "subjectId": "Die ausgewählte Fach ist nicht gültig",
-        "schoolGradeId": "Die ausgewählte Schulstufe ist nicht gültig",
-        "teachingLanguage": "Die ausgewählte Unterrichtssprache ist nicht gültig",
-        "studyLevelLength": "Das ausgewählte Bildungsniveau darf 50 Zeichen nicht überschreiten",
-        "bookCategoryId": "Die ausgewählte Buchkategorie ist nicht gültig",
-        "writtenLanguage": "Die ausgewählte Schriftsprache ist nicht gültig",
-        "isbnFormat": "Das ISBN-Format ist ungültig",
-        "authorLength": "Der Autorname darf 150 Zeichen nicht überschreiten",
-        "publisherLength": "Der Verlagsname darf 150 Zeichen nicht überschreiten",
-        "editionLength": "Die Ausgabe darf 150 Zeichen nicht überschreiten",
-        "imageSize": "Jedes Bild muss kleiner als 5MB sein",
-        "imageType": "Dateityp für das Bild ist nicht erlaubt",
-        "imageCount": "Sie können maximal 10 Bilder hochladen"
-      },
-      "invalidId": "Ungültige Anzeigen-ID",
-      "modificationFailed": "Beim Bearbeiten der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
-    }
+    "invalidId": "Ungültige Anzeigen-ID",
+    "modificationFailed": "Beim Bearbeiten der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
   },
   "advert": {
     "actions": {

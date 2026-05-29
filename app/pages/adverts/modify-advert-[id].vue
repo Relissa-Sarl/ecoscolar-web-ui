@@ -57,64 +57,64 @@ const validateForm = (): boolean => {
   errors.value = {}
 
   if (!form.value.title || !form.value.title.trim()) {
-    errors.value.title = $t('modifyAdvert.error.empty.title')
+    errors.value.title = $t('advertForm.error.empty.title')
   }
 
   if (!form.value.description || !form.value.description.trim()) {
-    errors.value.description = $t('modifyAdvert.error.empty.description')
+    errors.value.description = $t('advertForm.error.empty.description')
   }
 
   if (!form.value.price || form.value.price <= 0) {
-    errors.value.price = $t('modifyAdvert.error.empty.price')
+    errors.value.price = $t('advertForm.error.empty.price')
   }
 
   switch (category.value) {
     case AdvertType.SERVICE:
       if (!form.value.subjectId) {
-        errors.value.subjectId = $t('modifyAdvert.error.empty.subjectId')
+        errors.value.subjectId = $t('advertForm.error.empty.subjectId')
       }
       if (!form.value.schoolLevelId) {
-        errors.value.schoolLevelId = $t('modifyAdvert.error.empty.schoolGradeId')
+        errors.value.schoolLevelId = $t('advertForm.error.empty.schoolGradeId')
       }
       if (!form.value.teachingLanguage) {
-        errors.value.teachingLanguage = $t('modifyAdvert.error.empty.teachingLanguage')
+        errors.value.teachingLanguage = $t('advertForm.error.empty.teachingLanguage')
       }
       if (!form.value.specificStudyLevel?.trim()) {
-        errors.value.specificStudyLevel = $t('modifyAdvert.error.empty.studyLevel')
+        errors.value.specificStudyLevel = $t('advertForm.error.empty.studyLevel')
       }
       break
     case AdvertType.PRODUCT:
       if (!form.value.condition) {
-        errors.value.condition = $t('modifyAdvert.error.empty.condition')
+        errors.value.condition = $t('advertForm.error.empty.condition')
       }
       // if (uploadedFiles.value.length === 0) {
-      //   errors.value.images = $t('modifyAdvert.error.empty.images')
+      //   errors.value.images = $t('advertForm.error.empty.images')
       // }
       break
     case AdvertType.BOOK:
       if (!form.value.condition) {
-        errors.value.condition = $t('modifyAdvert.error.empty.condition')
+        errors.value.condition = $t('advertForm.error.empty.condition')
       }
       if (!form.value.publisher || !form.value.publisher.trim()) {
-        errors.value.publisher = $t('modifyAdvert.error.empty.publisher')
+        errors.value.publisher = $t('advertForm.error.empty.publisher')
       }
       if (!form.value.edition || !form.value.edition.trim()) {
-        errors.value.edition = $t('modifyAdvert.error.empty.edition')
+        errors.value.edition = $t('advertForm.error.empty.edition')
       }
       if (!form.value.isbn || !form.value.isbn.trim()) {
-        errors.value.isbn = $t('modifyAdvert.error.empty.isbn')
+        errors.value.isbn = $t('advertForm.error.empty.isbn')
       }
       if (form.value.bookCategoryId === null || form.value.bookCategoryId < 0) {
-        errors.value.bookCategoryId = $t('modifyAdvert.error.empty.bookCategoryId')
+        errors.value.bookCategoryId = $t('advertForm.error.empty.bookCategoryId')
       }
       if (!form.value.writtenLanguage) {
-        errors.value.writtenLanguage = $t('modifyAdvert.error.empty.writtenLanguage')
+        errors.value.writtenLanguage = $t('advertForm.error.empty.writtenLanguage')
       }
       if (!form.value.author || !form.value.author.trim()) {
-        errors.value.author = $t('modifyAdvert.error.empty.author')
+        errors.value.author = $t('advertForm.error.empty.author')
       }
       // if (uploadedFiles.value.length === 0) {
-      //   errors.value.images = $t('modifyAdvert.error.empty.images')
+      //   errors.value.images = $t('advertForm.error.empty.images')
       // }
       break
   }
@@ -127,18 +127,18 @@ const validateForm = (): boolean => {
 
   // Title length validation
   if (form.value.title && form.value.title.length < 3) {
-    errors.value.title = $t('modifyAdvert.error.invalid.titleLengthMin')
+    errors.value.title = $t('advertForm.error.invalid.titleLengthMin')
   }
   if (form.value.title && form.value.title.length > 200) {
-    errors.value.title = $t('modifyAdvert.error.invalid.titleLengthMax')
+    errors.value.title = $t('advertForm.error.invalid.titleLengthMax')
   }
 
   // Description length validation
   if (form.value.description && form.value.description.length < 10) {
-    errors.value.description = $t('modifyAdvert.error.invalid.descriptionLengthMin')
+    errors.value.description = $t('advertForm.error.invalid.descriptionLengthMin')
   }
   if (form.value.description && form.value.description.length > 2000) {
-    errors.value.description = $t('modifyAdvert.error.invalid.descriptionLengthMax')
+    errors.value.description = $t('advertForm.error.invalid.descriptionLengthMax')
   }
 
   // SQL injection prevention - check for suspicious patterns
@@ -152,89 +152,89 @@ const validateForm = (): boolean => {
   const specificStudyLevel = form.value.specificStudyLevel ?? ''
 
   if ((title || description || author || publisher || edition || isbn || specificStudyLevel) && (sqlInjectionPattern.test(title) || sqlInjectionPattern.test(description) || sqlInjectionPattern.test(author) || sqlInjectionPattern.test(publisher) || sqlInjectionPattern.test(edition) || sqlInjectionPattern.test(isbn) || sqlInjectionPattern.test(specificStudyLevel))) {
-    errors.value.content = $t('modifyAdvert.error.invalid.sqlInjection')
+    errors.value.content = $t('advertForm.error.invalid.sqlInjection')
   }
 
   // Price validation
   if (form.value.price && form.value.price < 0) {
-    errors.value.price = $t('modifyAdvert.error.invalid.priceNegative')
+    errors.value.price = $t('advertForm.error.invalid.priceNegative')
   }
   if (form.value.price && form.value.price > 500) {
-    errors.value.price = $t('modifyAdvert.error.invalid.priceMax')
+    errors.value.price = $t('advertForm.error.invalid.priceMax')
   }
   if (form.value.price && !/^\d+(\.\d{1,2})?$/.test(form.value.price.toString())) {
-    errors.value.price = $t('modifyAdvert.error.invalid.priceFormat')
+    errors.value.price = $t('advertForm.error.invalid.priceFormat')
   }
 
   // const maxFileSize = 5 * 1024 * 1024 // 5MB
   switch (category.value) {
     case AdvertType.SERVICE:
       if (form.value.subjectId && form.value.subjectId < 1) {
-        errors.value.subjectId = $t('modifyAdvert.error.invalid.subjectId')
+        errors.value.subjectId = $t('advertForm.error.invalid.subjectId')
       }
       if (form.value.schoolLevelId && form.value.schoolLevelId < 1) {
-        errors.value.schoolLevelId = $t('modifyAdvert.error.invalid.schoolGradeId')
+        errors.value.schoolLevelId = $t('advertForm.error.invalid.schoolGradeId')
       }
       if (!form.value.teachingLanguage) {
-        errors.value.teachingLanguage = $t('modifyAdvert.error.invalid.teachingLanguage')
+        errors.value.teachingLanguage = $t('advertForm.error.invalid.teachingLanguage')
       }
       if (form.value.specificStudyLevel && form.value.specificStudyLevel.length > 50) {
-        errors.value.specificStudyLevel = $t('modifyAdvert.error.invalid.studyLevelLength')
+        errors.value.specificStudyLevel = $t('advertForm.error.invalid.studyLevelLength')
       }
       break
     case AdvertType.BOOK:
       if (form.value.bookCategoryId && form.value.bookCategoryId < 0) {
-        errors.value.bookCategoryId = $t('modifyAdvert.error.invalid.bookCategoryId')
+        errors.value.bookCategoryId = $t('advertForm.error.invalid.bookCategoryId')
       }
       if (!form.value.writtenLanguage) {
-        errors.value.writtenLanguage = $t('modifyAdvert.error.invalid.writtenLanguage')
+        errors.value.writtenLanguage = $t('advertForm.error.invalid.writtenLanguage')
       }
       // ISBN validation (books only)
       if (form.value.isbn && !/^(?:\d-\d{4}-\d{4}-\d|97[89]-\d-\d{4}-\d{4}-\d)$/.test(form.value.isbn)) {
-        errors.value.isbn = $t('modifyAdvert.error.invalid.isbnFormat')
+        errors.value.isbn = $t('advertForm.error.invalid.isbnFormat')
       }
       // Author and Publisher length validation (books only)
       if (form.value.author && form.value.author.length > 150) {
-        errors.value.author = $t('modifyAdvert.error.invalid.authorLength')
+        errors.value.author = $t('advertForm.error.invalid.authorLength')
       }
       if (form.value.publisher && form.value.publisher.length > 150) {
-        errors.value.publisher = $t('modifyAdvert.error.invalid.publisherLength')
+        errors.value.publisher = $t('advertForm.error.invalid.publisherLength')
       }
       // Edition length validation (books only)
       if (form.value.edition && form.value.edition.length > 150) {
-        errors.value.edition = $t('modifyAdvert.error.invalid.editionLength')
+        errors.value.edition = $t('advertForm.error.invalid.editionLength')
       }
       // File size validation
       // uploadedFiles.value.forEach((file) => {
       //   if (file.size > maxFileSize) {
-      //     errors.value.images = $t('modifyAdvert.error.invalid.imageSize')
+      //     errors.value.images = $t('advertForm.error.invalid.imageSize')
       //   }
       //   // Validate file type
       //   if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
-      //     errors.value.images = $t('modifyAdvert.error.invalid.imageType')
+      //     errors.value.images = $t('advertForm.error.invalid.imageType')
       //   }
       // })
 
       // Maximum number of files validation
       // if (uploadedFiles.value.length > 10) {
-      //   errors.value.images = $t('modifyAdvert.error.invalid.imageCount')
+      //   errors.value.images = $t('advertForm.error.invalid.imageCount')
       // }
       break
     case AdvertType.PRODUCT:
       // File size validation
       // uploadedFiles.value.forEach((file) => {
       //   if (file.size > maxFileSize) {
-      //     errors.value.images = $t('modifyAdvert.error.invalid.imageSize')
+      //     errors.value.images = $t('advertForm.error.invalid.imageSize')
       //   }
       //   // Validate file type
       //   if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
-      //     errors.value.images = $t('modifyAdvert.error.invalid.imageType')
+      //     errors.value.images = $t('advertForm.error.invalid.imageType')
       //   }
       // })
 
       // // Maximum number of files validation
       // if (uploadedFiles.value.length > 10) {
-      //   errors.value.images = $t('modifyAdvert.error.invalid.imageCount')
+      //   errors.value.images = $t('advertForm.error.invalid.imageCount')
       // }
       break
   }
@@ -402,7 +402,7 @@ vueOnMounted(async () => {
                   d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
                 />
               </svg>
-              {{ $t('modifyAdvert.form.detailedInformation') }}
+              {{ $t('advertForm.form.detailedInformation') }}
             </h2>
             <div class="mt-5 grid gap-5 md:grid-cols-2">
               <div class="col-span-2">
@@ -410,13 +410,13 @@ vueOnMounted(async () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="title"
                 >
-                  {{ $t('modifyAdvert.form.title') }}
+                  {{ $t('advertForm.form.title') }}
                 </label>
                 <input
                   id="title"
                   v-model="form.title"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('modifyAdvert.form.titlePlaceholder')"
+                  :placeholder="$t('advertForm.form.titlePlaceholder')"
                   type="text"
                 >
                 <p class="mt-1 min-h-5 text-sm text-red-500">
@@ -428,7 +428,7 @@ vueOnMounted(async () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="condition"
                 >
-                  {{ $t('modifyAdvert.form.condition') }}
+                  {{ $t('advertForm.form.condition') }}
                 </label>
                 <select
                   id="condition"
@@ -457,13 +457,13 @@ vueOnMounted(async () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="author"
                 >
-                  {{ $t('modifyAdvert.form.author') }}
+                  {{ $t('advertForm.form.author') }}
                 </label>
                 <input
                   id="author"
                   v-model="form.author"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('modifyAdvert.form.authorPlaceholder')"
+                  :placeholder="$t('advertForm.form.authorPlaceholder')"
                   type="text"
                 >
                 <p
@@ -478,13 +478,13 @@ vueOnMounted(async () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="publisher"
                 >
-                  {{ $t('modifyAdvert.form.publisher') }}
+                  {{ $t('advertForm.form.publisher') }}
                 </label>
                 <input
                   id="publisher"
                   v-model="form.publisher"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('modifyAdvert.form.publisherPlaceholder')"
+                  :placeholder="$t('advertForm.form.publisherPlaceholder')"
                   type="text"
                 >
                 <p
@@ -499,13 +499,13 @@ vueOnMounted(async () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="edition"
                 >
-                  {{ $t('modifyAdvert.form.edition') }}
+                  {{ $t('advertForm.form.edition') }}
                 </label>
                 <input
                   id="edition"
                   v-model="form.edition"
                   class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('modifyAdvert.form.editionPlaceholder')"
+                  :placeholder="$t('advertForm.form.editionPlaceholder')"
                   type="text"
                 >
                 <p
@@ -520,14 +520,14 @@ vueOnMounted(async () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="isbn"
                 >
-                  {{ $t('modifyAdvert.form.isbn') }}
+                  {{ $t('advertForm.form.isbn') }}
                 </label>
                 <div class="relative">
                   <input
                     id="isbn"
                     v-model="form.isbn"
                     class="w-full rounded-xl border border-gray-200 bg-white py-3 pl-10 pr-4 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                    :placeholder="$t('modifyAdvert.form.isbnPlaceholder')"
+                    :placeholder="$t('advertForm.form.isbnPlaceholder')"
                     type="text"
                   >
                   <svg
@@ -562,7 +562,7 @@ vueOnMounted(async () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="bookCategoryId"
                 >
-                  {{ $t('modifyAdvert.form.bookCategoryId') }}
+                  {{ $t('advertForm.form.bookCategoryId') }}
                 </label>
                 <select
                   id="bookCategoryId"
@@ -606,7 +606,7 @@ vueOnMounted(async () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="writtenLanguage"
                 >
-                  {{ $t('modifyAdvert.form.writtenLanguage') }}
+                  {{ $t('advertForm.form.writtenLanguage') }}
                 </label>
                 <select
                   id="writtenLanguage"
@@ -635,7 +635,7 @@ vueOnMounted(async () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="subjectId"
                 >
-                  {{ $t('modifyAdvert.form.subjectId') }}
+                  {{ $t('advertForm.form.subjectId') }}
                 </label>
                 <select
                   id="subjectId"
@@ -679,7 +679,7 @@ vueOnMounted(async () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="schoolLevelId"
                 >
-                  {{ $t('modifyAdvert.form.schoolGradeId') }}
+                  {{ $t('advertForm.form.schoolGradeId') }}
                 </label>
                 <select
                   id="schoolLevelId"
@@ -711,7 +711,7 @@ vueOnMounted(async () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="teachingLanguage"
                 >
-                  {{ $t('modifyAdvert.form.teachingLanguage') }}
+                  {{ $t('advertForm.form.teachingLanguage') }}
                 </label>
                 <select
                   id="teachingLanguage"
@@ -740,14 +740,14 @@ vueOnMounted(async () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="studyLevel"
                 >
-                  {{ $t('modifyAdvert.form.studyLevel') }}
+                  {{ $t('advertForm.form.studyLevel') }}
                 </label>
                 <div class="relative">
                   <input
                     id="studyLevel"
                     v-model="form.specificStudyLevel"
                     class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                    :placeholder="$t('modifyAdvert.form.studyLevelPlaceholder')"
+                    :placeholder="$t('advertForm.form.studyLevelPlaceholder')"
                     type="text"
                   >
                 </div>
@@ -763,13 +763,13 @@ vueOnMounted(async () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="description"
                 >
-                  {{ $t('modifyAdvert.form.description') }}
+                  {{ $t('advertForm.form.description') }}
                 </label>
                 <textarea
                   id="description"
                   v-model="form.description"
                   class="min-h-32 w-full resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('modifyAdvert.form.descriptionPlaceholder')"
+                  :placeholder="$t('advertForm.form.descriptionPlaceholder')"
                   rows="4"
                 />
                 <p class="mt-1 min-h-5 text-sm text-red-500">
@@ -795,7 +795,7 @@ vueOnMounted(async () => {
                   d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z"
                 />
               </svg>
-              {{ $t('modifyAdvert.form.sales') }}
+              {{ $t('advertForm.form.sales') }}
             </h2>
             <div class="mt-5 grid gap-5 md:grid-cols-3">
               <div>
@@ -803,7 +803,7 @@ vueOnMounted(async () => {
                   class="mb-2 block text-sm font-medium text-gray-600"
                   for="price"
                 >
-                  {{ $t('modifyAdvert.form.price') }}
+                  {{ $t('advertForm.form.price') }}
                 </label>
                 <div class="flex items-center overflow-hidden rounded-xl border border-gray-200 bg-white focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 dark:bg-gray-800 dark:border-gray-400">
                   <input
@@ -837,13 +837,13 @@ vueOnMounted(async () => {
               :to="localePath('/me/adverts')"
               class="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
             >
-              {{ $t('modifyAdvert.form.cancel') }}
+              {{ $t('advertForm.form.cancel') }}
             </NuxtLink>
             <button
               class="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90"
               type="submit"
             >
-              {{ $t('modifyAdvert.form.modify') }}
+              {{ $t('advertForm.form.modify') }}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
