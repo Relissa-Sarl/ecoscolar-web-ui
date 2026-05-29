@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { useUsersStore } from '../../app/stores/usersStore'
+import { useCartStore } from '../../app/stores/cartStore'
 import type { CatalogListing } from '../../app/types/catalog'
 import type { User } from '../../app/types/user'
 

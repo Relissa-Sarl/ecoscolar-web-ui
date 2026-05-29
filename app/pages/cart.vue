@@ -29,11 +29,11 @@ const cartItems = ref<CartItem[]>([
     id: 1,
     title: 'Mathématiques Analyse - Terminale S',
     category: 'book',
-    categoryLabel: "Livre",
+    categoryLabel: 'Livre',
     price: 18.50,
     quantity: 1,
     author: 'J. Martin & L. Dubois',
-    seller: 'Marie L.',
+    seller: 'Marie L.'
   },
   {
     id: 2,
@@ -42,7 +42,7 @@ const cartItems = ref<CartItem[]>([
     categoryLabel: 'Fourniture',
     price: 6.90,
     quantity: 1,
-    seller: 'Thomas B.',
+    seller: 'Thomas B.'
   },
   {
     id: 3,
@@ -51,7 +51,7 @@ const cartItems = ref<CartItem[]>([
     categoryLabel: 'Tutorat',
     price: 30.00,
     quantity: 1,
-    seller: 'Sophie V. (Répétitrice certifiée)',
+    seller: 'Sophie V. (Répétitrice certifiée)'
   }
 ])
 
@@ -79,41 +79,41 @@ const total = computed(() => {
 const itemsCount = computed(() => {
   return cartItems.value.reduce((sum, item) => sum + item.quantity, 0)
 })
-
-
 </script>
 
 <template>
   <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
     <div class="max-w-6xl mx-auto">
       <!-- Header -->
-      <CartHeader 
-        :items-count="itemsCount" 
-        :has-items="cartItems.length > 0" 
-        @clear="clearCart" 
+      <CartHeader
+        :items-count="itemsCount"
+        :has-items="cartItems.length > 0"
+        @clear="clearCart"
       />
 
       <!-- Main Layout -->
-      <div v-if="cartItems.length > 0" class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in">
-        
+      <div
+        v-if="cartItems.length > 0"
+        class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in"
+      >
         <!-- Left: Items list -->
-        <CartAdvertItems 
-          :items="cartItems" 
-          @remove="removeItem" 
+        <CartAdvertItems
+          :items="cartItems"
+          @remove="removeItem"
         />
 
         <!-- Right: Summary & Order breakdown -->
-        <CartSummary 
-          :subtotal="subtotal" 
-          :service-fee="serviceFee" 
-          :shipping-cost="shippingCost" 
-          :total="total" 
+        <CartSummary
+          :subtotal="subtotal"
+          :service-fee="serviceFee"
+          :shipping-cost="shippingCost"
+          :total="total"
         />
       </div>
 
       <!-- Empty State -->
-      <div 
-        v-else 
+      <div
+        v-else
         class="text-center py-20 px-4 rounded-3xl border border-dashed border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/30 backdrop-blur-sm max-w-2xl mx-auto shadow-sm animate-fade-in"
       >
         <CartEmpty />
