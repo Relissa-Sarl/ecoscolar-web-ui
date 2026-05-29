@@ -5,6 +5,8 @@ import {
   CATALOG_SERVICE_BADGE_CLASS,
   type CatalogListing
 } from '@/types/catalog'
+import type { FavoriteAdvertSummary } from '@/types/favorite'
+import { computed, onBeforeMount, ref } from 'vue'
 
 const localePath = useLocalePath()
 
@@ -14,11 +16,54 @@ const props = defineProps<{
 
 const detailLink = computed(() => localePath(`/adverts/${props.listing.id}`))
 
+const favoritesStore = useFavoritesStore()
+const isSubmittingFavorite = ref(false)
+
+// Mapping a FavoriteAdvertSummary from a CatalogListing
+const favoriteAdvertSummary = computed<FavoriteAdvertSummary>(() => ({
+  id: props.listing.id,
+  title: props.listing.title,
+  type: props.listing.type,
+  condition: props.listing.itemCondition ?? '',
+  price: props.listing.price,
+  image: props.listing.imageUrl
+}))
+
+// Input fot the favorite toggle
+const favoriteInput = computed(() => ({
+  advertId: props.listing.id,
+  advert: favoriteAdvertSummary.value
+}))
+
+const isFavorite = computed(() => favoritesStore.isFavorite(props.listing.id))
+
+const favoriteLabel = computed(() =>
+  isFavorite.value ? 'advert.actions.favorite_remove' : 'advert.actions.favorite_add'
+)
+
+const toggleFavorite = async () => {
+  if (isSubmittingFavorite.value) {
+    return
+  }
+  isSubmittingFavorite.value = true
+
+  try {
+    await favoritesStore.toggleFavorite(favoriteInput.value)
+  } finally {
+    isSubmittingFavorite.value = false
+  }
+}
+
 defineEmits<{
-  favoriteToggle: []
   cartAdd: []
   bookLesson: []
 }>()
+
+onBeforeMount(() => {
+  if (!favoritesStore.hasLoaded && !favoritesStore.isLoading) {
+    void favoritesStore.loadFavorites().catch(() => undefined)
+  }
+})
 </script>
 
 <template>
@@ -97,23 +142,37 @@ defineEmits<{
           <button
             type="button"
             class="rounded-full border border-slate-200 p-2.5 transition hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-900"
-            :aria-label="$t('advert.actions.favorite_add')"
-            @click="$emit('favoriteToggle')"
+            :aria-label="$t(favoriteLabel)"
+            :aria-pressed="isFavorite"
+            :disabled="isSubmittingFavorite"
+            @click="toggleFavorite"
           >
-            <svg
-              class="size-5"
-              aria-hidden="true"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-              />
-            </svg>
+            <template v-if="!isFavorite">
+              <svg
+                class="size-5"
+                aria-hidden="true"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                />
+              </svg>
+            </template>
+            <template v-else>
+              <svg
+                class="size-5 text-red-500"
+                aria-hidden="true"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+              </svg>
+            </template>
           </button>
 
           <button
