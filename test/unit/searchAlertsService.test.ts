@@ -1,50 +1,63 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { SearchAlert } from '../../app/types/searchAlert'
 import { createSearchAlertsService } from '../../app/services/searchAlertsService'
 
-function createLocalStorageMock() {
-  const store = new Map<string, string>()
-  return {
-    getItem: (key: string) => store.get(key) ?? null,
-    setItem: (key: string, value: string) => {
-      store.set(key, value)
-    },
-    removeItem: (key: string) => {
-      store.delete(key)
-    },
-    clear: () => {
-      store.clear()
-    }
-  }
-}
+const buildAlert = (id: number, q = 'Biologie'): SearchAlert => ({
+  id,
+  q,
+  isbn: null,
+  category: null,
+  minPrice: null,
+  maxPrice: null,
+  subjects: null,
+  grade: null,
+  createdAt: '2026-05-19T12:00:00.000Z'
+})
 
-describe('searchAlertsService (mock)', () => {
+describe('searchAlertsService', () => {
   beforeEach(() => {
-    vi.stubGlobal('localStorage', createLocalStorageMock())
+    vi.clearAllMocks()
   })
 
-  afterEach(() => {
-    vi.unstubAllGlobals()
-  })
-
-  it('creates and lists alerts', async () => {
-    const service = createSearchAlertsService()
-    const created = await service.createAlert({ q: 'Biologie' })
-    expect(created.id).toBeGreaterThan(0)
-    expect(created.q).toBe('Biologie')
+  it('lists alerts through the API', async () => {
+    const apiClient = vi.fn().mockResolvedValueOnce([buildAlert(1)])
+    const service = createSearchAlertsService({ apiClient })
 
     const alerts = await service.listAlerts()
+
     expect(alerts).toHaveLength(1)
+    expect(apiClient).toHaveBeenCalledWith('/users/me/search-alerts')
+  })
+
+  it('creates an alert through the API', async () => {
+    const apiClient = vi.fn().mockResolvedValueOnce(buildAlert(2, 'Calculatrice'))
+    const service = createSearchAlertsService({ apiClient })
+
+    const created = await service.createAlert({ q: 'Calculatrice' })
+
+    expect(created.q).toBe('Calculatrice')
+    expect(apiClient).toHaveBeenCalledWith('/users/me/search-alerts', {
+      method: 'POST',
+      body: { q: 'Calculatrice' }
+    })
   })
 
   it('rejects empty criteria', async () => {
-    const service = createSearchAlertsService()
+    const apiClient = vi.fn()
+    const service = createSearchAlertsService({ apiClient })
+
     await expect(service.createAlert({})).rejects.toThrow(/criterion/i)
+    expect(apiClient).not.toHaveBeenCalled()
   })
 
-  it('deletes an alert', async () => {
-    const service = createSearchAlertsService()
-    const created = await service.createAlert({ q: 'Math' })
-    await service.deleteAlert(created.id)
-    expect(await service.listAlerts()).toHaveLength(0)
+  it('deletes an alert through the API', async () => {
+    const apiClient = vi.fn().mockResolvedValueOnce(undefined)
+    const service = createSearchAlertsService({ apiClient })
+
+    await service.deleteAlert(3)
+
+    expect(apiClient).toHaveBeenCalledWith('/users/me/search-alerts/3', {
+      method: 'DELETE'
+    })
   })
 })

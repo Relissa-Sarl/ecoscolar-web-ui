@@ -1,7 +1,8 @@
 import type { CreateSearchAlertInput, SearchAlert } from '../types/searchAlert'
 import { hasSearchCriteria } from '../types/searchAlert'
+import { useApi } from '../composables/useApi'
 
-const STORAGE_KEY = 'ecoscolar-search-alerts'
+type ApiClient = typeof useApi
 
 export interface SearchAlertsService {
   listAlerts: () => Promise<SearchAlert[]>
@@ -9,61 +10,38 @@ export interface SearchAlertsService {
   deleteAlert: (id: number) => Promise<void>
 }
 
-function readStorage(): SearchAlert[] {
-  if (typeof localStorage === 'undefined') return []
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? (JSON.parse(raw) as SearchAlert[]) : []
-  } catch {
-    return []
-  }
+export interface SearchAlertsServiceDependencies {
+  apiClient: ApiClient
 }
 
-function writeStorage(alerts: SearchAlert[]): void {
-  if (typeof localStorage === 'undefined') return
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(alerts))
-}
+const SEARCH_ALERTS_PATH = '/users/me/search-alerts'
 
-function nextId(alerts: SearchAlert[]): number {
-  return alerts.reduce((max, alert) => Math.max(max, alert.id), 0) + 1
-}
-
-export function createSearchAlertsService(): SearchAlertsService {
-  const listAlerts = async () =>
-    [...readStorage()].sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
+export function createSearchAlertsService({
+  apiClient
+}: SearchAlertsServiceDependencies): SearchAlertsService {
+  const listAlerts = async () => apiClient<SearchAlert[]>(SEARCH_ALERTS_PATH)
 
   const createAlert = async (input: CreateSearchAlertInput) => {
     if (!hasSearchCriteria(input)) {
       throw new Error('At least one search criterion is required.')
     }
-
-    const alert: SearchAlert = {
-      id: nextId(readStorage()),
-      q: input.q?.trim() || null,
-      isbn: input.isbn?.trim() || null,
-      category: input.category?.trim() || null,
-      minPrice: input.minPrice ?? null,
-      maxPrice: input.maxPrice ?? null,
-      subjects: input.subjects?.trim() || null,
-      grade: input.grade?.trim() || null,
-      createdAt: new Date().toISOString()
-    }
-
-    const alerts = readStorage()
-    alerts.unshift(alert)
-    writeStorage(alerts)
-    return alert
+    return apiClient<SearchAlert>(SEARCH_ALERTS_PATH, {
+      method: 'POST',
+      body: input
+    })
   }
 
   const deleteAlert = async (id: number) => {
-    writeStorage(readStorage().filter(alert => alert.id !== id))
+    await apiClient<void>(`${SEARCH_ALERTS_PATH}/${id}`, {
+      method: 'DELETE'
+    })
   }
 
   return { listAlerts, createAlert, deleteAlert }
 }
 
 export function getSearchAlertsService(): SearchAlertsService {
-  return createSearchAlertsService()
+  return createSearchAlertsService({
+    apiClient: useApi as ApiClient
+  })
 }
