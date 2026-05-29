@@ -37,3 +37,15 @@ export function hasSearchCriteria(input: CreateSearchAlertInput): boolean {
     || input.maxPrice != null
   )
 }
+
+export function buildShopSearchQuery(alert: SearchAlert): Record<string, string> {
+  const query: Record<string, string> = {}
+  if (alert.q?.trim()) query.q = alert.q.trim()
+  if (alert.isbn?.trim()) query.isbn = alert.isbn.trim()
+  if (alert.category?.trim()) query.category = alert.category.trim()
+  if (alert.subjects?.trim()) query.subjects = alert.subjects.trim()
+  if (alert.grade?.trim()) query.grade = alert.grade.trim()
+  if (alert.minPrice != null) query.minPrice = String(alert.minPrice)
+  if (alert.maxPrice != null) query.maxPrice = String(alert.maxPrice)
+  return query
+}

@@ -382,7 +382,8 @@
     "login": "Connexion",
     "logout": "Déconnexion",
     "profile": "Profil",
-    "favorites": "Favoris"
+    "favorites": "Favoris",
+    "search_alerts": "Alertes"
   },
   "common": {
     "back_to_home": "Retour à l'accueil",

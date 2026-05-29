@@ -382,7 +382,8 @@
     "login": "Anmelden",
     "logout": "Abmelden",
     "profile": "Profil",
-    "favorites": "Favoriten"
+    "favorites": "Favoriten",
+    "search_alerts": "Suchalarme"
   },
   "common": {
     "back_to_home": "Zurück zur Startseite",

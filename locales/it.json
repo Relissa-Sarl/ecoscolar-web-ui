@@ -382,7 +382,8 @@
     "login": "Accedi",
     "logout": "Esci",
     "profile": "Profilo",
-    "favorites": "Preferiti"
+    "favorites": "Preferiti",
+    "search_alerts": "Avvisi"
   },
   "common": {
     "back_to_home": "Torna alla home",

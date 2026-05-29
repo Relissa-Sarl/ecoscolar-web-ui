@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import { useLocalePath } from '#imports'
 import type {
   AdvertCatalogApiItem,
@@ -17,6 +17,8 @@ import { getCatalogService } from '~/services/catalogService'
 import { mapCatalogApiToListings } from '~/utils/catalogMappers'
 import { useSearchAlertsStore } from '~/stores/searchAlertsStore'
 import { hasSearchCriteria } from '~/types/searchAlert'
+
+const route = useRoute()
 
 definePageMeta({ layout: 'catalog' })
 
@@ -155,6 +157,18 @@ function subjectMatches(filters: SubjectFilterState, listing: CatalogListing): b
   ]
   return mapPairs.some(([on, code]) => on && listing.subjectCode === code)
 }
+
+function applySearchFromRouteQuery() {
+  const q = route.query.q
+  if (typeof q === 'string' && q.trim()) {
+    draftSearch.value = q.trim()
+    appliedSearch.value = q.trim()
+    currentPage.value = 1
+  }
+}
+onMounted(() => {
+  applySearchFromRouteQuery()
+})
 
 const filtered = computed(() => {
   let rows = [...listings.value]
