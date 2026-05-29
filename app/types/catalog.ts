@@ -63,6 +63,7 @@ export interface CatalogListing {
   id: string
   title: string
   price: number
+  type: AdvertType
   categoryTab: Exclude<CatalogCategoryTab, 'all'>
   /** Condition physique (fournitures / manuels uniquement). */
   itemCondition?: CatalogItemCondition

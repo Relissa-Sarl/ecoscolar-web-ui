@@ -30,6 +30,7 @@ export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): Ca
     id: String(item.id),
     title: item.title,
     price: item.price,
+    type: item.type,
     categoryTab,
     location: `${1005 + index} Lausanne`,
     imageUrl: `https://picsum.photos/seed/ecoscolar_${String(item.id)}_400/520/440`
