@@ -218,6 +218,13 @@ watch(grades, () => {
 watch(subjects, () => {
   currentPage.value = 1
 }, { deep: true })
+
+watch(
+  () => route.query.q,
+  () => {
+    applySearchFromRouteQuery()
+  }
+)
 </script>
 
 <template>
