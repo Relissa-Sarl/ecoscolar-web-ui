@@ -32,7 +32,7 @@ export function createSearchAlertsService({
   }
 
   const deleteAlert = async (id: number) => {
-    await apiClient<void>(`${SEARCH_ALERTS_PATH}/${id}`, {
+    await apiClient<unknown>(`${SEARCH_ALERTS_PATH}/${id}`, {
       method: 'DELETE'
     })
   }
