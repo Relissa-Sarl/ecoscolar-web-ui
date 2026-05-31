@@ -58,9 +58,6 @@ const showMetadata = computed(() => {
 const showConditionDetails = computed(() =>
   (advert.value?.conditions?.length ?? 0) > 0)
 
-const showPublicQuestions = computed(() =>
-  (advertQuestions.value?.length ?? 0) > 0)
-
 const isOwnAdvert = computed(() => {
   const sellerUsername = advert.value?.seller?.username?.trim().toLowerCase()
   const currentNickname = usersStore.user?.nickname?.trim().toLowerCase()
@@ -180,11 +177,10 @@ const advertSummary = computed(() => {
       </div>
 
       <div
-        v-if="showPublicQuestions"
+        v-if="advert"
         class="mt-12"
       >
         <AdvertPublicQuestions
-          v-if="advert"
           :seller="advert.seller"
           :can-ask="!isOwnAdvert"
           :can-answer="isOwnAdvert"
