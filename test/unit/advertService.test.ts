@@ -74,4 +74,53 @@ describe('advertService', () => {
 
     expect(apiClient).toHaveBeenCalledWith('/adverts/services/3')
   })
+
+  it('loads public questions by advert id', async () => {
+    const apiClient = vi.fn().mockResolvedValueOnce([])
+    const service = createAdvertService({ apiClient })
+
+    await service.getQuestions(7)
+
+    expect(apiClient).toHaveBeenCalledWith('/adverts/7/questions')
+  })
+
+  it('creates a public question with the expected payload', async () => {
+    const apiClient = vi.fn().mockResolvedValueOnce({
+      commentId: 12,
+      authorId: 'user-1',
+      author: 'Student',
+      content: 'Is this still available?',
+      createdAt: '2026-05-31T10:48:38.392Z',
+      answer: '',
+      answeredAt: null
+    })
+    const service = createAdvertService({ apiClient })
+
+    await service.postQuestion(7, 'Is this still available?')
+
+    expect(apiClient).toHaveBeenCalledWith('/adverts/7/questions', {
+      method: 'POST',
+      body: { content: 'Is this still available?' }
+    })
+  })
+
+  it('creates an answer for a question with the expected payload', async () => {
+    const apiClient = vi.fn().mockResolvedValueOnce({
+      commentId: 12,
+      authorId: 'user-1',
+      author: 'Student',
+      content: 'Is this still available?',
+      createdAt: '2026-05-31T10:48:38.392Z',
+      answer: 'Yes, it is.',
+      answeredAt: '2026-05-31T11:00:00.000Z'
+    })
+    const service = createAdvertService({ apiClient })
+
+    await service.postAnswer(7, 12, 'Yes, it is.')
+
+    expect(apiClient).toHaveBeenCalledWith('/adverts/7/questions/12/answers', {
+      method: 'POST',
+      body: { content: 'Yes, it is.' }
+    })
+  })
 })
