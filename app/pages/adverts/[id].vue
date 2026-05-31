@@ -64,14 +64,14 @@ const showPublicQuestions = computed(() =>
 const isOwnAdvert = computed(() => {
   const sellerUsername = advert.value?.seller?.username?.trim().toLowerCase()
   const currentNickname = usersStore.user?.nickname?.trim().toLowerCase()
-  console.log('sellerUsername:', sellerUsername)
-  console.log('currentNickname:', currentNickname)
+
   return !!sellerUsername
     && !!currentNickname
     && sellerUsername === currentNickname
 })
 
 const toast = useToast()
+const answeringQuestionId = ref<number | null>(null)
 
 const handleAskQuestion = async (text: string) => {
   if (isOwnAdvert.value)
@@ -83,6 +83,23 @@ const handleAskQuestion = async (text: string) => {
     toast.add({ title: t('advert.detail.ask_success'), color: 'success' })
   } catch {
     toast.add({ title: t('advert.detail.ask_error'), color: 'error' })
+  }
+}
+
+const handleAnswerQuestion = async ({ questionId, text }: { questionId: number, text: string }) => {
+  if (!isOwnAdvert.value)
+    return
+
+  answeringQuestionId.value = questionId
+
+  try {
+    await getAdvertService().postAnswer(Number(route.params.id), questionId, text)
+    await refreshQuestions()
+    toast.add({ title: t('advert.detail.answer_success'), color: 'success' })
+  } catch {
+    toast.add({ title: t('advert.detail.answer_error'), color: 'error' })
+  } finally {
+    answeringQuestionId.value = null
   }
 }
 
@@ -170,8 +187,11 @@ const advertSummary = computed(() => {
           v-if="advert"
           :seller="advert.seller"
           :can-ask="!isOwnAdvert"
+          :can-answer="isOwnAdvert"
+          :answering-question-id="answeringQuestionId"
           :questions="advertQuestions || []"
           @ask-question="handleAskQuestion"
+          @answer-question="handleAnswerQuestion"
         />
       </div>
     </div>

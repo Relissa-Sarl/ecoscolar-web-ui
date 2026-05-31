@@ -6,17 +6,23 @@ interface Props {
   seller: Seller
   questions?: QuestionResponse[]
   canAsk?: boolean
+  canAnswer?: boolean
+  answeringQuestionId?: number | null
 }
 
 const props = withDefaults(defineProps<Props>(), {
   canAsk: true,
+  canAnswer: false,
+  answeringQuestionId: null,
   questions: () => []
 })
 const emit = defineEmits<{
   'ask-question': [text: string]
+  'answer-question': [payload: { questionId: number, text: string }]
 }>()
 
 const questionInput = ref('')
+const answerInputs = ref<Record<number, string>>({})
 
 const submitQuestion = () => {
   if (!props.canAsk)
@@ -27,6 +33,18 @@ const submitQuestion = () => {
     emit('ask-question', trimmedQuestion)
     questionInput.value = ''
   }
+}
+
+const submitAnswer = (questionId: number) => {
+  if (!props.canAnswer)
+    return
+
+  const trimmedAnswer = (answerInputs.value[questionId] || '').trim()
+  if (!trimmedAnswer)
+    return
+
+  emit('answer-question', { questionId, text: trimmedAnswer })
+  answerInputs.value[questionId] = ''
 }
 
 const formatDateTime = (value: string | null | undefined) => {
@@ -134,6 +152,30 @@ const formatDateTime = (value: string | null | undefined) => {
               <p class="mt-3 text-gray-100">
                 {{ question.answer }}
               </p>
+            </div>
+          </div>
+
+          <div
+            v-else-if="props.canAnswer"
+            class="mt-5"
+          >
+            <div class="flex gap-3">
+              <input
+                v-model="answerInputs[question.commentId]"
+                type="text"
+                :placeholder="$t('advert.detail.answer_placeholder')"
+                :disabled="props.answeringQuestionId === question.commentId"
+                class="flex-1 px-4 py-3 border border-gray-700 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-600 disabled:opacity-60"
+              >
+              <UButton
+                size="lg"
+                class="bg-emerald-700 hover:bg-emerald-800 text-white rounded-md px-4"
+                :loading="props.answeringQuestionId === question.commentId"
+                :disabled="props.answeringQuestionId === question.commentId"
+                @click="submitAnswer(question.commentId)"
+              >
+                {{ $t('advert.detail.answer_submit') }}
+              </UButton>
             </div>
           </div>
         </div>
