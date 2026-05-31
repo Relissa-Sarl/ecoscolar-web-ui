@@ -8,7 +8,7 @@ const route = useRoute()
 const localePath = useLocalePath()
 const { t } = useI18n()
 const { data: advert } = await useAdvert(String(route.params.id))
-const { data: advertQuestions } = await useAsyncData<QuestionResponse[]>(
+const { data: advertQuestions, refresh: refreshQuestions } = await useAsyncData<QuestionResponse[]>(
   `advert-questions:${String(route.params.id)}`,
   () => getAdvertService().getQuestions(Number(route.params.id))
 )
@@ -59,8 +59,16 @@ const showConditionDetails = computed(() =>
 const showPublicQuestions = computed(() =>
   (advertQuestions.value?.length ?? 0) > 0)
 
-const handleAskQuestion = (_text: string) => {
-  // TODO: send question to API
+const toast = useToast()
+
+const handleAskQuestion = async (text: string) => {
+  try {
+    await getAdvertService().postQuestion(Number(route.params.id), text)
+    await refreshQuestions()
+    toast.add({ title: t('advert.detail.ask_success'), color: 'success' })
+  } catch {
+    toast.add({ title: t('advert.detail.ask_error'), color: 'error' })
+  }
 }
 
 const advertSummary = computed(() => {

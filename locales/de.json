@@ -327,6 +327,8 @@
       "public_questions": "Öffentliche Fragen",
       "questions_count": "{count} Frage(n) gestellt",
       "ask_placeholder": "Stellen Sie dem Verkäufer eine Frage…",
+      "ask_success": "Frage erfolgreich gesendet.",
+      "ask_error": "Die Frage konnte nicht gesendet werden.",
       "view_profile": "Profil ansehen",
       "seller_badge": "Verkäufer"
     }

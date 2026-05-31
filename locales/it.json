@@ -327,6 +327,8 @@
       "public_questions": "Domande pubbliche",
       "questions_count": "{count} domanda/e posta/e",
       "ask_placeholder": "Fai una domanda al venditore…",
+      "ask_success": "Domanda inviata con successo.",
+      "ask_error": "Impossibile inviare la domanda.",
       "view_profile": "Vedi profilo",
       "seller_badge": "Venditore"
     }

@@ -21,6 +21,7 @@ export interface AdvertService {
 
   getAdvert: (id: number) => Promise<ModifyAdvertForm>
   getQuestions: (id: number) => Promise<QuestionResponse[]>
+  postQuestion: (id: number, content: string) => Promise<QuestionResponse>
 
   updateProductAdvert: (id: number, data: Partial<ModifyAdvertForm>) => Promise<void>
   updateServiceAdvert: (id: number, data: Partial<ModifyAdvertForm>) => Promise<void>
@@ -49,6 +50,8 @@ export function createAdvertService({ apiClient }: AdvertServiceDependencies): A
 
   const getAdvert = async (id: number) => apiClient<ModifyAdvertForm>(`${ADVERTS_PATH}/${id}`)
   const getQuestions = async (id: number) => apiClient<QuestionResponse[]>(`${ADVERTS_PATH}/${id}/questions`)
+  const postQuestion = async (id: number, content: string) =>
+    apiClient<QuestionResponse>(`${ADVERTS_PATH}/${id}/questions`, { method: 'POST', body: { content } })
 
   const updateProductAdvert = async (id: number, data: Partial<ModifyAdvertForm>): Promise<void> => {
     apiClient<unknown>(`${ADVERTS_PATH}/products/${id}`, { method: 'PUT', body: data })
@@ -81,6 +84,7 @@ export function createAdvertService({ apiClient }: AdvertServiceDependencies): A
 
     getAdvert,
     getQuestions,
+    postQuestion,
 
     updateProductAdvert,
     updateServiceAdvert,

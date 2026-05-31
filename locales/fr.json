@@ -327,6 +327,8 @@
       "public_questions": "Questions publiques",
       "questions_count": "{count} question(s) posée(s)",
       "ask_placeholder": "Posez une question au vendeur…",
+      "ask_success": "Question envoyée avec succès.",
+      "ask_error": "Impossible d'envoyer la question.",
       "view_profile": "Voir le profil",
       "seller_badge": "Vendeur"
     }
