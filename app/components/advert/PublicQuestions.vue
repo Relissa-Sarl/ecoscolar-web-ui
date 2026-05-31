@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { Seller, Question, Answer } from '@/types/advert'
+import type { Seller, QuestionResponse } from '@/types/advert'
 
 interface Props {
   seller: Seller
-  questions?: Question[]
-  answers?: Answer[]
+  questions?: QuestionResponse[]
 }
 
 withDefaults(defineProps<Props>(), {
-  questions: () => [],
-  answers: () => []
+  questions: () => []
 })
 const emit = defineEmits<{
   'ask-question': [text: string]
@@ -25,95 +23,111 @@ const submitQuestion = () => {
     questionInput.value = ''
   }
 }
+
+const formatDateTime = (value: string | null | undefined) => {
+  if (!value)
+    return ''
+
+  return new Date(value).toLocaleString()
+}
 </script>
 
 <template>
-  <div class="bg-white dark:bg-gray-950 p-8 rounded-lg border border-gray-200 dark:border-gray-800">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-        {{ $t('advert.detail.public_questions') }}
-      </h2>
-      <p class="text-sm text-gray-500 dark:text-gray-400">
+  <div class="bg-white dark:bg-gray-950 p-6 md:p-8 rounded-lg border border-gray-200 dark:border-gray-800">
+    <div class="flex items-start justify-between mb-4 md:mb-6">
+      <div>
+        <h2 class="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
+          {{ $t('advert.detail.public_questions') }}
+        </h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          {{ $t('advert.detail.ask_hint') }}
+        </p>
+      </div>
+      <p class="text-sm text-gray-500 dark:text-gray-400 md:mt-1">
         {{ $t('advert.detail.questions_count', { count: questions.length }) }}
       </p>
     </div>
 
     <!-- Question Input -->
-    <div class="flex gap-4 mb-8">
+    <div class="flex gap-3 mb-6">
       <input
         v-model="questionInput"
         type="text"
         :placeholder="$t('advert.detail.ask_placeholder')"
-        class="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-600"
+        class="flex-1 px-4 py-3 border border-gray-700 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-600"
       >
       <UButton
         size="lg"
-        class="bg-green-700 hover:bg-green-800"
+        class="bg-emerald-700 hover:bg-emerald-800 text-white rounded-md px-4"
         @click="submitQuestion"
       >
         →
       </UButton>
     </div>
 
+    <!-- Empty state -->
+    <div
+      v-if="!questions || questions.length === 0"
+      class="py-6 text-center text-gray-500 dark:text-gray-400"
+    >
+      {{ $t('advert.detail.no_public_questions') }}
+    </div>
+
     <!-- Questions List -->
-    <div class="space-y-6">
+    <div
+      class="divide-y divide-gray-200 dark:divide-gray-800"
+    >
       <template
         v-for="question in questions"
-        :key="question.id"
+        :key="question.commentId"
       >
-        <!-- Question -->
-        <div class="border-b border-gray-200 dark:border-gray-800 pb-6">
-          <div class="flex items-start gap-3 mb-3">
-            <UAvatar
-              :src="question.avatar"
-              :alt="question.asker"
-              size="sm"
-            />
+        <div class="py-6">
+          <!-- Question header -->
+          <div class="flex items-start justify-between">
             <div>
-              <p class="font-medium text-gray-900 dark:text-white">
-                {{ question.asker }}
+              <p class="font-semibold text-gray-100">
+                {{ question.author }}
               </p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">
-                {{ question.timestamp }}
+              <p class="text-xs text-gray-400 mt-1">
+                {{ formatDateTime(question.createdAt) }}
               </p>
             </div>
           </div>
-          <p class="text-gray-700 dark:text-gray-300 ml-12 mb-4">
-            {{ question.content }}
-          </p>
-        </div>
 
-        <!-- Answer -->
-        <div
-          v-if="answers.find(a => a.questionId === question.id)"
-          class="ml-8 mb-6"
-        >
-          <template
-            v-for="answer in answers.filter(a => a.questionId === question.id)"
-            :key="answer.id"
+          <!-- Question content -->
+          <div class="mt-4 ml-0 md:ml-2">
+            <p class="text-gray-300 leading-relaxed">
+              {{ question.content }}
+            </p>
+          </div>
+
+          <!-- Answer (if any) -->
+          <div
+            v-if="question.answer?.trim()"
+            class="mt-5"
           >
-            <div class="flex items-start gap-3 mb-3">
-              <UAvatar
-                :src="answer.answerer === seller.username ? seller.avatar : answer.avatar"
-                :alt="answer.answerer"
-                size="sm"
-              />
-              <div>
-                <p class="font-medium text-gray-900 dark:text-white">
-                  {{ answer.answerer }} <span
-                    v-if="answer.isSeller"
-                    class="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-1 rounded ml-2"
-                  >{{ $t('advert.detail.seller_badge') }}</span>
-                </p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">
-                  {{ answer.timestamp }}
+            <div class="border border-emerald-700 bg-emerald-900/10 dark:bg-emerald-900/20 rounded-md p-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <p class="font-semibold text-emerald-100">
+                    {{ seller.username }}
+                  </p>
+                  <span class="text-xs inline-block bg-emerald-800 text-emerald-100 px-2 py-1 rounded">
+                    {{ $t('advert.detail.seller_badge') }}
+                  </span>
+                </div>
+                <p
+                  v-if="question.answeredAt"
+                  class="text-xs text-gray-400"
+                >
+                  {{ formatDateTime(question.answeredAt) }}
                 </p>
               </div>
+              <p class="mt-3 text-gray-100">
+                {{ question.answer }}
+              </p>
             </div>
-            <p class="text-gray-700 dark:text-gray-300 ml-12">
-              {{ answer.content }}
-            </p>
-          </template>
+          </div>
         </div>
       </template>
     </div>

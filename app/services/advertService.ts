@@ -2,10 +2,11 @@ import type {
   BookReadApiItem,
   ProductReadApiItem,
   ServiceReadApiItem,
-  ModifyAdvertForm
-} from '../types/advert'
+  ModifyAdvertForm,
+  QuestionResponse
+} from '~/types/advert'
 
-import { useApi } from '../composables/useApi'
+import { useApi } from '~/composables/useApi'
 
 type ApiClient = typeof useApi
 
@@ -19,6 +20,7 @@ export interface AdvertService {
   getService: (id: number) => Promise<ServiceReadApiItem>
 
   getAdvert: (id: number) => Promise<ModifyAdvertForm>
+  getQuestions: (id: number) => Promise<QuestionResponse[]>
 
   updateProductAdvert: (id: number, data: Partial<ModifyAdvertForm>) => Promise<void>
   updateServiceAdvert: (id: number, data: Partial<ModifyAdvertForm>) => Promise<void>
@@ -46,6 +48,7 @@ export function createAdvertService({ apiClient }: AdvertServiceDependencies): A
     apiClient<ServiceReadApiItem>(`${ADVERTS_PATH}/services/${id}`)
 
   const getAdvert = async (id: number) => apiClient<ModifyAdvertForm>(`${ADVERTS_PATH}/${id}`)
+  const getQuestions = async (id: number) => apiClient<QuestionResponse[]>(`${ADVERTS_PATH}/${id}/questions`)
 
   const updateProductAdvert = async (id: number, data: Partial<ModifyAdvertForm>): Promise<void> => {
     apiClient<unknown>(`${ADVERTS_PATH}/products/${id}`, { method: 'PUT', body: data })
@@ -77,6 +80,7 @@ export function createAdvertService({ apiClient }: AdvertServiceDependencies): A
     getService,
 
     getAdvert,
+    getQuestions,
 
     updateProductAdvert,
     updateServiceAdvert,

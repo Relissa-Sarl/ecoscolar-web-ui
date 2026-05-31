@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import Breadcrumb from '~/components/common/Breadcrumb.vue'
 import { AdvertType } from '@/utils/enum/advertType'
+import type { QuestionResponse } from '~/types/advert'
+import { getAdvertService } from '~/services/advertService'
 
 const route = useRoute()
 const localePath = useLocalePath()
 const { t } = useI18n()
 const { data: advert } = await useAdvert(String(route.params.id))
+const { data: advertQuestions } = await useAsyncData<QuestionResponse[]>(
+  `advert-questions:${String(route.params.id)}`,
+  () => getAdvertService().getQuestions(Number(route.params.id))
+)
 
 const breadcrumbItems = computed(() => {
   const items: Array<{ label: string, to?: string }> = [
@@ -51,7 +57,7 @@ const showConditionDetails = computed(() =>
   (advert.value?.conditions?.length ?? 0) > 0)
 
 const showPublicQuestions = computed(() =>
-  (advert.value?.questions?.length ?? 0) > 0)
+  (advertQuestions.value?.length ?? 0) > 0)
 
 const handleAskQuestion = (_text: string) => {
   // TODO: send question to API
@@ -140,8 +146,7 @@ const advertSummary = computed(() => {
         <AdvertPublicQuestions
           v-if="advert"
           :seller="advert.seller"
-          :questions="advert.questions || []"
-          :answers="advert.answers || []"
+          :questions="advertQuestions || []"
           @ask-question="handleAskQuestion"
         />
       </div>

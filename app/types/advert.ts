@@ -9,6 +9,16 @@ export interface Condition {
   color: string
 }
 
+export interface QuestionResponse {
+  commentId: number
+  authorId: string
+  author: string
+  content: string
+  createdAt: string
+  answer?: string | null
+  answeredAt?: string | null
+}
+
 export interface Seller {
   avatar: string
   username: string
