@@ -325,8 +325,16 @@
       "condition_details": "Dettagli sulle condizioni",
       "description": "Descrizione",
       "public_questions": "Domande pubbliche",
+      "ask_hint": "Fai la tua domanda pubblicamente al venditore.",
+      "no_public_questions": "Nessuna domanda pubblica al momento.",
       "questions_count": "{count} domanda/e posta/e",
       "ask_placeholder": "Fai una domanda al venditore…",
+      "ask_success": "Domanda inviata con successo.",
+      "ask_error": "Impossibile inviare la domanda.",
+      "answer_placeholder": "Scrivi la tua risposta…",
+      "answer_submit": "Rispondi",
+      "answer_success": "Risposta inviata con successo.",
+      "answer_error": "Impossibile inviare la risposta.",
       "view_profile": "Vedi profilo",
       "seller_badge": "Venditore"
     }

@@ -325,8 +325,16 @@
       "condition_details": "Détails de l’état",
       "description": "Description",
       "public_questions": "Questions publiques",
+      "ask_hint": "Posez votre question publiquement au vendeur.",
+      "no_public_questions": "Aucune question publique pour le moment.",
       "questions_count": "{count} question(s) posée(s)",
       "ask_placeholder": "Posez une question au vendeur…",
+      "ask_success": "Question envoyée avec succès.",
+      "ask_error": "Impossible d'envoyer la question.",
+      "answer_placeholder": "Rédigez votre réponse…",
+      "answer_submit": "Répondre",
+      "answer_success": "Réponse envoyée avec succès.",
+      "answer_error": "Impossible d'envoyer la réponse.",
       "view_profile": "Voir le profil",
       "seller_badge": "Vendeur"
     }
