@@ -325,6 +325,7 @@
       "condition_details": "Dettagli sulle condizioni",
       "description": "Descrizione",
       "public_questions": "Domande pubbliche",
+      "ask_hint": "Fai la tua domanda pubblicamente al venditore.",
       "questions_count": "{count} domanda/e posta/e",
       "ask_placeholder": "Fai una domanda al venditore…",
       "ask_success": "Domanda inviata con successo.",

@@ -325,6 +325,7 @@
       "condition_details": "Zustandsdetails",
       "description": "Beschreibung",
       "public_questions": "Öffentliche Fragen",
+      "ask_hint": "Stellen Sie Ihre Frage dem Verkäufer öffentlich.",
       "questions_count": "{count} Frage(n) gestellt",
       "ask_placeholder": "Stellen Sie dem Verkäufer eine Frage…",
       "ask_success": "Frage erfolgreich gesendet.",

@@ -5,9 +5,11 @@ import type { Seller, QuestionResponse } from '@/types/advert'
 interface Props {
   seller: Seller
   questions?: QuestionResponse[]
+  canAsk?: boolean
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
+  canAsk: true,
   questions: () => []
 })
 const emit = defineEmits<{
@@ -17,6 +19,9 @@ const emit = defineEmits<{
 const questionInput = ref('')
 
 const submitQuestion = () => {
+  if (!props.canAsk)
+    return
+
   const trimmedQuestion = questionInput.value.trim()
   if (trimmedQuestion) {
     emit('ask-question', trimmedQuestion)
@@ -49,7 +54,10 @@ const formatDateTime = (value: string | null | undefined) => {
     </div>
 
     <!-- Question Input -->
-    <div class="flex gap-3 mb-6">
+    <div
+      v-if="props.canAsk"
+      class="flex gap-3 mb-6"
+    >
       <input
         v-model="questionInput"
         type="text"

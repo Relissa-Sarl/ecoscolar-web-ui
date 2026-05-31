@@ -3,10 +3,12 @@ import Breadcrumb from '~/components/common/Breadcrumb.vue'
 import { AdvertType } from '@/utils/enum/advertType'
 import type { QuestionResponse } from '~/types/advert'
 import { getAdvertService } from '~/services/advertService'
+import { useUsersStore } from '~/stores/usersStore'
 
 const route = useRoute()
 const localePath = useLocalePath()
 const { t } = useI18n()
+const usersStore = useUsersStore()
 const { data: advert } = await useAdvert(String(route.params.id))
 const { data: advertQuestions, refresh: refreshQuestions } = await useAsyncData<QuestionResponse[]>(
   `advert-questions:${String(route.params.id)}`,
@@ -59,9 +61,22 @@ const showConditionDetails = computed(() =>
 const showPublicQuestions = computed(() =>
   (advertQuestions.value?.length ?? 0) > 0)
 
+const isOwnAdvert = computed(() => {
+  const sellerUsername = advert.value?.seller?.username?.trim().toLowerCase()
+  const currentNickname = usersStore.user?.nickname?.trim().toLowerCase()
+  console.log('sellerUsername:', sellerUsername)
+  console.log('currentNickname:', currentNickname)
+  return !!sellerUsername
+    && !!currentNickname
+    && sellerUsername === currentNickname
+})
+
 const toast = useToast()
 
 const handleAskQuestion = async (text: string) => {
+  if (isOwnAdvert.value)
+    return
+
   try {
     await getAdvertService().postQuestion(Number(route.params.id), text)
     await refreshQuestions()
@@ -154,6 +169,7 @@ const advertSummary = computed(() => {
         <AdvertPublicQuestions
           v-if="advert"
           :seller="advert.seller"
+          :can-ask="!isOwnAdvert"
           :questions="advertQuestions || []"
           @ask-question="handleAskQuestion"
         />

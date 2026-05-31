@@ -325,6 +325,7 @@
       "condition_details": "Détails de l’état",
       "description": "Description",
       "public_questions": "Questions publiques",
+      "ask_hint": "Posez votre question publiquement au vendeur.",
       "questions_count": "{count} question(s) posée(s)",
       "ask_placeholder": "Posez une question au vendeur…",
       "ask_success": "Question envoyée avec succès.",
