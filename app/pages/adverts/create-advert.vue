@@ -7,6 +7,9 @@ import { getAdvertDetailsService } from '~/services/advertDetailsService'
 import FormInput from '~/components/advert/FormInput.vue'
 import FormSelect from '~/components/advert/FormSelect.vue'
 import FormTextArea from '~/components/advert/FormTextArea.vue'
+import { useI18n } from '#imports'
+
+const { locale } = useI18n()
 
 const userStore = useUsersStore()
 const detailsService = getAdvertDetailsService()
@@ -20,34 +23,139 @@ const advertLanguages = ref<{ value: string, labelKey: string }[]>([])
 const bookCategories = ref<{ value: number, labelKey: string }[]>([])
 
 detailsService.getSubjects().then((subjectsData) => {
-  subjects.value = subjectsData.map(subject => ({
-    value: subject.subjectId,
-    labelKey: `advertForm.form.options.${subject.name.toLowerCase()}`
-  }))
+  switch (locale.value) {
+    case 'fr':
+      subjects.value = subjectsData.map(subject => ({
+        value: subject.subjectId,
+        labelKey: subject.nameFr
+      }))
+      break
+    case 'it':
+      subjects.value = subjectsData.map(subject => ({
+        value: subject.subjectId,
+        labelKey: subject.nameIt
+      }))
+      break
+    case 'de':
+      subjects.value = subjectsData.map(subject => ({
+        value: subject.subjectId,
+        labelKey: subject.nameDe
+      }))
+      break
+    default:
+      subjects.value = subjectsData.map(subject => ({
+        value: subject.subjectId,
+        labelKey: subject.name
+      }))
+  }
 })
 detailsService.getSchoolGrades().then((grades) => {
-  schoolGrades.value = grades.map(grade => ({
-    value: grade.schoolGradeId,
-    labelKey: `advertForm.form.options.${grade.name.toLowerCase()}`
-  }))
+  switch (locale.value) {
+    case 'fr':
+      schoolGrades.value = grades.map(grade => ({
+        value: grade.schoolGradeId,
+        labelKey: grade.nameFr
+      }))
+      break
+    case 'it':
+      schoolGrades.value = grades.map(grade => ({
+        value: grade.schoolGradeId,
+        labelKey: grade.nameIt
+      }))
+      break
+    case 'de':
+      schoolGrades.value = grades.map(grade => ({
+        value: grade.schoolGradeId,
+        labelKey: grade.nameDe
+      }))
+      break
+    default:
+      schoolGrades.value = grades.map(grade => ({
+        value: grade.schoolGradeId,
+        labelKey: grade.name
+      }))
+  }
 })
 detailsService.getLanguages().then((languages) => {
-  advertLanguages.value = languages.map(lang => ({
-    value: lang.label,
-    labelKey: `advertForm.form.options.${lang.name.toLowerCase()}`
-  }))
+  switch (locale.value) {
+    case 'fr':
+      advertLanguages.value = languages.map(lang => ({
+        value: lang.label,
+        labelKey: lang.nameFr
+      }))
+      break
+    case 'it':
+      advertLanguages.value = languages.map(lang => ({
+        value: lang.label,
+        labelKey: lang.nameIt
+      }))
+      break
+    case 'de':
+      advertLanguages.value = languages.map(lang => ({
+        value: lang.label,
+        labelKey: lang.nameDe
+      }))
+      break
+    default:
+      advertLanguages.value = languages.map(lang => ({
+        value: lang.label,
+        labelKey: lang.name
+      }))
+  }
 })
 detailsService.getProductCategories().then((categories) => {
-  productCategories.value = categories.map(cat => ({
-    value: cat.productCategoryId,
-    labelKey: `advertForm.form.options.${cat.name.toLowerCase()}`
-  }))
+  switch (locale.value) {
+    case 'fr':
+      productCategories.value = categories.map(cat => ({
+        value: cat.productCategoryId,
+        labelKey: cat.nameFr
+      }))
+      break
+    case 'it':
+      productCategories.value = categories.map(cat => ({
+        value: cat.productCategoryId,
+        labelKey: cat.nameIt
+      }))
+      break
+    case 'de':
+      productCategories.value = categories.map(cat => ({
+        value: cat.productCategoryId,
+        labelKey: cat.nameDe
+      }))
+      break
+    default:
+      productCategories.value = categories.map(cat => ({
+        value: cat.productCategoryId,
+        labelKey: cat.name
+      }))
+  }
 })
 detailsService.getBookCategories().then((categories) => {
-  bookCategories.value = categories.map(cat => ({
-    value: cat.bookCategoryId,
-    labelKey: `advertForm.form.options.${cat.name.toLowerCase()}`
-  }))
+  switch (locale.value) {
+    case 'fr':
+      bookCategories.value = categories.map(cat => ({
+        value: cat.bookCategoryId,
+        labelKey: cat.nameFr
+      }))
+      break
+    case 'it':
+      bookCategories.value = categories.map(cat => ({
+        value: cat.bookCategoryId,
+        labelKey: cat.nameIt
+      }))
+      break
+    case 'de':
+      bookCategories.value = categories.map(cat => ({
+        value: cat.bookCategoryId,
+        labelKey: cat.nameDe
+      }))
+      break
+    default:
+      bookCategories.value = categories.map(cat => ({
+        value: cat.bookCategoryId,
+        labelKey: cat.name
+      }))
+  }
 })
 
 definePageMeta({
@@ -68,6 +176,8 @@ const form = ref({
   studyLevel: '',
 
   condition: AdvertCondition.NEW,
+  productCategoryId: 1,
+  weight: 0,
   // pictures: uploadedFiles.value,
 
   author: '',
@@ -126,6 +236,9 @@ const validateForm = (): boolean => {
     case AdvertType.PRODUCT:
       if (!form.value.condition) {
         errors.value.condition = $t('advertForm.error.empty.condition')
+      }
+      if (!form.value.productCategoryId) {
+        errors.value.productCategoryId = $t('advertForm.error.empty.productCategoryId')
       }
       // if (uploadedFiles.value.length === 0) {
       //   errors.value.images = $t('advertForm.error.empty.images')
@@ -237,6 +350,9 @@ const validateForm = (): boolean => {
       if (form.value.edition.length > 150) {
         errors.value.edition = $t('advertForm.error.invalid.editionLength')
       }
+      if (form.value.weight < 0) {
+        errors.value.weight = $t('advertForm.error.invalid.weightNegative')
+      }
       // File size validation
       // uploadedFiles.value.forEach((file) => {
       //   if (file.size > maxFileSize) {
@@ -254,6 +370,9 @@ const validateForm = (): boolean => {
       // }
       break
     case AdvertType.PRODUCT:
+      if (form.value.weight < 0) {
+        errors.value.weight = $t('advertForm.error.invalid.weightNegative')
+      }
       // File size validation
       // uploadedFiles.value.forEach((file) => {
       //   if (file.size > maxFileSize) {
@@ -287,7 +406,9 @@ const handleSubmit = async () => {
           description: form.value.description,
           price: form.value.price,
           userId: userStore.user?.id,
-          condition: form.value.condition
+          condition: form.value.condition,
+          weight: form.value.weight,
+          productCategoryId: form.value.productCategoryId
           // pictures: form.value.pictures
         }
         await advertService.createProductAdvert(formData)
@@ -300,6 +421,7 @@ const handleSubmit = async () => {
           price: form.value.price,
           userId: userStore.user?.id,
           condition: form.value.condition,
+          weight: form.value.weight,
           // pictures: form.value.pictures,
           author: form.value.author,
           publisher: form.value.publisher,
@@ -502,10 +624,18 @@ const handleSubmit = async () => {
                 label="condition"
                 label-key="condition"
                 :options="[
-                  { value: AdvertCondition.NEW, labelKey: 'advertConditions.new' },
-                  { value: AdvertCondition.LIKE_NEW, labelKey: 'advertConditions.likeNew' },
-                  { value: AdvertCondition.USED, labelKey: 'advertConditions.used' }
+                  { value: AdvertCondition.NEW, labelKey: $t('advertConditions.new') },
+                  { value: AdvertCondition.LIKE_NEW, labelKey: $t('advertConditions.likeNew') },
+                  { value: AdvertCondition.USED, labelKey: $t('advertConditions.used') }
                 ]"
+              />
+              <FormSelect
+                v-show="category == AdvertType.PRODUCT"
+                v-model="form.productCategoryId"
+                :error="errors.productCategoryId"
+                label="productCategoryId"
+                label-key="productCategoryId"
+                :options="productCategories"
               />
               <FormInput
                 v-show="category == AdvertType.BOOK"
@@ -555,6 +685,28 @@ const handleSubmit = async () => {
                 label-key="writtenLanguage"
                 :options="advertLanguages"
               />
+              <div v-show="category == AdvertType.PRODUCT || category == AdvertType.BOOK">
+                <label
+                  class="mb-2 block text-sm font-medium text-gray-600"
+                  for="weight"
+                >
+                  {{ $t('advertForm.form.weight') }}
+                </label>
+                <div class="flex items-center overflow-hidden rounded-xl border border-gray-200 bg-white focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 dark:bg-gray-800 dark:border-gray-400">
+                  <input
+                    id="weight"
+                    v-model.number="form.weight"
+                    class="w-full bg-transparent px-4 py-3 text-sm outline-none dark:text-gray-300"
+                    placeholder="0.00"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                  >
+                </div>
+                <p class="mt-1 min-h-5 text-sm text-red-500">
+                  {{ errors.weight || ' ' }}
+                </p>
+              </div>
               <FormSelect
                 v-show="category == AdvertType.SERVICE"
                 v-model="form.subjectId"

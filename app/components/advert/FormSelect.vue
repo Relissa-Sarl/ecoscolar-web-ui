@@ -37,7 +37,7 @@ const inputId = computed(() => `input-${props.labelKey}`)
         :key="option.value"
         :value="option.value"
       >
-        {{ $t(option.labelKey) }}
+        {{ option.labelKey }}
       </option>
     </select>
     <p

@@ -86,6 +86,8 @@ export interface ModifyAdvertForm {
   studyLevel: string | null
 
   condition: AdvertCondition | null
+  weight: number | null
+  productCategoryId: number | null
 
   author: string | null
   publisher: string | null

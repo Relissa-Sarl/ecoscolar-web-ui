@@ -1,15 +1,163 @@
 <script setup lang="ts">
 import { ref, onMounted as vueOnMounted } from 'vue'
-
 import type { ModifyAdvertForm } from '~/types/advert'
 import { AdvertCondition } from '~/utils/enum/advertCondition'
 import { AdvertType } from '~/utils/enum/advertType'
-import { AdvertLanguage } from '~/utils/enum/advertLanguage'
 import { getAdvertService } from '~/services/advertService'
+import { getAdvertDetailsService } from '~/services/advertDetailsService'
+import FormInput from '~/components/advert/FormInput.vue'
+import FormSelect from '~/components/advert/FormSelect.vue'
+import FormTextArea from '~/components/advert/FormTextArea.vue'
+import { useI18n } from '#imports'
+
+const { locale } = useI18n()
 
 const route = useRoute()
 const localePath = useLocalePath()
+const detailsService = getAdvertDetailsService()
 const userStore = useUsersStore()
+
+const subjects = ref<{ value: number, labelKey: string }[]>([])
+const schoolGrades = ref<{ value: number, labelKey: string }[]>([])
+const productCategories = ref<{ value: number, labelKey: string }[]>([])
+const advertLanguages = ref<{ value: string, labelKey: string }[]>([])
+const bookCategories = ref<{ value: number, labelKey: string }[]>([])
+
+detailsService.getSubjects().then((subjectsData) => {
+  switch (locale.value) {
+    case 'fr':
+      subjects.value = subjectsData.map(subject => ({
+        value: subject.subjectId,
+        labelKey: subject.nameFr
+      }))
+      break
+    case 'it':
+      subjects.value = subjectsData.map(subject => ({
+        value: subject.subjectId,
+        labelKey: subject.nameIt
+      }))
+      break
+    case 'de':
+      subjects.value = subjectsData.map(subject => ({
+        value: subject.subjectId,
+        labelKey: subject.nameDe
+      }))
+      break
+    default:
+      subjects.value = subjectsData.map(subject => ({
+        value: subject.subjectId,
+        labelKey: subject.name
+      }))
+  }
+})
+detailsService.getSchoolGrades().then((grades) => {
+  switch (locale.value) {
+    case 'fr':
+      schoolGrades.value = grades.map(grade => ({
+        value: grade.schoolGradeId,
+        labelKey: grade.nameFr
+      }))
+      break
+    case 'it':
+      schoolGrades.value = grades.map(grade => ({
+        value: grade.schoolGradeId,
+        labelKey: grade.nameIt
+      }))
+      break
+    case 'de':
+      schoolGrades.value = grades.map(grade => ({
+        value: grade.schoolGradeId,
+        labelKey: grade.nameDe
+      }))
+      break
+    default:
+      schoolGrades.value = grades.map(grade => ({
+        value: grade.schoolGradeId,
+        labelKey: grade.name
+      }))
+  }
+})
+detailsService.getLanguages().then((languages) => {
+  switch (locale.value) {
+    case 'fr':
+      advertLanguages.value = languages.map(lang => ({
+        value: lang.label,
+        labelKey: lang.nameFr
+      }))
+      break
+    case 'it':
+      advertLanguages.value = languages.map(lang => ({
+        value: lang.label,
+        labelKey: lang.nameIt
+      }))
+      break
+    case 'de':
+      advertLanguages.value = languages.map(lang => ({
+        value: lang.label,
+        labelKey: lang.nameDe
+      }))
+      break
+    default:
+      advertLanguages.value = languages.map(lang => ({
+        value: lang.label,
+        labelKey: lang.name
+      }))
+  }
+})
+detailsService.getProductCategories().then((categories) => {
+  switch (locale.value) {
+    case 'fr':
+      productCategories.value = categories.map(cat => ({
+        value: cat.productCategoryId,
+        labelKey: cat.nameFr
+      }))
+      break
+    case 'it':
+      productCategories.value = categories.map(cat => ({
+        value: cat.productCategoryId,
+        labelKey: cat.nameIt
+      }))
+      break
+    case 'de':
+      productCategories.value = categories.map(cat => ({
+        value: cat.productCategoryId,
+        labelKey: cat.nameDe
+      }))
+      break
+    default:
+      productCategories.value = categories.map(cat => ({
+        value: cat.productCategoryId,
+        labelKey: cat.name
+      }))
+  }
+})
+detailsService.getBookCategories().then((categories) => {
+  switch (locale.value) {
+    case 'fr':
+      bookCategories.value = categories.map(cat => ({
+        value: cat.bookCategoryId,
+        labelKey: cat.nameFr
+      }))
+      break
+    case 'it':
+      bookCategories.value = categories.map(cat => ({
+        value: cat.bookCategoryId,
+        labelKey: cat.nameIt
+      }))
+      break
+    case 'de':
+      bookCategories.value = categories.map(cat => ({
+        value: cat.bookCategoryId,
+        labelKey: cat.nameDe
+      }))
+      break
+    default:
+      bookCategories.value = categories.map(cat => ({
+        value: cat.bookCategoryId,
+        labelKey: cat.name
+      }))
+  }
+})
 
 definePageMeta({
   middleware: 'auth'
@@ -30,11 +178,13 @@ const form = ref({
   price: advert.value?.price,
 
   subjectId: advert.value?.subjectId || null,
-  schoolLevelId: advert.value?.schoolGradeId || null,
+  schoolGradeId: advert.value?.schoolGradeId || null,
   teachingLanguage: advert.value?.teachingLanguage || null,
-  specificStudyLevel: advert.value?.studyLevel || null,
+  studyLevel: advert.value?.studyLevel || null,
 
   condition: advert.value?.condition || null,
+  productCategoryId: advert.value?.productCategoryId || null,
+  weight: advert.value?.weight || null,
 
   author: advert.value?.author || null,
   publisher: advert.value?.publisher || null,
@@ -73,19 +223,22 @@ const validateForm = (): boolean => {
       if (!form.value.subjectId) {
         errors.value.subjectId = $t('advertForm.error.empty.subjectId')
       }
-      if (!form.value.schoolLevelId) {
-        errors.value.schoolLevelId = $t('advertForm.error.empty.schoolGradeId')
+      if (!form.value.schoolGradeId) {
+        errors.value.schoolGradeId = $t('advertForm.error.empty.schoolGradeId')
       }
       if (!form.value.teachingLanguage) {
         errors.value.teachingLanguage = $t('advertForm.error.empty.teachingLanguage')
       }
-      if (!form.value.specificStudyLevel?.trim()) {
-        errors.value.specificStudyLevel = $t('advertForm.error.empty.studyLevel')
+      if (!form.value.studyLevel?.trim()) {
+        errors.value.studyLevel = $t('advertForm.error.empty.studyLevel')
       }
       break
     case AdvertType.PRODUCT:
       if (!form.value.condition) {
         errors.value.condition = $t('advertForm.error.empty.condition')
+      }
+      if (!form.value.productCategoryId) {
+        errors.value.productCategoryId = $t('advertForm.error.empty.productCategoryId')
       }
       // if (uploadedFiles.value.length === 0) {
       //   errors.value.images = $t('advertForm.error.empty.images')
@@ -149,9 +302,9 @@ const validateForm = (): boolean => {
   const publisher = form.value.publisher ?? ''
   const edition = form.value.edition ?? ''
   const isbn = form.value.isbn ?? ''
-  const specificStudyLevel = form.value.specificStudyLevel ?? ''
+  const studyLevel = form.value.studyLevel ?? ''
 
-  if ((title || description || author || publisher || edition || isbn || specificStudyLevel) && (sqlInjectionPattern.test(title) || sqlInjectionPattern.test(description) || sqlInjectionPattern.test(author) || sqlInjectionPattern.test(publisher) || sqlInjectionPattern.test(edition) || sqlInjectionPattern.test(isbn) || sqlInjectionPattern.test(specificStudyLevel))) {
+  if ((title || description || author || publisher || edition || isbn || studyLevel) && (sqlInjectionPattern.test(title) || sqlInjectionPattern.test(description) || sqlInjectionPattern.test(author) || sqlInjectionPattern.test(publisher) || sqlInjectionPattern.test(edition) || sqlInjectionPattern.test(isbn) || sqlInjectionPattern.test(studyLevel))) {
     errors.value.content = $t('advertForm.error.invalid.sqlInjection')
   }
 
@@ -172,14 +325,14 @@ const validateForm = (): boolean => {
       if (form.value.subjectId && form.value.subjectId < 1) {
         errors.value.subjectId = $t('advertForm.error.invalid.subjectId')
       }
-      if (form.value.schoolLevelId && form.value.schoolLevelId < 1) {
-        errors.value.schoolLevelId = $t('advertForm.error.invalid.schoolGradeId')
+      if (form.value.schoolGradeId && form.value.schoolGradeId < 1) {
+        errors.value.schoolGradeId = $t('advertForm.error.invalid.schoolGradeId')
       }
       if (!form.value.teachingLanguage) {
         errors.value.teachingLanguage = $t('advertForm.error.invalid.teachingLanguage')
       }
-      if (form.value.specificStudyLevel && form.value.specificStudyLevel.length > 50) {
-        errors.value.specificStudyLevel = $t('advertForm.error.invalid.studyLevelLength')
+      if (form.value.studyLevel && form.value.studyLevel.length > 50) {
+        errors.value.studyLevel = $t('advertForm.error.invalid.studyLevelLength')
       }
       break
     case AdvertType.BOOK:
@@ -204,6 +357,9 @@ const validateForm = (): boolean => {
       if (form.value.edition && form.value.edition.length > 150) {
         errors.value.edition = $t('advertForm.error.invalid.editionLength')
       }
+      if (form.value.weight < 0) {
+        errors.value.weight = $t('advertForm.error.invalid.weightNegative')
+      }
       // File size validation
       // uploadedFiles.value.forEach((file) => {
       //   if (file.size > maxFileSize) {
@@ -221,6 +377,9 @@ const validateForm = (): boolean => {
       // }
       break
     case AdvertType.PRODUCT:
+      if (form.value.weight < 0) {
+        errors.value.weight = $t('advertForm.error.invalid.weightNegative')
+      }
       // File size validation
       // uploadedFiles.value.forEach((file) => {
       //   if (file.size > maxFileSize) {
@@ -256,7 +415,9 @@ const handleSubmit = async () => {
           description: form.value.description,
           price: form.value.price,
           userId: userStore.user?.id,
-          condition: form.value.condition
+          condition: form.value.condition,
+          weight: form.value.weight,
+          productCategoryId: form.value.productCategoryId
         }
 
         await getAdvertService().updateProductAdvert(id, formData as Partial<ModifyAdvertForm>)
@@ -268,6 +429,7 @@ const handleSubmit = async () => {
           price: form.value.price,
           userId: userStore.user?.id,
           condition: form.value.condition,
+          weight: form.value.weight,
           author: form.value.author,
           publisher: form.value.publisher,
           isbn: form.value.isbn,
@@ -285,9 +447,9 @@ const handleSubmit = async () => {
           price: form.value.price,
           userId: userStore.user?.id,
           subjectId: form.value.subjectId,
-          schoolLevelId: form.value.schoolLevelId,
+          schoolGradeId: form.value.schoolGradeId,
           teachingLanguage: form.value.teachingLanguage,
-          specificStudyLevel: form.value.specificStudyLevel
+          studyLevel: form.value.studyLevel
         }
 
         await getAdvertService().updateServiceAdvert(id, formData as Partial<ModifyAdvertForm>)
@@ -340,11 +502,13 @@ vueOnMounted(async () => {
       price: advert.value?.price,
 
       subjectId: advert.value?.subjectId,
-      schoolLevelId: advert.value?.schoolGradeId,
+      schoolGradeId: advert.value?.schoolGradeId,
       teachingLanguage: advert.value?.teachingLanguage,
-      specificStudyLevel: advert.value?.studyLevel,
+      studyLevel: advert.value?.studyLevel,
 
       condition: advert.value?.condition,
+      productCategoryId: advert.value?.productCategoryId,
+      weight: advert.value?.weight,
 
       author: advert.value?.author,
       publisher: advert.value?.publisher,
@@ -405,377 +569,143 @@ vueOnMounted(async () => {
               {{ $t('advertForm.form.detailedInformation') }}
             </h2>
             <div class="mt-5 grid gap-5 md:grid-cols-2">
-              <div class="col-span-2">
-                <label
-                  class="mb-2 block text-sm font-medium text-gray-600"
-                  for="title"
-                >
-                  {{ $t('advertForm.form.title') }}
-                </label>
-                <input
-                  id="title"
-                  v-model="form.title"
-                  class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('advertForm.form.titlePlaceholder')"
-                  type="text"
-                >
-                <p class="mt-1 min-h-5 text-sm text-red-500">
-                  {{ errors.title || ' ' }}
-                </p>
-              </div>
+              <FormInput
+                v-model="form.title"
+                class="col-span-2"
+                :error="errors.title"
+                label="title"
+                label-key="title"
+                type="text"
+              />
+              <FormSelect
+                v-show="category == AdvertType.PRODUCT || category == AdvertType.BOOK"
+                v-model="form.condition"
+                :error="errors.condition"
+                label="condition"
+                label-key="condition"
+                :options="[
+                  { value: AdvertCondition.NEW, labelKey: $t('advertConditions.new') },
+                  { value: AdvertCondition.LIKE_NEW, labelKey: $t('advertConditions.likeNew') },
+                  { value: AdvertCondition.USED, labelKey: $t('advertConditions.used') }
+                ]"
+              />
+              <FormSelect
+                v-show="category == AdvertType.PRODUCT"
+                v-model="form.productCategoryId"
+                :error="errors.productCategoryId"
+                label="productCategoryId"
+                label-key="productCategoryId"
+                :options="productCategories"
+              />
+              <FormInput
+                v-show="category == AdvertType.BOOK"
+                v-model="form.author"
+                :error="errors.author"
+                label="author"
+                label-key="author"
+                type="text"
+              />
+              <FormInput
+                v-show="category == AdvertType.BOOK"
+                v-model="form.publisher"
+                :error="errors.publisher"
+                label="publisher"
+                label-key="publisher"
+                type="text"
+              />
+              <FormInput
+                v-show="category == AdvertType.BOOK"
+                v-model="form.edition"
+                :error="errors.edition"
+                label="edition"
+                label-key="edition"
+                type="text"
+              />
+              <FormInput
+                v-show="category == AdvertType.BOOK"
+                v-model="form.isbn"
+                :error="errors.isbn"
+                label="isbn"
+                label-key="isbn"
+                type="text"
+              />
+              <FormSelect
+                v-show="category == AdvertType.BOOK"
+                v-model="form.bookCategoryId"
+                :error="errors.bookCategoryId"
+                label="bookCategoryId"
+                label-key="bookCategoryId"
+                :options="bookCategories"
+              />
+              <FormSelect
+                v-show="category == AdvertType.BOOK"
+                v-model="form.writtenLanguage"
+                :error="errors.writtenLanguage"
+                label="writtenLanguage"
+                label-key="writtenLanguage"
+                :options="advertLanguages"
+              />
               <div v-show="category == AdvertType.PRODUCT || category == AdvertType.BOOK">
                 <label
                   class="mb-2 block text-sm font-medium text-gray-600"
-                  for="condition"
+                  for="weight"
                 >
-                  {{ $t('advertForm.form.condition') }}
+                  {{ $t('advertForm.form.weight') }}
                 </label>
-                <select
-                  id="condition"
-                  v-model="form.condition"
-                  class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                >
-                  <option :value="AdvertCondition.NEW">
-                    {{ $t('advertConditions.new') }}
-                  </option>
-                  <option :value="AdvertCondition.LIKE_NEW">
-                    {{ $t('advertConditions.likeNew') }}
-                  </option>
-                  <option :value="AdvertCondition.USED">
-                    {{ $t('advertConditions.used') }}
-                  </option>
-                </select>
-                <p
-                  v-show="errors.condition != null"
-                  class="mt-1 min-h-5 text-sm text-red-500"
-                >
-                  {{ errors.condition }}
-                </p>
-              </div>
-              <div v-show="category == AdvertType.BOOK">
-                <label
-                  class="mb-2 block text-sm font-medium text-gray-600"
-                  for="author"
-                >
-                  {{ $t('advertForm.form.author') }}
-                </label>
-                <input
-                  id="author"
-                  v-model="form.author"
-                  class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('advertForm.form.authorPlaceholder')"
-                  type="text"
-                >
-                <p
-                  v-show="errors.author != null"
-                  class="mt-1 min-h-5 text-sm text-red-500"
-                >
-                  {{ errors.author }}
-                </p>
-              </div>
-              <div v-show="category == AdvertType.BOOK">
-                <label
-                  class="mb-2 block text-sm font-medium text-gray-600"
-                  for="publisher"
-                >
-                  {{ $t('advertForm.form.publisher') }}
-                </label>
-                <input
-                  id="publisher"
-                  v-model="form.publisher"
-                  class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('advertForm.form.publisherPlaceholder')"
-                  type="text"
-                >
-                <p
-                  v-show="errors.publisher != null"
-                  class="mt-1 min-h-5 text-sm text-red-500"
-                >
-                  {{ errors.publisher }}
-                </p>
-              </div>
-              <div v-show="category == AdvertType.BOOK">
-                <label
-                  class="mb-2 block text-sm font-medium text-gray-600"
-                  for="edition"
-                >
-                  {{ $t('advertForm.form.edition') }}
-                </label>
-                <input
-                  id="edition"
-                  v-model="form.edition"
-                  class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('advertForm.form.editionPlaceholder')"
-                  type="text"
-                >
-                <p
-                  v-show="errors.edition != null"
-                  class="mt-1 min-h-5 text-sm text-red-500"
-                >
-                  {{ errors.edition }}
-                </p>
-              </div>
-              <div v-show="category == AdvertType.BOOK">
-                <label
-                  class="mb-2 block text-sm font-medium text-gray-600"
-                  for="isbn"
-                >
-                  {{ $t('advertForm.form.isbn') }}
-                </label>
-                <div class="relative">
+                <div class="flex items-center overflow-hidden rounded-xl border border-gray-200 bg-white focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 dark:bg-gray-800 dark:border-gray-400">
                   <input
-                    id="isbn"
-                    v-model="form.isbn"
-                    class="w-full rounded-xl border border-gray-200 bg-white py-3 pl-10 pr-4 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                    :placeholder="$t('advertForm.form.isbnPlaceholder')"
-                    type="text"
-                  >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="size-6 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z"
-                    />
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M6.75 6.75h.75v.75h-.75v-.75ZM6.75 16.5h.75v.75h-.75v-.75ZM16.5 6.75h.75v.75h-.75v-.75ZM13.5 13.5h.75v.75h-.75v-.75ZM13.5 19.5h.75v.75h-.75v-.75ZM19.5 13.5h.75v.75h-.75v-.75ZM19.5 19.5h.75v.75h-.75v-.75ZM16.5 16.5h.75v.75h-.75v-.75Z"
-                    />
-                  </svg>
-                </div>
-                <p
-                  v-show="errors.isbn != null"
-                  class="mt-1 min-h-5 text-sm text-red-500"
-                >
-                  {{ errors.isbn }}
-                </p>
-              </div>
-              <div v-show="category == AdvertType.BOOK">
-                <label
-                  class="mb-2 block text-sm font-medium text-gray-600"
-                  for="bookCategoryId"
-                >
-                  {{ $t('advertForm.form.bookCategoryId') }}
-                </label>
-                <select
-                  id="bookCategoryId"
-                  v-model="form.bookCategoryId"
-                  class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                >
-                  <option :value="1">
-                    {{ $t('advertCategories.none') }}
-                  </option>
-                  <option :value="2">
-                    {{ $t('advertCategories.math') }}
-                  </option>
-                  <option :value="3">
-                    {{ $t('advertCategories.french') }}
-                  </option>
-                  <option :value="4">
-                    {{ $t('advertCategories.german') }}
-                  </option>
-                  <option :value="5">
-                    {{ $t('advertCategories.italian') }}
-                  </option>
-                  <option :value="6">
-                    {{ $t('advertCategories.history') }}
-                  </option>
-                  <option :value="7">
-                    {{ $t('advertCategories.physics') }}
-                  </option>
-                  <option :value="8">
-                    {{ $t('advertCategories.languages') }}
-                  </option>
-                </select>
-                <p
-                  v-show="errors.bookCategoryId != null"
-                  class="mt-1 min-h-5 text-sm text-red-500"
-                >
-                  {{ errors.bookCategoryId }}
-                </p>
-              </div>
-              <div v-show="category == AdvertType.BOOK">
-                <label
-                  class="mb-2 block text-sm font-medium text-gray-600"
-                  for="writtenLanguage"
-                >
-                  {{ $t('advertForm.form.writtenLanguage') }}
-                </label>
-                <select
-                  id="writtenLanguage"
-                  v-model="form.writtenLanguage"
-                  class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                >
-                  <option :value="AdvertLanguage.FR">
-                    {{ $t('fr') }}
-                  </option>
-                  <option :value="AdvertLanguage.DE">
-                    {{ $t('de') }}
-                  </option>
-                  <option :value="AdvertLanguage.IT">
-                    {{ $t('it') }}
-                  </option>
-                </select>
-                <p
-                  v-show="errors.writtenLanguage != null"
-                  class="mt-1 min-h-5 text-sm text-red-500"
-                >
-                  {{ errors.writtenLanguage }}
-                </p>
-              </div>
-              <div v-show="category == AdvertType.SERVICE">
-                <label
-                  class="mb-2 block text-sm font-medium text-gray-600"
-                  for="subjectId"
-                >
-                  {{ $t('advertForm.form.subjectId') }}
-                </label>
-                <select
-                  id="subjectId"
-                  v-model="form.subjectId"
-                  class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                >
-                  <option :value="1">
-                    {{ $t('advertCategories.none') }}
-                  </option>
-                  <option :value="2">
-                    {{ $t('advertCategories.math') }}
-                  </option>
-                  <option :value="3">
-                    {{ $t('advertCategories.french') }}
-                  </option>
-                  <option :value="4">
-                    {{ $t('advertCategories.german') }}
-                  </option>
-                  <option :value="5">
-                    {{ $t('advertCategories.italian') }}
-                  </option>
-                  <option :value="6">
-                    {{ $t('advertCategories.history') }}
-                  </option>
-                  <option :value="7">
-                    {{ $t('advertCategories.physics') }}
-                  </option>
-                  <option :value="8">
-                    {{ $t('advertCategories.languages') }}
-                  </option>
-                </select>
-                <p
-                  v-show="errors.subjectId != null"
-                  class="mt-1 min-h-5 text-sm text-red-500"
-                >
-                  {{ errors.subjectId }}
-                </p>
-              </div>
-              <div v-show="category == AdvertType.SERVICE">
-                <label
-                  class="mb-2 block text-sm font-medium text-gray-600"
-                  for="schoolLevelId"
-                >
-                  {{ $t('advertForm.form.schoolGradeId') }}
-                </label>
-                <select
-                  id="schoolLevelId"
-                  v-model="form.schoolLevelId"
-                  class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                >
-                  <option :value="1">
-                    {{ $t('advertSchoolGrade.primary') }}
-                  </option>
-                  <option :value="2">
-                    {{ $t('advertSchoolGrade.middle') }}
-                  </option>
-                  <option :value="3">
-                    {{ $t('advertSchoolGrade.high') }}
-                  </option>
-                  <option :value="4">
-                    {{ $t('advertSchoolGrade.higher') }}
-                  </option>
-                </select>
-                <p
-                  v-show="errors.schoolLevelId != null"
-                  class="mt-1 min-h-5 text-sm text-red-500"
-                >
-                  {{ errors.schoolLevelId }}
-                </p>
-              </div>
-              <div v-show="category == AdvertType.SERVICE">
-                <label
-                  class="mb-2 block text-sm font-medium text-gray-600"
-                  for="teachingLanguage"
-                >
-                  {{ $t('advertForm.form.teachingLanguage') }}
-                </label>
-                <select
-                  id="teachingLanguage"
-                  v-model="form.teachingLanguage"
-                  class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                >
-                  <option :value="AdvertLanguage.FR">
-                    {{ $t('fr') }}
-                  </option>
-                  <option :value="AdvertLanguage.DE">
-                    {{ $t('de') }}
-                  </option>
-                  <option :value="AdvertLanguage.IT">
-                    {{ $t('it') }}
-                  </option>
-                </select>
-                <p
-                  v-show="errors.teachingLanguage != null"
-                  class="mt-1 min-h-5 text-sm text-red-500"
-                >
-                  {{ errors.teachingLanguage }}
-                </p>
-              </div>
-              <div v-show="category == AdvertType.SERVICE">
-                <label
-                  class="mb-2 block text-sm font-medium text-gray-600"
-                  for="studyLevel"
-                >
-                  {{ $t('advertForm.form.studyLevel') }}
-                </label>
-                <div class="relative">
-                  <input
-                    id="studyLevel"
-                    v-model="form.specificStudyLevel"
-                    class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                    :placeholder="$t('advertForm.form.studyLevelPlaceholder')"
-                    type="text"
+                    id="weight"
+                    v-model.number="form.weight"
+                    class="w-full bg-transparent px-4 py-3 text-sm outline-none dark:text-gray-300"
+                    placeholder="0.00"
+                    type="number"
+                    min="0"
+                    step="0.01"
                   >
                 </div>
-                <p
-                  v-show="errors.specificStudyLevel != null"
-                  class="mt-1 min-h-5 text-sm text-red-500"
-                >
-                  {{ errors.specificStudyLevel }}
-                </p>
-              </div>
-              <div class="md:col-span-2">
-                <label
-                  class="mb-2 block text-sm font-medium text-gray-600"
-                  for="description"
-                >
-                  {{ $t('advertForm.form.description') }}
-                </label>
-                <textarea
-                  id="description"
-                  v-model="form.description"
-                  class="min-h-32 w-full resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-                  :placeholder="$t('advertForm.form.descriptionPlaceholder')"
-                  rows="4"
-                />
                 <p class="mt-1 min-h-5 text-sm text-red-500">
-                  {{ errors.description || ' ' }}
+                  {{ errors.weight || ' ' }}
                 </p>
               </div>
+              <FormSelect
+                v-show="category == AdvertType.SERVICE"
+                v-model="form.subjectId"
+                :error="errors.subjectId"
+                label="subjectId"
+                label-key="subjectId"
+                :options="subjects"
+              />
+              <FormSelect
+                v-show="category == AdvertType.SERVICE"
+                v-model="form.schoolGradeId"
+                :error="errors.schoolGradeId"
+                label="schoolGradeId"
+                label-key="schoolGradeId"
+                :options="schoolGrades"
+              />
+              <FormSelect
+                v-show="category == AdvertType.SERVICE"
+                v-model="form.teachingLanguage"
+                :error="errors.teachingLanguage"
+                label="teachingLanguage"
+                label-key="teachingLanguage"
+                :options="advertLanguages"
+              />
+              <FormInput
+                v-show="category == AdvertType.SERVICE"
+                v-model="form.studyLevel"
+                :error="errors.specificStudyLevel"
+                label="studyLevel"
+                label-key="studyLevel"
+                type="text"
+              />
+              <FormTextArea
+                v-model="form.description"
+                :error="errors.description"
+                label="description"
+                label-key="description"
+                class="col-span-2"
+              />
             </div>
           </section>
 
