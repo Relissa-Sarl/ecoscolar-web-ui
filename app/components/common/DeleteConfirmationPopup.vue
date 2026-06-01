@@ -9,10 +9,6 @@ const emits = defineEmits<{
   'confirm-delete': []
   'cancel-delete': []
 }>()
-
-const confirmDeletion = () => {
-  emits('confirm-delete')
-}
 </script>
 
 <template>
@@ -36,7 +32,7 @@ const confirmDeletion = () => {
         </button>
         <button
           class="rounded-lg bg-red-500 px-4 py-2 text-sm text-white hover:bg-red-600"
-          @click="() => confirmDeletion()"
+          @click="() => emits('confirm-delete')"
         >
           {{ $t('me.adverts.confirm') }}
         </button>
