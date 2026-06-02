@@ -15,8 +15,7 @@ export interface SchoolGrade {
   nameDe: string
   code: string
 }
-
-export interface ProductCategroy {
+export interface ProductCategory {
   productCategoryId: number
   name: string
   nameFr: string
