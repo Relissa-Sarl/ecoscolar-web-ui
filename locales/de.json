@@ -358,6 +358,29 @@
       "view_advert": "Anzeige ansehen"
     }
   },
+  "searchAlerts": {
+    "title": "Meine Suchalarme",
+    "subtitle": "Gespeicherte Suchen",
+    "save": "Diese Suche speichern",
+    "saving": "Wird gespeichert…",
+    "saved": "Suche gespeichert",
+    "save_error": "Suche konnte nicht gespeichert werden",
+    "empty": {
+      "title": "Noch keine Alarme",
+      "message": "Speichere eine Suche im Shop, um sie hier wiederzufinden."
+    },
+    "status": {
+      "loading": "Alarme werden geladen…",
+      "error": "Alarme konnten nicht geladen werden."
+    },
+    "actions": {
+      "back_to_shop": "Zurück zum Shop",
+      "browse_shop": "Shop durchsuchen",
+      "delete": "Löschen",
+      "deleting": "Wird gelöscht…",
+      "run_search": "Suche erneut starten"
+    }
+  },
   "header": {
     "nav_shop": "Geschäft",
     "nav_support": "Support",
@@ -367,7 +390,8 @@
     "login": "Anmelden",
     "logout": "Abmelden",
     "profile": "Profil",
-    "favorites": "Favoriten"
+    "favorites": "Favoriten",
+    "search_alerts": "Suchalarme"
   },
   "common": {
     "back_to_home": "Zurück zur Startseite",

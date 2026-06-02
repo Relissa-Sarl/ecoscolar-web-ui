@@ -78,6 +78,12 @@ const linkIsActive = (slug: string) => {
           {{ $t('header.favorites') }}
         </NuxtLink>
         <NuxtLink
+          :to="localePath('/search-alerts')"
+          class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
+        >
+          {{ $t('header.search_alerts') }}
+        </NuxtLink>
+        <NuxtLink
           :to="localePath('/cart')"
           class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
         >
