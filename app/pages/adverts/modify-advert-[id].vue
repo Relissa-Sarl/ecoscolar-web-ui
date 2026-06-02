@@ -694,10 +694,11 @@ vueOnMounted(async () => {
               <FormInput
                 v-show="category == AdvertType.SERVICE"
                 v-model="form.studyLevel"
-                :error="errors.specificStudyLevel"
+                :error="errors.studyLevel"
                 label="studyLevel"
                 label-key="studyLevel"
                 type="text"
+              />
               />
               <FormTextArea
                 v-model="form.description"
