@@ -14,20 +14,43 @@ const emit = defineEmits<{
 }>()
 
 const uploadedFiles = ref<File[]>(props.modelValue || [])
-const getPreviewUrl = (file: File) => window.URL.createObjectURL(file)
+const previewUrls = new WeakMap<File, string>()
+
+const getPreviewUrl = (file: File) => {
+  const existing = previewUrls.get(file)
+  if (existing) return existing
+
+  const url = URL.createObjectURL(file)
+  previewUrls.set(file, url)
+  return url
+}
+
+watch(() => props.modelValue, (files) => {
+  uploadedFiles.value = files ? [...files] : []
+})
+
+const revokePreviewUrl = (file: File) => {
+  const url = previewUrls.get(file)
+  if (!url) return
+  URL.revokeObjectURL(url)
+  previewUrls.delete(file)
+}
+
+onBeforeUnmount(() => {
+  for (const file of uploadedFiles.value) revokePreviewUrl(file)
+})
+
 const handleImageUpload = (event: Event) => {
   const input = event.target as HTMLInputElement
   if (input.files) {
-    // On convertit en tableau et on met à jour la ref globale
     uploadedFiles.value = Array.from(input.files)
-
-    // Mise à jour de votre formulaire parent
     emit('update:modelValue', uploadedFiles.value)
   }
 }
 
 const removeFile = (index: number) => {
-  uploadedFiles.value.splice(index, 1)
+  const [removed] = uploadedFiles.value.splice(index, 1)
+  if (removed) revokePreviewUrl(removed)
   emit('update:modelValue', uploadedFiles.value)
 }
 </script>
