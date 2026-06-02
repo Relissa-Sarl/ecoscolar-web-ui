@@ -34,9 +34,6 @@ export function createAdvertDetailsService({ apiClient }: AdvertDetailsServiceDe
     apiClient<Language[]>(`/Languages`)
   const getBookCategories = async () =>
     apiClient<BookCategory[]>(`/BookCategories`)
-    apiClient<Language[]>(`/Languages`)
-  const getBookCategories = async () =>
-    apiClient<BookCategory[]>(`/BookCategories`)
 
   return {
     getSubjects,

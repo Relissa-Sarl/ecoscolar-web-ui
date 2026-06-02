@@ -30,7 +30,7 @@ const inputId = computed(() => `input-${props.labelKey}`)
       :value="props.modelValue"
       class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
       :class="{ 'border-red-500': props.error }"
-      @change="emit('update:modelValue', ($event.target as HTMLSelectElement).value)"
+      @change="emit('update:modelValue', props.options.find(option => String(option.value) === ($event.target as HTMLSelectElement).value)?.value ?? ($event.target as HTMLSelectElement).value)"
     >
       <option
         v-for="option in props.options"

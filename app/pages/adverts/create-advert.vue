@@ -230,7 +230,7 @@ const validateForm = (): boolean => {
         errors.value.teachingLanguage = $t('advertForm.error.empty.teachingLanguage')
       }
       if (!form.value.studyLevel.trim()) {
-        errors.value.specificStudyLevel = $t('advertForm.error.empty.studyLevel')
+        errors.value.studyLevel = $t('advertForm.error.empty.studyLevel')
       }
       break
     case AdvertType.PRODUCT:
@@ -324,7 +324,7 @@ const validateForm = (): boolean => {
         errors.value.teachingLanguage = $t('advertForm.error.invalid.teachingLanguage')
       }
       if (form.value.studyLevel.length > 50) {
-        errors.value.specificStudyLevel = $t('advertForm.error.invalid.studyLevelLength')
+        errors.value.studyLevel = $t('advertForm.error.invalid.studyLevelLength')
       }
       break
     case AdvertType.BOOK:
@@ -440,9 +440,9 @@ const handleSubmit = async () => {
           price: form.value.price,
           userId: userStore.user?.id,
           subjectId: form.value.subjectId,
-          schoolLevelId: form.value.schoolGradeId,
+          schoolGradeId: form.value.schoolGradeId,
           teachingLanguage: form.value.teachingLanguage,
-          specificStudyLevel: form.value.studyLevel
+          studyLevel: form.value.studyLevel
         }
         await advertService.createServiceAdvert(formData)
         break
@@ -734,7 +734,7 @@ const handleSubmit = async () => {
               <FormInput
                 v-show="category == AdvertType.SERVICE"
                 v-model="form.studyLevel"
-                :error="errors.specificStudyLevel"
+                :error="errors.studyLevel"
                 label="studyLevel"
                 label-key="studyLevel"
                 type="text"
