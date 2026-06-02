@@ -36,8 +36,9 @@ const inputId = computed(() => `input-${props.labelKey}`)
       :class="{ 'border-red-500': props.error }"
       :step="props.labelKey === 'price' ? '0.01' : undefined"
       :min="props.labelKey === 'price' ? '0' : undefined"
-      @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-    >
+      @input="emit('update:modelValue', props.type === 'number'
+        ? ((($event.target as HTMLInputElement).value === '') ? '' : ($event.target as HTMLInputElement).valueAsNumber)
+        : ($event.target as HTMLInputElement).value)"
     <p
       v-show="props.error"
       class="mt-1 min-h-5 text-sm text-red-500"
