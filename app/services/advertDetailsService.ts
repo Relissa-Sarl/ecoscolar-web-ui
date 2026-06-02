@@ -1,7 +1,7 @@
 import type {
   Subject,
   SchoolGrade,
-  ProductCategroy,
+  ProductCategory,
   Language,
   BookCategory
 
@@ -14,7 +14,7 @@ type ApiClient = typeof useApi
 export interface AdvertDetailsService {
   getSubjects: () => Promise<Subject[]>
   getSchoolGrades: () => Promise<SchoolGrade[]>
-  getProductCategories: () => Promise<ProductCategroy[]>
+  getProductCategories: () => Promise<ProductCategory[]>
   getLanguages: () => Promise<Language[]>
   getBookCategories: () => Promise<BookCategory[]>
 }
@@ -29,8 +29,11 @@ export function createAdvertDetailsService({ apiClient }: AdvertDetailsServiceDe
   const getSchoolGrades = async () =>
     apiClient<SchoolGrade[]>(`/SchoolGrades`)
   const getProductCategories = async () =>
-    apiClient<ProductCategroy[]>(`/ProductCategories`)
+    apiClient<ProductCategory[]>(`/ProductCategories`)
   const getLanguages = async () =>
+    apiClient<Language[]>(`/Languages`)
+  const getBookCategories = async () =>
+    apiClient<BookCategory[]>(`/BookCategories`)
     apiClient<Language[]>(`/Languages`)
   const getBookCategories = async () =>
     apiClient<BookCategory[]>(`/BookCategories`)
