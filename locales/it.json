@@ -401,7 +401,13 @@
     "contact_support": "Contatta il supporto",
     "home": "Home",
     "favorites": "Preferiti",
-    "breadcrumb_label": "Percorso di navigazione"
+    "breadcrumb_label": "Percorso di navigazione",
+    "deletePopup": {
+      "title": "Conferma eliminazione",
+      "message": "Sei sicuro di voler eliminare questo elemento? Questa azione è irreversibile.",
+      "cancel": "Annulla",
+      "confirm": "Elimina"
+    }
   },
   "error": {
     "not_found": {
@@ -560,6 +566,7 @@
     "favorites": "Preferiti",
     "sales": "Vendite",
     "edit": "Modifica profilo",
+    "delete": "Elimina account",
     "settings" : {
       "title": "Modifica il mio profilo",
       "subtitle": "Aggiorna le tue informazioni personali per un'esperienza personalizzata.",
