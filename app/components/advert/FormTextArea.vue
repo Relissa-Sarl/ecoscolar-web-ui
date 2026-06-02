@@ -28,10 +28,7 @@ const inputId = computed(() => `input-${props.labelKey}`)
       :id="inputId"
       :value="props.modelValue"
       class="min-h-32 w-full resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 dark:bg-gray-800 dark:border-gray-400 dark:text-gray-300"
-      :placeholder="$t(`advertForm.form.${props.labelKey}Placeholder`)"
-      rows="4"
-      @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-    />
+      @input="emit('update:modelValue', ($event.target as HTMLTextAreaElement).value)"
     <p
       v-show="props.error"
       class="mt-1 min-h-5 text-sm text-red-500"
