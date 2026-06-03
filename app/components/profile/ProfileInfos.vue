@@ -3,10 +3,8 @@ import { computed } from 'vue'
 import type { PublicUser, User } from '~/types/user'
 import LanguagesComponent from './private/LanguagesComponent.vue'
 import LocationComponent from './private/LocationComponent.vue'
-import DeleteConfirmationPopup from '../common/DeleteConfirmationPopup.vue'
 
 const localePath = useLocalePath()
-const usersStore = useUsersStore()
 
 /**
  * Props definition for the ProfileInfos component.
@@ -16,7 +14,9 @@ const props = defineProps<{
   isOwnProfile: boolean
 }>()
 
-const showDeleteConfirm = ref<boolean>(false)
+const emits = defineEmits<{
+  'delete-account': []
+}>()
 
 /**
  * Computed property to generate a display name for the user.
@@ -30,15 +30,6 @@ const displayName = computed(() => {
   }
   return props.user.nickname || ''
 })
-
-const confirmDelete = () => {
-  showDeleteConfirm.value = false
-  usersStore.deleteAccount()
-}
-
-const cancelDelete = () => {
-  showDeleteConfirm.value = false
-}
 </script>
 
 <template>
@@ -74,7 +65,10 @@ const cancelDelete = () => {
 
     <hr class="w-full border-slate-100 dark:border-slate-800 mb-5">
 
-    <nav class="w-full flex flex-col gap-5">
+    <nav
+      v-if="props.isOwnProfile"
+      class="w-full flex flex-col gap-5"
+    >
       <NuxtLink
         :to="localePath('/favorites')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
@@ -139,7 +133,7 @@ const cancelDelete = () => {
       <button
         v-if="props.isOwnProfile"
         class="flex items-center gap-3 text-red-500 hover:text-red-700 transition-colors ml-auto cursor-pointer"
-        @click="showDeleteConfirm = true"
+        @click="() => emits('delete-account')"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -159,12 +153,4 @@ const cancelDelete = () => {
       </button>
     </nav>
   </div>
-  <DeleteConfirmationPopup
-    :show="showDeleteConfirm"
-    :title="$t('profile.deletePopup.title')"
-    :message="$t('profile.deletePopup.message')"
-    :confirm-text="$t('profile.deletePopup.confirm')"
-    @confirm-delete="confirmDelete"
-    @cancel-delete="cancelDelete"
-  />
 </template>

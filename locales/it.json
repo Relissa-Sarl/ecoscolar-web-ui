@@ -584,6 +584,9 @@
       "language_placeholder": "Scegli una lingua",
       "level_placeholder": "Scegli un livello",
       "pc_placeholder": "Es: 1000"
+    },
+    "public": {
+      "error": "Attualmente non è possibile caricare il profilo utente. L'utente potrebbe non aver impostato il profilo come pubblico o il profilo potrebbe essere stato rimosso."
     }
   }
 }
