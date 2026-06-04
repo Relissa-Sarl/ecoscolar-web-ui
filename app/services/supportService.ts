@@ -22,15 +22,15 @@ export interface SupportService {
 
 export function createSupportService({ apiClient }: { apiClient: ApiClient }): SupportService {
   return {
-    submitContact: (input) =>
+    submitContact: input =>
       apiClient<SupportContactResponse>(SUPPORT_PATH, {
         method: 'POST',
         body: input,
         skipAuth: true
       }),
     listMyTickets: () => apiClient<SupportTicketSummary[]>(SUPPORT_MINE_PATH),
-    getMyTicket: (id) => apiClient<SupportTicketDetail>(`${SUPPORT_MINE_PATH}/${id}`),
-    listTicketMessages: (id) =>
+    getMyTicket: id => apiClient<SupportTicketDetail>(`${SUPPORT_MINE_PATH}/${id}`),
+    listTicketMessages: id =>
       apiClient<SupportTicketMessage[]>(`${SUPPORT_MINE_PATH}/${id}/messages`),
     sendTicketMessage: (id, message) =>
       apiClient<SupportTicketMessage>(`${SUPPORT_MINE_PATH}/${id}/messages`, {
