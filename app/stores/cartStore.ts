@@ -30,6 +30,10 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   const loadCart = async (force = false) => {
+    if (import.meta.server) {
+      return
+    }
+
     if (hasLoaded.value && !force) {
       return
     }

@@ -121,7 +121,7 @@ describe('AdvertActionButtons', () => {
       categoryTab: 'textbooks',
       imageUrl: 'https://example.com/chem.jpg'
     }))
-    expect(wrapper.emitted('buy')?.[0]).toEqual([])
+    expect(wrapper.emitted('cartAdd')?.[0]).toEqual([])
   })
 
   it('disables the add-to-cart button and changes text when item is in cart', async () => {

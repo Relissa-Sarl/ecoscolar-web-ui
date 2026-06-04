@@ -14,11 +14,29 @@ const props = defineProps<{
 
 const detailLink = computed(() => localePath(`/adverts/${props.listing.id}`))
 
-defineEmits<{
+const emit = defineEmits<{
   favoriteToggle: []
   cartAdd: []
   bookLesson: []
 }>()
+
+const cartStore = useCartStore()
+const toast = useToast()
+const { t } = useI18n()
+
+const isInCart = computed(() =>
+  cartStore.items.some(item => item.listing.id === String(props.listing.id))
+)
+
+const handleCartAdd = async () => {
+  if (isInCart.value) return
+  await cartStore.addToCart(props.listing)
+  toast.add({
+    title: t('cart.added_success'),
+    color: 'success'
+  })
+  emit('cartAdd')
+}
 </script>
 
 <template>
@@ -127,11 +145,31 @@ defineEmits<{
           <button
             v-else
             type="button"
-            class="rounded-full bg-emerald-800 p-2.5 text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500"
-            :aria-label="$t('advert.actions.buy_now')"
-            @click="$emit('cartAdd')"
+            class="rounded-full transition"
+            :class="isInCart
+              ? 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-600 border border-slate-200 dark:border-slate-800 cursor-not-allowed p-2.5'
+              : 'bg-emerald-800 p-2.5 text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer'"
+            :disabled="isInCart"
+            :aria-label="isInCart ? $t('advert.actions.already_in_cart') : $t('advert.actions.buy_now')"
+            @click="handleCartAdd"
           >
             <svg
+              v-if="isInCart"
+              class="size-5 text-emerald-650 dark:text-emerald-500"
+              aria-hidden="true"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2.5"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m4.5 12.75 6 6 9-13.5"
+              />
+            </svg>
+            <svg
+              v-else
               class="size-5"
               aria-hidden="true"
               fill="none"

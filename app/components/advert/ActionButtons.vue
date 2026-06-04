@@ -3,6 +3,7 @@ import { computed, onBeforeMount, ref } from 'vue'
 import type { FavoriteAdvertSummary } from '~/types/favorite'
 import { AdvertType } from '~/utils/enum/advertType'
 import type { CatalogListing } from '~/types/catalog'
+import { useCartStore } from '~/stores/cartStore'
 
 interface Props {
   advert: FavoriteAdvertSummary | null
@@ -13,7 +14,7 @@ const { t } = useI18n()
 const toast = useToast()
 
 const emit = defineEmits<{
-  buy: []
+  cartAdd: []
   favorite: [value: boolean]
   notify: []
 }>()
@@ -74,7 +75,7 @@ const handleBuy = async () => {
       color: 'success'
     })
   }
-  emit('buy')
+  emit('cartAdd')
 }
 
 const toggleFavorite = async () => {
