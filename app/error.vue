@@ -39,7 +39,7 @@ function goHome() {
 </script>
 
 <template>
-  <main class="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12 dark:bg-slate-950">
+  <main class="flex min-h-screen items-center justify-center bg-white px-4 py-12 dark:bg-gray-950">
     <section class="w-full max-w-3xl">
       <div class="rounded-3xl border border-red-200 bg-red-50 p-8 shadow-sm dark:border-red-900/50 dark:bg-red-950/40 md:p-10">
         <p class="text-base font-bold uppercase tracking-[0.35em] text-red-800 dark:text-red-300 md:text-lg">

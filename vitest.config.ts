@@ -35,7 +35,8 @@ export default defineConfig({
       })
     ],
     coverage: {
-      enabled: true,
+      // Activé via `vitest run --coverage` ou `npm run test:coverage` (évite l'échec de seuil sur un sous-ensemble de tests).
+      enabled: false,
       provider: 'v8',
       thresholds: {
         statements: 50,

@@ -322,7 +322,8 @@
     "logout": "Déconnexion",
     "profile": "Profil",
     "favorites": "Favoris",
-    "search_alerts": "Alertes"
+    "search_alerts": "Alertes",
+    "support_requests": "Mes demandes"
   },
   "common": {
     "back_to_home": "Retour à l'accueil",
@@ -378,12 +379,47 @@
     "actions": {
       "submit": "Envoyer le message",
       "cancel": "Annuler",
+      "view_requests": "Mes demandes",
       "confirm_cancel": "Voulez-vous vraiment annuler ? Vos modifications seront perdues.",
       "confirm_cancel_title": "Annuler les modifications",
       "confirm_cancel_confirm": "Quitter",
       "confirm_cancel_stay": "Rester"
     },
-    "success": "Merci ! Votre message a été envoyé."
+    "success": "Merci ! Votre message a été envoyé.",
+    "error_submit": "Impossible d'envoyer le message. Réessayez plus tard.",
+    "list": {
+      "subtitle": "Support",
+      "title": "Mes demandes de support",
+      "description": "Retrouvez ici l'historique de vos messages envoyés à l'équipe EcoScolar.",
+      "ticket_label": "Demande #{id}",
+      "status": {
+        "loading": "Chargement de vos demandes…",
+        "error": "Impossible de charger vos demandes pour le moment.",
+        "retry": "Réessayer"
+      },
+      "empty": {
+        "title": "Aucune demande pour le moment",
+        "message": "Vous n'avez pas encore contacté le support. Utilisez le formulaire pour nous écrire."
+      },
+      "actions": {
+        "new_request": "Nouvelle demande",
+        "contact": "Contacter le support",
+        "open": "Voir la demande"
+      }
+    },
+    "detail": {
+      "title": "Détail de la demande",
+      "you": "Vous",
+      "support_team": "Équipe EcoScolar",
+      "reply_label": "Votre message",
+      "reply_placeholder": "Écrivez votre réponse au support…",
+      "send": "Envoyer",
+      "sending": "Envoi…",
+      "not_found": "Cette demande est introuvable ou vous n'y avez pas accès.",
+      "load_error": "Impossible de charger cette demande pour le moment.",
+      "back_to_list": "Retour à mes demandes",
+      "conversation_unavailable": "Bientôt, vous pourrez échanger ici directement avec notre équipe. Votre demande est bien enregistrée : retrouvez votre message juste en dessous."
+    }
   },
   "privacy": {
     "title": "Politique de Confidentialité",
@@ -500,6 +536,7 @@
     "location": "Localisation",
     "favorites": "Favoris",
     "sales": "Ventes",
+    "support_requests": "Mes demandes",
     "edit": "Modifier le profil",
     "delete": "Supprimer le compte",
     "deletePopup": {
