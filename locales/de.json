@@ -121,6 +121,10 @@
     }
   },
   "me": {
+    "purchases": {
+      "title": "Meine Kaufhistorie",
+      "empty_placeholder": "Ihre Kaufhistorie wird hier angezeigt."
+    },
     "adverts": {
       "title": "Meine Anzeigen",
       "description": "Verwalten Sie Ihre Verkaufsanzeigen und Ihre Nachhilfeleistungen.",

@@ -121,6 +121,10 @@
     }
   },
   "me": {
+    "purchases": {
+      "title": "Historique de mes achats",
+      "empty_placeholder": "Votre historique d'achats apparaîtra ici."
+    },
     "adverts": {
       "title": "Mes Annonces",
       "description": "Gérez vos annonces en vente et vos services de tutorat.",

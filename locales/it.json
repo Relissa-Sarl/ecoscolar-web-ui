@@ -121,6 +121,10 @@
     }
   },
   "me": {
+    "purchases": {
+      "title": "Cronologia dei miei acquisti",
+      "empty_placeholder": "La cronologia dei tuoi acquisti apparirà qui."
+    },
     "adverts": {
       "title": "I miei annunci",
       "description": "Gestisci i tuoi annunci di vendita e i tuoi servizi di tutoraggio.",
