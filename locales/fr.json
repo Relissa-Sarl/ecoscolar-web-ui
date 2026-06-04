@@ -475,6 +475,7 @@
       "send": "Envoyer",
       "sending": "Envoi…",
       "not_found": "Cette demande est introuvable ou vous n'y avez pas accès.",
+      "load_error": "Impossible de charger cette demande pour le moment.",
       "back_to_list": "Retour à mes demandes",
       "conversation_unavailable": "Bientôt, vous pourrez échanger ici directement avec notre équipe. Votre demande est bien enregistrée : retrouvez votre message juste en dessous."
     }

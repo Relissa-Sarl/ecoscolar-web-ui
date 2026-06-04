@@ -475,6 +475,7 @@
       "send": "Senden",
       "sending": "Wird gesendet…",
       "not_found": "Diese Anfrage wurde nicht gefunden oder Sie haben keinen Zugriff.",
+      "load_error": "Diese Anfrage kann derzeit nicht geladen werden.",
       "back_to_list": "Zurück zu meinen Anfragen",
       "conversation_unavailable": "Bald können Sie hier direkt mit unserem Team chatten. Ihre Anfrage ist bei uns eingegangen. Ihre Nachricht finden Sie unten."
     }

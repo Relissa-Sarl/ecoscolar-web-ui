@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSupportTicketsStore } from '~/stores/supportTicketsStore'
 import { useUsersStore } from '~/stores/usersStore'
@@ -27,16 +27,23 @@ const loadDetailOnClient = async (id: number) => {
   await supportTicketsStore.loadTicketDetail(id).catch(() => undefined)
 }
 
-onMounted(() => {
-  void loadDetailOnClient(ticketId.value)
-})
-
 watch(ticketId, (id) => {
   void loadDetailOnClient(id)
-})
+}, { immediate: true })
 
 const ticket = computed(() => supportTicketsStore.currentTicket)
 const messages = computed(() => supportTicketsStore.messages)
+
+const showLoadError = computed(
+  () => !supportTicketsStore.isLoading && !!supportTicketsStore.error
+)
+
+const showNotFound = computed(
+  () =>
+    !supportTicketsStore.isLoading
+    && !supportTicketsStore.error
+    && (!isValidId.value || !ticket.value)
+)
 
 const breadcrumbItems = computed(() => [
   { label: t('common.home'), to: localePath('/') },
@@ -69,7 +76,23 @@ const onSend = async (message: string) => {
       </div>
 
       <div
-        v-else-if="!isValidId || supportTicketsStore.error || !ticket"
+        v-else-if="showLoadError"
+        class="rounded-3xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-900 dark:bg-red-950/30"
+      >
+        <p class="text-red-700 dark:text-red-200">
+          {{ $t('support.detail.load_error') }}
+        </p>
+        <button
+          type="button"
+          class="mt-4 inline-flex text-sm font-semibold text-emerald-800 hover:underline dark:text-emerald-300"
+          @click="loadDetailOnClient(ticketId)"
+        >
+          {{ $t('support.list.status.retry') }}
+        </button>
+      </div>
+
+      <div
+        v-else-if="showNotFound"
         class="rounded-3xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-900 dark:bg-red-950/30"
       >
         <p class="text-red-700 dark:text-red-200">

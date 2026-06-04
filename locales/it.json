@@ -475,6 +475,7 @@
       "send": "Invia",
       "sending": "Invio…",
       "not_found": "Questa richiesta non è stata trovata o non hai accesso.",
+      "load_error": "Impossibile caricare questa richiesta al momento.",
       "back_to_list": "Torna alle mie richieste",
       "conversation_unavailable": "Presto potrai scambiare qui direttamente con il nostro team. La tua richiesta è stata registrata: trovi il tuo messaggio qui sotto."
     }

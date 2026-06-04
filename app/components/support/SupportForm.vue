@@ -36,6 +36,7 @@ const reasonToSubject = (reason: string) => {
 }
 
 const handleSubmit = async () => {
+  if (isSubmitting.value) return
   isSubmitting.value = true
   try {
     const body: SupportContactRequest = {

@@ -77,10 +77,8 @@ export const useSupportTicketsStore = defineStore('supportTickets', () => {
         ticket = detailFromList(tickets.value, id)
       }
 
-      if (!ticket) {
-        error.value = 'Support ticket not found'
+      if (!ticket)
         return null
-      }
 
       currentTicket.value = ticket
 

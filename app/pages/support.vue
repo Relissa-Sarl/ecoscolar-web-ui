@@ -3,9 +3,6 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const usersStore = useUsersStore()
 
-// Recharge le profil (cookies) pour afficher « Mes demandes » si session active
-await usersStore.fetchProfile().catch(() => undefined)
-
 const breadcrumbItems = computed(() => [
   { label: t('common.home'), to: localePath('/') },
   { label: t('support.title') }
