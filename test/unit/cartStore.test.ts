@@ -17,6 +17,14 @@ const localStorageMock = {
   }
 }
 
+vi.mock('../../app/services/cartService', () => ({
+  getCartService: () => ({
+    getCartItems: vi.fn().mockResolvedValue([]),
+    addToCart: vi.fn().mockResolvedValue({}),
+    removeFromCart: vi.fn().mockResolvedValue(undefined)
+  })
+}))
+
 vi.stubGlobal('localStorage', localStorageMock)
 vi.stubGlobal('process', {
   ...process,
@@ -76,7 +84,7 @@ describe('cart store', () => {
     expect(cartStore.totalPrice).toBe(25)
   })
 
-  it('increments quantity when adding the same item multiple times', () => {
+  it('does not increment quantity when adding the same item multiple times', () => {
     const usersStore = useUsersStore()
     usersStore.user = mockUser('user-456')
 
@@ -87,9 +95,9 @@ describe('cart store', () => {
     cartStore.addToCart(listing)
 
     expect(cartStore.items).toHaveLength(1)
-    expect(cartStore.items[0].quantity).toBe(2)
-    expect(cartStore.totalItems).toBe(2)
-    expect(cartStore.totalPrice).toBe(50)
+    expect(cartStore.items[0].quantity).toBe(1)
+    expect(cartStore.totalItems).toBe(1)
+    expect(cartStore.totalPrice).toBe(25)
   })
 
   it('removes items correctly', () => {

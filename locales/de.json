@@ -46,6 +46,7 @@
     "title": "Mein Warenkorb",
     "remove_from_cart": "Aus dem Warenkorb entfernen",
     "clear": "Warenkorb leeren",
+    "added_success": "Artikel zum Warenkorb hinzugefügt!",
     "tva": "MwSt. und Gebühren inbegriffen",
     "one_advert": "Artikel",
     "many_adverts": "Artikel",
@@ -343,7 +344,8 @@
   },
   "advert": {
     "actions": {
-      "buy_now": "Jetzt kaufen",
+      "buy_now": "In den Warenkorb",
+      "already_in_cart": "Bereits im Warenkorb",
       "favorite_add": "Zu Favoriten hinzufügen",
       "favorite_remove": "Aus Favoriten entfernen",
       "notify": "Benachrichtige mich"

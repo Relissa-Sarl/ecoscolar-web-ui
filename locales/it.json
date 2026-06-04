@@ -46,6 +46,7 @@
     "title": "Il mio carrello",
     "remove_from_cart": "Rimuovi dal carrello",
     "clear": "Svuota il carrello",
+    "added_success": "Articolo aggiunto al carrello!",
     "tva": "IVA e costi inclusi",
     "one_advert": "articolo",
     "many_adverts": "articoli",
@@ -343,7 +344,8 @@
   },
   "advert": {
     "actions": {
-      "buy_now": "Acquista ora",
+      "buy_now": "Aggiungi al carrello",
+      "already_in_cart": "Già nel carrello",
       "favorite_add": "Aggiungi ai preferiti",
       "favorite_remove": "Rimuovi dai preferiti",
       "notify": "Avvisami"

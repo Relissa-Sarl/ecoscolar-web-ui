@@ -1,8 +1,19 @@
 <script setup lang="ts">
+import { computed, onBeforeMount } from 'vue'
+
 const route = useRoute()
 const { locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
 const usersStore = useUsersStore()
+
+const cartStore = useCartStore()
+const cartCount = computed(() => cartStore.totalItems)
+
+onBeforeMount(() => {
+  if (!cartStore.hasLoaded && !cartStore.isLoading) {
+    void cartStore.loadCart().catch(() => undefined)
+  }
+})
 
 const mainNav = computed(() =>
   [
@@ -79,9 +90,15 @@ const linkIsActive = (slug: string) => {
         </NuxtLink>
         <NuxtLink
           :to="localePath('/cart')"
-          class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
+          class="relative inline-flex items-center pr-2 text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
         >
-          {{ $t('header.cart') }}
+          <span>{{ $t('header.cart') }}</span>
+          <span
+            v-if="cartCount > 0"
+            class="absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-emerald-600 px-1 text-[9px] font-bold text-white ring-2 ring-white dark:ring-slate-900"
+          >
+            {{ cartCount }}
+          </span>
         </NuxtLink>
 
         <!-- Display login link if user is not authenticated -->

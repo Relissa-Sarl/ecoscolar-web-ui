@@ -66,7 +66,8 @@ const advertSummary = computed(() => {
     type: advert.value.type,
     condition: advert.value.condition,
     price: advert.value.price,
-    image: advert.value.image || advert.value.images?.[0] || ''
+    image: advert.value.image || advert.value.images?.[0] || '',
+    seller: advert.value.seller?.username
   }
 })
 </script>

@@ -1,11 +1,20 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 import CartEmpty from '~/components/cart/CartEmpty.vue'
 import CartHeader from '~/components/cart/CartHeader.vue'
 import CartSummary from '~/components/cart/CartSummary.vue'
 import CartAdvertItems from '~/components/cart/CartAdvertItems.vue'
+import { useCartStore } from '~/stores/cartStore'
 
 const { t } = useI18n()
+
+/**
+ * Define the page metadata to specify that this page should only
+ * be accessible to guests (unauthenticated users) by using the 'guest' middleware.
+ */
+definePageMeta({
+  middleware: 'auth'
+})
 
 useSeoMeta({
   title: () => t('cart.seo_title')
@@ -21,46 +30,34 @@ interface CartItem {
   quantity: number
   author?: string
   seller: string
+  imageUrl?: string
 }
 
-// Initial Mock Items
-const cartItems = ref<CartItem[]>([
-  {
-    id: 1,
-    title: 'Mathématiques Analyse - Terminale S',
-    category: 'book',
-    categoryLabel: 'Livre',
-    price: 18.50,
-    quantity: 1,
-    author: 'J. Martin & L. Dubois',
-    seller: 'Marie L.'
-  },
-  {
-    id: 2,
-    title: 'Lot de 5 cahiers A4 Oxford - Petits carreaux',
-    category: 'product',
-    categoryLabel: 'Fourniture',
-    price: 6.90,
-    quantity: 1,
-    seller: 'Thomas B.'
-  },
-  {
-    id: 3,
-    title: 'Soutien scolaire en Allemand (Niveau Collège)',
-    category: 'service',
-    categoryLabel: 'Tutorat',
-    price: 30.00,
-    quantity: 1,
-    seller: 'Sophie V. (Répétitrice certifiée)'
-  }
-])
+const cartStore = useCartStore()
+
+onBeforeMount(async () => {
+  await cartStore.loadCart()
+})
+
+const cartItems = computed<CartItem[]>(() => {
+  return cartStore.items.map(item => ({
+    id: Number(item.listing.id),
+    title: item.listing.title,
+    category: item.listing.categoryTab === 'textbooks' ? 'book' : (item.listing.categoryTab === 'supplies' ? 'product' : 'service'),
+    categoryLabel: item.listing.categoryTab === 'textbooks' ? 'Livre' : (item.listing.categoryTab === 'supplies' ? 'Fourniture' : 'Tutorat'),
+    price: item.listing.price,
+    quantity: item.quantity,
+    seller: item.listing.seller || 'Vendeur',
+    imageUrl: item.listing.imageUrl
+  }))
+})
 
 const removeItem = (id: number) => {
-  cartItems.value = cartItems.value.filter(i => i.id !== id)
+  void cartStore.removeFromCart(String(id))
 }
 
 const clearCart = () => {
-  cartItems.value = []
+  void cartStore.clearCart()
 }
 
 // Calculations

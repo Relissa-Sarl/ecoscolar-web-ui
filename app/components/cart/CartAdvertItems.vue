@@ -9,6 +9,7 @@ interface CartItem {
   quantity: number
   author?: string
   seller: string
+  imageUrl?: string
 }
 
 defineProps<{
@@ -18,6 +19,8 @@ defineProps<{
 defineEmits<{
   (e: 'remove', id: number): void
 }>()
+
+const localePath = useLocalePath()
 </script>
 
 <template>
@@ -35,61 +38,71 @@ defineEmits<{
         <!-- Card item info -->
         <div class="flex items-center gap-4 w-full sm:w-auto">
           <!-- Visual Icon / Image Cover placeholder with dynamic premium gradients based on category -->
-          <div
-            :class="[
-              'w-16 h-20 rounded-xl flex items-center justify-center shadow-inner flex-shrink-0 text-white bg-gradient-to-br',
+          <NuxtLink
+            :to="localePath(`/adverts/${item.id}`)"
+            class="w-16 h-20 rounded-xl flex items-center justify-center shadow-inner flex-shrink-0 overflow-hidden hover:opacity-90 transition-opacity"
+            :class="!item.imageUrl ? [
+              'text-white bg-gradient-to-br',
               item.category === 'book' ? 'from-emerald-400 to-teal-650' : '',
               item.category === 'product' ? 'from-blue-400 to-indigo-650' : '',
               item.category === 'service' ? 'from-purple-400 to-pink-650' : ''
-            ]"
+            ] : ''"
           >
-            <!-- Custom SVG depending on category -->
-            <svg
-              v-if="item.category === 'book'"
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-8 w-8 opacity-90"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="1.5"
+            <img
+              v-if="item.imageUrl"
+              :src="item.imageUrl"
+              :alt="item.title"
+              class="w-full h-full object-cover"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-              />
-            </svg>
-            <svg
-              v-else-if="item.category === 'product'"
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-8 w-8 opacity-90"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="1.5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-            <svg
-              v-else
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-8 w-8 opacity-90"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="1.5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-              />
-            </svg>
-          </div>
+            <template v-else>
+              <!-- Custom SVG depending on category -->
+              <svg
+                v-if="item.category === 'book'"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-8 w-8 opacity-90"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                />
+              </svg>
+              <svg
+                v-else-if="item.category === 'product'"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-8 w-8 opacity-90"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              <svg
+                v-else
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-8 w-8 opacity-90"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+            </template>
+          </NuxtLink>
 
           <!-- Text details -->
           <div class="flex-1 min-w-0">
@@ -110,7 +123,12 @@ defineEmits<{
               </span>
             </div>
             <h3 class="text-base font-semibold text-slate-800 dark:text-slate-100 truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-              {{ item.title }}
+              <NuxtLink
+                :to="localePath(`/adverts/${item.id}`)"
+                class="hover:underline"
+              >
+                {{ item.title }}
+              </NuxtLink>
             </h3>
             <div class="mt-1 flex flex-col gap-0.5 text-xs text-slate-500 dark:text-slate-400">
               <span class="flex items-center gap-1">

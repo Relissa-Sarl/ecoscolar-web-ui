@@ -75,6 +75,7 @@ export interface CatalogListing {
   hourly: boolean
   subjectCode?: CatalogSubjectCode
   gradeLevel?: CatalogGradeLevel
+  seller?: string
 }
 
 export interface CatalogFetchResult {
