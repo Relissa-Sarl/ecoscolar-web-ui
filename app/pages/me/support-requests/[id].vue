@@ -106,7 +106,7 @@ const onSend = async (message: string) => {
         </NuxtLink>
       </div>
 
-      <template v-else>
+      <template v-else-if="ticket">
         <header class="mb-8">
           <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-300">
             {{ $t('support.list.ticket_label', { id: ticket.id }) }}
