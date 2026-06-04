@@ -44,7 +44,7 @@ watch(() => props.images, (newImages) => {
       >
         <NuxtImg
           :src="img"
-          :alt=""
+          alt=""
           class="w-full h-20 object-cover"
           width="100"
           height="100"
