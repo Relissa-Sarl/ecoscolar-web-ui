@@ -151,34 +151,20 @@ describe('cart store', () => {
     expect(cartStore.items).toHaveLength(0)
   })
 
-  it('saves and loads cart data from localStorage scoped to user', () => {
-    const usersStore = useUsersStore()
-    // Setup first user
-    usersStore.user = mockUser('user-alpha')
-
-    const cartStoreA = useCartStore()
+  it('saves and loads cart data from localStorage', () => {
+    const cartStore = useCartStore()
     const listing = buildListing('list-99', 100)
-    cartStoreA.addToCart(listing)
+    cartStore.addToCart(listing)
 
     // Check saved in localStorage under correct key
-    expect(mockStore['ecoscolar_cart_user-alpha']).toBeDefined()
-    expect(JSON.parse(mockStore['ecoscolar_cart_user-alpha'])[0].listing.id).toBe('list-99')
+    expect(mockStore['ecoscolar_cart']).toBeDefined()
+    expect(JSON.parse(mockStore['ecoscolar_cart'])[0].listing.id).toBe('list-99')
 
-    // Switch to another user
-    usersStore.user = mockUser('user-beta')
-    const cartStoreB = useCartStore()
-    cartStoreB.loadCart()
-    // Cart beta should be empty initially
-    expect(cartStoreB.items).toHaveLength(0)
-
-    // Add item for user-beta
-    cartStoreB.addToCart(buildListing('list-100', 50))
-    expect(mockStore['ecoscolar_cart_user-beta']).toBeDefined()
-
-    // Switch back to user-alpha
-    usersStore.user = mockUser('user-alpha')
-    cartStoreA.loadCart()
-    expect(cartStoreA.items).toHaveLength(1)
-    expect(cartStoreA.items[0].listing.id).toBe('list-99')
+    // Reloading cart should restore items
+    cartStore.items = []
+    expect(cartStore.items).toHaveLength(0)
+    cartStore.loadCart(true)
+    expect(cartStore.items).toHaveLength(1)
+    expect(cartStore.items[0].listing.id).toBe('list-99')
   })
 })

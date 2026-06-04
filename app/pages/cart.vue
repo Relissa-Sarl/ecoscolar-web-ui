@@ -12,9 +12,6 @@ const { t } = useI18n()
  * Define the page metadata to specify that this page should only
  * be accessible to guests (unauthenticated users) by using the 'guest' middleware.
  */
-definePageMeta({
-  middleware: 'auth'
-})
 
 useSeoMeta({
   title: () => t('cart.seo_title')
