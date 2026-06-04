@@ -335,7 +335,16 @@
     "contact_support": "Support kontaktieren",
     "home": "Startseite",
     "favorites": "Favoriten",
-    "breadcrumb_label": "Brotkrümel-Navigation"
+    "breadcrumb_label": "Brotkrümel-Navigation",
+    "messages": {
+      "error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    },
+    "deletePopup": {
+      "title": "Löschung bestätigen",
+      "message": "Sind Sie sicher, dass Sie dieses Element löschen möchten? Diese Aktion ist unwiderruflich.",
+      "cancel": "Abbrechen",
+      "confirm": "Löschen"
+    }
   },
   "error": {
     "not_found": {
@@ -494,6 +503,7 @@
     "favorites": "Favoriten",
     "sales": "Verkäufe",
     "edit": "Profil bearbeiten",
+    "delete": "Konto löschen",
     "settings" : {
       "title": "Mein Profil bearbeiten",
       "subtitle": "Aktualisieren Sie Ihre persönlichen Informationen für eine personalisierte Erfahrung.",
@@ -511,6 +521,9 @@
       "language_placeholder": "Sprache auswählen",
       "level_placeholder": "Niveau auswählen",
       "pc_placeholder": "z.B. 1000"
-    }
+    },
+    "public": {
+      "error": "Es ist derzeit nicht möglich, das Benutzerprofil zu laden. Es könnte sein, dass der Benutzer sein Profil nicht öffentlich gemacht hat oder dass das Profil gelöscht wurde."
+     }
   }
 }

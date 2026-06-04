@@ -139,9 +139,7 @@
         "sold": "Vendu"
       },
       "deleteConfirmTitle": "Etes-vous sûr de vouloir supprimer cette annonce ?",
-      "deleteConfirmMessage": "Cette action est irréversible. L'annonce sera définitivement supprimée de la plateforme.",
-      "cancel": "Annuler",
-      "confirm": "Supprimer"
+      "deleteConfirmMessage": "Cette action est irréversible. L'annonce sera définitivement supprimée de la plateforme."
     }
   },
   "advertForm": {
@@ -334,7 +332,17 @@
     "contact_support": "Contactez le support",
     "home": "Accueil",
     "favorites": "Favoris",
-    "breadcrumb_label": "Fil d'Ariane"
+    "breadcrumb_label": "Fil d'Ariane",
+    "messages": {
+      "error": "Une erreur est survenue. Veuillez réessayer."
+    },
+    "deletePopup": {
+      "title": "Confirmer la suppression",
+      "message": "Êtes-vous sûr de vouloir supprimer cet élément ? Cette action est irréversible.",
+      "cancel": "Annuler",
+      "confirm": "Supprimer"
+    }
+
   },
   "error": {
     "not_found": {
@@ -493,6 +501,12 @@
     "favorites": "Favoris",
     "sales": "Ventes",
     "edit": "Modifier le profil",
+    "delete": "Supprimer le compte",
+    "deletePopup": {
+      "title": "Confirmer la suppression du compte",
+      "message": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et entraînera la perte de toutes vos données.",
+      "confirm": "Supprimer mon compte"
+    },
     "settings" : {
       "title": "Modifier mon profil",
       "subtitle": "Mettez à jour vos informations personnelles pour une expérience personnalisée.",
@@ -510,6 +524,9 @@
         "language_placeholder": "Choisir une langue",
         "level_placeholder": "Choisir un niveau",
         "pc_placeholder": "Ex: 1000"
+    },
+    "public": {
+      "error": "Il est actuellement impossible de charger le profil utilisateur. Il se peut que l'utilisateur ne soit pas en public ou que le profil ait été supprimé."
     }
   }
 }

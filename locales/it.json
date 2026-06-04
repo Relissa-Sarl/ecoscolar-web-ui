@@ -334,7 +334,16 @@
     "contact_support": "Contatta il supporto",
     "home": "Home",
     "favorites": "Preferiti",
-    "breadcrumb_label": "Percorso di navigazione"
+    "breadcrumb_label": "Percorso di navigazione",
+    "messages": {
+      "error": "Si è verificato un errore. Riprova."
+    },
+    "deletePopup": {
+      "title": "Conferma eliminazione",
+      "message": "Sei sicuro di voler eliminare questo elemento? Questa azione è irreversibile.",
+      "cancel": "Annulla",
+      "confirm": "Elimina"
+    }
   },
   "error": {
     "not_found": {
@@ -493,6 +502,7 @@
     "favorites": "Preferiti",
     "sales": "Vendite",
     "edit": "Modifica profilo",
+    "delete": "Elimina account",
     "settings" : {
       "title": "Modifica il mio profilo",
       "subtitle": "Aggiorna le tue informazioni personali per un'esperienza personalizzata.",
@@ -510,6 +520,9 @@
       "language_placeholder": "Scegli una lingua",
       "level_placeholder": "Scegli un livello",
       "pc_placeholder": "Es: 1000"
+    },
+    "public": {
+      "error": "Attualmente non è possibile caricare il profilo utente. L'utente potrebbe non aver impostato il profilo come pubblico o il profilo potrebbe essere stato rimosso."
     }
   }
 }

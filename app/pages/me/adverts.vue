@@ -183,6 +183,8 @@ onMounted(async () => {
           <!-- Delete Confirmation Modal -->
           <DeleteConfirmationPopup
             :show="showDeleteConfirm"
+            :title="$t('me.adverts.deleteConfirmTitle')"
+            :message="$t('me.adverts.deleteConfirmMessage')"
             @confirm-delete="confirmDelete"
             @cancel-delete="cancelDelete"
           />
