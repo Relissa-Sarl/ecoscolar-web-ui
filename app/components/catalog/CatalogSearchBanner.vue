@@ -14,7 +14,6 @@ const headingId = useId()
 const submit = () => {
   emit('search')
 }
-
 </script>
 
 <template>
