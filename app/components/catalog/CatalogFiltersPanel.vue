@@ -24,7 +24,8 @@ defineEmits<{
       </p>
     </header>
 
-    <fieldset class="space-y-3" role="radiogroup">
+    <fieldset class="space-y-3"
+      role="radiogroup">
       <legend class="sr-only">
         {{ $t('catalog.filters.category_legend') }}
       </legend>
