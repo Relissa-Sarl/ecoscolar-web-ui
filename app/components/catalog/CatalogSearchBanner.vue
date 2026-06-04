@@ -15,7 +15,6 @@ const submit = () => {
   emit('search')
 }
 
-const handleKeyEnter = () => submit()
 </script>
 
 <template>
