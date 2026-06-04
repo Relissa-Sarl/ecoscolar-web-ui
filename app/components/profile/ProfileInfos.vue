@@ -52,7 +52,7 @@ const displayName = computed(() => {
       class="w-full flex flex-col gap-3 mb-5 text-sm"
     >
       <LanguagesComponent
-        :spoken-languages="(props.user as User)?.spokenLanguages ?? []"
+        :spoken-languages="(props.user as User)?.languages ?? []"
       />
       <LocationComponent
         :location="(props.user as User)?.location ?? null"

@@ -17,7 +17,7 @@ const props = defineProps<{
 const languagesDisplay = computed(() => {
   const langs = props.spokenLanguages ?? []
   return langs
-    .map((l: SpokenLanguage) => t(l.language.toLowerCase()))
+    .map((l: SpokenLanguage) => t(l.label.toLowerCase()))
     .filter(Boolean)
     .join(', ')
 })

@@ -11,12 +11,13 @@ export interface User extends PublicUser {
   birthdayDate: string
   isOnboarded: boolean
   location: UserLocation
-  spokenLanguages: SpokenLanguage[]
+  languages: SpokenLanguage[]
+  roles: string[]
 }
 
 export interface SpokenLanguage {
-  language: string
-  level: string
+  label: string
+  languageLevel: string
 }
 
 export interface UserLocation {
@@ -31,5 +32,5 @@ export interface UpdateProfileInput {
   lastName: string
   postalCode: string
   birthdayDate: string
-  spokenLanguages: SpokenLanguage[]
+  languages: SpokenLanguage[]
 }

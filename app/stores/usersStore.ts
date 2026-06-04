@@ -20,6 +20,8 @@ export const useUsersStore = defineStore('users', () => {
 
   const isAuthenticated = computed(() => !!user.value)
 
+  const isAdmin = computed(() => !!user.value?.roles.some(role => role === 'Admin'))
+
   const localePath = useLocalePath()
 
   /**
@@ -147,6 +149,7 @@ export const useUsersStore = defineStore('users', () => {
     hasLoaded,
     errors,
     isAuthenticated,
+    isAdmin,
     fetchProfile,
     register,
     login,
