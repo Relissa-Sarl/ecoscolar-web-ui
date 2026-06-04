@@ -402,6 +402,9 @@
     "home": "Home",
     "favorites": "Preferiti",
     "breadcrumb_label": "Percorso di navigazione",
+    "messages": {
+      "error": "Si è verificato un errore. Riprova."
+    },
     "deletePopup": {
       "title": "Conferma eliminazione",
       "message": "Sei sicuro di voler eliminare questo elemento? Questa azione è irreversibile.",

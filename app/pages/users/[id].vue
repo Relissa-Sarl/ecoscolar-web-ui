@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ErrorMessage from '~/components/common/messages/ErrorMessage.vue'
 import { getUserService } from '~/services/usersService'
 import type { PublicUser } from '~/types/user'
 
@@ -31,12 +32,10 @@ const displayError = computed(() => {
 
 <template>
   <div>
-    <div
+    <ErrorMessage
       v-if="displayError"
-      class="w-full max-w-2xl mx-auto mt-8 px-4 text-center text-red-500"
-    >
-      {{ displayError }}
-    </div>
+      :message="displayError"
+    />
 
     <ProfileInfos
       v-else

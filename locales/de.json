@@ -402,6 +402,9 @@
     "home": "Startseite",
     "favorites": "Favoriten",
     "breadcrumb_label": "Brotkrümel-Navigation",
+    "messages": {
+      "error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    },
     "deletePopup": {
       "title": "Löschung bestätigen",
       "message": "Sind Sie sicher, dass Sie dieses Element löschen möchten? Diese Aktion ist unwiderruflich.",

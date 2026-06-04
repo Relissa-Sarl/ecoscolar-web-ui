@@ -400,6 +400,9 @@
     "home": "Accueil",
     "favorites": "Favoris",
     "breadcrumb_label": "Fil d'Ariane",
+    "messages": {
+      "error": "Une erreur est survenue. Veuillez réessayer."
+    },
     "deletePopup": {
       "title": "Confirmer la suppression",
       "message": "Êtes-vous sûr de vouloir supprimer cet élément ? Cette action est irréversible.",
