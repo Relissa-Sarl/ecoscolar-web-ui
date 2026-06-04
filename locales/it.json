@@ -391,7 +391,8 @@
     "logout": "Esci",
     "profile": "Profilo",
     "favorites": "Preferiti",
-    "search_alerts": "Avvisi"
+    "search_alerts": "Avvisi",
+    "support_requests": "Le mie richieste"
   },
   "common": {
     "back_to_home": "Torna alla home",
@@ -452,7 +453,8 @@
       "ticket_label": "Richiesta #{id}",
       "status": {
         "loading": "Caricamento delle richieste…",
-        "error": "Impossibile caricare le richieste al momento."
+        "error": "Impossibile caricare le richieste al momento.",
+        "retry": "Riprova"
       },
       "empty": {
         "title": "Nessuna richiesta per ora",
@@ -460,8 +462,21 @@
       },
       "actions": {
         "new_request": "Nuova richiesta",
-        "contact": "Contatta il supporto"
+        "contact": "Contatta il supporto",
+        "open": "Vedi richiesta"
       }
+    },
+    "detail": {
+      "title": "Dettaglio richiesta",
+      "you": "Tu",
+      "support_team": "Team EcoScolar",
+      "reply_label": "Il tuo messaggio",
+      "reply_placeholder": "Scrivi la tua risposta al supporto…",
+      "send": "Invia",
+      "sending": "Invio…",
+      "not_found": "Questa richiesta non è stata trovata o non hai accesso.",
+      "back_to_list": "Torna alle mie richieste",
+      "conversation_unavailable": "Presto potrai scambiare qui direttamente con il nostro team. La tua richiesta è stata registrata: trovi il tuo messaggio qui sotto."
     }
   },
   "privacy": {
@@ -579,6 +594,7 @@
     "location": "Localizzazione",
     "favorites": "Preferiti",
     "sales": "Vendite",
+    "support_requests": "Le mie richieste",
     "edit": "Modifica profilo",
     "settings" : {
       "title": "Modifica il mio profilo",

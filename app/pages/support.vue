@@ -3,6 +3,9 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const usersStore = useUsersStore()
 
+// Recharge le profil (cookies) pour afficher « Mes demandes » si session active
+await usersStore.fetchProfile().catch(() => undefined)
+
 const breadcrumbItems = computed(() => [
   { label: t('common.home'), to: localePath('/') },
   { label: t('support.title') }
@@ -29,7 +32,7 @@ const breadcrumbItems = computed(() => [
         <NuxtLink
           v-if="usersStore.isAuthenticated"
           :to="localePath('/me/support-requests')"
-          class="inline-flex shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
+          class="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-900 transition hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800 sm:self-center"
         >
           {{ $t('support.actions.view_requests') }}
         </NuxtLink>

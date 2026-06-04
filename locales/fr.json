@@ -391,7 +391,8 @@
     "logout": "Déconnexion",
     "profile": "Profil",
     "favorites": "Favoris",
-    "search_alerts": "Alertes"
+    "search_alerts": "Alertes",
+    "support_requests": "Mes demandes"
   },
   "common": {
     "back_to_home": "Retour à l'accueil",
@@ -452,7 +453,8 @@
       "ticket_label": "Demande #{id}",
       "status": {
         "loading": "Chargement de vos demandes…",
-        "error": "Impossible de charger vos demandes pour le moment."
+        "error": "Impossible de charger vos demandes pour le moment.",
+        "retry": "Réessayer"
       },
       "empty": {
         "title": "Aucune demande pour le moment",
@@ -460,8 +462,21 @@
       },
       "actions": {
         "new_request": "Nouvelle demande",
-        "contact": "Contacter le support"
+        "contact": "Contacter le support",
+        "open": "Voir la demande"
       }
+    },
+    "detail": {
+      "title": "Détail de la demande",
+      "you": "Vous",
+      "support_team": "Équipe EcoScolar",
+      "reply_label": "Votre message",
+      "reply_placeholder": "Écrivez votre réponse au support…",
+      "send": "Envoyer",
+      "sending": "Envoi…",
+      "not_found": "Cette demande est introuvable ou vous n'y avez pas accès.",
+      "back_to_list": "Retour à mes demandes",
+      "conversation_unavailable": "Bientôt, vous pourrez échanger ici directement avec notre équipe. Votre demande est bien enregistrée : retrouvez votre message juste en dessous."
     }
   },
   "privacy": {
@@ -579,6 +594,7 @@
     "location": "Localisation",
     "favorites": "Favoris",
     "sales": "Ventes",
+    "support_requests": "Mes demandes",
     "edit": "Modifier le profil",
     "settings" : {
       "title": "Modifier mon profil",

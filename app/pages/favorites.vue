@@ -20,7 +20,7 @@ const handleToggleFavorite = async (advertId: string) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-50 dark:bg-slate-950">
+  <div class="min-h-screen bg-white dark:bg-gray-950">
     <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div class="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import type { SupportTicket } from '../../app/types/support'
+import type { SupportTicketSummary } from '../../app/types/support'
 import { createSupportService } from '../../app/services/supportService'
 import { useSupportTicketsStore } from '../../app/stores/supportTicketsStore'
 
@@ -17,11 +17,10 @@ vi.mock('../../app/services/supportService', async (importOriginal) => {
   }
 })
 
-const buildTicket = (id: number, subject = 'Suivi de commande'): SupportTicket => ({
+const buildTicket = (id: number, subject = 'Suivi de commande'): SupportTicketSummary => ({
   id,
   email: 'user@example.com',
   subject,
-  message: 'Ma commande EDU-123 n\'est pas arrivée.',
   createdAt: '2026-06-04T10:00:00.000Z'
 })
 

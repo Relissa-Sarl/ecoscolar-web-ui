@@ -1,7 +1,9 @@
 import type {
   SupportContactRequest,
   SupportContactResponse,
-  SupportTicket
+  SupportTicketDetail,
+  SupportTicketMessage,
+  SupportTicketSummary
 } from '../types/support'
 import { useApi } from '../composables/useApi'
 
@@ -12,7 +14,10 @@ const SUPPORT_MINE_PATH = '/support/mine'
 
 export interface SupportService {
   submitContact: (input: SupportContactRequest) => Promise<SupportContactResponse>
-  listMyTickets: () => Promise<SupportTicket[]>
+  listMyTickets: () => Promise<SupportTicketSummary[]>
+  getMyTicket: (id: number) => Promise<SupportTicketDetail>
+  listTicketMessages: (id: number) => Promise<SupportTicketMessage[]>
+  sendTicketMessage: (id: number, message: string) => Promise<SupportTicketMessage>
 }
 
 export function createSupportService({ apiClient }: { apiClient: ApiClient }): SupportService {
@@ -23,7 +28,15 @@ export function createSupportService({ apiClient }: { apiClient: ApiClient }): S
         body: input,
         skipAuth: true
       }),
-    listMyTickets: () => apiClient<SupportTicket[]>(SUPPORT_MINE_PATH)
+    listMyTickets: () => apiClient<SupportTicketSummary[]>(SUPPORT_MINE_PATH),
+    getMyTicket: (id) => apiClient<SupportTicketDetail>(`${SUPPORT_MINE_PATH}/${id}`),
+    listTicketMessages: (id) =>
+      apiClient<SupportTicketMessage[]>(`${SUPPORT_MINE_PATH}/${id}/messages`),
+    sendTicketMessage: (id, message) =>
+      apiClient<SupportTicketMessage>(`${SUPPORT_MINE_PATH}/${id}/messages`, {
+        method: 'POST',
+        body: { message }
+      })
   }
 }
 

@@ -1,11 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import type { SupportTicket } from '../../app/types/support'
+import type { SupportTicketSummary } from '../../app/types/support'
 import { useSupportTicketsStore } from '../../app/stores/supportTicketsStore'
 
 const serviceMocks = vi.hoisted(() => ({
   submitContact: vi.fn(),
-  listMyTickets: vi.fn()
+  listMyTickets: vi.fn(),
+  getMyTicket: vi.fn(),
+  listTicketMessages: vi.fn(),
+  sendTicketMessage: vi.fn()
 }))
 
 const { getSupportServiceMock } = vi.hoisted(() => ({
@@ -16,11 +19,10 @@ vi.mock('../../app/services/supportService', () => ({
   getSupportService: getSupportServiceMock
 }))
 
-const buildTicket = (id: number): SupportTicket => ({
+const buildTicket = (id: number): SupportTicketSummary => ({
   id,
   email: 'user@example.com',
   subject: 'Suivi de commande',
-  message: 'Ma commande EDU-123 n\'est pas arrivée.',
   createdAt: '2026-06-04T10:00:00.000Z'
 })
 

@@ -391,7 +391,8 @@
     "logout": "Abmelden",
     "profile": "Profil",
     "favorites": "Favoriten",
-    "search_alerts": "Suchalarme"
+    "search_alerts": "Suchalarme",
+    "support_requests": "Meine Anfragen"
   },
   "common": {
     "back_to_home": "Zurück zur Startseite",
@@ -452,7 +453,8 @@
       "ticket_label": "Anfrage #{id}",
       "status": {
         "loading": "Anfragen werden geladen…",
-        "error": "Anfragen können derzeit nicht geladen werden."
+        "error": "Anfragen können derzeit nicht geladen werden.",
+        "retry": "Erneut versuchen"
       },
       "empty": {
         "title": "Noch keine Anfragen",
@@ -460,8 +462,21 @@
       },
       "actions": {
         "new_request": "Neue Anfrage",
-        "contact": "Support kontaktieren"
+        "contact": "Support kontaktieren",
+        "open": "Anfrage ansehen"
       }
+    },
+    "detail": {
+      "title": "Anfragedetails",
+      "you": "Sie",
+      "support_team": "EcoScolar Support",
+      "reply_label": "Ihre Nachricht",
+      "reply_placeholder": "Schreiben Sie Ihre Antwort an den Support…",
+      "send": "Senden",
+      "sending": "Wird gesendet…",
+      "not_found": "Diese Anfrage wurde nicht gefunden oder Sie haben keinen Zugriff.",
+      "back_to_list": "Zurück zu meinen Anfragen",
+      "conversation_unavailable": "Bald können Sie hier direkt mit unserem Team chatten. Ihre Anfrage ist bei uns eingegangen. Ihre Nachricht finden Sie unten."
     }
   },
   "privacy": {
@@ -579,6 +594,7 @@
     "location": "Standort",
     "favorites": "Favoriten",
     "sales": "Verkäufe",
+    "support_requests": "Meine Anfragen",
     "edit": "Profil bearbeiten",
     "settings" : {
       "title": "Mein Profil bearbeiten",
