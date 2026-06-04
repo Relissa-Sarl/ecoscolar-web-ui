@@ -1,4 +1,4 @@
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { CatalogListing } from '../types/catalog'
 
@@ -57,7 +57,7 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   // Load the cart from localStorage on client side
-  if (process.client) {
+  if (import.meta.client) {
     void loadCart()
   }
 
