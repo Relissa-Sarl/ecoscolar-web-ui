@@ -92,17 +92,19 @@ export interface ModifyAdvertForm {
 
   subjectId: number | null
   schoolGradeId: number | null
-  teachingLanguage: AdvertLanguage | null
+  teachingLanguage: string | null
   studyLevel: string | null
 
   condition: AdvertCondition | null
+  weight: number | null
+  productCategoryId: number | null
 
   author: string | null
   publisher: string | null
   edition: string | null
   isbn: string | null
   bookCategoryId: number | null
-  writtenLanguage: AdvertLanguage | null
+  writtenLanguage: string | null
 }
 
 /** GET /api/v1/adverts/books/{id} */
