@@ -437,12 +437,32 @@
     "actions": {
       "submit": "Nachricht senden",
       "cancel": "Abbrechen",
+      "view_requests": "Meine Anfragen",
       "confirm_cancel": "Möchten Sie wirklich abbrechen? Ihre Änderungen gehen verloren.",
       "confirm_cancel_title": "Änderungen abbrechen",
       "confirm_cancel_confirm": "Verlassen",
       "confirm_cancel_stay": "Bleiben"
     },
-    "success": "Vielen Dank! Ihre Nachricht wurde gesendet."
+    "success": "Vielen Dank! Ihre Nachricht wurde gesendet.",
+    "error_submit": "Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
+    "list": {
+      "subtitle": "Support",
+      "title": "Meine Support-Anfragen",
+      "description": "Hier finden Sie den Verlauf Ihrer Nachrichten an das EcoScolar-Team.",
+      "ticket_label": "Anfrage #{id}",
+      "status": {
+        "loading": "Anfragen werden geladen…",
+        "error": "Anfragen können derzeit nicht geladen werden."
+      },
+      "empty": {
+        "title": "Noch keine Anfragen",
+        "message": "Sie haben den Support noch nicht kontaktiert. Nutzen Sie das Formular, um uns zu schreiben."
+      },
+      "actions": {
+        "new_request": "Neue Anfrage",
+        "contact": "Support kontaktieren"
+      }
+    }
   },
   "privacy": {
     "title": "Datenschutzerklärung",

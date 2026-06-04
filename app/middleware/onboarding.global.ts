@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware((to) => {
   const localePath = useLocalePath()
 
   const protectedPath = '/register/step-2'
-  const allowedRoutes = ['/', '/register/step-2', '/support', '/terms', '/privacy']
+  const allowedRoutes = ['/', '/register/step-2', '/support', '/me/support-requests', '/terms', '/privacy']
   const normalizedPath = to.path.replace(/^\/(it|de)(?=\/|$)/, '') || '/'
 
   if (normalizedPath === protectedPath) {

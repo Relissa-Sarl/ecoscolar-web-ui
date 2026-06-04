@@ -437,12 +437,32 @@
     "actions": {
       "submit": "Invia il messaggio",
       "cancel": "Annulla",
+      "view_requests": "Le mie richieste",
       "confirm_cancel": "Sei sicuro di voler annullare? Le tue modifiche andranno perse.",
       "confirm_cancel_title": "Annulla le modifiche",
       "confirm_cancel_confirm": "Esci",
       "confirm_cancel_stay": "Resta"
     },
-    "success": "Grazie! Il tuo messaggio è stato inviato."
+    "success": "Grazie! Il tuo messaggio è stato inviato.",
+    "error_submit": "Impossibile inviare il messaggio. Riprova più tardi.",
+    "list": {
+      "subtitle": "Supporto",
+      "title": "Le mie richieste di supporto",
+      "description": "Qui trovi lo storico dei messaggi inviati al team EcoScolar.",
+      "ticket_label": "Richiesta #{id}",
+      "status": {
+        "loading": "Caricamento delle richieste…",
+        "error": "Impossibile caricare le richieste al momento."
+      },
+      "empty": {
+        "title": "Nessuna richiesta per ora",
+        "message": "Non hai ancora contattato il supporto. Usa il modulo per scriverci."
+      },
+      "actions": {
+        "new_request": "Nuova richiesta",
+        "contact": "Contatta il supporto"
+      }
+    }
   },
   "privacy": {
     "title": "Informativa sulla privacy",
