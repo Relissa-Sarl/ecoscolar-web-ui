@@ -46,7 +46,7 @@ const localePath = useLocalePath()
             {{ $t('home.sell_text') }}
           </p>
           <NuxtLink
-            :to="localePath('/sell')"
+            :to="localePath('/adverts/create-advert')"
             class="mt-6 inline-flex items-center gap-2 font-bold text-emerald-400 underline decoration-2 underline-offset-4 hover:no-underline focus:outline-none"
           >
             {{ $t('home.sell_cta') }} <span aria-hidden="true">→</span>
