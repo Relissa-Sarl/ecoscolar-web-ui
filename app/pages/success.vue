@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useI18n, useLocalePath, useSeoMeta } from '#imports'
+import { useI18n, useSeoMeta } from '#imports'
 import { useCartStore } from '~/stores/cartStore'
 import SuccessIcon from '~/components/success/SuccessIcon.vue'
 import SuccessMainMessage from '~/components/success/SuccessMainMessage.vue'
@@ -9,7 +9,6 @@ import SuccessInfos from '~/components/success/SuccessInfos.vue'
 import SuccessButton from '~/components/success/SuccessButton.vue'
 
 const { t } = useI18n()
-const localePath = useLocalePath()
 const route = useRoute()
 const cartStore = useCartStore()
 
@@ -47,7 +46,6 @@ onMounted(async () => {
 <template>
   <div class="py-16 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300 flex items-center justify-center">
     <div class="max-w-md w-full text-center space-y-8">
-      
       <!-- Success Icon Animation -->
       <SuccessIcon />
 
@@ -56,11 +54,14 @@ onMounted(async () => {
 
       <!-- Success Paiment Informations -->
       <div class="p-6 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-white/75 dark:bg-slate-900/70 backdrop-blur-md shadow-sm space-y-4 text-left">
-        <SuccessInfos :totalAmount="totalAmount" :orderId="orderId" />
+        <SuccessInfos
+          :total-amount="totalAmount"
+          :order-id="orderId"
+        />
       </div>
-      
-        <!-- Action Buttons -->
-        <SuccessButton />
+
+      <!-- Action Buttons -->
+      <SuccessButton />
     </div>
   </div>
 </template>
