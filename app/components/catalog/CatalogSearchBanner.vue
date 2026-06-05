@@ -72,6 +72,7 @@ const submit = () => {
           :placeholder="$t('catalog.hero.search_placeholder')"
           :aria-labelledby="headingId"
           autocomplete="off"
+          @keydown.enter.prevent="submit"
         >
       </div>
       <button
