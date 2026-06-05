@@ -1,57 +1,33 @@
 // app/composables/useHistory.ts
-import { useApi } from './useApi'
+import { getHistoryService } from '~/services/historyService'
+import type { Purchase, MySaleAdvert } from '~/services/historyService'
 
-// 1. Les interfaces exactes fournies par le back-end
+export type { Purchase, MySaleAdvert }
 
-export interface Purchase {
-  id: string
-  advertId: string
-  advertTitle: string
-  price: number
-  purchaseDate: string
-  status: string
-  imageUrl?: string | null
-  sellerName: string
-}
-
-export interface MySaleAdvert {
-  id: number
-  type: string
-  title: string
-  price: number
-  publicationDate: string
-  notificationDate: string
-  status: number // 0 = ACTIVE, 1 = INACTIVE, 2 = SOLD
-  userId: string
-  sellerPseudo: string
-  primaryImage?: string | null
-  buyerName?: string | null
-}
-
-// 2. Le composable
+// Composable to manage user purchase and sales history
 export const useHistory = () => {
+  const service = getHistoryService()
 
-  // Fonction pour récupérer les achats
+  /**
+   * Fetches the purchase history.
+   */
   const getPurchases = async (): Promise<Purchase[]> => {
     try {
-      // On utilise useApi pour appeler la vraie route back-end
-      const data = await useApi<Purchase[]>('/me/purchases', { skipAuth: true })
-      // L'API renvoie les mocks directement, on les retourne
-      return data || []
+      return await service.getPurchaseHistory()
     } catch (error) {
-      console.error('Erreur lors de la récupération des achats :', error)
+      console.error('Error retrieving purchase history:', error)
       return []
     }
   }
 
-  // Fonction pour récupérer les ventes/annonces
+  /**
+   * Fetches the sales history.
+   */
   const getSales = async (): Promise<MySaleAdvert[]> => {
     try {
-      // On utilise useApi pour appeler la vraie route back-end
-      const data = await useApi<MySaleAdvert[]>('/me/sales')
-      return data || []
+      return await service.getSalesHistory()
     } catch (error) {
-      console.error('Erreur lors de la récupération des ventes :', error)
+      console.error('Error retrieving sales history:', error)
       return []
     }
   }

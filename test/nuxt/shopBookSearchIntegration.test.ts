@@ -9,24 +9,13 @@ const globalOptions = {
 }
 
 describe('T8-4 · intégration UI recherche livre (CatalogSearchBanner)', () => {
-  it('émet search quand l’utilisateur clique Rechercher', async () => {
+  it('émet l\'événement "search" lors de la soumission du formulaire', async () => {
     const wrapper = mount(CatalogSearchBanner, {
-      props: { modelValue: '978-3-16-148410-0', loading: false },
+      props: { modelValue: 'Exemple de recherche', loading: false },
       global: globalOptions
     })
 
-    await wrapper.get('button').trigger('click')
-
-    expect(wrapper.emitted('search')).toHaveLength(1)
-  })
-
-  it('émet search quand l’utilisateur appuie sur Entrée', async () => {
-    const wrapper = mount(CatalogSearchBanner, {
-      props: { modelValue: 'Exemple annonce 3', loading: false },
-      global: globalOptions
-    })
-
-    await wrapper.get('input[type="search"]').trigger('keydown.enter')
+    await wrapper.get('form[role="search"]').trigger('submit')
 
     expect(wrapper.emitted('search')).toHaveLength(1)
   })

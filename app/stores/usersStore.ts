@@ -135,6 +135,23 @@ export const useUsersStore = defineStore('users', () => {
   }
 
   /**
+   * Delete the current user's account by calling the UserService's deleteAccount method, and log out the user upon successful account deletion.
+   */
+  const deleteAccount = async () => {
+    isLoading.value = true
+    errors.value = null
+
+    try {
+      await service.deleteAccount()
+      await logout()
+    } catch (e) {
+      errors.value = formatErrors(e as ApiError)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  /**
    * Format the errors returned from the API into a user-friendly array of error messages.
    */
   const clearErrors = () => {
@@ -152,6 +169,7 @@ export const useUsersStore = defineStore('users', () => {
     login,
     logout,
     updateProfile,
+    deleteAccount,
     clearErrors
   }
 })

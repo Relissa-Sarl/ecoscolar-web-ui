@@ -1,8 +1,8 @@
 import type { AdvertType } from '@/utils/enum/advertType'
 
-/** Réponse brute GET /api/v1/adverts/summary (Guid sérialisé en string). */
+/** Réponse brute GET /api/v1/adverts/summary (id = AdvertId). */
 export interface AdvertCatalogApiItem {
-  id: string
+  id: number
   title: string
   price: number
   type: AdvertType
@@ -63,6 +63,7 @@ export interface CatalogListing {
   id: string
   title: string
   price: number
+  type: AdvertType
   categoryTab: Exclude<CatalogCategoryTab, 'all'>
   /** Condition physique (fournitures / manuels uniquement). */
   itemCondition?: CatalogItemCondition

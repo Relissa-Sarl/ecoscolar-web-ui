@@ -1,8 +1,15 @@
 <script setup lang="ts">
+import type { SupportContactRequest } from '~/types/support'
+import { getSupportService } from '~/services/supportService'
+import { useSupportTicketsStore } from '~/stores/supportTicketsStore'
+
 const { t } = useI18n()
 const router = useRouter()
 const localePath = useLocalePath()
 const toast = useToast()
+const usersStore = useUsersStore()
+const supportTicketsStore = useSupportTicketsStore()
+const supportService = getSupportService()
 
 const form = ref({
   email: '',
@@ -11,14 +18,50 @@ const form = ref({
 })
 
 const isCancelModalOpen = ref(false)
+const isSubmitting = ref(false)
 
-const handleSubmit = () => {
-  // TODO: send support request to API
-  toast.add({
-    title: t('support.success'),
-    color: 'success'
-  })
-  router.push(localePath('/'))
+watch(
+  () => usersStore.user?.email,
+  (email) => {
+    if (email && !form.value.email)
+      form.value.email = email
+  },
+  { immediate: true }
+)
+
+const reasonToSubject = (reason: string) => {
+  const key = `support.reasons.${reason}` as const
+  const translated = t(key)
+  return translated !== key ? translated : reason
+}
+
+const handleSubmit = async () => {
+  if (isSubmitting.value) return
+  isSubmitting.value = true
+  try {
+    const body: SupportContactRequest = {
+      email: form.value.email.trim(),
+      subject: reasonToSubject(form.value.reason),
+      message: form.value.message.trim()
+    }
+    await supportService.submitContact(body)
+    supportTicketsStore.clearTickets()
+    toast.add({
+      title: t('support.success'),
+      color: 'success'
+    })
+    if (usersStore.isAuthenticated)
+      await router.push(localePath('/me/support-requests'))
+    else
+      await router.push(localePath('/'))
+  } catch {
+    toast.add({
+      title: t('support.error_submit'),
+      color: 'error'
+    })
+  } finally {
+    isSubmitting.value = false
+  }
 }
 
 const handleCancel = () => {
@@ -119,7 +162,8 @@ const confirmCancel = () => {
     <div class="flex flex-col sm:flex-row gap-4 pt-4">
       <button
         type="submit"
-        class="flex-1 bg-emerald-800 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-lg transition-colors focus:ring-4 focus:ring-emerald-500/50 outline-none"
+        class="flex-1 bg-emerald-800 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-lg transition-colors focus:ring-4 focus:ring-emerald-500/50 outline-none disabled:cursor-not-allowed disabled:opacity-60"
+        :disabled="isSubmitting"
       >
         {{ $t('support.actions.submit') }}
       </button>

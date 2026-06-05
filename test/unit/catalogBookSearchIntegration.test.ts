@@ -5,17 +5,17 @@ import { AdvertType } from '../../app/utils/enum/advertType'
 
 /** Jeu de données aligné sur FakeAdvertSearchService / T8-4. */
 const CATALOG_FIXTURE = [
-  { id: '6d4b9d4a-1dd1-4a38-8d68-7af4d9cb3c01', title: 'Exemple annonce 1', price: 12.5, type: AdvertType.BOOK },
-  { id: '9a2d7d6e-8b4c-4d55-a901-2ec6f6c4d202', title: 'Exemple annonce 2', price: 7, type: AdvertType.BOOK },
+  { id: 1, title: 'Exemple annonce 1', price: 12.5, type: AdvertType.BOOK },
+  { id: 2, title: 'Exemple annonce 2', price: 7, type: AdvertType.BOOK },
   {
-    id: '3f8e5c9b-2a7e-4f1a-9c3d-5b6e7f8a9c03',
+    id: 3,
     title: 'Exemple annonce 3',
     price: 15,
     type: AdvertType.BOOK,
     isbn: '978-3-16-148410-0'
   },
   {
-    id: 'c4d8f2a1-6e9b-4c7d-a5f3-1e2d3c4b5a01',
+    id: 4,
     title: 'Calculatrice scientifique Casio',
     price: 42.99,
     type: AdvertType.PRODUCT

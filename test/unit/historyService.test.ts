@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createHistoryService } from '../../app/services/historyService'
 
-// 1. On crée une fausse donnée de base, comme vos collègues l'ont fait avec baseItem
 const baseHistoryItem = {
   id: 'item-1',
   date: '2026-05-21T00:00:00Z',
@@ -11,19 +10,16 @@ const baseHistoryItem = {
 
 describe('historyService', () => {
   beforeEach(() => {
-    vi.clearAllMocks() // Nettoie les compteurs des fausses fonctions avant chaque test
+    vi.clearAllMocks()
   })
 
   it('loads purchase history', async () => {
-    // 2. Préparation (Arrange) : On crée un faux client API qui va répondre avec notre fausse donnée
     const apiClient = vi.fn().mockResolvedValueOnce([baseHistoryItem])
     const service = createHistoryService({ apiClient })
 
-    // 3. Exécution (Act) : On appelle notre fonction
     const result = await service.getPurchaseHistory()
 
-    // 4. Vérification (Assert) : On vérifie que le faux client a été appelé avec la bonne URL
-    expect(apiClient).toHaveBeenCalledWith('/history/purchases')
+    expect(apiClient).toHaveBeenCalledWith('/me/purchases')
 
     expect(result).toEqual([baseHistoryItem])
   })
@@ -35,7 +31,7 @@ describe('historyService', () => {
 
     const result = await service.getSalesHistory()
 
-    expect(apiClient).toHaveBeenCalledWith('/history/sales')
+    expect(apiClient).toHaveBeenCalledWith('/me/sales')
     expect(result).toEqual([baseHistoryItem])
   })
 })

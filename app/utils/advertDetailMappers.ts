@@ -37,12 +37,13 @@ function formatConditionLabel(condition: string): string {
   return condition.replace(/_/g, ' ')
 }
 
-/** GET /v1/adverts/summary/{guid} — catalogue mock ou Guid non décodable en id DB. */
+/** GET /adverts/summary/{id} — résumé catalogue (mock ou BDD). */
 export function mapCatalogSummaryToAdvert(item: AdvertCatalogDetailApiItem): Advert {
-  const { image, images } = resolveImages(undefined, item.id, item.imageUrl)
+  const catalogId = String(item.id)
+  const { image, images } = resolveImages(undefined, catalogId, item.imageUrl)
 
   return {
-    id: item.id,
+    id: catalogId,
     type: item.type,
     title: item.title,
     authors: '',
@@ -72,11 +73,11 @@ export function mapCatalogSummaryToAdvert(item: AdvertCatalogDetailApiItem): Adv
 }
 
 /** GET /v1/adverts/books/{id} */
-export function mapBookToAdvert(item: BookReadApiItem, catalogGuid: string): Advert {
-  const { image, images } = resolveImages(item.pictures, catalogGuid)
+export function mapBookToAdvert(item: BookReadApiItem, catalogId: string): Advert {
+  const { image, images } = resolveImages(item.pictures, catalogId)
 
   return {
-    id: catalogGuid,
+    id: catalogId,
     type: AdvertType.BOOK,
     title: item.title,
     authors: item.author,
@@ -100,11 +101,11 @@ export function mapBookToAdvert(item: BookReadApiItem, catalogGuid: string): Adv
 }
 
 /** GET /v1/adverts/products/{id} */
-export function mapProductToAdvert(item: ProductReadApiItem, catalogGuid: string): Advert {
-  const { image, images } = resolveImages(item.pictures, catalogGuid)
+export function mapProductToAdvert(item: ProductReadApiItem, catalogId: string): Advert {
+  const { image, images } = resolveImages(item.pictures, catalogId)
 
   return {
-    id: catalogGuid,
+    id: catalogId,
     type: AdvertType.PRODUCT,
     title: item.title,
     authors: '',
@@ -128,11 +129,11 @@ export function mapProductToAdvert(item: ProductReadApiItem, catalogGuid: string
 }
 
 /** GET /v1/adverts/services/{id} — pas de condition (Swagger). */
-export function mapServiceToAdvert(item: ServiceReadApiItem, catalogGuid: string): Advert {
-  const { image, images } = resolveImages(undefined, catalogGuid)
+export function mapServiceToAdvert(item: ServiceReadApiItem, catalogId: string): Advert {
+  const { image, images } = resolveImages(undefined, catalogId)
 
   return {
-    id: catalogGuid,
+    id: catalogId,
     type: AdvertType.SERVICE,
     title: item.title,
     authors: '',
