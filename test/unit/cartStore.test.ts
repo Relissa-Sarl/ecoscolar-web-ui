@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { useUsersStore } from '../../app/stores/usersStore'
 import { useCartStore } from '../../app/stores/cartStore'
-import { getCartService } from '../../app/services/cartService'
 import type { CatalogListing } from '../../app/types/catalog'
 import type { User } from '../../app/types/user'
 
@@ -14,7 +13,8 @@ const localStorageMock = {
     mockStore[key] = String(value)
   },
   removeItem: (key: string) => {
-    delete mockStore[key]
+    const { [key]: _, ...rest } = mockStore
+    mockStore = rest
   },
   clear: () => {
     mockStore = {}

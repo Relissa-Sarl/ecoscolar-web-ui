@@ -38,15 +38,15 @@ export const useCartStore = defineStore('cart', () => {
 
   const mapCartItemToCatalogListing = (dto: CartItemDto): CatalogListing => {
     const isHourly = dto.type === AdvertType.SERVICE
-    const categoryTab =
-      dto.type === AdvertType.BOOK
+    const categoryTab
+      = dto.type === AdvertType.BOOK
         ? 'textbooks'
         : dto.type === AdvertType.PRODUCT
           ? 'supplies'
           : 'tutoring'
 
-    const metaLineKey =
-      dto.type === AdvertType.BOOK
+    const metaLineKey
+      = dto.type === AdvertType.BOOK
         ? 'catalog.card.meta_textbooks'
         : dto.type === AdvertType.PRODUCT
           ? 'catalog.card.meta_supplies'
@@ -94,7 +94,9 @@ export const useCartStore = defineStore('cart', () => {
                   }
                 }
               }
-            } catch {}
+            } catch {
+              // Ignore parsing errors for malformed local storage data
+            }
             // Clear the guest cart from localStorage
             localStorage.removeItem(cartKey.value)
           }
@@ -102,7 +104,7 @@ export const useCartStore = defineStore('cart', () => {
 
         // 2. Fetch the cart items from backend
         const apiItems = await cartService.getCartItems()
-        items.value = apiItems.map((dto) => ({
+        items.value = apiItems.map(dto => ({
           listing: mapCartItemToCatalogListing(dto),
           quantity: 1
         }))
@@ -142,7 +144,7 @@ export const useCartStore = defineStore('cart', () => {
   // Watch for auth changes to reload/sync or clear cart
   watch(
     () => usersStore.isAuthenticated,
-    async (isAuthenticated) => {
+    async () => {
       // Force reload on auth state change
       hasLoaded.value = false
       await loadCart(true)
