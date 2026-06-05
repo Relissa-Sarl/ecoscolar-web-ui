@@ -17,7 +17,6 @@ const form = ref({
   message: ''
 })
 
-const isCancelModalOpen = ref(false)
 const isSubmitting = ref(false)
 
 watch(
@@ -62,15 +61,6 @@ const handleSubmit = async () => {
   } finally {
     isSubmitting.value = false
   }
-}
-
-const handleCancel = () => {
-  isCancelModalOpen.value = true
-}
-
-const confirmCancel = () => {
-  isCancelModalOpen.value = false
-  router.push(localePath('/'))
 }
 </script>
 
@@ -159,43 +149,14 @@ const confirmCancel = () => {
       />
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+    <div class="pt-4">
       <button
         type="submit"
-        class="flex-1 bg-emerald-800 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-lg transition-colors focus:ring-4 focus:ring-emerald-500/50 outline-none disabled:cursor-not-allowed disabled:opacity-60"
+        class="w-full bg-emerald-800 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-lg transition-colors focus:ring-4 focus:ring-emerald-500/50 outline-none disabled:cursor-not-allowed disabled:opacity-60"
         :disabled="isSubmitting"
       >
         {{ $t('support.actions.submit') }}
       </button>
-      <button
-        type="button"
-        class="flex-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-slate-700 dark:text-slate-300 font-bold py-3 px-6 rounded-lg transition-colors focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-700 outline-none"
-        @click="handleCancel"
-      >
-        {{ $t('support.actions.cancel') }}
-      </button>
     </div>
   </form>
-
-  <UModal
-    v-model:open="isCancelModalOpen"
-    :title="$t('support.actions.confirm_cancel_title')"
-    :description="$t('support.actions.confirm_cancel')"
-  >
-    <template #footer>
-      <UButton
-        color="neutral"
-        variant="outline"
-        @click="isCancelModalOpen = false"
-      >
-        {{ $t('support.actions.confirm_cancel_stay') }}
-      </UButton>
-      <UButton
-        color="error"
-        @click="confirmCancel"
-      >
-        {{ $t('support.actions.confirm_cancel_confirm') }}
-      </UButton>
-    </template>
-  </UModal>
 </template>

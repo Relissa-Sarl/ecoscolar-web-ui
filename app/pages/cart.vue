@@ -1,20 +1,133 @@
 <script setup lang="ts">
-const localePath = useLocalePath()
+import { computed, onBeforeMount } from 'vue'
+import CartEmpty from '~/components/cart/CartEmpty.vue'
+import CartHeader from '~/components/cart/CartHeader.vue'
+import CartSummary from '~/components/cart/CartSummary.vue'
+import CartAdvertItems from '~/components/cart/CartAdvertItems.vue'
+import { useCartStore } from '~/stores/cartStore'
+
+const { t } = useI18n()
+
+/**
+ * Define the page metadata to specify that this page should only
+ * be accessible to guests (unauthenticated users) by using the 'guest' middleware.
+ */
+
+useSeoMeta({
+  title: () => t('cart.seo_title')
+})
+
+// Types
+interface CartItem {
+  id: number
+  title: string
+  category: 'book' | 'product' | 'service'
+  categoryLabel: string
+  price: number
+  quantity: number
+  author?: string
+  seller: string
+  imageUrl?: string
+}
+
+const cartStore = useCartStore()
+
+onBeforeMount(async () => {
+  await cartStore.loadCart()
+})
+
+const cartItems = computed<CartItem[]>(() => {
+  return cartStore.items.map(item => ({
+    id: Number(item.listing.id),
+    title: item.listing.title,
+    category: item.listing.categoryTab === 'textbooks' ? 'book' : (item.listing.categoryTab === 'supplies' ? 'product' : 'service'),
+    categoryLabel: item.listing.categoryTab === 'textbooks' ? 'Livre' : (item.listing.categoryTab === 'supplies' ? 'Fourniture' : 'Tutorat'),
+    price: item.listing.price,
+    quantity: item.quantity,
+    seller: item.listing.seller || 'Vendeur',
+    imageUrl: item.listing.imageUrl
+  }))
+})
+
+const removeItem = (id: number) => {
+  void cartStore.removeFromCart(String(id))
+}
+
+const clearCart = () => {
+  void cartStore.clearCart()
+}
+
+// Calculations
+const subtotal = computed(() => {
+  return cartItems.value.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+})
+
+const shippingCost = computed(() => 0)
+
+const total = computed(() => {
+  return subtotal.value + shippingCost.value
+})
+
+const itemsCount = computed(() => {
+  return cartItems.value.reduce((sum, item) => sum + item.quantity, 0)
+})
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto py-10">
-    <h1 class="text-3xl font-bold">
-      {{ $t('cart.title') }}
-    </h1>
-    <p class="mt-4 text-gray-600">
-      {{ $t('cart.empty') }}
-    </p>
-    <NuxtLink
-      :to="localePath('/')"
-      class="mt-6 inline-flex items-center gap-2 text-emerald-600 underline"
-    >
-      <span aria-hidden="true">←</span> {{ $t('common.back_to_home') }}
-    </NuxtLink>
+  <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <div class="max-w-6xl mx-auto">
+      <!-- Header -->
+      <CartHeader
+        :items-count="itemsCount"
+        :has-items="cartItems.length > 0"
+        @clear="clearCart"
+      />
+
+      <!-- Main Layout -->
+      <div
+        v-if="cartItems.length > 0"
+        class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in"
+      >
+        <!-- Left: Items list -->
+        <CartAdvertItems
+          :items="cartItems"
+          @remove="removeItem"
+        />
+
+        <!-- Right: Summary & Order breakdown -->
+        <CartSummary
+          :subtotal="subtotal"
+          :shipping-cost="shippingCost"
+          :total="total"
+        />
+      </div>
+
+      <!-- Empty State -->
+      <div
+        v-else
+        class="text-center py-20 px-4 rounded-3xl border border-dashed border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/30 backdrop-blur-sm max-w-2xl mx-auto shadow-sm animate-fade-in"
+      >
+        <CartEmpty />
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped>
+/* Transition lists */
+.cart-list-enter-active,
+.cart-list-leave-active {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cart-list-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.cart-list-leave-to {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+.cart-list-move {
+  transition: transform 0.4s ease;
+}
+</style>

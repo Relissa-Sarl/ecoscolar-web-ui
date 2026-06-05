@@ -68,6 +68,16 @@ const onSend = async (message: string) => {
         :items="breadcrumbItems"
       />
 
+      <div class="mb-8">
+        <NuxtLink
+          :to="localePath('/me/support-requests')"
+          class="group inline-flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-medium no-underline focus:ring-2 focus:ring-emerald-500 outline-none rounded"
+        >
+          <span aria-hidden="true">←</span>
+          <span class="border-b border-transparent pb-px group-hover:border-current">{{ $t('support.detail.back_to_list') }}</span>
+        </NuxtLink>
+      </div>
+
       <div
         v-if="supportTicketsStore.isLoading && !ticket"
         class="rounded-3xl border border-slate-200 bg-white p-8 text-center text-slate-600 dark:border-slate-800 dark:bg-slate-900"

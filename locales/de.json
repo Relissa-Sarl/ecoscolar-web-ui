@@ -42,8 +42,43 @@
     "impact_unit": "eingespart"
   },
   "cart": {
+    "seo_title": "Mein Warenkorb | EcoScolar",
     "title": "Mein Warenkorb",
-    "empty": "Ihr Warenkorb ist zur Zeit leer"
+    "remove_from_cart": "Aus dem Warenkorb entfernen",
+    "clear": "Warenkorb leeren",
+    "added_success": "Artikel zum Warenkorb hinzugefügt!",
+    "tva": "MwSt. und Gebühren inbegriffen",
+    "one_advert": "Artikel",
+    "many_adverts": "Artikel",
+    "items": {
+      "books": "Bücher",
+      "supplies": "Schulmaterial",
+      "tutoring": "Kurse",
+      "quantity": "Menge",
+      "vendor": "Verkäufer"
+    },
+    "checkout": {
+      "title": "Bestellübersicht",
+      "subtotal": "Zwischensumme",
+      "shipping": "Versandart",
+      "shipping_fee": "Versandkosten",
+      "service_fee": "Servicegebühr",
+      "free": "Kostenlos",
+      "total": "Gesamtsumme",
+      "confirm": "Zur Kasse gehen"
+    },
+    "text_under_resume": {
+      "circular_trade": " Kreislaufwirtschaft: ",
+      "circular_text": " Bevorzugen Sie lokales Second-Hand-Material und reduzieren Sie Ihren CO2-Fußabdruck.",
+      "payment_note": "Sichere Transaktionen:",
+      "payment_text": "Vollständiger Schutz der Zahlungsdaten über Stripe"
+    },
+    "empty": {
+      "title": "Ihr Warenkorb ist zurzeit leer",
+      "subtitle": "Stöbern Sie in den Anzeigen und finden Sie das passende Buch, Schulmaterial oder den passenden Kurs.",
+      "go_to_shop": "Shop durchsuchen",
+      "back_to_home": "Zurück zur Startseite"
+    }
   },
   "catalog": {
     "seo_title": "Katalog | EcoScolar",
@@ -86,8 +121,8 @@
     "sort": {
       "label": "Sortieren",
       "recent": "Neueste",
-      "price_asc": "Preis ↑",
-      "price_desc": "Preis ↓"
+      "price_asc": "Aufsteigend",
+      "price_desc": "Absteigend"
     },
     "empty": {
       "title": "Keine passenden Einträge.",
@@ -251,10 +286,10 @@
   },
   "advert": {
     "actions": {
-      "buy_now": "Jetzt kaufen",
+      "buy_now": "In den Warenkorb",
+      "already_in_cart": "Bereits im Warenkorb",
       "favorite_add": "Zu Favoriten hinzufügen",
-      "favorite_remove": "Aus Favoriten entfernen",
-      "notify": "Benachrichtige mich"
+      "favorite_remove": "Aus Favoriten entfernen"
     },
     "detail": {
       "featured": "Empfohlen",
@@ -388,12 +423,7 @@
     },
     "actions": {
       "submit": "Nachricht senden",
-      "cancel": "Abbrechen",
-      "view_requests": "Meine Anfragen",
-      "confirm_cancel": "Möchten Sie wirklich abbrechen? Ihre Änderungen gehen verloren.",
-      "confirm_cancel_title": "Änderungen abbrechen",
-      "confirm_cancel_confirm": "Verlassen",
-      "confirm_cancel_stay": "Bleiben"
+      "view_requests": "Meine Anfragen"
     },
     "success": "Vielen Dank! Ihre Nachricht wurde gesendet.",
     "error_submit": "Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
