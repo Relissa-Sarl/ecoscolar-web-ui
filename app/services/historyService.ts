@@ -25,7 +25,7 @@ export interface MySaleAdvert {
   userId: string
   sellerPseudo: string
   primaryImage?: string | null
-  buyerName?: string | null
+  buyerName: string
 }
 
 export interface HistoryServiceDependencies {
