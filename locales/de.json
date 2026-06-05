@@ -380,12 +380,7 @@
     },
     "actions": {
       "submit": "Nachricht senden",
-      "cancel": "Abbrechen",
-      "view_requests": "Meine Anfragen",
-      "confirm_cancel": "Möchten Sie wirklich abbrechen? Ihre Änderungen gehen verloren.",
-      "confirm_cancel_title": "Änderungen abbrechen",
-      "confirm_cancel_confirm": "Verlassen",
-      "confirm_cancel_stay": "Bleiben"
+      "view_requests": "Meine Anfragen"
     },
     "success": "Vielen Dank! Ihre Nachricht wurde gesendet.",
     "error_submit": "Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
