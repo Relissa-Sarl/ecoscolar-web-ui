@@ -123,11 +123,34 @@
   "me": {
     "purchases": {
       "title": "Meine Kaufhistorie",
-      "empty_placeholder": "Ihre Kaufhistorie wird hier angezeigt."
+      "subtitle": "Finden Sie die vollständige Historie der Bücher und Schulmaterialien, die Sie auf EcoScolar gekauft haben.",
+      "loading": "Ihre Kaufhistorie wird geladen...",
+      "error": "Beim Abrufen Ihrer Käufe ist ein Fehler aufgetreten.",
+      "error_detail": "Bitte aktualisieren Sie die Seite oder versuchen Sie es später erneut.",
+      "empty_title": "Keine Käufe erfasst",
+      "empty_placeholder": "Ihre Kaufhistorie wird hier angezeigt.",
+      "explore_cta": "Marktplatz erkunden",
+      "seller_label": "Verkäufer",
+      "view_advert": "Inserat ansehen"
     },
     "sales": {
       "title": "Meine Verkaufshistorie",
-      "empty_placeholder": "Ihre Verkaufshistorie wird hier angezeigt."
+      "subtitle": "Verfolgen Sie Ihre Verkäufe, aktiven Anzeigen und die Geschichte der Artikel, die Sie mit der EcoScolar-Gemeinschaft geteilt haben.",
+      "loading": "Ihre Verkaufshistorie wird geladen...",
+      "error": "Beim Abrufen Ihrer Verkäufe ist ein Fehler aufgetreten.",
+      "error_detail": "Bitte aktualisieren Sie die Seite oder versuchen Sie es später erneut.",
+      "empty_title": "Keine Verkäufe erfasst",
+      "empty_placeholder": "Ihre Verkaufshistorie wird hier angezeigt.",
+      "sell_cta": "Inserat erstellen",
+      "buyer_label": "Gekauft von",
+      "view": "Ansehen",
+      "edit": "Bearbeiten",
+      "status": {
+        "active": "Zum Verkauf",
+        "sold": "Verkauft",
+        "paused": "Pausiert",
+        "expired": "Abgelaufen"
+      }
     },
     "adverts": {
       "title": "Meine Anzeigen",

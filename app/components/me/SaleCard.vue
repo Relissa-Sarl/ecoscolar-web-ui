@@ -7,7 +7,7 @@ const props = defineProps<{
   sale: MySaleAdvert
 }>()
 
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const localePath = useLocalePath()
 
 const formatDate = (dateStr: string) => {
@@ -23,10 +23,10 @@ const formatDate = (dateStr: string) => {
 }
 
 const getStatusText = (status: AdvertStatus) => {
-  if (status === AdvertStatus.ACTIVE) return 'En vente'
-  if (status === AdvertStatus.SOLD) return 'Vendu'
-  if (status === AdvertStatus.PAUSED) return 'En pause'
-  if (status === AdvertStatus.EXPIRED) return 'Expiré'
+  if (status === AdvertStatus.ACTIVE) return t('me.sales.status.active')
+  if (status === AdvertStatus.SOLD) return t('me.sales.status.sold')
+  if (status === AdvertStatus.PAUSED) return t('me.sales.status.paused')
+  if (status === AdvertStatus.EXPIRED) return t('me.sales.status.expired')
   return status
 }
 
@@ -120,7 +120,7 @@ const canModify = (status: AdvertStatus) => {
               d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
             />
           </svg>
-          <span>Acheté par :</span>
+          <span>{{ t('me.sales.buyer_label') }} :</span>
           <span class="font-bold">{{ props.sale.buyerName }}</span>
         </p>
       </div>
@@ -139,14 +139,14 @@ const canModify = (status: AdvertStatus) => {
             :to="localePath(`/adverts/${props.sale.id}`)"
             class="inline-flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 py-1.5 px-3 text-xs font-semibold transition-colors"
           >
-            Voir
+            {{ t('me.sales.view') }}
           </NuxtLink>
           <NuxtLink
             v-if="canModify(props.sale.status)"
             :to="localePath(`/adverts/modify-advert-${props.sale.id}`)"
             class="inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-700 py-1.5 px-3 text-xs font-semibold transition-colors"
           >
-            Modifier
+            {{ t('me.sales.edit') }}
           </NuxtLink>
         </div>
       </div>

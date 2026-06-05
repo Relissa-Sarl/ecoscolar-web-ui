@@ -82,7 +82,7 @@ const getStatusBadgeClass = (status: string) => {
           {{ props.purchase.advertTitle }}
         </h3>
         <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
-          <span>Vendeur :</span>
+          <span>{{ t('me.purchases.seller_label') }} :</span>
           <span class="font-semibold text-slate-700 dark:text-slate-300">{{ props.purchase.sellerName }}</span>
         </p>
       </div>
@@ -95,7 +95,7 @@ const getStatusBadgeClass = (status: string) => {
           :to="localePath(`/adverts/${props.purchase.advertId}`)"
           class="inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-700 py-1.5 px-3 text-xs font-semibold transition-colors"
         >
-          Voir l'annonce
+          {{ t('me.purchases.view_advert') }}
         </NuxtLink>
       </div>
     </div>

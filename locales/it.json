@@ -123,11 +123,34 @@
   "me": {
     "purchases": {
       "title": "Cronologia dei miei acquisti",
-      "empty_placeholder": "La cronologia dei tuoi acquisti apparirà qui."
+      "subtitle": "Trova la cronologia completa dei manuali e dei materiali scolastici che hai acquistato su EcoScolar.",
+      "loading": "Caricamento della cronologia degli acquisti...",
+      "error": "Si è verificato un errore durante il recupero dei tuoi acquisti.",
+      "error_detail": "Aggiorna la pagina o riprova più tardi.",
+      "empty_title": "Nessun acquisto registrato",
+      "empty_placeholder": "La cronologia dei tuoi acquisti apparir\u00e0 qui.",
+      "explore_cta": "Esplora il negozio",
+      "seller_label": "Venditore",
+      "view_advert": "Vedi l'annuncio"
     },
     "sales": {
       "title": "Cronologia delle mie vendite",
-      "empty_placeholder": "La cronologia delle tue vendite apparirà qui."
+      "subtitle": "Segui le tue vendite, gli annunci attivi e la cronologia degli articoli che hai condiviso con la comunità EcoScolar.",
+      "loading": "Caricamento della cronologia delle vendite...",
+      "error": "Si è verificato un errore durante il recupero delle tue vendite.",
+      "error_detail": "Aggiorna la pagina o riprova più tardi.",
+      "empty_title": "Nessuna vendita registrata",
+      "empty_placeholder": "La cronologia delle tue vendite apparir\u00e0 qui.",
+      "sell_cta": "Crea un annuncio",
+      "buyer_label": "Acquistato da",
+      "view": "Vedi",
+      "edit": "Modifica",
+      "status": {
+        "active": "In vendita",
+        "sold": "Venduto",
+        "paused": "In pausa",
+        "expired": "Scaduto"
+      }
     },
     "adverts": {
       "title": "I miei annunci",

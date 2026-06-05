@@ -48,7 +48,7 @@ const { data: sales, pending, error } = await useAsyncData(
           {{ t('me.sales.title') }}
         </h1>
         <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
-          Suivez vos ventes, vos annonces actives et l'historique des articles que vous avez partagés avec la communauté EcoScolar.
+          {{ t('me.sales.subtitle') }}
         </p>
       </div>
 
@@ -59,7 +59,7 @@ const { data: sales, pending, error } = await useAsyncData(
       >
         <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-emerald-600 mb-4" />
         <p class="text-slate-500 dark:text-slate-400 text-sm font-medium">
-          Chargement de votre historique de ventes...
+          {{ t('me.sales.loading') }}
         </p>
       </div>
 
@@ -83,10 +83,10 @@ const { data: sales, pending, error } = await useAsyncData(
           />
         </svg>
         <p class="text-red-800 dark:text-red-300 font-semibold text-lg">
-          Une erreur est survenue lors de la récupération de vos ventes.
+          {{ t('me.sales.error') }}
         </p>
         <p class="text-red-600 dark:text-red-400 text-sm mt-1">
-          Veuillez rafraîchir la page ou réessayer ultérieurement.
+          {{ t('me.sales.error_detail') }}
         </p>
       </div>
 
@@ -112,7 +112,7 @@ const { data: sales, pending, error } = await useAsyncData(
           </svg>
         </div>
         <h3 class="text-lg font-bold text-slate-900 dark:text-white">
-          Aucune vente enregistrée
+          {{ t('me.sales.empty_title') }}
         </h3>
         <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 max-w-sm">
           {{ t('me.sales.empty_placeholder') }}
@@ -121,7 +121,7 @@ const { data: sales, pending, error } = await useAsyncData(
           :to="localePath('/sell')"
           class="mt-6 inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors"
         >
-          Créer une annonce
+          {{ t('me.sales.sell_cta') }}
         </NuxtLink>
       </div>
 

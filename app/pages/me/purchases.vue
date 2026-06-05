@@ -48,7 +48,7 @@ const { data: purchases, pending, error } = await useAsyncData(
           {{ t('me.purchases.title') }}
         </h1>
         <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
-          Retrouvez l'historique complet des manuels et fournitures que vous avez achetés sur EcoScolar.
+          {{ t('me.purchases.subtitle') }}
         </p>
       </div>
 
@@ -59,7 +59,7 @@ const { data: purchases, pending, error } = await useAsyncData(
       >
         <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-emerald-600 mb-4" />
         <p class="text-slate-500 dark:text-slate-400 text-sm font-medium">
-          Chargement de votre historique d'achats...
+          {{ t('me.purchases.loading') }}
         </p>
       </div>
 
@@ -83,10 +83,10 @@ const { data: purchases, pending, error } = await useAsyncData(
           />
         </svg>
         <p class="text-red-800 dark:text-red-300 font-semibold text-lg">
-          Une erreur est survenue lors de la récupération de vos achats.
+          {{ t('me.purchases.error') }}
         </p>
         <p class="text-red-600 dark:text-red-400 text-sm mt-1">
-          Veuillez rafraîchir la page ou réessayer ultérieurement.
+          {{ t('me.purchases.error_detail') }}
         </p>
       </div>
 
@@ -112,7 +112,7 @@ const { data: purchases, pending, error } = await useAsyncData(
           </svg>
         </div>
         <h3 class="text-lg font-bold text-slate-900 dark:text-white">
-          Aucun achat enregistré
+          {{ t('me.purchases.empty_title') }}
         </h3>
         <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 max-w-sm">
           {{ t('me.purchases.empty_placeholder') }}
@@ -121,7 +121,7 @@ const { data: purchases, pending, error } = await useAsyncData(
           :to="localePath('/shop')"
           class="mt-6 inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors"
         >
-          Explorer la boutique
+          {{ t('me.purchases.explore_cta') }}
         </NuxtLink>
       </div>
 
