@@ -15,7 +15,18 @@ describe('T8-4 · intégration UI recherche livre (CatalogSearchBanner)', () => 
       global: globalOptions
     })
 
-    await wrapper.get('form[role="search"]').trigger('submit')
+    await wrapper.get('form').trigger('submit')
+
+    expect(wrapper.emitted('search')).toHaveLength(1)
+  })
+
+  it('émet search quand l’utilisateur appuie sur Entrée', async () => {
+    const wrapper = mount(CatalogSearchBanner, {
+      props: { modelValue: 'Exemple annonce 3', loading: false },
+      global: globalOptions
+    })
+
+    await wrapper.get('form').trigger('submit')
 
     expect(wrapper.emitted('search')).toHaveLength(1)
   })

@@ -1,38 +1,109 @@
-<script setup lang="ts">
-import { computed, onBeforeMount } from 'vue'
-
+<script lang="ts" setup>
 const route = useRoute()
 const { locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
 const usersStore = useUsersStore()
 
-const cartStore = useCartStore()
-const cartCount = computed(() => cartStore.totalItems)
-
-onBeforeMount(() => {
-  if (!cartStore.hasLoaded && !cartStore.isLoading) {
-    void cartStore.loadCart().catch(() => undefined)
+// Main navigation
+const navigationLinks = computed(() => [
+  {
+    to: localePath('/shop'),
+    labelKey: 'header.nav_shop',
+    slug: 'shop',
+    requiresAuth: false,
+    icon: 'material-symbols:shopping-bag'
+  },
+  {
+    to: localePath('/favorites'),
+    labelKey: 'header.favorites',
+    slug: 'favorites',
+    requiresAuth: true,
+    icon: 'material-symbols:favorite-outline'
+  },
+  {
+    to: localePath('/search-alerts'),
+    labelKey: 'header.search_alerts',
+    slug: 'search-alerts',
+    requiresAuth: true,
+    icon: 'material-symbols:circle-notifications'
+  },
+  {
+    to: localePath('/me/support-requests'),
+    labelKey: 'header.support_requests',
+    slug: 'support-requests',
+    requiresAuth: true,
+    icon: 'material-symbols:support-agent'
+  },
+  {
+    to: localePath('/cart'),
+    labelKey: 'header.cart',
+    slug: 'cart',
+    requiresAuth: false,
+    icon: 'material-symbols:shopping-cart-outline'
   }
+])
+
+const visibleLinks = computed(() => {
+  return navigationLinks.value.filter(link => !link.requiresAuth || usersStore.isAuthenticated)
 })
 
-const mainNav = computed(() =>
-  [
-    { to: localePath('/shop'), labelKey: 'header.nav_shop', slug: 'shop' }
-  ] as const)
+// Account actions (Login, profile, logout)
+const authActions = computed(() => {
+  if (usersStore.isAuthenticated) {
+    return [
+      {
+        id: 'profile',
+        isAction: false,
+        to: localePath('/me/profile'),
+        labelKey: 'header.profile',
+        icon: 'material-symbols:account-circle',
+        baseClass: 'flex items-center gap-2 px-4 py-2 bg-emerald-800 text-white rounded-full hover:bg-emerald-700 transition-colors',
+        iconClass: 'w-4 h-4',
+        textClass: ''
+      },
+      {
+        id: 'logout',
+        isAction: true,
+        onClick: () => usersStore.logout(),
+        labelKey: 'header.logout',
+        icon: 'material-symbols:exit-to-app',
+        baseClass: 'flex items-center gap-2 py-2 text-sm font-semibold text-slate-500 hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400 transition-colors cursor-pointer',
+        iconClass: 'w-5 h-5',
+        textClass: 'hidden sm:inline'
+      }
+    ]
+  }
+
+  // Guest
+  return [
+    {
+      id: 'login',
+      isAction: false,
+      to: localePath('/login'),
+      labelKey: 'header.login',
+      icon: 'material-symbols:login',
+      baseClass: 'flex items-center gap-2 text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors',
+      iconClass: 'w-4 h-4',
+      textClass: ''
+    }
+  ]
+})
 
 const linkIsActive = (slug: string) => {
   const parts = route.path.split('/').filter(Boolean)
-  return parts[parts.length - 1] === slug
+  return parts.includes(slug)
 }
 </script>
 
 <template>
-  <header class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-    <div>
+  <header
+    class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
+  >
+    <div class="flex items-center">
       <NuxtLink
         :to="localePath('/')"
-        class="flex items-center gap-2 text-xl font-bold text-emerald-900 transition-opacity hover:opacity-80 dark:text-emerald-100"
         aria-label="EcoScolar - Retour à l'accueil"
+        class="flex items-center gap-2 text-xl font-bold text-emerald-900 transition-opacity hover:opacity-80 dark:text-emerald-100"
       >
         <IconsEcoScolarLeafIcon class="w-8 h-8 text-emerald-800 dark:text-emerald-500" />
         <span>EcoScolar</span>
@@ -40,117 +111,76 @@ const linkIsActive = (slug: string) => {
     </div>
 
     <nav
-      class="order-3 flex w-full items-center gap-6 text-sm font-semibold md:order-0 md:flex-1 md:justify-center md:w-auto lg:justify-start lg:pl-6"
       aria-label="Navigation principale"
+      class="order-3 flex w-full items-center justify-center gap-1 text-sm font-semibold md:order-0 md:flex-1 md:w-auto lg:justify-start lg:pl-8"
     >
       <NuxtLink
-        v-for="link in mainNav"
+        v-for="link in visibleLinks"
         :key="link.slug"
+        :class="[
+          'flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 transition-colors duration-200 hover:bg-slate-50 hover:text-emerald-800 dark:text-gray-300 dark:hover:bg-slate-800 dark:hover:text-emerald-400',
+          linkIsActive(link.slug) ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-300 font-bold' : ''
+        ]"
         :to="link.to"
-        class="border-b-2 border-transparent pb-0.5 text-gray-700 transition hover:text-emerald-800 dark:text-gray-300 dark:hover:text-emerald-400"
-        :class="
-          linkIsActive(link.slug)
-            ? 'border-emerald-800 text-emerald-900 dark:border-emerald-400 dark:text-white'
-            : ''
-        "
       >
-        {{ $t(link.labelKey) }}
+        <Icon
+          :name="link.icon"
+          class="w-4 h-4 shrink-0"
+        />
+        <span>{{ $t(link.labelKey) }}</span>
       </NuxtLink>
     </nav>
 
     <div class="flex shrink-0 items-center gap-4 sm:gap-6">
       <nav
-        class="flex items-center gap-2"
         aria-label="Sélecteur de langue"
+        class="flex items-center gap-2"
       >
         <button
           v-for="l in locales"
           :key="l.code"
-          class="px-2 py-1 text-sm border rounded cursor-pointer transition-colors focus:ring-2 focus:ring-emerald-500 outline-none"
+          :aria-current="locale === l.code ? 'page' : undefined"
           :class="locale === l.code
             ? 'font-bold bg-emerald-100 border-emerald-400 text-emerald-900 dark:bg-emerald-900 dark:border-emerald-500 dark:text-emerald-100'
             : 'bg-transparent border-gray-300 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800'"
-          :aria-current="locale === l.code ? 'page' : undefined"
+          class="px-2 py-1 text-sm border rounded cursor-pointer transition-colors focus:ring-2 focus:ring-emerald-500 outline-none"
           @click="setLocale(l.code)"
         >
           {{ l.code.toUpperCase() }}
         </button>
       </nav>
 
+      <!-- Dynamic lopp for the user actions -->
       <div class="flex items-center gap-4 text-sm font-medium">
-        <NuxtLink
-          :to="localePath('/favorites')"
-          class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
-        >
-          {{ $t('header.favorites') }}
-        </NuxtLink>
-        <NuxtLink
-          :to="localePath('/search-alerts')"
-          class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
-        >
-          {{ $t('header.search_alerts') }}
-        </NuxtLink>
-        <NuxtLink
-          v-if="usersStore.isAuthenticated"
-          :to="localePath('/me/support-requests')"
-          class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
-        >
-          {{ $t('header.support_requests') }}
-        </NuxtLink>
-        <NuxtLink
-          :to="localePath('/cart')"
-          class="relative inline-flex items-center pr-2 text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
-        >
-          <span>{{ $t('header.cart') }}</span>
-          <span
-            v-if="cartCount > 0"
-            class="absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-emerald-600 px-1 text-[9px] font-bold text-white ring-2 ring-white dark:ring-slate-900"
-          >
-            {{ cartCount }}
-          </span>
-        </NuxtLink>
-
-        <!-- Display login link if user is not authenticated -->
         <template
-          v-if="!usersStore.isAuthenticated"
+          v-for="item in authActions"
+          :key="item.id"
         >
-          <NuxtLink
-            :to="localePath('/login')"
-            class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
-          >
-            {{ $t('header.login') }}
-          </NuxtLink>
-        </template>
-        <!-- Display profile link if user is authenticated -->
-        <template
-          v-else
-        >
-          <NuxtLink
-            :to="localePath('/me/profile')"
-            class="px-4 py-2 bg-emerald-800 text-white rounded-full hover:bg-emerald-700 transition-colors"
-          >
-            {{ $t('header.profile') }}
-          </NuxtLink>
+          <!-- Action as button (ex: Logout) -->
           <button
-            class="flex items-center gap-2 py-2 text-sm font-semibold text-slate-500 hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400 transition-colors cursor-pointer"
-            @click="usersStore.logout()"
+            v-if="item.isAction"
+            :class="item.baseClass"
+            @click="item.onClick"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              class="w-5 h-5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.25"
-              />
-            </svg>
-            <span class="hidden sm:inline">{{ $t('header.logout') }}</span>
+            <Icon
+              :class="item.iconClass"
+              :name="item.icon"
+            />
+            <span :class="item.textClass">{{ $t(item.labelKey) }}</span>
           </button>
+
+          <!-- Action as NuxtLink (ex: Login, Profil) -->
+          <NuxtLink
+            v-else
+            :class="item.baseClass"
+            :to="item.to"
+          >
+            <Icon
+              :class="item.iconClass"
+              :name="item.icon"
+            />
+            <span :class="item.textClass">{{ $t(item.labelKey) }}</span>
+          </NuxtLink>
         </template>
       </div>
     </div>
