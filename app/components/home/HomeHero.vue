@@ -30,9 +30,10 @@ const localePath = useLocalePath()
           </p>
           <NuxtLink
             :to="localePath('/shop')"
-            class="mt-6 inline-flex items-center gap-2 font-bold text-emerald-800 dark:text-emerald-300 underline decoration-2 underline-offset-4 hover:no-underline focus:outline-none"
+            class="group mt-6 inline-flex items-center gap-2 font-bold text-emerald-800 dark:text-emerald-300 no-underline focus:outline-none"
           >
-            {{ $t('home.buy_cta') }} <span aria-hidden="true">→</span>
+            <span class="border-b-2 border-current pb-px group-hover:border-transparent">{{ $t('home.buy_cta') }}</span>
+            <span aria-hidden="true">→</span>
           </NuxtLink>
         </div>
       </article>
@@ -47,9 +48,10 @@ const localePath = useLocalePath()
           </p>
           <NuxtLink
             :to="localePath('/adverts/create-advert')"
-            class="mt-6 inline-flex items-center gap-2 font-bold text-emerald-400 underline decoration-2 underline-offset-4 hover:no-underline focus:outline-none"
+            class="group mt-6 inline-flex items-center gap-2 font-bold text-emerald-400 no-underline focus:outline-none"
           >
-            {{ $t('home.sell_cta') }} <span aria-hidden="true">→</span>
+            <span class="border-b-2 border-current pb-px group-hover:border-transparent">{{ $t('home.sell_cta') }}</span>
+            <span aria-hidden="true">→</span>
           </NuxtLink>
         </div>
       </article>
