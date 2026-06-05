@@ -1,8 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { mount } from '@vue/test-utils'
+import { mountSuspended, mockNuxtImport } from '@nuxt/test-utils/runtime'
 import { ref } from 'vue'
-import { mockNuxtImport } from '@nuxt/test-utils/runtime'
+
 import PurchasesPage from '~/pages/me/purchases.vue'
 
 const asyncDataMock = vi.hoisted(() => vi.fn())
@@ -22,10 +21,6 @@ describe('Purchases Page', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
-
-
-
-
 
   it('renders empty state when data is empty', async () => {
     asyncDataMock.mockResolvedValueOnce({

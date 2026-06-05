@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
 import PurchaseCard from '~/components/me/PurchaseCard.vue'
@@ -41,7 +41,7 @@ describe('PurchaseCard', () => {
     const img = wrapper.find('img')
     expect(img.exists()).toBe(true)
     expect(img.attributes('src')).toBe('https://example.com/calc.jpg')
-    
+
     // Check fallback SVG is absent
     const svg = wrapper.find('svg')
     expect(svg.exists()).toBe(false)
