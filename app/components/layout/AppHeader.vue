@@ -63,10 +63,6 @@ const linkIsActive = (slug: string) => {
         class="flex items-center gap-2"
         aria-label="Sélecteur de langue"
       >
-        <span
-          class="text-sm text-gray-500 dark:text-gray-400"
-          aria-hidden="true"
-        >{{ $t('header.language') }}:</span>
         <button
           v-for="l in locales"
           :key="l.code"
@@ -87,6 +83,19 @@ const linkIsActive = (slug: string) => {
           class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
         >
           {{ $t('header.favorites') }}
+        </NuxtLink>
+        <NuxtLink
+          :to="localePath('/search-alerts')"
+          class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
+        >
+          {{ $t('header.search_alerts') }}
+        </NuxtLink>
+        <NuxtLink
+          v-if="usersStore.isAuthenticated"
+          :to="localePath('/me/support-requests')"
+          class="text-gray-700 hover:text-emerald-700 dark:text-gray-300 dark:hover:text-emerald-400 transition-colors"
+        >
+          {{ $t('header.support_requests') }}
         </NuxtLink>
         <NuxtLink
           :to="localePath('/cart')"

@@ -17,6 +17,7 @@ export interface UserService {
   logout: () => Promise<undefined>
   getMyProfile: () => Promise<User>
   updateProfile: (input: UpdateProfileInput) => Promise<User>
+  deleteAccount: () => Promise<undefined>
   getPublicProfile: (id: string) => Promise<PublicUser>
   getMeAdvert: () => Promise<MyAdvert[]>
 }
@@ -86,6 +87,19 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
       })
 
   /**
+   * Delete the current user's account by making a request to the API's delete account endpoint. This will typically
+   * involve removing the user's data from the server and invalidating their session or token.
+   * @returns A promise that resolves when the account deletion is successful.
+   * The API is expected to handle the account deletion logic, such as removing the user's
+   * data and invalidating their session or token, and return an appropriate response.
+   */
+  const deleteAccount = async () =>
+    apiClient<undefined>(`${USER_PATH}/me`,
+      {
+        method: 'DELETE'
+      })
+
+  /**
    * Retrieve the public profile of a user by their ID.
    * @param id The unique identifier of the user whose public profile is being requested.
    * @returns A promise that resolves to a PublicUser object containing the public information of the user.
@@ -100,6 +114,7 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
     logout,
     getMyProfile,
     updateProfile,
+    deleteAccount,
     getPublicProfile,
     getMeAdvert
   }
