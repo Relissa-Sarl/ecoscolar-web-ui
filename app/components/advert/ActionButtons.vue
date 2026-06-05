@@ -1,16 +1,22 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue'
 import type { FavoriteAdvertSummary } from '~/types/favorite'
+import { AdvertType } from '~/utils/enum/advertType'
+import type { CatalogListing } from '~/types/catalog'
+import { useCartStore } from '~/stores/cartStore'
 
 interface Props {
   advert: FavoriteAdvertSummary | null
 }
 
 const props = defineProps<Props>()
+const { t } = useI18n()
+const toast = useToast()
 
 const emit = defineEmits<{
-  buy: []
+  cartAdd: []
   favorite: [value: boolean]
+  notify: []
 }>()
 
 const favoritesStore = useFavoritesStore()
@@ -41,8 +47,36 @@ const favoriteLabel = computed(() =>
   isFavorite.value ? 'advert.actions.favorite_remove' : 'advert.actions.favorite_add'
 )
 
-const handleBuy = () => {
-  emit('buy')
+const cartStore = useCartStore()
+
+const isInCart = computed(() => {
+  if (!resolvedAdvertId.value) {
+    return false
+  }
+  return cartStore.items.some(item => item.listing.id === String(resolvedAdvertId.value))
+})
+
+const handleBuy = async () => {
+  if (props.advert) {
+    const listing: CatalogListing = {
+      id: String(props.advert.id),
+      title: props.advert.title,
+      price: props.advert.price,
+      type: props.advert.type,
+      categoryTab: props.advert.type === AdvertType.BOOK ? 'textbooks' : (props.advert.type === AdvertType.PRODUCT ? 'supplies' : 'tutoring'),
+      imageUrl: props.advert.image || '',
+      location: '',
+      hourly: props.advert.type === AdvertType.SERVICE,
+      metaLineKey: props.advert.type === AdvertType.BOOK ? 'catalog.card.meta_textbooks' : (props.advert.type === AdvertType.PRODUCT ? 'catalog.card.meta_supplies' : 'catalog.card.meta_tutoring'),
+      seller: props.advert.seller
+    }
+    await cartStore.addToCart(listing)
+    toast.add({
+      title: t('cart.added_success'),
+      color: 'success'
+    })
+  }
+  emit('cartAdd')
 }
 
 const toggleFavorite = async () => {
@@ -59,21 +93,32 @@ const toggleFavorite = async () => {
   }
 }
 
+const handleNotify = () => {
+  emit('notify')
+}
+
 onBeforeMount(() => {
   if (!favoritesStore.hasLoaded && !favoritesStore.isLoading) {
     void favoritesStore.loadFavorites().catch(() => undefined)
+  }
+  if (!cartStore.hasLoaded && !cartStore.isLoading) {
+    void cartStore.loadCart().catch(() => undefined)
   }
 })
 </script>
 
 <template>
   <div class="space-y-3">
-    <div class="flex gap-4">
+    <div class="flex gap-3">
       <button
-        class="flex-1 px-4 py-3 bg-green-700 hover:bg-green-800 text-white font-medium rounded-lg transition-colors"
+        class="flex-1 px-4 py-3 font-medium rounded-lg transition-colors flex items-center justify-center"
+        :class="isInCart
+          ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed border border-slate-200 dark:border-slate-700'
+          : 'bg-green-700 hover:bg-green-800 text-white cursor-pointer'"
+        :disabled="isInCart"
         @click="handleBuy"
       >
-        {{ $t('advert.actions.buy_now') }}
+        {{ isInCart ? $t('advert.actions.already_in_cart') : $t('advert.actions.buy_now') }}
       </button>
 
       <button
@@ -112,5 +157,26 @@ onBeforeMount(() => {
         </span>
       </button>
     </div>
+
+    <button
+      class="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors flex items-center justify-center gap-2"
+      @click="handleNotify"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
+        />
+      </svg>
+      {{ $t('advert.actions.notify') }}
+    </button>
   </div>
 </template>
