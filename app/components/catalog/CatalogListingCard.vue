@@ -127,25 +127,10 @@ onBeforeMount(() => {
       </h3>
 
       <p class="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
-        <svg
+        <Icon
+          name="material-symbols:location-on-outline"
           class="size-4 shrink-0"
-          aria-hidden="true"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-          />
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
-          />
-        </svg>
+        />
         {{ listing.location }}
       </p>
 
@@ -164,35 +149,21 @@ onBeforeMount(() => {
           <button
             v-if="usersStore.isAuthenticated"
             type="button"
-            class="rounded-full border border-slate-200 p-2.5 transition hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-900"
+            class="cursor-pointer size-10 flex items-center justify-center shrink-0 rounded-full border border-slate-200 transition hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-900"
             :aria-label="isFavorite ? $t('advert.actions.favorite_remove') : $t('advert.actions.favorite_add')"
             :disabled="isSubmittingFavorite"
             @click="toggleFavorite"
           >
-            <svg
+            <Icon
               v-if="!isFavorite"
-              class="size-5"
-              aria-hidden="true"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-              />
-            </svg>
-            <svg
+              name="material-symbols:favorite-outline"
+              class="size-5 text-gray-900 dark:text-white"
+            />
+            <Icon
               v-else
+              name="material-symbols:favorite"
               class="size-5 text-red-500"
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
-            </svg>
+            />
           </button>
 
           <button
@@ -200,27 +171,17 @@ onBeforeMount(() => {
             type="button"
             class="rounded-full transition"
             :class="isInCart
-              ? 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-600 border border-slate-200 dark:border-slate-800 cursor-not-allowed p-2.5'
+              ? 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-600 border border-slate-200 dark:border-slate-800 cursor-not-allowed size-10 flex items-center justify-center shrink-0'
               : 'bg-emerald-800 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer'"
             :disabled="isInCart"
             :aria-label="isInCart ? $t('advert.actions.already_in_cart') : $t('catalog.card.book_lesson')"
             @click="handleCartAdd"
           >
-            <svg
+            <Icon
               v-if="isInCart"
-              class="size-5 text-emerald-650 dark:text-emerald-500"
-              aria-hidden="true"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="2.5"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="m4.5 12.75 6 6 9-13.5"
-              />
-            </svg>
+              name="material-symbols:check"
+              class="size-5 text-emerald-650 dark:text-emerald-500 font-bold"
+            />
             <template v-else>
               {{ $t('catalog.card.book_lesson') }}
             </template>
@@ -230,42 +191,22 @@ onBeforeMount(() => {
             type="button"
             class="rounded-full transition"
             :class="isInCart
-              ? 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-600 border border-slate-200 dark:border-slate-800 cursor-not-allowed p-2.5'
-              : 'bg-emerald-800 p-2.5 text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer'"
+              ? 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-600 border border-slate-200 dark:border-slate-800 cursor-not-allowed size-10 flex items-center justify-center shrink-0'
+              : 'bg-emerald-800 text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer size-10 flex items-center justify-center shrink-0'"
             :disabled="isInCart"
             :aria-label="isInCart ? $t('advert.actions.already_in_cart') : $t('advert.actions.buy_now')"
             @click="handleCartAdd"
           >
-            <svg
+            <Icon
               v-if="isInCart"
-              class="size-5 text-emerald-650 dark:text-emerald-500"
-              aria-hidden="true"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="2.5"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="m4.5 12.75 6 6 9-13.5"
-              />
-            </svg>
-            <svg
+              name="material-symbols:check"
+              class="size-5 text-emerald-650 dark:text-emerald-500 font-bold"
+            />
+            <Icon
               v-else
+              name="material-symbols:shopping-cart-outline"
               class="size-5"
-              aria-hidden="true"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-              />
-            </svg>
+            />
           </button>
         </div>
       </div>
