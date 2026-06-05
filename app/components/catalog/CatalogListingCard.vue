@@ -137,10 +137,32 @@ const handleCartAdd = async () => {
           <button
             v-if="listing.hourly"
             type="button"
-            class="rounded-full bg-emerald-800 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500"
-            @click="$emit('bookLesson')"
+            class="rounded-full transition"
+            :class="isInCart
+              ? 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-600 border border-slate-200 dark:border-slate-800 cursor-not-allowed p-2.5'
+              : 'bg-emerald-800 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer'"
+            :disabled="isInCart"
+            :aria-label="isInCart ? $t('advert.actions.already_in_cart') : $t('catalog.card.book_lesson')"
+            @click="handleCartAdd"
           >
-            {{ $t('catalog.card.book_lesson') }}
+            <svg
+              v-if="isInCart"
+              class="size-5 text-emerald-650 dark:text-emerald-500"
+              aria-hidden="true"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2.5"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m4.5 12.75 6 6 9-13.5"
+              />
+            </svg>
+            <template v-else>
+              {{ $t('catalog.card.book_lesson') }}
+            </template>
           </button>
           <button
             v-else
