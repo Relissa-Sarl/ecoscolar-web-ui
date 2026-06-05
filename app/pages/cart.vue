@@ -64,10 +64,9 @@ const subtotal = computed(() => {
 
 const shippingCost = computed(() => 0)
 
-const serviceFee = computed(() => subtotal.value * 0.1)
 
 const total = computed(() => {
-  return subtotal.value + shippingCost.value + serviceFee.value
+  return subtotal.value + shippingCost.value
 })
 
 const itemsCount = computed(() => {
@@ -99,7 +98,6 @@ const itemsCount = computed(() => {
         <!-- Right: Summary & Order breakdown -->
         <CartSummary
           :subtotal="subtotal"
-          :service-fee="serviceFee"
           :shipping-cost="shippingCost"
           :total="total"
         />

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 defineProps<{
   subtotal: number
-  serviceFee: number
   shippingCost: number
   total: number
 }>()
@@ -24,11 +23,6 @@ defineEmits<{
         <div class="flex justify-between text-slate-500 dark:text-slate-400">
           <span>{{ $t('cart.checkout.subtotal') }}</span>
           <span class="font-semibold text-slate-800 dark:text-slate-200">{{ subtotal.toFixed(2) }} CHF</span>
-        </div>
-
-        <div class="flex justify-between text-slate-500 dark:text-slate-400">
-          <span>{{ $t('cart.checkout.service_fee') }}</span>
-          <span class="font-semibold text-slate-800 dark:text-slate-200">{{ serviceFee.toFixed(2) }} CHF</span>
         </div>
 
         <div class="flex justify-between text-slate-500 dark:text-slate-400">
