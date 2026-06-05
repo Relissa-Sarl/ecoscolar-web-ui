@@ -24,12 +24,17 @@ defineEmits<{
       </p>
     </header>
 
-    <fieldset class="space-y-3">
+    <fieldset
+      class="space-y-3"
+      role="radiogroup"
+    >
       <legend class="sr-only">
         {{ $t('catalog.filters.category_legend') }}
       </legend>
       <button
         type="button"
+        role="radio"
+        :aria-checked="activeCategory === 'supplies'"
         class="flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
         :class="activeCategory === 'supplies'
           ? 'border-emerald-700 bg-emerald-800 text-white shadow-md dark:border-emerald-500'
@@ -54,6 +59,8 @@ defineEmits<{
       </button>
       <button
         type="button"
+        role="radio"
+        :aria-checked="activeCategory === 'textbooks'"
         class="flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
         :class="activeCategory === 'textbooks'
           ? 'border-emerald-700 bg-emerald-800 text-white shadow-md dark:border-emerald-500'
@@ -78,6 +85,8 @@ defineEmits<{
       </button>
       <button
         type="button"
+        radio="radio"
+        :aria-checked="activeCategory === 'tutoring'"
         class="flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
         :class="activeCategory === 'tutoring'
           ? 'border-emerald-700 bg-emerald-800 text-white shadow-md dark:border-emerald-500'

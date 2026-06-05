@@ -14,8 +14,6 @@ const headingId = useId()
 const submit = () => {
   emit('search')
 }
-
-const handleKeyEnter = () => submit()
 </script>
 
 <template>
@@ -38,7 +36,11 @@ const handleKeyEnter = () => submit()
       </p>
     </div>
 
-    <div class="relative mt-8 flex flex-col gap-3 sm:flex-row sm:items-stretch">
+    <form
+      role="search"
+      class="relative mt-8 flex flex-col gap-3 sm:flex-row sm:items-stretch"
+      @submit.prevent="submit"
+    >
       <div class="flex flex-1 items-center gap-3 rounded-full bg-white/95 px-4 py-3 text-emerald-950 shadow-inner ring-1 ring-white/30 dark:bg-emerald-50">
         <span
           class="text-emerald-700"
@@ -70,17 +72,16 @@ const handleKeyEnter = () => submit()
           :placeholder="$t('catalog.hero.search_placeholder')"
           :aria-labelledby="headingId"
           autocomplete="off"
-          @keydown.enter.prevent="handleKeyEnter"
         >
       </div>
       <button
-        type="button"
+        type="submit"
         class="inline-flex shrink-0 items-center justify-center rounded-full bg-emerald-950 px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-black focus:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-70"
         :disabled="loading"
         @click="submit"
       >
         {{ $t('catalog.hero.search_cta') }}
       </button>
-    </div>
+    </form>
   </section>
 </template>
