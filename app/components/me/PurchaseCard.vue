@@ -6,7 +6,7 @@ const props = defineProps<{
   purchase: Purchase
 }>()
 
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const localePath = useLocalePath()
 
 const formatDate = (dateStr: string) => {
