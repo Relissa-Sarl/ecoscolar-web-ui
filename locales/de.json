@@ -297,7 +297,7 @@
     "createAdvert": "Anzeige erstellen",
     "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
     "creationFailed": "Beim Erstellen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
-    
+
   },
   "modifyAdvert": {
     "existingAdvert": "Anzeige",
@@ -613,6 +613,7 @@
       "pc_label": "Postleitzahl",
       "dob_label": "Geburtsdatum",
       "languages_title": "Gesprochene Sprachen",
+      "languages_empty": "Keine Sprache hinzugefügt.",
       "language_label": "Sprache",
       "level_label": "Niveau",
       "level_native": "Muttersprache",

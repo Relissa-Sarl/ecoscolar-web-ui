@@ -612,6 +612,7 @@
       "pc_label": "Codice Postale",
       "dob_label": "Data di nascita",
       "languages_title": "Lingue parlate",
+      "languages_empty": "Nessuna lingua aggiunta.",
       "language_label": "Lingua",
       "level_label": "Livello",
       "level_native": "Madrelingua",
