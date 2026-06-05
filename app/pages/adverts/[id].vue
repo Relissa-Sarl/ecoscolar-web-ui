@@ -109,7 +109,8 @@ const advertSummary = computed(() => {
     type: advert.value.type,
     condition: advert.value.condition,
     price: advert.value.price,
-    image: advert.value.image || advert.value.images?.[0] || ''
+    image: advert.value.image || advert.value.images?.[0] || '',
+    seller: advert.value.seller?.username
   }
 })
 </script>
@@ -122,9 +123,10 @@ const advertSummary = computed(() => {
       <div class="mb-8">
         <NuxtLink
           :to="localePath('/shop')"
-          class="inline-flex items-center gap-2 text-emerald-700 dark:text-emerald-400 hover:underline font-medium focus:ring-2 focus:ring-emerald-500 outline-none rounded"
+          class="group inline-flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-medium no-underline focus:ring-2 focus:ring-emerald-500 outline-none rounded"
         >
-          <span aria-hidden="true">←</span> {{ $t('common.back_to_catalog') }}
+          <span aria-hidden="true">←</span>
+          <span class="border-b border-transparent pb-px group-hover:border-current">{{ $t('common.back_to_catalog') }}</span>
         </NuxtLink>
       </div>
 
@@ -136,7 +138,7 @@ const advertSummary = computed(() => {
           />
         </div>
 
-        <div class="lg:col-span-1">
+        <div class="lg:col-span-1 space-y-4">
           <AdvertInfo
             v-if="advert"
             :condition="showCondition ? advert.condition : ''"

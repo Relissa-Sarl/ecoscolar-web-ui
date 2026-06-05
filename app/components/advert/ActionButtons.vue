@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue'
 import type { FavoriteAdvertSummary } from '~/types/favorite'
+import { AdvertType } from '~/utils/enum/advertType'
+import type { CatalogListing } from '~/types/catalog'
+import { useCartStore } from '~/stores/cartStore'
 
 interface Props {
   advert: FavoriteAdvertSummary | null
 }
 
 const props = defineProps<Props>()
+const { t } = useI18n()
+const toast = useToast()
 
 const emit = defineEmits<{
-  buy: []
+  cartAdd: []
   favorite: [value: boolean]
   notify: []
 }>()
@@ -42,8 +47,36 @@ const favoriteLabel = computed(() =>
   isFavorite.value ? 'advert.actions.favorite_remove' : 'advert.actions.favorite_add'
 )
 
-const handleBuy = () => {
-  emit('buy')
+const cartStore = useCartStore()
+
+const isInCart = computed(() => {
+  if (!resolvedAdvertId.value) {
+    return false
+  }
+  return cartStore.items.some(item => item.listing.id === String(resolvedAdvertId.value))
+})
+
+const handleBuy = async () => {
+  if (props.advert) {
+    const listing: CatalogListing = {
+      id: String(props.advert.id),
+      title: props.advert.title,
+      price: props.advert.price,
+      type: props.advert.type,
+      categoryTab: props.advert.type === AdvertType.BOOK ? 'textbooks' : (props.advert.type === AdvertType.PRODUCT ? 'supplies' : 'tutoring'),
+      imageUrl: props.advert.image || '',
+      location: '',
+      hourly: props.advert.type === AdvertType.SERVICE,
+      metaLineKey: props.advert.type === AdvertType.BOOK ? 'catalog.card.meta_textbooks' : (props.advert.type === AdvertType.PRODUCT ? 'catalog.card.meta_supplies' : 'catalog.card.meta_tutoring'),
+      seller: props.advert.seller
+    }
+    await cartStore.addToCart(listing)
+    toast.add({
+      title: t('cart.added_success'),
+      color: 'success'
+    })
+  }
+  emit('cartAdd')
 }
 
 const toggleFavorite = async () => {
@@ -68,6 +101,9 @@ onBeforeMount(() => {
   if (!favoritesStore.hasLoaded && !favoritesStore.isLoading) {
     void favoritesStore.loadFavorites().catch(() => undefined)
   }
+  if (!cartStore.hasLoaded && !cartStore.isLoading) {
+    void cartStore.loadCart().catch(() => undefined)
+  }
 })
 </script>
 
@@ -75,10 +111,14 @@ onBeforeMount(() => {
   <div class="space-y-3">
     <div class="flex gap-3">
       <button
-        class="flex-1 px-4 py-3 bg-green-700 hover:bg-green-800 text-white font-medium rounded-lg transition-colors"
+        class="flex-1 px-4 py-3 font-medium rounded-lg transition-colors flex items-center justify-center"
+        :class="isInCart
+          ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed border border-slate-200 dark:border-slate-700'
+          : 'bg-green-700 hover:bg-green-800 text-white cursor-pointer'"
+        :disabled="isInCart"
         @click="handleBuy"
       >
-        {{ $t('advert.actions.buy_now') }}
+        {{ isInCart ? $t('advert.actions.already_in_cart') : $t('advert.actions.buy_now') }}
       </button>
 
       <button

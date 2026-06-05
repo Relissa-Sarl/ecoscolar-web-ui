@@ -12,7 +12,7 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="flex items-center gap-4 p-4 bg-white dark:bg-gray-950 rounded-lg border border-gray-200 dark:border-gray-800 mb-6">
+  <div class="flex items-center gap-4 p-4 bg-white dark:bg-gray-950 rounded-lg border border-gray-200 dark:border-gray-800">
     <UAvatar
       :src="seller.avatar"
       :alt="seller.username"

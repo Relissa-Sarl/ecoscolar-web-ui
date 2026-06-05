@@ -42,8 +42,43 @@
     "impact_unit": "risparmiati"
   },
   "cart": {
+    "seo_title": "Il mio carrello | EcoScolar",
     "title": "Il mio carrello",
-    "empty": "Il tuo carrello è attualmente vuoto"
+    "remove_from_cart": "Rimuovi dal carrello",
+    "clear": "Svuota il carrello",
+    "added_success": "Articolo aggiunto al carrello!",
+    "tva": "IVA e costi inclusi",
+    "one_advert": "articolo",
+    "many_adverts": "articoli",
+    "items": {
+      "books": "Libri",
+      "supplies": "Forniture",
+      "tutoring": "Corsi",
+      "quantity": "Quantità",
+      "vendor": "Venditore"
+    },
+    "checkout": {
+      "title": "Riepilogo dell'ordine",
+      "subtotal": "Totale parziale",
+      "shipping": "Metodo di spedizione",
+      "shipping_fee": "Spese di spedizione",
+      "service_fee": "Commissione di servizio",
+      "free": "Gratuito",
+      "total": "Totale",
+      "confirm": "Procedi al pagamento"
+    },
+    "text_under_resume": {
+      "circular_trade": " Economia Circolare: ",
+      "circular_text": " Privilegia l'usato locale e riduci la tua impronta di carbonio.",
+      "payment_note": "Transazioni sicure:",
+      "payment_text": "Protezione totale dei dati di pagamento tramite Stripe"
+    },
+    "empty": {
+      "title": "Il tuo carrello è attualmente vuoto",
+      "subtitle": "Sfoglia gli annunci e trova il libro, la fornitura o il corso che fa per te.",
+      "go_to_shop": "Esplora il negozio",
+      "back_to_home": "Torna alla home"
+    }
   },
   "catalog": {
     "seo_title": "Catalogo | EcoScolar",
@@ -85,9 +120,9 @@
     },
     "sort": {
       "label": "Ordina",
-      "recent": "Più recenti",
-      "price_asc": "Prezzo ↑",
-      "price_desc": "Prezzo ↓"
+      "recent": "Recenti",
+      "price_asc": "Crescente",
+      "price_desc": "Decrescente"
     },
     "empty": {
       "title": "Nessun risultato.",
@@ -273,10 +308,10 @@
   },
   "advert": {
     "actions": {
-      "buy_now": "Acquista ora",
+      "buy_now": "Aggiungi al carrello",
+      "already_in_cart": "Già nel carrello",
       "favorite_add": "Aggiungi ai preferiti",
-      "favorite_remove": "Rimuovi dai preferiti",
-      "notify": "Avvisami"
+      "favorite_remove": "Rimuovi dai preferiti"
     },
     "detail": {
       "featured": "In evidenza",
@@ -410,12 +445,7 @@
     },
     "actions": {
       "submit": "Invia il messaggio",
-      "cancel": "Annulla",
-      "view_requests": "Le mie richieste",
-      "confirm_cancel": "Sei sicuro di voler annullare? Le tue modifiche andranno perse.",
-      "confirm_cancel_title": "Annulla le modifiche",
-      "confirm_cancel_confirm": "Esci",
-      "confirm_cancel_stay": "Resta"
+      "view_requests": "Le mie richieste"
     },
     "success": "Grazie! Il tuo messaggio è stato inviato.",
     "error_submit": "Impossibile inviare il messaggio. Riprova più tardi.",

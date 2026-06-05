@@ -32,6 +32,7 @@ const submit = () => {
         {{ $t('catalog.hero.subtitle') }}
       </p>
     </div>
+
     <form
       role="search"
       class="relative mt-8 flex flex-col gap-3 sm:flex-row sm:items-stretch"
@@ -68,6 +69,7 @@ const submit = () => {
           :placeholder="$t('catalog.hero.search_placeholder')"
           :aria-labelledby="headingId"
           autocomplete="off"
+          @keydown.enter.prevent="submit"
         >
       </div>
       <button
