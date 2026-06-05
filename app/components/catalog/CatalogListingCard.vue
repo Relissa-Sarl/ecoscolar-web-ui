@@ -7,6 +7,7 @@ import {
   type CatalogListing
 } from '@/types/catalog'
 import { useFavoritesStore } from '~/stores/favoritesStore'
+import { useUsersStore } from '~/stores/usersStore'
 import type { FavoriteAdvertSummary, FavoriteAdvertInput } from '~/types/favorite'
 
 const localePath = useLocalePath()
@@ -25,6 +26,7 @@ const emit = defineEmits<{
 
 const cartStore = useCartStore()
 const favoritesStore = useFavoritesStore()
+const usersStore = useUsersStore()
 const toast = useToast()
 const { t } = useI18n()
 
@@ -80,7 +82,7 @@ const toggleFavorite = async () => {
 }
 
 onBeforeMount(() => {
-  if (!favoritesStore.hasLoaded && !favoritesStore.isLoading) {
+  if (usersStore.isAuthenticated && !favoritesStore.hasLoaded && !favoritesStore.isLoading) {
     void favoritesStore.loadFavorites().catch(() => undefined)
   }
 })
@@ -160,6 +162,7 @@ onBeforeMount(() => {
         </div>
         <div class="flex items-center gap-2">
           <button
+            v-if="usersStore.isAuthenticated"
             type="button"
             class="rounded-full border border-slate-200 p-2.5 transition hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-900"
             :aria-label="isFavorite ? $t('advert.actions.favorite_remove') : $t('advert.actions.favorite_add')"
