@@ -62,7 +62,6 @@ const handleSubmit = async () => {
     isSubmitting.value = false
   }
 }
-
 </script>
 
 <template>
