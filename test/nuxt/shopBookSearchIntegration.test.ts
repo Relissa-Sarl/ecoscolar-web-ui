@@ -15,7 +15,7 @@ describe('T8-4 · intégration UI recherche livre (CatalogSearchBanner)', () => 
       global: globalOptions
     })
 
-    await wrapper.get('button').trigger('click')
+    await wrapper.get('form').trigger('submit')
 
     expect(wrapper.emitted('search')).toHaveLength(1)
   })

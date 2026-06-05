@@ -4,7 +4,7 @@ const { locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
 const usersStore = useUsersStore()
 
-// Navigation principale
+// Main navigation
 const navigationLinks = computed(() => [
   {
     to: localePath('/shop'),
@@ -47,13 +47,13 @@ const visibleLinks = computed(() => {
   return navigationLinks.value.filter(link => !link.requiresAuth || usersStore.isAuthenticated)
 })
 
-// Actions du compte (Connexion, Profil, Déconnexion)
+// Account actions (Login, profile, logout)
 const authActions = computed(() => {
   if (usersStore.isAuthenticated) {
     return [
       {
         id: 'profile',
-        isAction: false, // Ce sera un NuxtLink
+        isAction: false,
         to: localePath('/me/profile'),
         labelKey: 'header.profile',
         icon: 'material-symbols:account-circle',
@@ -63,7 +63,7 @@ const authActions = computed(() => {
       },
       {
         id: 'logout',
-        isAction: true, // Ce sera un bouton
+        isAction: true,
         onClick: () => usersStore.logout(),
         labelKey: 'header.logout',
         icon: 'material-symbols:exit-to-app',
@@ -74,7 +74,7 @@ const authActions = computed(() => {
     ]
   }
 
-  // Si non connecté
+  // Guest
   return [
     {
       id: 'login',
@@ -150,13 +150,13 @@ const linkIsActive = (slug: string) => {
         </button>
       </nav>
 
-      <!-- Boucle dynamique pour les actions du compte -->
+      <!-- Dynamic lopp for the user actions -->
       <div class="flex items-center gap-4 text-sm font-medium">
         <template
           v-for="item in authActions"
           :key="item.id"
         >
-          <!-- Rendu Bouton (ex: Logout) -->
+          <!-- Action as button (ex: Logout) -->
           <button
             v-if="item.isAction"
             :class="item.baseClass"
@@ -169,7 +169,7 @@ const linkIsActive = (slug: string) => {
             <span :class="item.textClass">{{ $t(item.labelKey) }}</span>
           </button>
 
-          <!-- Rendu Lien (ex: Login, Profil) -->
+          <!-- Action as NuxtLink (ex: Login, Profil) -->
           <NuxtLink
             v-else
             :class="item.baseClass"
