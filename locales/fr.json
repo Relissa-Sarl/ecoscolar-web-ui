@@ -156,6 +156,37 @@
     }
   },
   "me": {
+    "purchases": {
+      "title": "Historique de mes achats",
+      "subtitle": "Retrouvez l'historique complet des manuels et fournitures que vous avez achetés sur EcoScolar.",
+      "loading": "Chargement de votre historique d'achats...",
+      "error": "Une erreur est survenue lors de la récupération de vos achats.",
+      "error_detail": "Veuillez rafraîchir la page ou réessayer ultérieurement.",
+      "empty_title": "Aucun achat enregistré",
+      "empty_placeholder": "Votre historique d'achats apparaîtra ici.",
+      "explore_cta": "Explorer la boutique",
+      "seller_label": "Vendeur",
+      "view_advert": "Voir l'annonce"
+    },
+    "sales": {
+      "title": "Historique de mes ventes",
+      "subtitle": "Suivez vos ventes, vos annonces actives et l'historique des articles que vous avez partagés avec la communauté EcoScolar.",
+      "loading": "Chargement de votre historique de ventes...",
+      "error": "Une erreur est survenue lors de la récupération de vos ventes.",
+      "error_detail": "Veuillez rafraîchir la page ou réessayer ultérieurement.",
+      "empty_title": "Aucune vente enregistrée",
+      "empty_placeholder": "Votre historique de ventes apparaîtra ici.",
+      "sell_cta": "Créer une annonce",
+      "buyer_label": "Acheté par",
+      "view": "Voir",
+      "edit": "Modifier",
+      "status": {
+        "active": "En vente",
+        "sold": "Vendu",
+        "paused": "En pause",
+        "expired": "Expiré"
+      }
+    },
     "adverts": {
       "title": "Mes Annonces",
       "description": "Gérez vos annonces en vente et vos services de tutorat.",
@@ -565,7 +596,9 @@
     "language": "Langues",
     "location": "Localisation",
     "favorites": "Favoris",
-    "sales": "Ventes",
+    "sales": "Mes annonces",
+    "purchases_history": "Mes achats",
+    "sales_history": "Mes ventes",
     "support_requests": "Mes demandes",
     "edit": "Modifier le profil",
     "delete": "Supprimer le compte",
