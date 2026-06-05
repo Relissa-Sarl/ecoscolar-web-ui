@@ -1,11 +1,30 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createHistoryService } from '../../app/services/historyService'
+import { createHistoryService, type Purchase, type MySaleAdvert } from '../../app/services/historyService'
+import { AdvertStatus } from '../../app/utils/enum/advertStatus'
 
-const baseHistoryItem = {
-  id: 'item-1',
-  date: '2026-05-21T00:00:00Z',
-  sellerName: 'John Doe',
-  imageUrl: 'https://example.com/image.jpg'
+const mockPurchase: Purchase = {
+  id: 'txn-1',
+  advertId: 'adv-1',
+  advertTitle: 'Livre de mathématiques',
+  price: 25.5,
+  purchaseDate: '2026-05-21T00:00:00Z',
+  status: 'COMPLETED',
+  imageUrl: 'https://example.com/image.jpg',
+  sellerName: 'JohnDoe'
+}
+
+const mockSale: MySaleAdvert = {
+  id: 1,
+  type: 'BOOK',
+  title: 'Calculatrice scientifique',
+  price: 45,
+  publicationDate: '2026-05-20T00:00:00Z',
+  notificationDate: '2026-05-21T00:00:00Z',
+  status: AdvertStatus.SOLD,
+  userId: 'user-1',
+  sellerPseudo: 'MyPseudo',
+  primaryImage: 'https://example.com/calc.jpg',
+  buyerName: 'JaneSmith'
 }
 
 describe('historyService', () => {
@@ -13,25 +32,49 @@ describe('historyService', () => {
     vi.clearAllMocks()
   })
 
-  it('loads purchase history', async () => {
-    const apiClient = vi.fn().mockResolvedValueOnce([baseHistoryItem])
-    const service = createHistoryService({ apiClient })
+  describe('getPurchaseHistory', () => {
+    it('fetches purchase history successfully', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce([mockPurchase])
+      const service = createHistoryService({ apiClient })
 
-    const result = await service.getPurchaseHistory()
+      const result = await service.getPurchaseHistory()
 
-    expect(apiClient).toHaveBeenCalledWith('/me/purchases')
+      expect(apiClient).toHaveBeenCalledWith('/me/purchases')
+      expect(result).toHaveLength(1)
+      expect(result[0]).toEqual(mockPurchase)
+    })
 
-    expect(result).toEqual([baseHistoryItem])
+    it('returns empty array when api returns null or undefined', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce(null)
+      const service = createHistoryService({ apiClient })
+
+      const result = await service.getPurchaseHistory()
+
+      expect(apiClient).toHaveBeenCalledWith('/me/purchases')
+      expect(result).toEqual([])
+    })
   })
 
-  it('loads sales history', async () => {
-    // On répète le même schéma (Arrange, Act, Assert) pour les ventes
-    const apiClient = vi.fn().mockResolvedValueOnce([baseHistoryItem])
-    const service = createHistoryService({ apiClient })
+  describe('getSalesHistory', () => {
+    it('fetches sales history successfully', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce([mockSale])
+      const service = createHistoryService({ apiClient })
 
-    const result = await service.getSalesHistory()
+      const result = await service.getSalesHistory()
 
-    expect(apiClient).toHaveBeenCalledWith('/me/sales')
-    expect(result).toEqual([baseHistoryItem])
+      expect(apiClient).toHaveBeenCalledWith('/me/sales')
+      expect(result).toHaveLength(1)
+      expect(result[0]).toEqual(mockSale)
+    })
+
+    it('returns empty array when api returns null or undefined', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce(null)
+      const service = createHistoryService({ apiClient })
+
+      const result = await service.getSalesHistory()
+
+      expect(apiClient).toHaveBeenCalledWith('/me/sales')
+      expect(result).toEqual([])
+    })
   })
 })
