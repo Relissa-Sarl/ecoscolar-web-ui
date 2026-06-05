@@ -4,7 +4,7 @@ import type { Advert } from '@/types/advert'
 export type FavoriteAdvertSummary = Pick<
   Advert,
   'id' | 'title' | 'type' | 'condition' | 'price' | 'image'
->
+> & { seller?: string }
 
 /** Identifiant annonce côté UI (comparaisons, routes) — l'API renvoie `id` en number. */
 export const getFavoriteAdvertId = (favorite: FavoriteAdvert): string => String(favorite.id)

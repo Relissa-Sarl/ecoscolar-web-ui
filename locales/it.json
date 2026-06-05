@@ -42,8 +42,43 @@
     "impact_unit": "risparmiati"
   },
   "cart": {
+    "seo_title": "Il mio carrello | EcoScolar",
     "title": "Il mio carrello",
-    "empty": "Il tuo carrello è attualmente vuoto"
+    "remove_from_cart": "Rimuovi dal carrello",
+    "clear": "Svuota il carrello",
+    "added_success": "Articolo aggiunto al carrello!",
+    "tva": "IVA e costi inclusi",
+    "one_advert": "articolo",
+    "many_adverts": "articoli",
+    "items": {
+      "books": "Libri",
+      "supplies": "Forniture",
+      "tutoring": "Corsi",
+      "quantity": "Quantità",
+      "vendor": "Venditore"
+    },
+    "checkout": {
+      "title": "Riepilogo dell'ordine",
+      "subtotal": "Totale parziale",
+      "shipping": "Metodo di spedizione",
+      "shipping_fee": "Spese di spedizione",
+      "service_fee": "Commissione di servizio",
+      "free": "Gratuito",
+      "total": "Totale",
+      "confirm": "Procedi al pagamento"
+    },
+    "text_under_resume": {
+      "circular_trade": " Economia Circolare: ",
+      "circular_text": " Privilegia l'usato locale e riduci la tua impronta di carbonio.",
+      "payment_note": "Transazioni sicure:",
+      "payment_text": "Protezione totale dei dati di pagamento tramite Stripe"
+    },
+    "empty": {
+      "title": "Il tuo carrello è attualmente vuoto",
+      "subtitle": "Sfoglia gli annunci e trova il libro, la fornitura o il corso che fa per te.",
+      "go_to_shop": "Esplora il negozio",
+      "back_to_home": "Torna alla home"
+    }
   },
   "catalog": {
     "seo_title": "Catalogo | EcoScolar",
@@ -121,6 +156,37 @@
     }
   },
   "me": {
+    "purchases": {
+      "title": "Cronologia dei miei acquisti",
+      "subtitle": "Trova la cronologia completa dei manuali e dei materiali scolastici che hai acquistato su EcoScolar.",
+      "loading": "Caricamento della cronologia degli acquisti...",
+      "error": "Si è verificato un errore durante il recupero dei tuoi acquisti.",
+      "error_detail": "Aggiorna la pagina o riprova più tardi.",
+      "empty_title": "Nessun acquisto registrato",
+      "empty_placeholder": "La cronologia dei tuoi acquisti apparir\u00e0 qui.",
+      "explore_cta": "Esplora il negozio",
+      "seller_label": "Venditore",
+      "view_advert": "Vedi l'annuncio"
+    },
+    "sales": {
+      "title": "Cronologia delle mie vendite",
+      "subtitle": "Segui le tue vendite, gli annunci attivi e la cronologia degli articoli che hai condiviso con la comunità EcoScolar.",
+      "loading": "Caricamento della cronologia delle vendite...",
+      "error": "Si è verificato un errore durante il recupero delle tue vendite.",
+      "error_detail": "Aggiorna la pagina o riprova più tardi.",
+      "empty_title": "Nessuna vendita registrata",
+      "empty_placeholder": "La cronologia delle tue vendite apparir\u00e0 qui.",
+      "sell_cta": "Crea un annuncio",
+      "buyer_label": "Acquistato da",
+      "view": "Vedi",
+      "edit": "Modifica",
+      "status": {
+        "active": "In vendita",
+        "sold": "Venduto",
+        "paused": "In pausa",
+        "expired": "Scaduto"
+      }
+    },
     "adverts": {
       "title": "I miei annunci",
       "description": "Gestisci i tuoi annunci di vendita e i tuoi servizi di tutoraggio.",
@@ -242,7 +308,8 @@
   },
   "advert": {
     "actions": {
-      "buy_now": "Acquista ora",
+      "buy_now": "Aggiungi al carrello",
+      "already_in_cart": "Già nel carrello",
       "favorite_add": "Aggiungi ai preferiti",
       "favorite_remove": "Rimuovi dai preferiti"
     },
@@ -530,7 +597,9 @@
     "language": "Lingue",
     "location": "Localizzazione",
     "favorites": "Preferiti",
-    "sales": "Vendite",
+    "sales": "I miei annunci",
+    "purchases_history": "I miei acquisti",
+    "sales_history": "Le mie vendite",
     "support_requests": "Le mie richieste",
     "edit": "Modifica profilo",
     "delete": "Elimina account",
