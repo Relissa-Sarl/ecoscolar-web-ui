@@ -29,7 +29,7 @@ describe('UC-02 · intégration support (service → API)', () => {
     vi.clearAllMocks()
   })
 
-  it('enchaîne submit puis list via /support et /support/mine', async () => {
+  it('enchaîne submit puis list via /tickets', async () => {
     const apiClient = vi.fn()
       .mockResolvedValueOnce({ id: 1 })
       .mockResolvedValueOnce([buildTicket(1)])
@@ -43,7 +43,7 @@ describe('UC-02 · intégration support (service → API)', () => {
     })
     const tickets = await service.listMyTickets()
 
-    expect(apiClient).toHaveBeenNthCalledWith(1, '/support', {
+    expect(apiClient).toHaveBeenNthCalledWith(1, '/tickets', {
       method: 'POST',
       body: {
         email: 'user@example.com',
@@ -52,12 +52,12 @@ describe('UC-02 · intégration support (service → API)', () => {
       },
       skipAuth: true
     })
-    expect(apiClient).toHaveBeenNthCalledWith(2, '/support/mine')
+    expect(apiClient).toHaveBeenNthCalledWith(2, '/tickets')
     expect(tickets).toHaveLength(1)
     expect(tickets[0]?.subject).toBe('Suivi de commande')
   })
 
-  it('propage une 401 quand /support/mine refuse l’accès', async () => {
+  it('propage une 401 quand /tickets refuse l’accès', async () => {
     const apiClient = vi.fn().mockRejectedValue({ statusCode: 401 })
     const service = createSupportService({ apiClient })
 
