@@ -64,7 +64,6 @@ const subtotal = computed(() => {
 
 const shippingCost = computed(() => 0)
 
-
 const total = computed(() => {
   return subtotal.value + shippingCost.value
 })
