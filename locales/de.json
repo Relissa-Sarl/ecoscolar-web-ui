@@ -62,6 +62,8 @@
       "subtotal": "Zwischensumme",
       "shipping": "Versandart",
       "shipping_fee": "Versandkosten",
+      "hand-to-hand": "Abholung",
+      "post": "Postversand",
       "service_fee": "Servicegebühr",
       "free": "Kostenlos",
       "total": "Gesamtsumme",
@@ -266,7 +268,6 @@
     "createAdvert": "Anzeige erstellen",
     "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
     "creationFailed": "Beim Erstellen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
-    
   },
   "modifyAdvert": {
     "existingAdvert": "Anzeige",
@@ -571,7 +572,7 @@
     "support_requests": "Meine Anfragen",
     "edit": "Profil bearbeiten",
     "delete": "Konto löschen",
-    "settings" : {
+    "settings": {
       "title": "Mein Profil bearbeiten",
       "subtitle": "Aktualisieren Sie Ihre persönlichen Informationen für eine personalisierte Erfahrung.",
       "nickname_label": "Benutzername",
@@ -591,6 +592,6 @@
     },
     "public": {
       "error": "Es ist derzeit nicht möglich, das Benutzerprofil zu laden. Es könnte sein, dass der Benutzer sein Profil nicht öffentlich gemacht hat oder dass das Profil gelöscht wurde."
-     }
+    }
   }
 }

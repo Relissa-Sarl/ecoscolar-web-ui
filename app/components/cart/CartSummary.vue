@@ -8,6 +8,8 @@ defineProps<{
 defineEmits<{
   (e: 'checkout'): void
 }>()
+
+const shippingMethod = defineModel<'post' | 'handToHand'>({ default: 'post' })
 </script>
 
 <template>
@@ -27,12 +29,31 @@ defineEmits<{
 
         <div class="flex justify-between text-slate-500 dark:text-slate-400">
           <span>{{ $t('cart.checkout.shipping') }}</span>
-          <span class="font-semibold text-slate-800 dark:text-slate-200">Main propre</span>
+          <select
+            v-model="shippingMethod"
+            class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-semibold rounded-lg px-2 py-1 outline-none cursor-pointer focus:ring-2 focus:ring-emerald-500 transition-all"
+          >
+            <option value="post">
+              {{ $t('cart.checkout.post') }}
+            </option>
+            <option value="handToHand">
+              {{ $t('cart.checkout.hand-to-hand') }}
+            </option>
+          </select>
         </div>
 
         <div class="flex justify-between text-slate-500 dark:text-slate-400">
           <span>{{ $t('cart.checkout.shipping_fee') }}</span>
-          <span class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+          <span
+            v-if="shippingCost > 0"
+            class="font-semibold text-slate-800 dark:text-slate-200"
+          >
+            {{ shippingCost.toFixed(2) }} CHF
+          </span>
+          <span
+            v-else
+            class="font-bold text-emerald-600 dark:text-emerald-400"
+          >
             {{ $t('cart.checkout.free') }}
           </span>
         </div>

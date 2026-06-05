@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 import CartEmpty from '~/components/cart/CartEmpty.vue'
 import CartHeader from '~/components/cart/CartHeader.vue'
 import CartSummary from '~/components/cart/CartSummary.vue'
@@ -57,12 +57,16 @@ const clearCart = () => {
   void cartStore.clearCart()
 }
 
+const shippingMethod = ref<'post' | 'handToHand'>('post')
+
 // Calculations
 const subtotal = computed(() => {
   return cartItems.value.reduce((sum, item) => sum + (item.price * item.quantity), 0)
 })
 
-const shippingCost = computed(() => 0)
+const shippingCost = computed(() => {
+  return shippingMethod.value === 'post' ? 7 : 0
+})
 
 const total = computed(() => {
   return subtotal.value + shippingCost.value
@@ -96,6 +100,7 @@ const itemsCount = computed(() => {
 
         <!-- Right: Summary & Order breakdown -->
         <CartSummary
+          v-model="shippingMethod"
           :subtotal="subtotal"
           :shipping-cost="shippingCost"
           :total="total"

@@ -62,6 +62,8 @@
       "subtotal": "Totale parziale",
       "shipping": "Metodo di spedizione",
       "shipping_fee": "Spese di spedizione",
+      "hand-to-hand": "A mani pulite",
+      "post": "Posta",
       "service_fee": "Commissione di servizio",
       "free": "Gratuito",
       "total": "Totale",
@@ -570,7 +572,7 @@
     "support_requests": "Le mie richieste",
     "edit": "Modifica profilo",
     "delete": "Elimina account",
-    "settings" : {
+    "settings": {
       "title": "Modifica il mio profilo",
       "subtitle": "Aggiorna le tue informazioni personali per un'esperienza personalizzata.",
       "nickname_label": "Nickname",
