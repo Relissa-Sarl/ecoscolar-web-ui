@@ -80,6 +80,16 @@
       "subtitle": "Stöbern Sie in den Anzeigen und finden Sie das passende Buch, Schulmaterial oder den passenden Kurs.",
       "go_to_shop": "Shop durchsuchen",
       "back_to_home": "Zurück zur Startseite"
+    },
+    "success": {
+      "title": "Zahlung erfolgreich!",
+      "subtitle": "Vielen Dank für Ihre Bestellung. Ihre Transaktion wurde erfolgreich abgeschlossen.",
+      "order_number": "Bestellnummer",
+      "amount_paid": "Bezahlter Betrag",
+      "status": "Zahlungsstatus",
+      "confirmed": "Bestätigt",
+      "back_home": "Zurück zur Startseite",
+      "continue_shopping": "Weiter einkaufen"
     }
   },
   "catalog": {

@@ -80,6 +80,16 @@
       "subtitle": "Sfoglia gli annunci e trova il libro, la fornitura o il corso che fa per te.",
       "go_to_shop": "Esplora il negozio",
       "back_to_home": "Torna alla home"
+    },
+    "success": {
+      "title": "Pagamento Completato!",
+      "subtitle": "Grazie per il tuo ordine. La transazione è stata completata con successo.",
+      "order_number": "Numero dell'ordine",
+      "amount_paid": "Importo pagato",
+      "status": "Stato del pagamento",
+      "confirmed": "Confermato",
+      "back_home": "Torna alla home",
+      "continue_shopping": "Continua lo shopping"
     }
   },
   "catalog": {

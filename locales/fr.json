@@ -80,6 +80,16 @@
       "subtitle": "Parcourez les annonces et trouvez le livre, la fourniture ou le cours qui vous convient.",
       "go_to_shop": "Explorer la boutique",
       "back_to_home": "Retour à l'accueil"
+    },
+    "success": {
+      "title": "Paiement Réussi !",
+      "subtitle": "Merci pour votre commande. Votre transaction a été validée avec succès.",
+      "order_number": "Numéro de commande",
+      "amount_paid": "Montant payé",
+      "status": "Statut du paiement",
+      "confirmed": "Confirmé",
+      "back_home": "Retourner à l'accueil",
+      "continue_shopping": "Continuer mes achats"
     }
   },
   "catalog": {
