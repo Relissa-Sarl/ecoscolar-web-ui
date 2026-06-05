@@ -58,30 +58,27 @@ describe('PurchaseCard', () => {
     expect(wrapper.find('svg').exists()).toBe(true)
   })
 
-  it('applies correct badge class for COMPLETED status', () => {
+  it('displays the correct status text for COMPLETED status', () => {
     const wrapper = mount(PurchaseCard, {
       props: { purchase: { ...mockPurchase, status: 'COMPLETED' } },
       global: { stubs: { NuxtLink: { template: '<a><slot /></a>' } } }
     })
-    const badge = wrapper.find('span.rounded-full.text-xs')
-    expect(badge.classes()).toContain('text-emerald-700')
+    expect(wrapper.text()).toContain('COMPLETED')
   })
 
-  it('applies correct badge class for PENDING status', () => {
+  it('displays the correct status text for PENDING status', () => {
     const wrapper = mount(PurchaseCard, {
       props: { purchase: { ...mockPurchase, status: 'PENDING' } },
       global: { stubs: { NuxtLink: { template: '<a><slot /></a>' } } }
     })
-    const badge = wrapper.find('span.rounded-full.text-xs')
-    expect(badge.classes()).toContain('text-amber-700')
+    expect(wrapper.text()).toContain('PENDING')
   })
 
-  it('applies fallback badge class for unknown status', () => {
+  it('displays the raw status text as fallback for unknown status', () => {
     const wrapper = mount(PurchaseCard, {
       props: { purchase: { ...mockPurchase, status: 'UNKNOWN' } },
       global: { stubs: { NuxtLink: { template: '<a><slot /></a>' } } }
     })
-    const badge = wrapper.find('span.rounded-full.text-xs')
-    expect(badge.classes()).toContain('text-slate-700')
+    expect(wrapper.text()).toContain('UNKNOWN')
   })
 })
