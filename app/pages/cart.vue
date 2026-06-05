@@ -12,9 +12,10 @@ const localePath = useLocalePath()
     </p>
     <NuxtLink
       :to="localePath('/')"
-      class="mt-6 inline-flex items-center gap-2 text-emerald-600 underline"
+      class="mt-6 inline-flex items-center gap-2 text-emerald-600 no-underline"
     >
-      <span aria-hidden="true">←</span> {{ $t('common.back_to_home') }}
+      <span aria-hidden="true">←</span>
+      <span class="border-b border-current pb-px">{{ $t('common.back_to_home') }}</span>
     </NuxtLink>
   </div>
 </template>

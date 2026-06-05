@@ -85,9 +85,9 @@
     },
     "sort": {
       "label": "Trier",
-      "recent": "Plus récent",
-      "price_asc": "Prix ↑",
-      "price_desc": "Prix ↓"
+      "recent": "Récents",
+      "price_asc": "Croissant",
+      "price_desc": "Décroissant"
     },
     "empty": {
       "title": "Aucun résultat ne correspond à vos critères.",
@@ -242,8 +242,7 @@
     "actions": {
       "buy_now": "Acheter maintenant",
       "favorite_add": "Ajouter aux favoris",
-      "favorite_remove": "Retirer des favoris",
-      "notify": "M’alerter"
+      "favorite_remove": "Retirer des favoris"
     },
     "detail": {
       "featured": "En vedette",

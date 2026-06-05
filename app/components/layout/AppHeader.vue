@@ -52,10 +52,6 @@ const linkIsActive = (slug: string) => {
         class="flex items-center gap-2"
         aria-label="Sélecteur de langue"
       >
-        <span
-          class="text-sm text-gray-500 dark:text-gray-400"
-          aria-hidden="true"
-        >{{ $t('header.language') }}:</span>
         <button
           v-for="l in locales"
           :key="l.code"

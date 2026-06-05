@@ -86,8 +86,8 @@
     "sort": {
       "label": "Sortieren",
       "recent": "Neueste",
-      "price_asc": "Preis ↑",
-      "price_desc": "Preis ↓"
+      "price_asc": "Aufsteigend",
+      "price_desc": "Absteigend"
     },
     "empty": {
       "title": "Keine passenden Einträge.",
@@ -245,8 +245,7 @@
     "actions": {
       "buy_now": "Jetzt kaufen",
       "favorite_add": "Zu Favoriten hinzufügen",
-      "favorite_remove": "Aus Favoriten entfernen",
-      "notify": "Benachrichtige mich"
+      "favorite_remove": "Aus Favoriten entfernen"
     },
     "detail": {
       "featured": "Empfohlen",
