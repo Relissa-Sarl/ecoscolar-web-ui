@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { onBeforeMount, ref, computed } from 'vue'
 import { useLocalePath } from '#imports'
 import {
   CATALOG_CONDITION_BADGE_CLASS,
   CATALOG_SERVICE_BADGE_CLASS,
   type CatalogListing
 } from '@/types/catalog'
+import { useFavoritesStore } from '~/stores/favoritesStore'
+import type { FavoriteAdvertSummary, FavoriteAdvertInput } from '~/types/favorite'
 
 const localePath = useLocalePath()
 
@@ -15,18 +18,40 @@ const props = defineProps<{
 const detailLink = computed(() => localePath(`/adverts/${props.listing.id}`))
 
 const emit = defineEmits<{
-  favoriteToggle: []
+  favoriteToggle: [value: boolean]
   cartAdd: []
   bookLesson: []
 }>()
 
 const cartStore = useCartStore()
+const favoritesStore = useFavoritesStore()
 const toast = useToast()
 const { t } = useI18n()
+
+const isSubmittingFavorite = ref(false)
 
 const isInCart = computed(() =>
   cartStore.items.some(item => item.listing.id === String(props.listing.id))
 )
+
+const isFavorite = computed(() =>
+  favoritesStore.isFavorite(String(props.listing.id))
+)
+
+const favoriteSummary = computed((): FavoriteAdvertSummary => ({
+  id: String(props.listing.id),
+  title: props.listing.title,
+  type: props.listing.type,
+  condition: props.listing.itemCondition ?? '',
+  price: props.listing.price,
+  image: props.listing.imageUrl,
+  seller: props.listing.seller
+}))
+
+const favoriteInput = computed((): FavoriteAdvertInput => ({
+  advertId: String(props.listing.id),
+  advert: favoriteSummary.value
+}))
 
 const handleCartAdd = async () => {
   if (isInCart.value) return
@@ -37,6 +62,28 @@ const handleCartAdd = async () => {
   })
   emit('cartAdd')
 }
+
+const toggleFavorite = async () => {
+  if (isSubmittingFavorite.value) return
+  isSubmittingFavorite.value = true
+  try {
+    const result = await favoritesStore.toggleFavorite(favoriteInput.value)
+    emit('favoriteToggle', result.isFavorite)
+  } catch {
+    toast.add({
+      title: t('favorites.status.error'),
+      color: 'error'
+    })
+  } finally {
+    isSubmittingFavorite.value = false
+  }
+}
+
+onBeforeMount(() => {
+  if (!favoritesStore.hasLoaded && !favoritesStore.isLoading) {
+    void favoritesStore.loadFavorites().catch(() => undefined)
+  }
+})
 </script>
 
 <template>
@@ -115,10 +162,12 @@ const handleCartAdd = async () => {
           <button
             type="button"
             class="rounded-full border border-slate-200 p-2.5 transition hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-900"
-            :aria-label="$t('advert.actions.favorite_add')"
-            @click="$emit('favoriteToggle')"
+            :aria-label="isFavorite ? $t('advert.actions.favorite_remove') : $t('advert.actions.favorite_add')"
+            :disabled="isSubmittingFavorite"
+            @click="toggleFavorite"
           >
             <svg
+              v-if="!isFavorite"
               class="size-5"
               aria-hidden="true"
               fill="none"
@@ -131,6 +180,15 @@ const handleCartAdd = async () => {
                 stroke-linejoin="round"
                 d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
               />
+            </svg>
+            <svg
+              v-else
+              class="size-5 text-red-500"
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
             </svg>
           </button>
 
