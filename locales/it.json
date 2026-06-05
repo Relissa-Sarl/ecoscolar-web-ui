@@ -379,12 +379,7 @@
     },
     "actions": {
       "submit": "Invia il messaggio",
-      "cancel": "Annulla",
-      "view_requests": "Le mie richieste",
-      "confirm_cancel": "Sei sicuro di voler annullare? Le tue modifiche andranno perse.",
-      "confirm_cancel_title": "Annulla le modifiche",
-      "confirm_cancel_confirm": "Esci",
-      "confirm_cancel_stay": "Resta"
+      "view_requests": "Le mie richieste"
     },
     "success": "Grazie! Il tuo messaggio è stato inviato.",
     "error_submit": "Impossibile inviare il messaggio. Riprova più tardi.",
