@@ -56,6 +56,7 @@ export const useCartStore = defineStore('cart', () => {
       id: String(dto.advertId),
       title: dto.title,
       price: dto.price,
+      type: dto.type as AdvertType,
       categoryTab,
       metaLineKey,
       location: '', // not returned by API

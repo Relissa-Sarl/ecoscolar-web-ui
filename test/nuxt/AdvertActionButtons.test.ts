@@ -130,6 +130,7 @@ describe('AdvertActionButtons', () => {
         id: 'advert-123',
         title: 'Chemistry Book',
         price: 45.0,
+        type: AdvertType.BOOK,
         categoryTab: 'textbooks',
         metaLineKey: 'catalog.card.meta_textbooks',
         location: '',
