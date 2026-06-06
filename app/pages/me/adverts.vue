@@ -103,7 +103,7 @@ onMounted(async () => {
           </div>
           <NuxtLink
             :to="localePath('/adverts/create-advert')"
-            class="ml-auto rounded-xl bg-[#105B53] px-4 py-2 text-sm font-medium text-white hover:bg-[#0c4540] dark:text-gray-300"
+            class="ml-auto rounded-xl text-sm font-medium px-4 py-2 bg-emerald-800 text-white hover:bg-emerald-700 transition-colors"
           >
             {{ $t('me.adverts.add') }}
           </NuxtLink>
