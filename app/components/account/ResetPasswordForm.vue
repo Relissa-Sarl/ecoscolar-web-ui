@@ -7,12 +7,19 @@ const usersStore = useUsersStore()
 
 const code = route.query.token as string
 
+// Initialize the form state with reactive properties for email, new password, and confirm password fields.
+// The email field is pre-filled with the value from the query parameter if available, allowing for a smoother
+// user experience when they arrive at the reset password page via a link in their email.
 const form = reactive({
   email: route.query.email as string || '',
   newPassword: '',
   confirmPassword: ''
 })
 
+/**
+ * Handle the form submission for resetting the user's password.
+ * This function gathers the necessary data from the form,
+ */
 const handleSubmit = async () => {
   const formData: ResetPasswordInput = {
     email: form.email,
@@ -23,6 +30,7 @@ const handleSubmit = async () => {
   await usersStore.resetPassword(formData, form.confirmPassword)
 }
 
+// Extract and format any errors from the users store to be displayed in the form
 const { displayErrors } = useFormErrors(() => usersStore.errors, 'reset_password.errors')
 </script>
 
@@ -82,7 +90,7 @@ const { displayErrors } = useFormErrors(() => usersStore.errors, 'reset_password
     <button
       type="submit"
       :disabled="usersStore.isLoading"
-      class="w-full mt-2 py-3 bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-semibold rounded-xl tracking-wide transition-all active:scale-[0.99] disabled:opacity-50 disabled:pointer-events-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 outline-none"
+      class="w-full mt-2 py-3 bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-semibold rounded-xl tracking-wide transition-all active:scale-[0.99] disabled:opacity-50 disabled:pointer-events-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 outline-none cursor-pointer"
     >
       {{ usersStore.isLoading ? $t('reset_password.status.loading') : $t('reset_password.submit_button') }}
     </button>
