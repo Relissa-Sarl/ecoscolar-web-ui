@@ -25,7 +25,7 @@ describe('UC-02 · supportService', () => {
     })
 
     expect(response.id).toBe(42)
-    expect(apiClient).toHaveBeenCalledWith('/support', {
+    expect(apiClient).toHaveBeenCalledWith('/tickets', {
       method: 'POST',
       body: {
         email: 'user@example.com',
@@ -44,7 +44,7 @@ describe('UC-02 · supportService', () => {
 
     expect(tickets).toHaveLength(1)
     expect(tickets[0]).not.toHaveProperty('message')
-    expect(apiClient).toHaveBeenCalledWith('/support/mine')
+    expect(apiClient).toHaveBeenCalledWith('/tickets')
   })
 
   it('loads ticket detail and conversation', async () => {
@@ -80,7 +80,7 @@ describe('UC-02 · supportService', () => {
     expect(detail.message).toBe('Description initiale.')
     expect(messages).toHaveLength(1)
     expect(sent.isFromSupport).toBe(false)
-    expect(apiClient).toHaveBeenCalledWith('/support/mine/1/messages', {
+    expect(apiClient).toHaveBeenCalledWith('/tickets/1/messages', {
       method: 'POST',
       body: { message: 'Merci pour la réponse.' }
     })

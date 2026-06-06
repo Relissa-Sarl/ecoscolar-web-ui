@@ -24,7 +24,7 @@ const profileForm = ref({
 })
 
 if (usersStore.user?.isOnboarded) {
-  spokenLanguages.value = usersStore.user?.spokenLanguages || []
+  spokenLanguages.value = usersStore.user?.languages || []
 }
 
 const languageOptions = [
@@ -40,8 +40,8 @@ const levelOptions = ['maternelle', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2']
  */
 const addLanguage = () => {
   spokenLanguages.value.push({
-    language: '',
-    level: ''
+    label: '',
+    languageLevel: ''
   })
 }
 
@@ -59,8 +59,8 @@ const removeLanguage = (index: number) => {
  */
 const onLanguageChange = (index: number) => {
   // If the same language is selected more than once, remove the duplicate and alert the user
-  const selectedLang = spokenLanguages.value[index]?.language
-  const duplicateIndex = spokenLanguages.value.findIndex((l, i) => l.language === selectedLang && i !== index)
+  const selectedLang = spokenLanguages.value[index]?.label
+  const duplicateIndex = spokenLanguages.value.findIndex((l, i) => l.label === selectedLang && i !== index)
   if (duplicateIndex !== -1 && selectedLang) {
     spokenLanguages.value.splice(duplicateIndex, 1)
     alert(t(`${props.traductionBasePath}.language_duplicate`, { language: t(selectedLang) }))
@@ -73,7 +73,7 @@ const onLanguageChange = (index: number) => {
 const handleSubmit = () => {
   const formData = {
     ...profileForm.value,
-    spokenLanguages: spokenLanguages.value.filter(l => l.language && l.level)
+    languages: spokenLanguages.value.filter(l => l.label && l.languageLevel)
   }
 
   usersStore.updateProfile(formData)
@@ -183,7 +183,7 @@ const handleSubmit = () => {
 
       <div
         v-for="(lang, index) in spokenLanguages"
-        :key="'lang-' + lang.language"
+        :key="'lang-' + lang.label"
         class="flex items-end gap-4"
       >
         <div class="flex-1">
@@ -195,7 +195,7 @@ const handleSubmit = () => {
           </label>
           <select
             :id="`lang-select-${index}`"
-            v-model="lang.language"
+            v-model="lang.label"
             required
             class="form-input"
             @change="onLanguageChange(index)"
@@ -225,7 +225,7 @@ const handleSubmit = () => {
           </label>
           <select
             :id="`level-select-${index}`"
-            v-model="lang.level"
+            v-model="lang.languageLevel"
             required
             class="form-input"
           >

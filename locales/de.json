@@ -168,6 +168,37 @@
     }
   },
   "me": {
+    "purchases": {
+      "title": "Meine Kaufhistorie",
+      "subtitle": "Finden Sie die vollständige Historie der Bücher und Schulmaterialien, die Sie auf EcoScolar gekauft haben.",
+      "loading": "Ihre Kaufhistorie wird geladen...",
+      "error": "Beim Abrufen Ihrer Käufe ist ein Fehler aufgetreten.",
+      "error_detail": "Bitte aktualisieren Sie die Seite oder versuchen Sie es später erneut.",
+      "empty_title": "Keine Käufe erfasst",
+      "empty_placeholder": "Ihre Kaufhistorie wird hier angezeigt.",
+      "explore_cta": "Marktplatz erkunden",
+      "seller_label": "Verkäufer",
+      "view_advert": "Inserat ansehen"
+    },
+    "sales": {
+      "title": "Meine Verkaufshistorie",
+      "subtitle": "Verfolgen Sie Ihre Verkäufe, aktiven Anzeigen und die Geschichte der Artikel, die Sie mit der EcoScolar-Gemeinschaft geteilt haben.",
+      "loading": "Ihre Verkaufshistorie wird geladen...",
+      "error": "Beim Abrufen Ihrer Verkäufe ist ein Fehler aufgetreten.",
+      "error_detail": "Bitte aktualisieren Sie die Seite oder versuchen Sie es später erneut.",
+      "empty_title": "Keine Verkäufe erfasst",
+      "empty_placeholder": "Ihre Verkaufshistorie wird hier angezeigt.",
+      "sell_cta": "Inserat erstellen",
+      "buyer_label": "Gekauft von",
+      "view": "Ansehen",
+      "edit": "Bearbeiten",
+      "status": {
+        "active": "Zum Verkauf",
+        "sold": "Verkauft",
+        "paused": "Pausiert",
+        "expired": "Abgelaufen"
+      }
+    },
     "adverts": {
       "title": "Meine Anzeigen",
       "description": "Verwalten Sie Ihre Verkaufsanzeigen und Ihre Nachhilfeleistungen.",
@@ -578,7 +609,9 @@
     "language": "Sprachen",
     "location": "Standort",
     "favorites": "Favoriten",
-    "sales": "Verkäufe",
+    "sales": "Meine Anzeigen",
+    "purchases_history": "Meine Käufe",
+    "sales_history": "Meine Verkäufe",
     "support_requests": "Meine Anfragen",
     "edit": "Profil bearbeiten",
     "delete": "Konto löschen",
@@ -591,6 +624,7 @@
       "pc_label": "Postleitzahl",
       "dob_label": "Geburtsdatum",
       "languages_title": "Gesprochene Sprachen",
+      "languages_empty": "Keine Sprache hinzugefügt.",
       "language_label": "Sprache",
       "level_label": "Niveau",
       "level_native": "Muttersprache",

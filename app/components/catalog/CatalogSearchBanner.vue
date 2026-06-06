@@ -21,9 +21,6 @@ const submit = () => {
     class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-950 px-6 py-10 text-white shadow-lg sm:px-10"
     :aria-labelledby="headingId"
   >
-    <div class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
-    <div class="pointer-events-none absolute -bottom-16 -left-10 h-48 w-48 rounded-full bg-emerald-600/40 blur-3xl" />
-
     <div class="relative max-w-3xl">
       <h2
         :id="headingId"
@@ -79,7 +76,6 @@ const submit = () => {
         type="submit"
         class="inline-flex shrink-0 items-center justify-center rounded-full bg-emerald-950 px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-black focus:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:opacity-70"
         :disabled="loading"
-        @click="submit"
       >
         {{ $t('catalog.hero.search_cta') }}
       </button>

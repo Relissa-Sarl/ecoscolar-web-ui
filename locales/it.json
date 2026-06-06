@@ -168,6 +168,37 @@
     }
   },
   "me": {
+    "purchases": {
+      "title": "Cronologia dei miei acquisti",
+      "subtitle": "Trova la cronologia completa dei manuali e dei materiali scolastici che hai acquistato su EcoScolar.",
+      "loading": "Caricamento della cronologia degli acquisti...",
+      "error": "Si è verificato un errore durante il recupero dei tuoi acquisti.",
+      "error_detail": "Aggiorna la pagina o riprova più tardi.",
+      "empty_title": "Nessun acquisto registrato",
+      "empty_placeholder": "La cronologia dei tuoi acquisti apparir\u00e0 qui.",
+      "explore_cta": "Esplora il negozio",
+      "seller_label": "Venditore",
+      "view_advert": "Vedi l'annuncio"
+    },
+    "sales": {
+      "title": "Cronologia delle mie vendite",
+      "subtitle": "Segui le tue vendite, gli annunci attivi e la cronologia degli articoli che hai condiviso con la comunità EcoScolar.",
+      "loading": "Caricamento della cronologia delle vendite...",
+      "error": "Si è verificato un errore durante il recupero delle tue vendite.",
+      "error_detail": "Aggiorna la pagina o riprova più tardi.",
+      "empty_title": "Nessuna vendita registrata",
+      "empty_placeholder": "La cronologia delle tue vendite apparir\u00e0 qui.",
+      "sell_cta": "Crea un annuncio",
+      "buyer_label": "Acquistato da",
+      "view": "Vedi",
+      "edit": "Modifica",
+      "status": {
+        "active": "In vendita",
+        "sold": "Venduto",
+        "paused": "In pausa",
+        "expired": "Scaduto"
+      }
+    },
     "adverts": {
       "title": "I miei annunci",
       "description": "Gestisci i tuoi annunci di vendita e i tuoi servizi di tutoraggio.",
@@ -578,7 +609,9 @@
     "language": "Lingue",
     "location": "Localizzazione",
     "favorites": "Preferiti",
-    "sales": "Vendite",
+    "sales": "I miei annunci",
+    "purchases_history": "I miei acquisti",
+    "sales_history": "Le mie vendite",
     "support_requests": "Le mie richieste",
     "edit": "Modifica profilo",
     "delete": "Elimina account",
@@ -591,6 +624,7 @@
       "pc_label": "Codice Postale",
       "dob_label": "Data di nascita",
       "languages_title": "Lingue parlate",
+      "languages_empty": "Nessuna lingua aggiunta.",
       "language_label": "Lingua",
       "level_label": "Livello",
       "level_native": "Madrelingua",
