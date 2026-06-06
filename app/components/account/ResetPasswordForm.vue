@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { ResetPasswordInput } from '~/types/user'
+import FormErrors from '../common/FormErrors.vue'
 
 const route = useRoute()
-const userStore = useUsersStore()
+const usersStore = useUsersStore()
 
 const code = route.query.token as string
 
@@ -19,10 +20,10 @@ const handleSubmit = async () => {
     resetCode: code
   }
 
-  await userStore.resetPassword(formData, form.confirmPassword)
+  await usersStore.resetPassword(formData, form.confirmPassword)
 }
 
-const { displayErrors } = useFormErrors(() => userStore.errors, 'reset_password.errors')
+const { displayErrors } = useFormErrors(() => usersStore.errors, 'reset_password.errors')
 </script>
 
 <template>
@@ -76,23 +77,14 @@ const { displayErrors } = useFormErrors(() => userStore.errors, 'reset_password.
       >
     </div>
 
-    <div v-if="userStore.errors && userStore.errors.length > 0">
-      <ul class="list-disc list-inside space-y-1 text-sm text-red-700 dark:text-red-400">
-        <li
-          v-for="(error, index) in displayErrors"
-          :key="index"
-        >
-          {{ error }}
-        </li>
-      </ul>
-    </div>
+    <FormErrors :errors="displayErrors" />
 
     <button
       type="submit"
-      :disabled="userStore.isLoading"
+      :disabled="usersStore.isLoading"
       class="w-full mt-2 py-3 bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-semibold rounded-xl tracking-wide transition-all active:scale-[0.99] disabled:opacity-50 disabled:pointer-events-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 outline-none"
     >
-      {{ userStore.isLoading ? $t('reset_password.status.loading') : $t('reset_password.submit_button') }}
+      {{ usersStore.isLoading ? $t('reset_password.status.loading') : $t('reset_password.submit_button') }}
     </button>
   </form>
 </template>
