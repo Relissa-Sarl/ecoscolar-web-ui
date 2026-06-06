@@ -518,7 +518,8 @@
   "forgot_password": {
     "instruction": "Inserisci il tuo indirizzo e-mail e ti invieremo un link per reimpostare la tua password.",
     "submit_button": "Invia il link",
-    "back_to_login": "Torna all'accesso"
+    "back_to_login": "Torna all'accesso",
+    "instruction_success": "Se un account con questo indirizzo e-mail esiste, riceverai a breve un link per reimpostare la tua password."
   },
   "reset_password": {
     "return_to_login": "Torna all'accesso",

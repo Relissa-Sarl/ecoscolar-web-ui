@@ -18,6 +18,7 @@ export interface UserService {
   getMyProfile: () => Promise<User>
   updateProfile: (input: UpdateProfileInput) => Promise<User>
   deleteAccount: () => Promise<undefined>
+  forgotPassword: (email: string) => Promise<undefined>
   resetPassword: (input: ResetPasswordInput) => Promise<undefined>
   getPublicProfile: (id: string) => Promise<PublicUser>
   getMeAdvert: () => Promise<MyAdvert[]>
@@ -101,6 +102,22 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
       })
 
   /**
+   * Initiate a password reset request for the user with the provided email by
+   * calling the API's forgot password endpoint. This will typically trigger
+   * the API to send a password reset email to the user with instructions on how to reset their password.
+   * @param email The email address of the user who wants to reset their password.
+   * @returns A promise that resolves when the password reset request is successfully initiated.
+   * The API is expected to handle the logic for sending the password reset email and return an
+   * appropriate response.
+   */
+  const forgotPassword = async (email: string) =>
+    apiClient<undefined>(`${AUTH_PATH}/forgotPassword`,
+      {
+        method: 'POST',
+        body: { email }
+      })
+
+  /**
    * Reset the password for the user with the provided email, new password, and reset code by
    * calling the API's reset password endpoint. This operation typically requires the user to
    * have received a password reset code via email, which is used to authorize the password reset request.
@@ -131,6 +148,7 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
     logout,
     getMyProfile,
     updateProfile,
+    forgotPassword,
     deleteAccount,
     resetPassword,
     getPublicProfile,

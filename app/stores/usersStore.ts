@@ -152,6 +152,25 @@ export const useUsersStore = defineStore('users', () => {
   }
 
   /**
+   * Initiate a password reset request for the user with the provided email.
+   * @param email The email address of the user who wants to reset their password.
+   */
+  const forgotPassword = async (email: string) => {
+    isLoading.value = true
+    errors.value = null
+
+    try {
+      await service.forgotPassword(email)
+      hasLoaded.value = true
+    } catch (e) {
+      errors.value = formatErrors(e as ApiError)
+      hasLoaded.value = false
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  /**
    * Reset the password for the user with the provided email, new password, and reset code by calling the UserService's resetPassword method.
    * @param email The email address of the user whose password is to be reset.
    * @param newPassword The new password to set for the user's account.
@@ -201,6 +220,7 @@ export const useUsersStore = defineStore('users', () => {
     logout,
     updateProfile,
     deleteAccount,
+    forgotPassword,
     resetPassword,
     clearErrors
   }
