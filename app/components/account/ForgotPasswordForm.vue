@@ -44,6 +44,13 @@ const { displayErrors } = useFormErrors(() => usersStore.errors, 'reset_password
     </div>
 
     <p
+      v-if="usersStore.isLoading"
+      class="text-sm text-emerald-700 dark:text-emerald-400 font-medium"
+    >
+      {{ $t('forgot_password.status.loading') }}
+    </p>
+
+    <p
       v-if="usersStore.hasLoaded"
       class="text-sm text-emerald-700 dark:text-emerald-400 font-medium"
     >
