@@ -10,6 +10,7 @@ export interface User extends PublicUser {
   postalCode: string
   birthdayDate: string
   isOnboarded: boolean
+  isBanned: boolean
   location: UserLocation
   languages: SpokenLanguage[]
   roles: string[]
