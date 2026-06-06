@@ -49,6 +49,15 @@ vi.mock('~/stores/favoritesStore', () => ({
 vi.mock('~/stores/cartStore', () => ({
   useCartStore: () => cartStoreMock
 }))
+vi.mock('~/stores/usersStore', () => ({
+  useUsersStore: () => ({
+    isAuthenticated: true,
+    user: {
+      isOnboarded: true,
+      username: 'testuser'
+    }
+  })
+}))
 describe('AdvertActionButtons', () => {
   beforeEach(() => {
     favoriteIds.value = []
