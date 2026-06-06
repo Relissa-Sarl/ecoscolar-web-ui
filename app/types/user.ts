@@ -33,3 +33,9 @@ export interface UpdateProfileInput {
   birthdayDate: string
   spokenLanguages: SpokenLanguage[]
 }
+
+export interface ResetPasswordInput {
+  email: string
+  newPassword: string
+  resetCode: string
+}

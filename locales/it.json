@@ -520,6 +520,27 @@
     "submit_button": "Invia il link",
     "back_to_login": "Torna all'accesso"
   },
+  "reset_password": {
+    "return_to_login": "Torna all'accesso",
+    "title": "Reimposta la password",
+    "subtitle": "Inserisci la tua nuova password per proteggere il tuo account EcoScolar.",
+    "email_label": "Indirizzo e-mail",
+    "password_label": "Nuova password",
+    "confirm_password_label": "Confirma la password",
+    "submit_button": "Reimposta la password",
+    "errors": {
+      "Default": "Si è verificato un errore durante la reimpostazione della password. Riprova.",
+      "passwords_do_not_match": "Le password inserite non corrispondono.",
+      "PasswordTooShort": "La password deve contenere almeno 6 caratteri.",
+      "PasswordRequiresNonAlphanumeric": "La password deve contenere un carattere speciale.",
+      "PasswordRequiresUpper": "La password deve contenere una lettera maiuscola.",
+      "PasswordRequiresDigit": "La password deve contenere un numero.",
+      "InvalidToken": "Il codice di reset non è valido o è scaduto."
+    },
+    "status": {
+      "loading": "Reimpostazione della password in corso..."
+    }
+  },
   "admin": {
     "nav_label": "Menu amministrazione",
     "menu": {

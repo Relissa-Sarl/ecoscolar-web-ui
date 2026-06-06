@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import type { UpdateProfileInput, User } from '~/types/user'
+import type { UpdateProfileInput, User, ResetPasswordInput } from '~/types/user'
 
 import { getUserService } from '~/services/usersService'
 import type ApiError from '~/types/apiError'
@@ -152,6 +152,37 @@ export const useUsersStore = defineStore('users', () => {
   }
 
   /**
+   * Reset the password for the user with the provided email, new password, and reset code by calling the UserService's resetPassword method.
+   * @param email The email address of the user whose password is to be reset.
+   * @param newPassword The new password to set for the user's account.
+   * @param code The password reset code that was sent to the user's email address, which is required to authorize the password reset operation.
+   * @returns A promise that resolves when the password reset operation is complete. If the operation is successful,
+   * the user's password will be updated to the new password provided. If there is an error during the operation,
+   * the promise will reject with an appropriate error message.
+   */
+  const resetPassword = async (input: ResetPasswordInput, confirmPassword: string) => {
+    isLoading.value = true
+    errors.value = null
+
+    // Validate that the new password and confirm password fields match before attempting to reset the password
+    if (input.newPassword !== confirmPassword)
+      errors.value = ['passwords_do_not_match']
+    else {
+      try {
+        await service.resetPassword(input)
+      } catch (e) {
+        errors.value = formatErrors(e as ApiError)
+      } finally {
+        isLoading.value = false
+
+        // Redirect to login page after successful password reset
+        if (!errors.value)
+          await navigateTo(localePath('/login'))
+      }
+    }
+  }
+
+  /**
    * Format the errors returned from the API into a user-friendly array of error messages.
    */
   const clearErrors = () => {
@@ -170,6 +201,7 @@ export const useUsersStore = defineStore('users', () => {
     logout,
     updateProfile,
     deleteAccount,
+    resetPassword,
     clearErrors
   }
 })

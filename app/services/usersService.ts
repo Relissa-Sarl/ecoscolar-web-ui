@@ -1,4 +1,4 @@
-import type { User, UpdateProfileInput, PublicUser } from '~/types/user'
+import type { User, UpdateProfileInput, PublicUser, ResetPasswordInput } from '~/types/user'
 import { useApi } from '../composables/useApi'
 import type { MyAdvert } from '~/types/advert'
 
@@ -18,6 +18,7 @@ export interface UserService {
   getMyProfile: () => Promise<User>
   updateProfile: (input: UpdateProfileInput) => Promise<User>
   deleteAccount: () => Promise<undefined>
+  resetPassword: (input: ResetPasswordInput) => Promise<undefined>
   getPublicProfile: (id: string) => Promise<PublicUser>
   getMeAdvert: () => Promise<MyAdvert[]>
 }
@@ -100,6 +101,22 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
       })
 
   /**
+   * Reset the password for the user with the provided email, new password, and reset code by
+   * calling the API's reset password endpoint. This operation typically requires the user to
+   * have received a password reset code via email, which is used to authorize the password reset request.
+   * @param input An object containing the email, new password, and reset code for the password reset operation.
+   * @returns A promise that resolves when the password reset operation is complete. If the operation is successful,
+   * the user's password will be updated to the new password provided. If there is an error during the
+   * operation, the promise will reject with an appropriate error message.
+   */
+  const resetPassword = async (input: ResetPasswordInput) =>
+    apiClient<undefined>(`${AUTH_PATH}/resetPassword`,
+      {
+        method: 'POST',
+        body: input
+      })
+
+  /**
    * Retrieve the public profile of a user by their ID.
    * @param id The unique identifier of the user whose public profile is being requested.
    * @returns A promise that resolves to a PublicUser object containing the public information of the user.
@@ -115,6 +132,7 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
     getMyProfile,
     updateProfile,
     deleteAccount,
+    resetPassword,
     getPublicProfile,
     getMeAdvert
   }

@@ -521,6 +521,27 @@
     "submit_button": "Link senden",
     "back_to_login": "Zurück zur Anmeldung"
   },
+  "reset_password": {
+    "return_to_login": "Zurück zur Anmeldung",
+    "title": "Passwort zurücksetzen",
+    "subtitle": "Geben Sie Ihr neues Passwort ein, um Ihr EcoScolar-Konto zu sichern.",
+    "email_label": "E-Mail-Adresse",
+    "password_label": "Neues Passwort",
+    "confirm_password_label": "Passwort bestätigen",
+    "submit_button": "Passwort zurücksetzen",
+    "errors": {
+      "Default": "Ein Fehler ist aufgetreten beim Zurücksetzen des Passworts. Bitte versuchen Sie es erneut.",
+      "passwords_do_not_match": "Die Passwörter stimmen nicht überein.",
+      "PasswordTooShort": "Ihr Passwort muss mindestens 6 Zeichen lang sein.",
+      "PasswordRequiresNonAlphanumeric": "Ihr Passwort muss ein Sonderzeichen enthalten.",
+      "PasswordRequiresUpper": "Ihr Passwort muss einen Großbuchstaben enthalten.",
+      "PasswordRequiresDigit": "Ihr Passwort muss eine Zahl enthalten.",
+      "InvalidToken": "Der Reset-Code ist ungültig oder abgelaufen."
+    },
+    "status": {
+      "loading": "Passwort wird zurückgesetzt..."
+    }
+  },
   "admin": {
     "nav_label": "Admin-Menü",
     "menu": {
