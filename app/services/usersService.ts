@@ -20,6 +20,7 @@ export interface UserService {
   deleteAccount: () => Promise<undefined>
   getPublicProfile: (id: string) => Promise<PublicUser>
   getMeAdvert: () => Promise<MyAdvert[]>
+  getAllUsers: () => Promise<User[]>
 }
 
 /**
@@ -108,6 +109,8 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
 
   const getMeAdvert = async () => apiClient<MyAdvert[]>(`${USER_PATH}/me/adverts`)
 
+  const getAllUsers = async () => apiClient<User[]>(`${USER_PATH}`)
+
   return {
     register,
     login,
@@ -116,7 +119,8 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
     updateProfile,
     deleteAccount,
     getPublicProfile,
-    getMeAdvert
+    getMeAdvert,
+    getAllUsers
   }
 }
 
