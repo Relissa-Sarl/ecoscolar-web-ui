@@ -57,6 +57,7 @@
       "title": "Filtres",
       "subtitle": "Affinez votre recherche.",
       "mobile_toggle": "Afficher / masquer les filtres",
+      "book_category_heading": "Catégorie du livre",
       "category_legend": "Type d’annonce",
       "category_supplies": "Tout le matériel",
       "category_textbooks": "Manuels scolaires",
@@ -67,11 +68,12 @@
       "grade_secondary": "Secondaire",
       "grade_maturity": "Maturité",
       "grade_university": "Supérieur",
+      "reset": "Réinitialiser les filtres",
       "subject_heading": "Matière",
       "subject_math": "Mathématiques",
       "subject_french": "Français",
       "subject_german": "Allemand",
-      "reset": "Réinitialiser les filtres"
+      "supplies_no_subfilters": "Aucun filtre supplémentaire pour les fournitures pour le moment."
     },
     "banner": {
       "api_error_retry": "Le catalogue ne s’est pas synchronisé avec le serveur. Vérifiez l’API puis actualisez la page.",

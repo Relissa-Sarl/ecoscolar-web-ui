@@ -1,16 +1,38 @@
 <script setup lang="ts">
-import type { CatalogCategoryTab, GradeFilterState, SubjectFilterState } from '@/types/catalog'
+import { computed, onMounted, ref } from 'vue'
+import type { CatalogCategoryTab } from '@/types/catalog'
+import type { BookCategory, SchoolGrade, Subject } from '@/types/advertDetail'
+import { getAdvertDetailsService } from '~/services/advertDetailsService'
+import { localizedRefLabel, toggleSelectedId } from '~/utils/catalogFilterUtils'
 
-const grades = defineModel<GradeFilterState>('grades', { required: true })
-const subjects = defineModel<SubjectFilterState>('subjects', { required: true })
 const activeCategory = defineModel<CatalogCategoryTab>('activeCategory', { required: true })
+const bookCategoryIds = defineModel<number[]>('bookCategoryIds', { required: true })
+const schoolGradeIds = defineModel<number[]>('schoolGradeIds', { required: true })
+const subjectIds = defineModel<number[]>('subjectIds', { required: true })
 
-/** Sprint 1 — filtres niveau / matière masqués tant que T6 (données de référence) n'est pas livré. */
-const showAdvancedFilters = false
+defineEmits<{ reset: [] }>()
 
-defineEmits<{
-  reset: []
-}>()
+const { locale } = useI18n()
+const detailsService = getAdvertDetailsService()
+
+const bookCategories = ref<BookCategory[]>([])
+const schoolGrades = ref<SchoolGrade[]>([])
+const subjects = ref<Subject[]>([])
+
+onMounted(async () => {
+  const [books, grades, subs] = await Promise.all([
+    detailsService.getBookCategories(),
+    detailsService.getSchoolGrades(),
+    detailsService.getSubjects()
+  ])
+  bookCategories.value = books
+  schoolGrades.value = grades
+  subjects.value = subs
+})
+
+const showBookCategories = computed(() => activeCategory.value === 'textbooks')
+const showTutoringFilters = computed(() => activeCategory.value === 'tutoring')
+const showSuppliesHint = computed(() => activeCategory.value === 'supplies')
 </script>
 
 <template>
@@ -85,7 +107,7 @@ defineEmits<{
       </button>
       <button
         type="button"
-        radio="radio"
+        role="radio"
         :aria-checked="activeCategory === 'tutoring'"
         class="flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
         :class="activeCategory === 'tutoring'
@@ -119,96 +141,94 @@ defineEmits<{
     </fieldset>
 
     <div
-      v-if="showAdvancedFilters"
+      v-if="showBookCategories"
       class="border-t border-slate-100 pt-4 dark:border-slate-800"
     >
       <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-        {{ $t('catalog.filters.grade_heading') }}
+        {{ $t('catalog.filters.book_category_heading') }}
       </p>
-      <ul class="mt-3 space-y-2 text-sm font-medium text-slate-700 dark:text-slate-300">
-        <li>
+      <ul class="mt-3 max-h-56 space-y-2 overflow-y-auto text-sm font-medium text-slate-700 dark:text-slate-300">
+        <li
+          v-for="cat in bookCategories"
+          :key="cat.bookCategoryId"
+        >
           <label class="flex cursor-pointer items-center gap-2">
             <input
-              v-model="grades.primary"
               type="checkbox"
               class="size-4 rounded border-slate-300 text-emerald-700 focus:ring-emerald-600"
+              :checked="bookCategoryIds.includes(cat.bookCategoryId)"
+              @change="bookCategoryIds = toggleSelectedId(
+                bookCategoryIds,
+                cat.bookCategoryId,
+                ($event.target as HTMLInputElement).checked
+              )"
             >
-            {{ $t('catalog.filters.grade_primary') }}
-          </label>
-        </li>
-        <li>
-          <label class="flex cursor-pointer items-center gap-2">
-            <input
-              v-model="grades.secondary"
-              type="checkbox"
-              class="size-4 rounded border-slate-300 text-emerald-700 focus:ring-emerald-600"
-            >
-            {{ $t('catalog.filters.grade_secondary') }}
-          </label>
-        </li>
-        <li>
-          <label class="flex cursor-pointer items-center gap-2">
-            <input
-              v-model="grades.maturite"
-              type="checkbox"
-              class="size-4 rounded border-slate-300 text-emerald-700 focus:ring-emerald-600"
-            >
-            {{ $t('catalog.filters.grade_maturity') }}
-          </label>
-        </li>
-        <li>
-          <label class="flex cursor-pointer items-center gap-2">
-            <input
-              v-model="grades.superieur"
-              type="checkbox"
-              class="size-4 rounded border-slate-300 text-emerald-700 focus:ring-emerald-600"
-            >
-            {{ $t('catalog.filters.grade_university') }}
+            {{ localizedRefLabel(cat, locale) }}
           </label>
         </li>
       </ul>
     </div>
 
-    <div
-      v-if="showAdvancedFilters"
-      class="border-t border-slate-100 pt-4 dark:border-slate-800"
+    <template v-if="showTutoringFilters">
+      <div class="border-t border-slate-100 pt-4 dark:border-slate-800">
+        <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          {{ $t('catalog.filters.grade_heading') }}
+        </p>
+        <ul class="mt-3 space-y-2 text-sm font-medium text-slate-700 dark:text-slate-300">
+          <li
+            v-for="grade in schoolGrades"
+            :key="grade.schoolGradeId"
+          >
+            <label class="flex cursor-pointer items-center gap-2">
+              <input
+                type="checkbox"
+                class="size-4 rounded border-slate-300 text-emerald-700 focus:ring-emerald-600"
+                :checked="schoolGradeIds.includes(grade.schoolGradeId)"
+                @change="schoolGradeIds = toggleSelectedId(
+                  schoolGradeIds,
+                  grade.schoolGradeId,
+                  ($event.target as HTMLInputElement).checked
+                )"
+              >
+              {{ localizedRefLabel(grade, locale) }}
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="border-t border-slate-100 pt-4 dark:border-slate-800">
+        <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          {{ $t('catalog.filters.subject_heading') }}
+        </p>
+        <ul class="mt-3 max-h-56 space-y-2 overflow-y-auto text-sm font-medium text-slate-700 dark:text-slate-300">
+          <li
+            v-for="subject in subjects"
+            :key="subject.subjectId"
+          >
+            <label class="flex cursor-pointer items-center gap-2">
+              <input
+                type="checkbox"
+                class="size-4 rounded border-slate-300 text-emerald-700 focus:ring-emerald-600"
+                :checked="subjectIds.includes(subject.subjectId)"
+                @change="subjectIds = toggleSelectedId(
+                  subjectIds,
+                  subject.subjectId,
+                  ($event.target as HTMLInputElement).checked
+                )"
+              >
+              {{ localizedRefLabel(subject, locale) }}
+            </label>
+          </li>
+        </ul>
+      </div>
+    </template>
+
+    <p
+      v-if="showSuppliesHint"
+      class="border-t border-slate-100 pt-4 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400"
     >
-      <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-        {{ $t('catalog.filters.subject_heading') }}
-      </p>
-      <ul class="mt-3 space-y-2 text-sm font-medium text-slate-700 dark:text-slate-300">
-        <li>
-          <label class="flex cursor-pointer items-center gap-2">
-            <input
-              v-model="subjects.math"
-              type="checkbox"
-              class="size-4 rounded border-slate-300 text-emerald-700 focus:ring-emerald-600"
-            >
-            {{ $t('catalog.filters.subject_math') }}
-          </label>
-        </li>
-        <li>
-          <label class="flex cursor-pointer items-center gap-2">
-            <input
-              v-model="subjects.french"
-              type="checkbox"
-              class="size-4 rounded border-slate-300 text-emerald-700 focus:ring-emerald-600"
-            >
-            {{ $t('catalog.filters.subject_french') }}
-          </label>
-        </li>
-        <li>
-          <label class="flex cursor-pointer items-center gap-2">
-            <input
-              v-model="subjects.german"
-              type="checkbox"
-              class="size-4 rounded border-slate-300 text-emerald-700 focus:ring-emerald-600"
-            >
-            {{ $t('catalog.filters.subject_german') }}
-          </label>
-        </li>
-      </ul>
-    </div>
+      {{ $t('catalog.filters.supplies_no_subfilters') }}
+    </p>
 
     <button
       type="button"
