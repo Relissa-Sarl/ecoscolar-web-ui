@@ -1,4 +1,4 @@
-import type { User, UpdateProfileInput, PublicUser } from '~/types/user'
+import type { User, UpdateProfileInput, PublicUser, UserReview } from '~/types/user'
 import { useApi } from '../composables/useApi'
 import type { MyAdvert } from '~/types/advert'
 
@@ -19,6 +19,7 @@ export interface UserService {
   updateProfile: (input: UpdateProfileInput) => Promise<User>
   deleteAccount: () => Promise<undefined>
   getPublicProfile: (id: string) => Promise<PublicUser>
+  getReviews: (userId: string) => Promise<UserReview[]>
   getMeAdvert: () => Promise<MyAdvert[]>
   getAllUsers: () => Promise<User[]>
 }
@@ -107,6 +108,13 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
    */
   const getPublicProfile = async (id: string) => apiClient<PublicUser>(`${USER_PATH}/${id}`)
 
+  /**
+   * Retrieve all reviews received for a user by their ID.
+   * @param userId The unique identifier of the user whose reviews are being requested.
+   * @returns A promise that resolves to an array of UserReview objects.
+   */
+  const getReviews = async (userId: string) => apiClient<UserReview[]>(`${USER_PATH}/${userId}/reviews`)
+
   const getMeAdvert = async () => apiClient<MyAdvert[]>(`${USER_PATH}/me/adverts`)
 
   const getAllUsers = async () => apiClient<User[]>(`${USER_PATH}`)
@@ -119,6 +127,7 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
     updateProfile,
     deleteAccount,
     getPublicProfile,
+    getReviews,
     getMeAdvert,
     getAllUsers
   }
