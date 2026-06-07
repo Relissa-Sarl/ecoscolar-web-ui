@@ -21,9 +21,6 @@ function categoryTabFromApiType(type: AdvertCatalogApiItem['type']): CatalogList
 
 export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): CatalogListing {
   const categoryTab = categoryTabFromApiType(item.type)
-
-  const gradeLevels = ['primary', 'secondary', 'maturity', 'university'] as const
-  const subjectCodes = ['math', 'french', 'german'] as const
   const conditions = [CatalogItemCondition.New, CatalogItemCondition.Used, CatalogItemCondition.Good]
 
   const base = {
@@ -33,7 +30,10 @@ export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): Ca
     type: item.type,
     categoryTab,
     location: `${1005 + index} Lausanne`,
-    imageUrl: `https://picsum.photos/seed/ecoscolar_${String(item.id)}_400/520/440`
+    imageUrl: `https://picsum.photos/seed/ecoscolar_${String(item.id)}_400/520/440`,
+    bookCategoryName: item.category ?? undefined,
+    schoolGradeName: item.grade ?? undefined,
+    subjectName: item.subjects ?? undefined
   }
 
   if (categoryTab === 'supplies') {
@@ -50,8 +50,7 @@ export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): Ca
       ...base,
       itemCondition: conditions[index % conditions.length],
       metaLineKey: 'catalog.card.meta_textbooks',
-      hourly: false,
-      gradeLevel: gradeLevels[index % gradeLevels.length]
+      hourly: false
     }
   }
 
@@ -59,9 +58,7 @@ export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): Ca
     ...base,
     serviceBadge: CatalogServiceBadge.VerifiedTutor,
     metaLineKey: 'catalog.card.meta_tutoring',
-    hourly: true,
-    subjectCode: subjectCodes[index % subjectCodes.length],
-    gradeLevel: gradeLevels[index % gradeLevels.length]
+    hourly: true
   }
 }
 

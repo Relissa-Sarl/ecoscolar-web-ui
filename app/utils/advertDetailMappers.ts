@@ -55,7 +55,7 @@ export function mapCatalogSummaryToAdvert(item: AdvertCatalogDetailApiItem): Adv
     image,
     images,
     isbn: item.isbn ?? '',
-    subject: item.subject ?? '',
+    subject: item.subjects ?? '',
     grade: item.grade ?? '',
     school: '',
     description: item.description,

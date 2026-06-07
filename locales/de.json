@@ -97,16 +97,13 @@
       "category_textbooks": "Schulbücher",
       "category_tutoring": "Nachhilfe",
       "show_all": "Alles anzeigen",
+      "book_category_heading": "Buchkategorie",
+      "supplies_no_subfilters": "Für Material gibt es derzeit keine weiteren Filter.",
       "grade_heading": "Schulstufe",
-      "grade_primary": "Primar",
-      "grade_secondary": "Sekundar",
-      "grade_maturity": "Maturität",
-      "grade_university": "Höhere Schule/FH",
       "subject_heading": "Fach",
-      "subject_math": "Mathematik",
-      "subject_french": "Französisch",
-      "subject_german": "Deutsch",
-      "reset": "Filter zurücksetzen"
+      "reset": "Filter zurücksetzen",
+      "references_loading": "Filter werden geladen…",
+      "references_load_error": "Filter konnten nicht geladen werden."
     },
     "banner": {
       "api_error_retry": "Der Katalog konnte nicht geladen werden. API prüfen und Seite neu laden.",
