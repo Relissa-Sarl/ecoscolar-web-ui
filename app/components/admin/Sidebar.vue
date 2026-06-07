@@ -6,14 +6,14 @@ defineProps<{
 }>()
 const menu = [
   { name: 'Dashboard', path: '/me/admin/dashboard', icon: 'heroicons:squares-2x2' },
-  { name: 'Moderation', path: '/me/admin/moderation', icon: 'heroicons:shield-check' },
+  { name: 'Support', path: '/me/admin/supports', icon: 'heroicons:shield-check' },
   { name: 'Reports', path: '/me/admin/reports', icon: 'heroicons:chart-bar' },
   { name: 'Users', path: '/me/admin/users', icon: 'heroicons:user-group' }
 ]
 </script>
 
 <template>
-  <aside class="w-64 h-screen bg-white border-r flex flex-col justify-between p-6 min-h-screen px-4 py-10 text-gray-900 border-gray-300 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-100">
+  <aside class="w-64 h-screen bg-white border-r flex flex-col justify-between p-6 px-4 py-10 text-gray-900 border-gray-300 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-100">
     <div>
       <h1 class="text-xl font-bold text-emerald-800 dark:text-emerald-500 mb-8">
         EcoScolar
