@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue'
 import { useLocalePath } from '#imports'
-import { getAdvertDetailsService } from '~/services/advertDetailsService'
 import {
   bookCategoryMatches,
   tutoringGradeMatches,
   tutoringSubjectMatches
 } from '~/utils/catalogFilterUtils'
-import type { BookCategory, SchoolGrade, Subject } from '@/types/advertDetail'
 import type {
   AdvertCatalogApiItem,
   CatalogCategoryTab,
@@ -122,24 +120,22 @@ function applySearchFromRouteQuery() {
   }
 }
 
-const detailsService = getAdvertDetailsService()
-const bookCategoriesRef = ref<BookCategory[]>([])
-const schoolGradesRef = ref<SchoolGrade[]>([])
-const subjectsRef = ref<Subject[]>([])
+const {
+  bookCategories: bookCategoriesRef,
+  schoolGrades: schoolGradesRef,
+  subjects: subjectsRef,
+  isLoading: referencesLoading,
+  loadError: referencesError,
+  load: loadCatalogReferences
+} = useCatalogReferenceData()
+
 const bookCategoryIds = ref<number[]>([])
 const schoolGradeIds = ref<number[]>([])
 const subjectIds = ref<number[]>([])
 
 onMounted(async () => {
   applySearchFromRouteQuery()
-  const [books, schoolGrades, subs] = await Promise.all([
-    detailsService.getBookCategories(),
-    detailsService.getSchoolGrades(),
-    detailsService.getSubjects()
-  ])
-  bookCategoriesRef.value = books
-  schoolGradesRef.value = schoolGrades
-  subjectsRef.value = subs
+  await loadCatalogReferences()
 })
 
 const filtered = computed(() => {
@@ -214,6 +210,11 @@ watch(
           v-model:book-category-ids="bookCategoryIds"
           v-model:school-grade-ids="schoolGradeIds"
           v-model:subject-ids="subjectIds"
+          :book-categories="bookCategoriesRef"
+          :school-grades="schoolGradesRef"
+          :subjects="subjectsRef"
+          :references-loading="referencesLoading"
+          :references-error="referencesError"
           class="hidden lg:block"
           @reset="resetSidebar()"
         />
@@ -230,6 +231,11 @@ watch(
                   v-model:book-category-ids="bookCategoryIds"
                   v-model:school-grade-ids="schoolGradeIds"
                   v-model:subject-ids="subjectIds"
+                  :book-categories="bookCategoriesRef"
+                  :school-grades="schoolGradesRef"
+                  :subjects="subjectsRef"
+                  :references-loading="referencesLoading"
+                  :references-error="referencesError"
                   @reset="resetSidebar()"
                 />
               </div>

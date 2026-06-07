@@ -1,9 +1,21 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import type { CatalogCategoryTab } from '@/types/catalog'
 import type { BookCategory, SchoolGrade, Subject } from '@/types/advertDetail'
-import { getAdvertDetailsService } from '~/services/advertDetailsService'
 import { localizedRefLabel, toggleSelectedId } from '~/utils/catalogFilterUtils'
+
+interface Props {
+  bookCategories: BookCategory[]
+  schoolGrades: SchoolGrade[]
+  subjects: Subject[]
+  referencesLoading?: boolean
+  referencesError?: boolean
+}
+
+withDefaults(defineProps<Props>(), {
+  referencesLoading: false,
+  referencesError: false
+})
 
 const activeCategory = defineModel<CatalogCategoryTab>('activeCategory', { required: true })
 const bookCategoryIds = defineModel<number[]>('bookCategoryIds', { required: true })
@@ -13,22 +25,6 @@ const subjectIds = defineModel<number[]>('subjectIds', { required: true })
 defineEmits<{ reset: [] }>()
 
 const { locale } = useI18n()
-const detailsService = getAdvertDetailsService()
-
-const bookCategories = ref<BookCategory[]>([])
-const schoolGrades = ref<SchoolGrade[]>([])
-const subjects = ref<Subject[]>([])
-
-onMounted(async () => {
-  const [books, grades, subs] = await Promise.all([
-    detailsService.getBookCategories(),
-    detailsService.getSchoolGrades(),
-    detailsService.getSubjects()
-  ])
-  bookCategories.value = books
-  schoolGrades.value = grades
-  subjects.value = subs
-})
 
 const showBookCategories = computed(() => activeCategory.value === 'textbooks')
 const showTutoringFilters = computed(() => activeCategory.value === 'tutoring')
@@ -140,8 +136,22 @@ const showSuppliesHint = computed(() => activeCategory.value === 'supplies')
       </button>
     </fieldset>
 
+    <p
+      v-if="referencesError"
+      class="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200"
+    >
+      {{ $t('catalog.filters.references_load_error') }}
+    </p>
+
+    <p
+      v-else-if="referencesLoading"
+      class="text-sm text-slate-500 dark:text-slate-400"
+    >
+      {{ $t('catalog.filters.references_loading') }}
+    </p>
+
     <div
-      v-if="showBookCategories"
+      v-if="showBookCategories && !referencesLoading && !referencesError"
       class="border-t border-slate-100 pt-4 dark:border-slate-800"
     >
       <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
@@ -169,7 +179,7 @@ const showSuppliesHint = computed(() => activeCategory.value === 'supplies')
       </ul>
     </div>
 
-    <template v-if="showTutoringFilters">
+    <template v-if="showTutoringFilters && !referencesLoading && !referencesError">
       <div class="border-t border-slate-100 pt-4 dark:border-slate-800">
         <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           {{ $t('catalog.filters.grade_heading') }}

@@ -65,15 +65,10 @@
       "book_category_heading": "Categoria del libro",
       "supplies_no_subfilters": "Nessun filtro aggiuntivo per le forniture al momento.",
       "grade_heading": "Livello",
-      "grade_primary": "Elementare",
-      "grade_secondary": "Media",
-      "grade_maturity": "Maturità",
-      "grade_university": "Superiore",
       "subject_heading": "Materia",
-      "subject_math": "Matematica",
-      "subject_french": "Francese",
-      "subject_german": "Tedesco",
-      "reset": "Azzera i filtri"
+      "reset": "Azzera i filtri",
+      "references_loading": "Caricamento filtri…",
+      "references_load_error": "Impossibile caricare i filtri."
     },
     "banner": {
       "api_error_retry": "Impossibile sincronizzare il catalogo. Controlla l’API e aggiorna la pagina.",

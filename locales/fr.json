@@ -64,15 +64,10 @@
       "category_tutoring": "Cours & soutien",
       "show_all": "Tout afficher",
       "grade_heading": "Niveau scolaire",
-      "grade_primary": "Primaire",
-      "grade_secondary": "Secondaire",
-      "grade_maturity": "Maturité",
-      "grade_university": "Supérieur",
-      "reset": "Réinitialiser les filtres",
       "subject_heading": "Matière",
-      "subject_math": "Mathématiques",
-      "subject_french": "Français",
-      "subject_german": "Allemand",
+      "reset": "Réinitialiser les filtres",
+      "references_loading": "Chargement des filtres…",
+      "references_load_error": "Impossible de charger les filtres.",
       "supplies_no_subfilters": "Aucun filtre supplémentaire pour les fournitures pour le moment."
     },
     "banner": {
