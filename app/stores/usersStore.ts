@@ -183,21 +183,20 @@ export const useUsersStore = defineStore('users', () => {
     isLoading.value = true
     errors.value = null
 
-    // Validate that the new password and confirm password fields match before attempting to reset the password
-    if (input.newPassword !== confirmPassword)
-      errors.value = ['passwords_do_not_match']
-    else {
-      try {
+    try {
+      // Validate that the new password and confirm password fields match before attempting to reset the password
+      if (input.newPassword !== confirmPassword)
+        errors.value = ['passwords_do_not_match']
+      else
         await service.resetPassword(input)
-      } catch (e) {
-        errors.value = formatErrors(e as ApiError)
-      } finally {
-        isLoading.value = false
+    } catch (e) {
+      errors.value = formatErrors(e as ApiError)
+    } finally {
+      isLoading.value = false
 
-        // Redirect to login page after successful password reset
-        if (!errors.value)
-          await navigateTo(localePath('/login'))
-      }
+      // Redirect to login page after successful password reset
+      if (!errors.value)
+        await navigateTo(localePath('/login'))
     }
   }
 
