@@ -15,7 +15,6 @@ const baseListing = (overrides: Partial<CatalogListing>): CatalogListing => ({
   price: 10,
   type: AdvertType.BOOK,
   categoryTab: 'textbooks',
-  metaLineKey: 'catalog.card.meta_textbooks',
   location: 'Lausanne',
   imageUrl: '',
   hourly: false,
@@ -87,7 +86,6 @@ describe('catalogFilterUtils', () => {
         categoryTab: 'tutoring',
         type: AdvertType.SERVICE,
         hourly: true,
-        metaLineKey: 'catalog.card.meta_tutoring',
         schoolGradeName: 'Cycle 3 (9H-11H)'
       })
       expect(tutoringGradeMatches([3], schoolGrades, listing)).toBe(true)
@@ -100,7 +98,6 @@ describe('catalogFilterUtils', () => {
         categoryTab: 'tutoring',
         type: AdvertType.SERVICE,
         hourly: true,
-        metaLineKey: 'catalog.card.meta_tutoring',
         subjectName: 'Français'
       })
       expect(tutoringSubjectMatches([1], subjects, listing)).toBe(true)
@@ -110,8 +107,7 @@ describe('catalogFilterUtils', () => {
       const listing = baseListing({
         categoryTab: 'tutoring',
         type: AdvertType.SERVICE,
-        hourly: true,
-        metaLineKey: 'catalog.card.meta_tutoring'
+        hourly: true
       })
       expect(tutoringSubjectMatches([1], subjects, listing)).toBe(false)
     })

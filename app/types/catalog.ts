@@ -49,7 +49,7 @@ export interface CatalogListing {
   categoryTab: Exclude<CatalogCategoryTab, 'all'>
   itemCondition?: CatalogItemCondition
   serviceBadge?: CatalogServiceBadge
-  metaLineKey: string
+  metaLine?: string
   location: string
   imageUrl: string
   hourly: boolean

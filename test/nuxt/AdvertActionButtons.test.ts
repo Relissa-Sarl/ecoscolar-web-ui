@@ -141,7 +141,6 @@ describe('AdvertActionButtons', () => {
         price: 45.0,
         type: AdvertType.BOOK,
         categoryTab: 'textbooks',
-        metaLineKey: 'catalog.card.meta_textbooks',
         location: '',
         imageUrl: 'https://example.com/chem.jpg',
         hourly: false

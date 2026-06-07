@@ -131,9 +131,6 @@
     },
     "card": {
       "alt_image": "Immagine dell’annuncio",
-      "meta_supplies": "Cat. materiale",
-      "meta_textbooks": "ISBN — disponibile dopo scansione",
-      "meta_tutoring": "Ripetizioni • min. 4 lezioni",
       "hourly": "Tariffa",
       "demo_rating": "4.9/5 demo",
       "book_lesson": "Prenota"

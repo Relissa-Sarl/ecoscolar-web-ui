@@ -131,9 +131,6 @@
     },
     "card": {
       "alt_image": "visuel de l’annonce",
-      "meta_supplies": "Cat. fournitures",
-      "meta_textbooks": "ISBN — disponible après scan",
-      "meta_tutoring": "Répétiteur • 4 séances mini",
       "hourly": "Tarif",
       "demo_rating": "4,9/5 démo",
       "book_lesson": "Réserver"
