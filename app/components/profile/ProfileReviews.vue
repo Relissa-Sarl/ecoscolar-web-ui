@@ -104,15 +104,22 @@ const formatDate = (dateString: string) => {
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
         <!-- Average Rating Section -->
         <div class="md:col-span-4 flex flex-col items-center justify-center text-center p-4 border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800">
-          <div class="text-5xl font-black text-slate-900 dark:text-white mb-2">
+          <div
+            class="text-5xl font-black text-slate-900 dark:text-white mb-2"
+            data-test="average-rating"
+          >
             {{ averageRating > 0 ? averageRating.toFixed(1) : '0.0' }}
           </div>
           <Stars
             :rating="averageRating"
             :show-text="false"
             class="mb-2"
+            data-test="average-stars"
           />
-          <div class="text-sm font-medium text-slate-500 dark:text-slate-400">
+          <div
+            class="text-sm font-medium text-slate-500 dark:text-slate-400"
+            data-test="reviews-count"
+          >
             {{ props.reviews.length === 1 ? t('profile.reviews.one_review') : t('profile.reviews.count', { count: props.reviews.length }) }}
           </div>
         </div>
@@ -126,6 +133,7 @@ const formatDate = (dateString: string) => {
             v-for="dist in ratingDistribution"
             :key="dist.ratingVal"
             class="flex items-center text-sm"
+            :data-test="`distribution-${dist.ratingVal}`"
           >
             <!-- Star count label -->
             <div class="w-8 flex items-center justify-between text-slate-600 dark:text-slate-400 font-medium shrink-0">
@@ -143,7 +151,10 @@ const formatDate = (dateString: string) => {
               />
             </div>
             <!-- Reviews Count -->
-            <span class="w-8 text-right text-slate-500 dark:text-slate-400 font-medium shrink-0">
+            <span
+              class="w-8 text-right text-slate-500 dark:text-slate-400 font-medium shrink-0"
+              data-test="count"
+            >
               {{ dist.count }}
             </span>
           </div>
@@ -160,6 +171,7 @@ const formatDate = (dateString: string) => {
           :class="activeFilter === 'ALL'
             ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
             : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'"
+          data-test="filter-all"
           @click="activeFilter = 'ALL'"
         >
           {{ t('profile.reviews.filter_all') }} ({{ props.reviews.length }})
@@ -169,6 +181,7 @@ const formatDate = (dateString: string) => {
           :class="activeFilter === 'BUYER'
             ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
             : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'"
+          data-test="filter-buyer"
           @click="activeFilter = 'BUYER'"
         >
           {{ t('profile.reviews.filter_buyer') }} ({{ buyerReviewsCount }})
@@ -178,6 +191,7 @@ const formatDate = (dateString: string) => {
           :class="activeFilter === 'SELLER'
             ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
             : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'"
+          data-test="filter-seller"
           @click="activeFilter = 'SELLER'"
         >
           {{ t('profile.reviews.filter_seller') }} ({{ sellerReviewsCount }})
@@ -196,6 +210,7 @@ const formatDate = (dateString: string) => {
           id="review-sort"
           v-model="activeSort"
           class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+          data-test="review-sort"
         >
           <option value="date_desc">
             {{ t('catalog.sort.recent') }}
@@ -222,6 +237,7 @@ const formatDate = (dateString: string) => {
         v-for="review in filteredAndSortedReviews"
         :key="review.reviewId"
         class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col gap-4"
+        data-test="review-item"
       >
         <!-- Item Header: Stars, Role Badge and Meta -->
         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-50 dark:border-slate-800/50 pb-3">
@@ -229,17 +245,22 @@ const formatDate = (dateString: string) => {
             <Stars
               :rating="review.rating"
               :show-text="false"
+              data-test="review-stars"
             />
             <span
               class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold transition-colors"
               :class="review.reviewedRole === 'BUYER'
                 ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400'
                 : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400'"
+              data-test="review-role"
             >
               {{ review.reviewedRole === 'BUYER' ? t('profile.reviews.buyer') : t('profile.reviews.seller') }}
             </span>
           </div>
-          <div class="text-xs text-slate-400 dark:text-slate-500 font-medium">
+          <div
+            class="text-xs text-slate-400 dark:text-slate-500 font-medium"
+            data-test="review-date"
+          >
             {{ formatDate(review.date) }}
           </div>
         </div>
@@ -250,14 +271,20 @@ const formatDate = (dateString: string) => {
             {{ review.reviewerNickname.charAt(0).toUpperCase() }}
           </div>
           <div>
-            <div class="text-sm font-bold text-slate-800 dark:text-slate-100">
+            <div
+              class="text-sm font-bold text-slate-800 dark:text-slate-100"
+              data-test="reviewer-nickname"
+            >
               {{ review.reviewerNickname }}
             </div>
           </div>
         </div>
 
         <!-- Comment Text -->
-        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed whitespace-pre-line italic">
+        <p
+          class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed whitespace-pre-line italic"
+          data-test="review-comment"
+        >
           &ldquo;{{ review.comment }}&rdquo;
         </p>
       </div>
@@ -267,6 +294,7 @@ const formatDate = (dateString: string) => {
     <div
       v-else
       class="text-center py-16 px-6 bg-slate-50/50 dark:bg-slate-900/40 border border-dashed border-slate-200 dark:border-slate-800 rounded-3xl"
+      data-test="empty-state"
     >
       <UIcon
         name="i-material-symbols-chat-bubble-outline"
