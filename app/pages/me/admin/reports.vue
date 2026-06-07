@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Sidebar from '@/components/admin/Sidebar.vue'
-import PopUp from '~/components/common/PopUp.vue'
+import PopUp from '~/components/admin/PopUp.vue'
 import StatCard from '~/components/admin/StatCard.vue'
 import { useAdminsStore } from '~/stores/adminsStore'
 

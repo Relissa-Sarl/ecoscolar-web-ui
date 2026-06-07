@@ -3,7 +3,7 @@ import Sidebar from '@/components/admin/Sidebar.vue'
 // import StatCard from '@/components/admin/StatCard.vue'
 import UserDetailModal from '@/components/admin/UserDetailModal.vue'
 import DeleteConfirmationPopup from '~/components/common/DeleteConfirmationPopup.vue'
-import PopUp from '~/components/common/PopUp.vue'
+import PopUp from '~/components/admin/PopUp.vue'
 import { useAdminsStore } from '~/stores/adminsStore'
 import type { User } from '~/types/user'
 

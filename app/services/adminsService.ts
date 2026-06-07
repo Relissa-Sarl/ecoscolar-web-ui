@@ -1,5 +1,6 @@
 import type { User } from '~/types/user'
 import { useApi } from '../composables/useApi'
+import type { SupportTicketAdminDetail, SupportTicketMessage } from '~/types/support'
 
 type ApiClient = typeof useApi
 
@@ -12,6 +13,8 @@ const ADMIN_PATH = '/admins'
 export interface AdminService {
   getAllUsers: () => Promise<User[]>
   banUserToggle: (id: string) => Promise<User>
+  getAllSupportTickets: () => Promise<SupportTicketAdminDetail[]>
+  sendTicketMessage: (id: number, body: string) => Promise<SupportTicketMessage>
 }
 
 /**
@@ -27,15 +30,24 @@ export interface AdminServiceDependencies {
 * @returns An instance of AdminService with methods to interact with admin-related API endpoints.
 */
 export function createadminService({ apiClient }: AdminServiceDependencies): AdminService {
-  const getAllUsers = async () => apiClient<User[]>(`${ADMIN_PATH}`)
+  const getAllUsers = async () => apiClient<User[]>(`${ADMIN_PATH}/users`)
 
   const banUserToggle = async (id: string) => apiClient<User>(`${ADMIN_PATH}/${id}/ban`, {
     method: 'PATCH'
   })
 
+  const getAllSupportTickets = async () => apiClient<SupportTicketAdminDetail[]>(`${ADMIN_PATH}/supports`)
+
+  const sendTicketMessage = async (id: number, message: string) => apiClient<SupportTicketMessage>(`${ADMIN_PATH}/supports/${id}/message`, {
+    method: 'POST',
+    body: { message }
+  })
+
   return {
     getAllUsers,
-    banUserToggle
+    banUserToggle,
+    getAllSupportTickets,
+    sendTicketMessage
   }
 }
 

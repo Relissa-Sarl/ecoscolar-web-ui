@@ -5,6 +5,7 @@ import type { User } from '~/types/user'
 
 import { getAdminService } from '~/services/adminsService'
 import { getUserService } from '~/services/usersService'
+import type { SupportTicketAdminDetail } from '~/types/support'
 
 /**
  * Pinia store for managing user authentication and profile state.
@@ -13,8 +14,10 @@ import { getUserService } from '~/services/usersService'
 export const useAdminsStore = defineStore('admins', () => {
   const user = ref<User | null>(null)
   const users = ref<User[]>([])
+  const supports = ref<SupportTicketAdminDetail[]>([])
   const isLoading = ref(false)
   const hasLoaded = ref(false)
+  const isSending = ref(false)
   const errors = ref<string[] | null>(null)
 
   const service = getAdminService()
@@ -45,6 +48,10 @@ export const useAdminsStore = defineStore('admins', () => {
     }
   }
 
+  /**
+   * Fetch all users by calling the AdminService's getAllUsers method.
+   * @returns A promise that resolves to an array of User objects representing all users in the system. If the users have already been loaded, returns the cached array of users.
+   */
   const fetchAllUsers = async () => {
     if (hasLoaded.value)
       return user.value
@@ -61,14 +68,54 @@ export const useAdminsStore = defineStore('admins', () => {
       isLoading.value = false
     }
   }
+
+  /**
+   * Toggle the ban status of a user by calling the AdminService's banUserToggle method with the user's ID.
+   * @param id The ID of the user whose ban status is to be toggled.
+   * @returns A promise that resolves to the updated User object after the ban status has been toggled.
+   */
   const banUserToggle = async (userToBan: User) => {
     const updatedUser = await service.banUserToggle(userToBan.id)
     return updatedUser
   }
 
+  /**
+   * Fetch all support tickets by calling the AdminService's getAllSupportTickets method.
+   * @returns A promise that resolves to an array of SupportTicketSummary objects representing all support tickets in the system. If the support tickets have already been loaded, returns the cached array of support tickets.
+   */
+  const getAllSupportTickets = async () => {
+    if (hasLoaded.value)
+      return user.value
+
+    isLoading.value = true
+
+    try {
+      // Call the getAllSupportTickets method of the admin service to fetch all support tickets from the API
+      supports.value = await service.getAllSupportTickets()
+    } catch {
+      // ignore error details here; reset admin state
+      supports.value = []
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  const sendMessage = async (id: number, body: string) => {
+    isSending.value = true
+    try {
+      const created = await service.sendTicketMessage(id, body)
+      return created
+    } catch {
+      // ignore error details here; reset admin state
+    } finally {
+      isSending.value = false
+    }
+  }
+
   return {
     user,
     users,
+    supports,
     isLoading,
     hasLoaded,
     errors,
@@ -76,6 +123,8 @@ export const useAdminsStore = defineStore('admins', () => {
     isAdmin,
     fetchProfile,
     fetchAllUsers,
-    banUserToggle
+    banUserToggle,
+    getAllSupportTickets,
+    sendMessage
   }
 })
