@@ -187,9 +187,15 @@ watch(activeCategory, (tab) => {
   }
 })
 
-watch(bookCategoryIds, () => { currentPage.value = 1 }, { deep: true })
-watch(schoolGradeIds, () => { currentPage.value = 1 }, { deep: true })
-watch(subjectIds, () => { currentPage.value = 1 }, { deep: true })
+watch(bookCategoryIds, () => {
+  currentPage.value = 1
+}, { deep: true })
+watch(schoolGradeIds, () => {
+  currentPage.value = 1
+}, { deep: true })
+watch(subjectIds, () => {
+  currentPage.value = 1
+}, { deep: true })
 
 watch(
   () => route.query.q,
