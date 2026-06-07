@@ -628,6 +628,19 @@
     },
     "public": {
       "error": "Il est actuellement impossible de charger le profil utilisateur. Il se peut que l'utilisateur ne soit pas en public ou que le profil ait été supprimé."
+    },
+    "reviews": {
+      "title": "Avis reçus",
+      "empty": "Aucun avis n'a été laissé pour cet utilisateur.",
+      "count": "{count} avis",
+      "one_review": "1 avis",
+      "buyer": "Acheteur",
+      "seller": "Vendeur",
+      "filter_all": "Tous les avis",
+      "filter_buyer": "En tant qu'acheteur",
+      "filter_seller": "En tant que vendeur",
+      "average": "Moyenne",
+      "star_distribution": "Répartition des notes"
     }
   }
 }
