@@ -430,7 +430,8 @@
       "reason_placeholder": "Wählen Sie eine Option",
       "message": "Ihre Nachricht",
       "email_placeholder": "beispiel{'@'}email.com",
-      "message_placeholder": "Wie können wir Ihnen helfen?"
+      "message_placeholder": "Wie können wir Ihnen helfen?",
+      "message_hint": "Mindestens {min} Zeichen."
     },
     "reasons": {
       "account": "Kontoproblem",
@@ -444,6 +445,12 @@
     },
     "success": "Vielen Dank! Ihre Nachricht wurde gesendet.",
     "error_submit": "Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
+    "validation": {
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "reason": "Bitte wählen Sie einen Kontaktgrund aus.",
+      "subject": "Bitte geben Sie einen Betreff mit mindestens 5 Zeichen ein.",
+      "message": "Ihre Nachricht muss mindestens 10 Zeichen enthalten."
+    },
     "list": {
       "subtitle": "Support",
       "title": "Meine Support-Anfragen",
@@ -460,7 +467,6 @@
       },
       "actions": {
         "new_request": "Neue Anfrage",
-        "contact": "Support kontaktieren",
         "open": "Anfrage ansehen"
       }
     },

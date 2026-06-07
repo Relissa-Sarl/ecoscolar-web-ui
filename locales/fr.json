@@ -428,7 +428,8 @@
       "reason_placeholder": "Sélectionnez une option",
       "message": "Votre message",
       "email_placeholder": "exemple{'@'}email.com",
-      "message_placeholder": "Comment pouvons-nous vous aider ?"
+      "message_placeholder": "Comment pouvons-nous vous aider ?",
+      "message_hint": "Minimum {min} caractères."
     },
     "reasons": {
       "account": "Problème de compte",
@@ -442,6 +443,12 @@
     },
     "success": "Merci ! Votre message a été envoyé.",
     "error_submit": "Impossible d'envoyer le message. Réessayez plus tard.",
+    "validation": {
+      "email": "Veuillez saisir une adresse e-mail valide.",
+      "reason": "Veuillez sélectionner une raison de contact.",
+      "subject": "Veuillez saisir un objet d'au moins 5 caractères.",
+      "message": "Votre message doit contenir au moins 10 caractères."
+    },
     "list": {
       "subtitle": "Support",
       "title": "Mes demandes de support",
@@ -458,7 +465,6 @@
       },
       "actions": {
         "new_request": "Nouvelle demande",
-        "contact": "Contacter le support",
         "open": "Voir la demande"
       }
     },
