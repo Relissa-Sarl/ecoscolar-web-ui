@@ -2,44 +2,63 @@
 type FetchParameters = Parameters<typeof $fetch>
 type BaseFetchOptions = NonNullable<FetchParameters[1]>
 
-// Custom options
+// Custom options extending base fetch options
 type UseApiOptions = BaseFetchOptions & {
   skipAuth?: boolean
 }
 
-// $fetch wrapper
+// Custom $fetch wrapper resilient to Nuxt context loss during sequential async operations
 export const useApi = <T>(
   request: string,
   options?: UseApiOptions
 ) => {
-  const config = useRuntimeConfig()
-  // const authStore = useAuthStore() // TODO : After the JWT implementation
+  // Default fallback values
+  let apiBase = 'https://localhost:5001/api'
+  let enableJwt = false
+  let reqCookies: string | undefined = undefined
+
+  try {
+    // If Nuxt context is available, use dynamic runtime configuration
+    const config = useRuntimeConfig()
+    apiBase = config.public.apiBase || apiBase
+    enableJwt = config.public.enableJwt ?? enableJwt
+
+    // Capture cookies during Server-Side Rendering (SSR) to maintain session
+    if (import.meta.server) {
+      reqCookies = useRequestHeaders(['cookie']).cookie
+    }
+  } catch {
+    // Safe fallback to environment variables if Nuxt context is lost after an 'await' in SSR.
+    // This prevents application crashes while completely avoiding global state memory leaks.
+    apiBase = process.env.NUXT_PUBLIC_API_BASE || apiBase
+    enableJwt = process.env.NUXT_PUBLIC_ENABLE_JWT === 'true' || enableJwt
+  }
+
   const { skipAuth, ...fetchOptions } = options ?? {}
 
   return $fetch<T>(request, {
-    baseURL: config.public.apiBase,
+    baseURL: apiBase,
     credentials: 'include', // Include cookies in requests for authentication
     ...fetchOptions,
 
     async onRequest({ options }) {
       const headers = new Headers(options.headers)
 
-      // If we're on the server, forward the incoming request's cookies to the API
-      // to maintain the session
-      if (import.meta.server) {
-        const reqHeaders = useRequestHeaders(['cookie'])
-        if (reqHeaders.cookie)
-          headers.set('cookie', reqHeaders.cookie)
+      // Inject captured cookies safely if we are performing SSR
+      if (import.meta.server && reqCookies) {
+        headers.set('cookie', reqCookies)
       }
-
       options.headers = headers
     },
 
     async onResponseError({ response }) {
-      // Redirection if unauthorized only for authenticated flows
-      if (response.status === 401 && config.public.enableJwt && !skipAuth) {
-        // authStore.clearAuth()
-        await navigateTo('/') // TODO : Change to login route
+      // Redirect to login/home page if unauthorized on authenticated routes
+      if (response.status === 401 && enableJwt && !skipAuth) {
+        try {
+          await navigateTo('/')
+        } catch {
+          // Prevent crashes if the Nuxt context is lost during the redirection phase
+        }
       }
     }
   })
