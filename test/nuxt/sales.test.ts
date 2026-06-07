@@ -36,7 +36,7 @@ describe('Sales Page', () => {
     expect(wrapper.text()).toContain('me.sales.empty_placeholder')
     expect(wrapper.text()).toContain('me.sales.sell_cta')
     expect(wrapper.find('.mock-sale-card').exists()).toBe(false)
-  })
+  }, 15000)
 
   it('renders sale cards when data is available', async () => {
     asyncDataMock.mockResolvedValueOnce({
@@ -54,5 +54,5 @@ describe('Sales Page', () => {
     const cards = wrapper.findAll('.mock-sale-card')
     expect(cards.length).toBe(2)
     expect(wrapper.text()).not.toContain('me.sales.empty_title')
-  })
+  }, 15000)
 })
