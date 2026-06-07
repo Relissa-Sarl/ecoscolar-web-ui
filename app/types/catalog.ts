@@ -8,7 +8,7 @@ export interface AdvertCatalogApiItem {
   type: AdvertType
   isbn?: string | null
   category?: string | null
-  subject?: string | null
+  subjects?: string | null
   grade?: string | null
 }
 
@@ -31,23 +31,6 @@ export enum CatalogServiceBadge {
   VerifiedTutor = 'VERIFIED_TUTOR'
 }
 
-export type CatalogGradeLevel = 'primary' | 'secondary' | 'maturity' | 'university'
-
-export type CatalogSubjectCode = 'math' | 'french' | 'german'
-
-export interface GradeFilterState {
-  primary: boolean
-  secondary: boolean
-  maturite: boolean
-  superieur: boolean
-}
-
-export interface SubjectFilterState {
-  math: boolean
-  french: boolean
-  german: boolean
-}
-
 export const CATALOG_CONDITION_BADGE_CLASS: Record<CatalogItemCondition, string> = {
   [CatalogItemCondition.New]: 'bg-emerald-600 text-white',
   [CatalogItemCondition.Used]: 'bg-amber-400 text-emerald-950',
@@ -58,24 +41,22 @@ export const CATALOG_SERVICE_BADGE_CLASS: Record<CatalogServiceBadge, string> = 
   [CatalogServiceBadge.VerifiedTutor]: 'bg-emerald-800 text-white'
 }
 
-/** Données enrichies côté UI pour carte + filtres jusqu’extension API. */
 export interface CatalogListing {
   id: string
   title: string
   price: number
   type: AdvertType
   categoryTab: Exclude<CatalogCategoryTab, 'all'>
-  /** Condition physique (fournitures / manuels uniquement). */
   itemCondition?: CatalogItemCondition
-  /** Badge service (tutorat uniquement). */
   serviceBadge?: CatalogServiceBadge
-  /** Clé i18n pour la ligne de métadonnée sous le visuel. */
-  metaLineKey: string
+  metaLine?: string
   location: string
   imageUrl: string
   hourly: boolean
-  subjectCode?: CatalogSubjectCode
-  gradeLevel?: CatalogGradeLevel
+  bookCategoryName?: string
+  schoolGradeName?: string
+  subjectName?: string
+  seller?: string
 }
 
 export interface CatalogFetchResult {

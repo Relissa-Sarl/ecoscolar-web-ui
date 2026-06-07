@@ -42,8 +42,43 @@
     "impact_unit": "eingespart"
   },
   "cart": {
+    "seo_title": "Mein Warenkorb | EcoScolar",
     "title": "Mein Warenkorb",
-    "empty": "Ihr Warenkorb ist zur Zeit leer"
+    "remove_from_cart": "Aus dem Warenkorb entfernen",
+    "clear": "Warenkorb leeren",
+    "added_success": "Artikel zum Warenkorb hinzugefügt!",
+    "tva": "MwSt. und Gebühren inbegriffen",
+    "one_advert": "Artikel",
+    "many_adverts": "Artikel",
+    "items": {
+      "books": "Bücher",
+      "supplies": "Schulmaterial",
+      "tutoring": "Kurse",
+      "quantity": "Menge",
+      "vendor": "Verkäufer"
+    },
+    "checkout": {
+      "title": "Bestellübersicht",
+      "subtotal": "Zwischensumme",
+      "shipping": "Versandart",
+      "shipping_fee": "Versandkosten",
+      "service_fee": "Servicegebühr",
+      "free": "Kostenlos",
+      "total": "Gesamtsumme",
+      "confirm": "Zur Kasse gehen"
+    },
+    "text_under_resume": {
+      "circular_trade": " Kreislaufwirtschaft: ",
+      "circular_text": " Bevorzugen Sie lokales Second-Hand-Material und reduzieren Sie Ihren CO2-Fußabdruck.",
+      "payment_note": "Sichere Transaktionen:",
+      "payment_text": "Vollständiger Schutz der Zahlungsdaten über Stripe"
+    },
+    "empty": {
+      "title": "Ihr Warenkorb ist zurzeit leer",
+      "subtitle": "Stöbern Sie in den Anzeigen und finden Sie das passende Buch, Schulmaterial oder den passenden Kurs.",
+      "go_to_shop": "Shop durchsuchen",
+      "back_to_home": "Zurück zur Startseite"
+    }
   },
   "catalog": {
     "seo_title": "Katalog | EcoScolar",
@@ -62,16 +97,13 @@
       "category_textbooks": "Schulbücher",
       "category_tutoring": "Nachhilfe",
       "show_all": "Alles anzeigen",
+      "book_category_heading": "Buchkategorie",
+      "supplies_no_subfilters": "Für Material gibt es derzeit keine weiteren Filter.",
       "grade_heading": "Schulstufe",
-      "grade_primary": "Primar",
-      "grade_secondary": "Sekundar",
-      "grade_maturity": "Maturität",
-      "grade_university": "Höhere Schule/FH",
       "subject_heading": "Fach",
-      "subject_math": "Mathematik",
-      "subject_french": "Französisch",
-      "subject_german": "Deutsch",
-      "reset": "Filter zurücksetzen"
+      "reset": "Filter zurücksetzen",
+      "references_loading": "Filter werden geladen…",
+      "references_load_error": "Filter konnten nicht geladen werden."
     },
     "banner": {
       "api_error_retry": "Der Katalog konnte nicht geladen werden. API prüfen und Seite neu laden.",
@@ -86,8 +118,8 @@
     "sort": {
       "label": "Sortieren",
       "recent": "Neueste",
-      "price_asc": "Preis ↑",
-      "price_desc": "Preis ↓"
+      "price_asc": "Aufsteigend",
+      "price_desc": "Absteigend"
     },
     "empty": {
       "title": "Keine passenden Einträge.",
@@ -99,9 +131,6 @@
     },
     "card": {
       "alt_image": "Artikelbild",
-      "meta_supplies": "Kat. Material",
-      "meta_textbooks": "ISBN — nach Scan verfügbar",
-      "meta_tutoring": "Nachhilfe • mind. 4 Lektionen",
       "hourly": "Preis",
       "demo_rating": "4,9/5 Demo",
       "book_lesson": "Buchen"
@@ -121,6 +150,37 @@
     }
   },
   "me": {
+    "purchases": {
+      "title": "Meine Kaufhistorie",
+      "subtitle": "Finden Sie die vollständige Historie der Bücher und Schulmaterialien, die Sie auf EcoScolar gekauft haben.",
+      "loading": "Ihre Kaufhistorie wird geladen...",
+      "error": "Beim Abrufen Ihrer Käufe ist ein Fehler aufgetreten.",
+      "error_detail": "Bitte aktualisieren Sie die Seite oder versuchen Sie es später erneut.",
+      "empty_title": "Keine Käufe erfasst",
+      "empty_placeholder": "Ihre Kaufhistorie wird hier angezeigt.",
+      "explore_cta": "Marktplatz erkunden",
+      "seller_label": "Verkäufer",
+      "view_advert": "Inserat ansehen"
+    },
+    "sales": {
+      "title": "Meine Verkaufshistorie",
+      "subtitle": "Verfolgen Sie Ihre Verkäufe, aktiven Anzeigen und die Geschichte der Artikel, die Sie mit der EcoScolar-Gemeinschaft geteilt haben.",
+      "loading": "Ihre Verkaufshistorie wird geladen...",
+      "error": "Beim Abrufen Ihrer Verkäufe ist ein Fehler aufgetreten.",
+      "error_detail": "Bitte aktualisieren Sie die Seite oder versuchen Sie es später erneut.",
+      "empty_title": "Keine Verkäufe erfasst",
+      "empty_placeholder": "Ihre Verkaufshistorie wird hier angezeigt.",
+      "sell_cta": "Inserat erstellen",
+      "buyer_label": "Gekauft von",
+      "view": "Ansehen",
+      "edit": "Bearbeiten",
+      "status": {
+        "active": "Zum Verkauf",
+        "sold": "Verkauft",
+        "paused": "Pausiert",
+        "expired": "Abgelaufen"
+      }
+    },
     "adverts": {
       "title": "Meine Anzeigen",
       "description": "Verwalten Sie Ihre Verkaufsanzeigen und Ihre Nachhilfeleistungen.",
@@ -231,7 +291,7 @@
     "createAdvert": "Anzeige erstellen",
     "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
     "creationFailed": "Beim Erstellen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
-    
+
   },
   "modifyAdvert": {
     "existingAdvert": "Anzeige",
@@ -243,10 +303,10 @@
   },
   "advert": {
     "actions": {
-      "buy_now": "Jetzt kaufen",
+      "buy_now": "In den Warenkorb",
+      "already_in_cart": "Bereits im Warenkorb",
       "favorite_add": "Zu Favoriten hinzufügen",
-      "favorite_remove": "Aus Favoriten entfernen",
-      "notify": "Benachrichtige mich"
+      "favorite_remove": "Aus Favoriten entfernen"
     },
     "detail": {
       "featured": "Empfohlen",
@@ -370,7 +430,8 @@
       "reason_placeholder": "Wählen Sie eine Option",
       "message": "Ihre Nachricht",
       "email_placeholder": "beispiel{'@'}email.com",
-      "message_placeholder": "Wie können wir Ihnen helfen?"
+      "message_placeholder": "Wie können wir Ihnen helfen?",
+      "message_hint": "Mindestens {min} Zeichen."
     },
     "reasons": {
       "account": "Kontoproblem",
@@ -380,15 +441,16 @@
     },
     "actions": {
       "submit": "Nachricht senden",
-      "cancel": "Abbrechen",
-      "view_requests": "Meine Anfragen",
-      "confirm_cancel": "Möchten Sie wirklich abbrechen? Ihre Änderungen gehen verloren.",
-      "confirm_cancel_title": "Änderungen abbrechen",
-      "confirm_cancel_confirm": "Verlassen",
-      "confirm_cancel_stay": "Bleiben"
+      "view_requests": "Meine Anfragen"
     },
     "success": "Vielen Dank! Ihre Nachricht wurde gesendet.",
     "error_submit": "Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
+    "validation": {
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "reason": "Bitte wählen Sie einen Kontaktgrund aus.",
+      "subject": "Bitte geben Sie einen Betreff mit mindestens 5 Zeichen ein.",
+      "message": "Ihre Nachricht muss mindestens 10 Zeichen enthalten."
+    },
     "list": {
       "subtitle": "Support",
       "title": "Meine Support-Anfragen",
@@ -405,7 +467,6 @@
       },
       "actions": {
         "new_request": "Neue Anfrage",
-        "contact": "Support kontaktieren",
         "open": "Anfrage ansehen"
       }
     },
@@ -559,7 +620,9 @@
     "language": "Sprachen",
     "location": "Standort",
     "favorites": "Favoriten",
-    "sales": "Verkäufe",
+    "sales": "Meine Anzeigen",
+    "purchases_history": "Meine Käufe",
+    "sales_history": "Meine Verkäufe",
     "support_requests": "Meine Anfragen",
     "edit": "Profil bearbeiten",
     "delete": "Konto löschen",
@@ -572,6 +635,7 @@
       "pc_label": "Postleitzahl",
       "dob_label": "Geburtsdatum",
       "languages_title": "Gesprochene Sprachen",
+      "languages_empty": "Keine Sprache hinzugefügt.",
       "language_label": "Sprache",
       "level_label": "Niveau",
       "level_native": "Muttersprache",
@@ -583,6 +647,19 @@
     },
     "public": {
       "error": "Es ist derzeit nicht möglich, das Benutzerprofil zu laden. Es könnte sein, dass der Benutzer sein Profil nicht öffentlich gemacht hat oder dass das Profil gelöscht wurde."
-     }
+    },
+    "reviews": {
+      "title": "Erhaltene Bewertungen",
+      "empty": "Für diesen Benutzer wurden noch keine Bewertungen abgegeben.",
+      "count": "{count} Bewertungen",
+      "one_review": "1 Bewertung",
+      "buyer": "Käufer",
+      "seller": "Verkäufer",
+      "filter_all": "Alle Bewertungen",
+      "filter_buyer": "Als Käufer",
+      "filter_seller": "Als Verkäufer",
+      "average": "Durchschnitt",
+      "star_distribution": "Verteilung der Sterne"
+    }
   }
 }

@@ -50,6 +50,7 @@ describe('T8-4 · intégration recherche livre (catalogService → API → mappe
     expect(listings).toHaveLength(1)
     expect(listings[0].title).toBe('Exemple annonce 3')
     expect(listings[0].categoryTab).toBe('textbooks')
+    expect(listings[0].metaLine).toBe('978-3-16-148410-0')
   })
 
   it('filtre par mot-clé livre sans inclure les produits', async () => {

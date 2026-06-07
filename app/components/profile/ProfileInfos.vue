@@ -56,7 +56,7 @@ const displayName = computed(() => {
       class="w-full flex flex-col gap-3 mb-5 text-sm"
     >
       <LanguagesComponent
-        :spoken-languages="(props.user as User)?.spokenLanguages ?? []"
+        :spoken-languages="(props.user as User)?.languages ?? []"
       />
       <LocationComponent
         :location="(props.user as User)?.location ?? null"
@@ -112,6 +112,48 @@ const displayName = computed(() => {
       </NuxtLink>
 
       <NuxtLink
+        :to="localePath('/me/purchases')"
+        class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+          />
+        </svg>
+        <span class="font-bold text-sm">{{ $t('profile.purchases_history') }}</span>
+      </NuxtLink>
+
+      <NuxtLink
+        :to="localePath('/me/sales')"
+        class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <span class="font-bold text-sm">{{ $t('profile.sales_history') }}</span>
+      </NuxtLink>
+
+      <NuxtLink
         v-if="props.isOwnProfile"
         :to="localePath('/me/support-requests')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
@@ -133,6 +175,26 @@ const displayName = computed(() => {
         <span class="font-bold text-sm">{{ $t('profile.support_requests') }}</span>
       </NuxtLink>
 
+      <NuxtLink
+        v-if="props.isOwnProfile && (props.user as User)?.roles.includes('Admin')"
+        :to="localePath('/me/admin/users')"
+        class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="size-6"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M11.484 2.17a.75.75 0 0 1 1.032 0 11.209 11.209 0 0 0 7.877 3.08.75.75 0 0 1 .722.515 12.74 12.74 0 0 1 .635 3.985c0 5.942-4.064 10.933-9.563 12.348a.749.749 0 0 1-.374 0C6.314 20.683 2.25 15.692 2.25 9.75c0-1.39.223-2.73.635-3.985a.75.75 0 0 1 .722-.516l.143.001c2.996 0 5.718-1.17 7.734-3.08ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75ZM12 15a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75H12Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        <span class="font-bold text-sm">Dashboard</span>
+      </NuxtLink>
       <NuxtLink
         :to="localePath('/me/settings')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors ml-auto"

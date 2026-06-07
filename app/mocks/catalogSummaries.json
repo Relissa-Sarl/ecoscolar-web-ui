@@ -3,24 +3,29 @@
     "id": 1,
     "title": "Exemple catalogue démo · fournitures",
     "price": 18.5,
-    "type": "PRODUCT"
+    "type": "PRODUCT",
+    "category": "Papeterie"
   },
   {
     "id": 2,
     "title": "Manuel de mathématiques niveau gymnase",
     "price": 32,
-    "type": "BOOK"
+    "type": "BOOK",
+    "category": "Mathématiques"
   },
   {
     "id": 3,
     "title": "Calculatrice scientifique (mock)",
     "price": 52.75,
-    "type": "PRODUCT"
+    "type": "PRODUCT",
+    "category": "Calculatrices"
   },
   {
     "id": 4,
-    "title": "Cours particuliers français • mock",
+    "title": "Cours particuliers français",
     "price": 45,
-    "type": "SERVICE"
+    "type": "SERVICE",
+    "subjects": "Français",
+    "grade": "Cycle 3 (9H-11H)"
   }
 ]

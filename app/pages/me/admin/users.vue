@@ -1,0 +1,397 @@
+<script lang="ts" setup>
+import Sidebar from '@/components/admin/Sidebar.vue'
+// import StatCard from '@/components/admin/StatCard.vue'
+import UserDetailModal from '@/components/admin/UserDetailModal.vue'
+import DeleteConfirmationPopup from '~/components/common/DeleteConfirmationPopup.vue'
+import PopUp from '~/components/common/PopUp.vue'
+import { getUserService } from '~/services/usersService'
+import type { User } from '~/types/user'
+
+const userService = getUserService()
+
+const me = ref<User | null>(null)
+const users = ref<User[]>([])
+
+definePageMeta({
+  middleware: ['admin']
+})
+
+// Pop-up
+const showPopUp = ref(false)
+const popUpType = ref<'info' | 'success' | 'warning' | 'error'>('info')
+const popUpTitle = ref('')
+const popUpDescription = ref('')
+
+const closePopUp = () => {
+  showPopUp.value = false
+  popUpTitle.value = ''
+  popUpDescription.value = ''
+}
+
+// Filters
+const searchQuery = ref('')
+const statusFilter = ref<'All' | 'Active' | 'Pending' | 'Banned'>('All')
+
+const filteredUsers = computed(() => {
+  let result = users.value
+
+  // 1. Filtre recherche
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase()
+    result = result.filter(u =>
+      u.firstName?.toLowerCase().includes(q)
+      || u.lastName?.toLowerCase().includes(q)
+      || u.email?.toLowerCase().includes(q)
+      || u.nickname?.toLowerCase().includes(q)
+    )
+  }
+
+  // 2. Filtre statut
+  if (statusFilter.value !== 'All') {
+    result = result.filter((u) => {
+      if (statusFilter.value === 'Banned') return u.isBanned
+      if (statusFilter.value === 'Active') return !u.isBanned && u.isOnboarded
+      if (statusFilter.value === 'Pending') return !u.isBanned && !u.isOnboarded
+      return true
+    })
+  }
+
+  return result
+})
+
+// Pagination
+const currentPage = ref(1)
+const pageSize = 10
+
+const totalPages = computed(() => Math.ceil(filteredUsers.value.length / pageSize))
+
+const paginatedUsers = computed(() => {
+  const start = (currentPage.value - 1) * pageSize
+  return filteredUsers.value.slice(start, start + pageSize)
+})
+
+const changePage = (page: number) => {
+  currentPage.value = page
+}
+
+watch([searchQuery, statusFilter], () => {
+  currentPage.value = 1
+})
+
+// User Detail Modal
+const isModalOpen = ref(false)
+const selectedUser = ref<User | null>(null)
+
+const openUserModal = (user: User) => {
+  selectedUser.value = user
+  isModalOpen.value = true
+}
+
+// ban/unban user
+const showBanConfirm = ref<boolean>(false)
+const userToBan = ref<User | null>(null)
+
+const toggleUserStatus = (id: string) => {
+  showBanConfirm.value = true
+  userToBan.value = users.value.find(user => user.id === id) || null
+}
+const confirmBan = async () => {
+  if (userToBan.value) {
+    try {
+      const updatedUser = await userService.banUserToggle(userToBan.value.id)
+
+      const index = users.value.findIndex(u => u.id === userToBan.value?.id)
+
+      if (index !== -1) {
+        users.value[index] = updatedUser
+        showPopUp.value = true
+        popUpType.value = 'success'
+        if (updatedUser.isBanned) {
+          popUpTitle.value = 'User Banned'
+          popUpDescription.value = `The user has been banned successfully.`
+        } else {
+          popUpTitle.value = 'User Unbanned'
+          popUpDescription.value = `The user has been unbanned successfully.`
+        }
+      }
+      showBanConfirm.value = false
+      userToBan.value = null
+    } catch (error) {
+      console.error('Error toggling user status:', error)
+      showPopUp.value = true
+      popUpType.value = 'error'
+      popUpTitle.value = 'User Status Updated'
+      popUpDescription.value = `An error occurred while updating the user status or the user cannot be banned. Please try again later.`
+      showBanConfirm.value = false
+      userToBan.value = null
+    }
+  }
+}
+
+const cancelBan = () => {
+  showBanConfirm.value = false
+  userToBan.value = null
+}
+
+onMounted(async () => {
+  me.value = await userService.getMyProfile()
+  users.value = await userService.getAllUsers()
+})
+</script>
+
+<template>
+  <section class="min-h-screen px-4 text-gray-900 dark:bg-gray-950 dark:text-gray-100 flex">
+    <PopUp
+      :show="showPopUp"
+      :pop-up-type="popUpType"
+      :title="popUpTitle"
+      :description="popUpDescription"
+      :duration="3000"
+      @close="closePopUp"
+    />
+    <Sidebar :user="me" />
+    <div class="flex-1 p-8">
+      <!-- Header -->
+      <div class="flex justify-between items-center mb-8">
+        <div>
+          <h1 class="text-2xl font-bold">
+            User Management
+          </h1>
+          <p class="text-gray-500">
+            Manage and moderate EcoScolar's community.
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <button class="ml-auto rounded-xl text-sm font-medium px-4 py-2 bg-emerald-800 text-white hover:bg-emerald-700 transition-colors">
+            + Add New User
+          </button>
+        </div>
+      </div>
+
+      <!-- Stat Section
+      <div class="grid grid-cols-3 gap-6 mb-8">
+        <StatCard
+          title="Total Active Users"
+          value="12,482"
+          icon="heroicons:user-group"
+          trend="↑ 12% this month"
+        />
+        <StatCard
+          title="Seller vs Buyer Ratio"
+          value="1:4"
+          icon="heroicons:chart-pie"
+          trend="3k : 9k"
+        />
+        <StatCard
+          title="Pending Reports"
+          value="28"
+          icon="heroicons:flag"
+          trend="5 high priority"
+        />
+      </div> -->
+
+      <UserDetailModal
+        :user="selectedUser"
+        :is-open="isModalOpen"
+        @close="isModalOpen = false"
+      />
+
+      <DeleteConfirmationPopup
+        :show="showBanConfirm"
+        title="Ban User"
+        message="Are you sure you want to ban this user? This action cannot be undone."
+        cancel-text="Cancel"
+        confirm-text="Confirm"
+        @confirm-delete="confirmBan"
+        @cancel-delete="cancelBan"
+      />
+
+      <div class="flex gap-4 mb-6">
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search by name, email, or nickname..."
+          class="flex-1 px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-800 dark:bg-gray-950 outline-none focus:border-emerald-700"
+        >
+
+        <select
+          v-model="statusFilter"
+          class="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-800 dark:bg-gray-950 outline-none"
+        >
+          <option value="All">
+            All Status
+          </option>
+          <option value="Active">
+            Active
+          </option>
+          <option value="Pending">
+            Pending
+          </option>
+          <option value="Banned">
+            Banned
+          </option>
+        </select>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-100 shadow-sm dark:bg-gray-950 dark:border-gray-800 overflow-hidden">
+        <table class="w-full text-left border-collapse table-fixed">
+          <thead>
+            <tr class="border-b border-gray-300 dark:border-gray-800 text-gray-500 text-sm">
+              <th class="p-4 font-medium w-1/4">
+                User
+              </th>
+              <th class="p-4 font-medium w-1/4">
+                Email
+              </th>
+              <th class="p-4 font-medium w-1/5">
+                Role
+              </th> <th class="p-4 font-medium w-1/6">
+                Status
+              </th>
+              <th class="p-4 font-medium text-right w-1/12">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y dark:divide-gray-800">
+            <tr
+              v-for="user in paginatedUsers"
+              :key="user.id"
+              class="hover:bg-gray-50 border-gray-300 dark:border-gray-800 dark:hover:bg-gray-900 transition-colors"
+            >
+              <td class="p-4 flex items-center gap-3 truncate">
+                <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0">
+                  {{ user.firstName?.charAt(0) }}{{ user.lastName?.charAt(0) }}
+                </div>
+                <div class="truncate">
+                  <div class="font-medium truncate">
+                    {{ user.firstName }} {{ user.lastName }}
+                  </div>
+                  <div class="text-xs text-gray-500 truncate">
+                    @{{ user.nickname }}
+                  </div>
+                </div>
+              </td>
+
+              <td class="p-4 text-sm text-gray-600 dark:text-gray-400 truncate">
+                {{ user.email }}
+              </td>
+
+              <td class="p-4 text-sm">
+                <div class="flex flex-wrap gap-1">
+                  <span
+                    v-for="role in user.roles"
+                    :key="role"
+                    class="px-2 py-1 bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200 rounded text-xs font-medium"
+                  >
+                    {{ role }}
+                  </span>
+                </div>
+              </td>
+
+              <td class="p-4">
+                <span
+                  class="inline-flex items-center gap-1.5 text-xs font-medium"
+                  :class="user.isBanned ? 'text-red-600' : 'text-emerald-600'"
+                >
+                  <span :class="['w-2 h-2 rounded-full', user.isBanned ? 'bg-red-500 text-red-600' : 'bg-emerald-500 text-emerald-600']" />
+                  {{ user.isBanned ? 'Banned' : (user.isOnboarded ? 'Active' : 'Pending') }}
+                </span>
+              </td>
+
+              <td class="p-4 text-right flex">
+                <button
+                  class="text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer"
+                  @click="openUserModal(user)"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="size-6"
+                  >
+                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                    <path
+                      fill-rule="evenodd"
+                      d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <button class="ml-2 text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="size-6"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M3 2.25a.75.75 0 0 1 .75.75v.54l1.838-.46a9.75 9.75 0 0 1 6.725.738l.108.054A8.25 8.25 0 0 0 18 4.524l3.11-.732a.75.75 0 0 1 .917.81 47.784 47.784 0 0 0 .005 10.337.75.75 0 0 1-.574.812l-3.114.733a9.75 9.75 0 0 1-6.594-.77l-.108-.054a8.25 8.25 0 0 0-5.69-.625l-2.202.55V21a.75.75 0 0 1-1.5 0V3A.75.75 0 0 1 3 2.25Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <button
+                  class="ml-2 text-gray-400 hover:text-red-600 transition-colors font-medium text-sm cursor-pointer"
+                  @click="toggleUserStatus(user.id)"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="size-6"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="m6.72 5.66 11.62 11.62A8.25 8.25 0 0 0 6.72 5.66Zm10.56 12.68L5.66 6.72a8.25 8.25 0 0 0 11.62 11.62ZM5.105 5.106c3.807-3.808 9.98-3.808 13.788 0 3.808 3.807 3.808 9.98 0 13.788-3.807 3.808-9.98 3.808-13.788 0-3.808-3.807-3.808-9.98 0-13.788Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div
+          v-if="totalPages > 1"
+          class="flex justify-between items-center p-4 border-t border-gray-300 dark:border-gray-800"
+        >
+          <button
+            :disabled="currentPage === 1"
+            class="px-3 py-1 text-sm border rounded-lg disabled:opacity-50  cursor-pointer"
+            @click="changePage(currentPage - 1)"
+          >
+            Previous
+          </button>
+
+          <div class="flex gap-1">
+            <button
+              v-for="page in totalPages"
+              :key="page"
+              :class="['px-3 py-1 text-sm rounded-lg', currentPage === page ? 'bg-emerald-800 text-white' : 'hover:bg-gray-100 cursor-pointer dark:hover:bg-gray-800']"
+              @click="changePage(page)"
+            >
+              {{ page }}
+            </button>
+          </div>
+
+          <button
+            :disabled="currentPage === totalPages"
+            class="px-3 py-1 text-sm border rounded-lg disabled:opacity-50 cursor-pointer"
+            @click="changePage(currentPage + 1)"
+          >
+            Next
+          </button>
+        </div>
+
+        <div
+          v-if="users.length === 0"
+          class="p-8 text-center text-gray-500"
+        >
+          No users found.
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

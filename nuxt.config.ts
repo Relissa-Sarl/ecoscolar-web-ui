@@ -10,7 +10,8 @@ export default defineNuxtConfig({
     '@nuxtjs/seo',
     '@nuxtjs/i18n',
     'nuxt-zod-i18n',
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/google-fonts',
+    '@nuxt/icon'
   ], ssr: process.env.NODE_ENV !== 'production',
   devtools: {
     enabled: true

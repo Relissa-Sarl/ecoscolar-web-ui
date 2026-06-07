@@ -42,8 +42,43 @@
     "impact_unit": "risparmiati"
   },
   "cart": {
+    "seo_title": "Il mio carrello | EcoScolar",
     "title": "Il mio carrello",
-    "empty": "Il tuo carrello è attualmente vuoto"
+    "remove_from_cart": "Rimuovi dal carrello",
+    "clear": "Svuota il carrello",
+    "added_success": "Articolo aggiunto al carrello!",
+    "tva": "IVA e costi inclusi",
+    "one_advert": "articolo",
+    "many_adverts": "articoli",
+    "items": {
+      "books": "Libri",
+      "supplies": "Forniture",
+      "tutoring": "Corsi",
+      "quantity": "Quantità",
+      "vendor": "Venditore"
+    },
+    "checkout": {
+      "title": "Riepilogo dell'ordine",
+      "subtotal": "Totale parziale",
+      "shipping": "Metodo di spedizione",
+      "shipping_fee": "Spese di spedizione",
+      "service_fee": "Commissione di servizio",
+      "free": "Gratuito",
+      "total": "Totale",
+      "confirm": "Procedi al pagamento"
+    },
+    "text_under_resume": {
+      "circular_trade": " Economia Circolare: ",
+      "circular_text": " Privilegia l'usato locale e riduci la tua impronta di carbonio.",
+      "payment_note": "Transazioni sicure:",
+      "payment_text": "Protezione totale dei dati di pagamento tramite Stripe"
+    },
+    "empty": {
+      "title": "Il tuo carrello è attualmente vuoto",
+      "subtitle": "Sfoglia gli annunci e trova il libro, la fornitura o il corso che fa per te.",
+      "go_to_shop": "Esplora il negozio",
+      "back_to_home": "Torna alla home"
+    }
   },
   "catalog": {
     "seo_title": "Catalogo | EcoScolar",
@@ -62,16 +97,13 @@
       "category_textbooks": "Manuali",
       "category_tutoring": "Ripetizioni",
       "show_all": "Mostra tutto",
+      "book_category_heading": "Categoria del libro",
+      "supplies_no_subfilters": "Nessun filtro aggiuntivo per le forniture al momento.",
       "grade_heading": "Livello",
-      "grade_primary": "Elementare",
-      "grade_secondary": "Media",
-      "grade_maturity": "Maturità",
-      "grade_university": "Superiore",
       "subject_heading": "Materia",
-      "subject_math": "Matematica",
-      "subject_french": "Francese",
-      "subject_german": "Tedesco",
-      "reset": "Azzera i filtri"
+      "reset": "Azzera i filtri",
+      "references_loading": "Caricamento filtri…",
+      "references_load_error": "Impossibile caricare i filtri."
     },
     "banner": {
       "api_error_retry": "Impossibile sincronizzare il catalogo. Controlla l’API e aggiorna la pagina.",
@@ -85,9 +117,9 @@
     },
     "sort": {
       "label": "Ordina",
-      "recent": "Più recenti",
-      "price_asc": "Prezzo ↑",
-      "price_desc": "Prezzo ↓"
+      "recent": "Recenti",
+      "price_asc": "Crescente",
+      "price_desc": "Decrescente"
     },
     "empty": {
       "title": "Nessun risultato.",
@@ -99,9 +131,6 @@
     },
     "card": {
       "alt_image": "Immagine dell’annuncio",
-      "meta_supplies": "Cat. materiale",
-      "meta_textbooks": "ISBN — disponibile dopo scansione",
-      "meta_tutoring": "Ripetizioni • min. 4 lezioni",
       "hourly": "Tariffa",
       "demo_rating": "4.9/5 demo",
       "book_lesson": "Prenota"
@@ -121,6 +150,37 @@
     }
   },
   "me": {
+    "purchases": {
+      "title": "Cronologia dei miei acquisti",
+      "subtitle": "Trova la cronologia completa dei manuali e dei materiali scolastici che hai acquistato su EcoScolar.",
+      "loading": "Caricamento della cronologia degli acquisti...",
+      "error": "Si è verificato un errore durante il recupero dei tuoi acquisti.",
+      "error_detail": "Aggiorna la pagina o riprova più tardi.",
+      "empty_title": "Nessun acquisto registrato",
+      "empty_placeholder": "La cronologia dei tuoi acquisti apparir\u00e0 qui.",
+      "explore_cta": "Esplora il negozio",
+      "seller_label": "Venditore",
+      "view_advert": "Vedi l'annuncio"
+    },
+    "sales": {
+      "title": "Cronologia delle mie vendite",
+      "subtitle": "Segui le tue vendite, gli annunci attivi e la cronologia degli articoli che hai condiviso con la comunità EcoScolar.",
+      "loading": "Caricamento della cronologia delle vendite...",
+      "error": "Si è verificato un errore durante il recupero delle tue vendite.",
+      "error_detail": "Aggiorna la pagina o riprova più tardi.",
+      "empty_title": "Nessuna vendita registrata",
+      "empty_placeholder": "La cronologia delle tue vendite apparir\u00e0 qui.",
+      "sell_cta": "Crea un annuncio",
+      "buyer_label": "Acquistato da",
+      "view": "Vedi",
+      "edit": "Modifica",
+      "status": {
+        "active": "In vendita",
+        "sold": "Venduto",
+        "paused": "In pausa",
+        "expired": "Scaduto"
+      }
+    },
     "adverts": {
       "title": "I miei annunci",
       "description": "Gestisci i tuoi annunci di vendita e i tuoi servizi di tutoraggio.",
@@ -242,10 +302,10 @@
   },
   "advert": {
     "actions": {
-      "buy_now": "Acquista ora",
+      "buy_now": "Aggiungi al carrello",
+      "already_in_cart": "Già nel carrello",
       "favorite_add": "Aggiungi ai preferiti",
-      "favorite_remove": "Rimuovi dai preferiti",
-      "notify": "Avvisami"
+      "favorite_remove": "Rimuovi dai preferiti"
     },
     "detail": {
       "featured": "In evidenza",
@@ -369,7 +429,8 @@
       "reason_placeholder": "Seleziona un'opzione",
       "message": "Il tuo messaggio",
       "email_placeholder": "esempio{'@'}email.com",
-      "message_placeholder": "Come possiamo aiutarti?"
+      "message_placeholder": "Come possiamo aiutarti?",
+      "message_hint": "Minimo {min} caratteri."
     },
     "reasons": {
       "account": "Problema con l'account",
@@ -379,15 +440,16 @@
     },
     "actions": {
       "submit": "Invia il messaggio",
-      "cancel": "Annulla",
-      "view_requests": "Le mie richieste",
-      "confirm_cancel": "Sei sicuro di voler annullare? Le tue modifiche andranno perse.",
-      "confirm_cancel_title": "Annulla le modifiche",
-      "confirm_cancel_confirm": "Esci",
-      "confirm_cancel_stay": "Resta"
+      "view_requests": "Le mie richieste"
     },
     "success": "Grazie! Il tuo messaggio è stato inviato.",
     "error_submit": "Impossibile inviare il messaggio. Riprova più tardi.",
+    "validation": {
+      "email": "Inserisci un indirizzo e-mail valido.",
+      "reason": "Seleziona un motivo di contatto.",
+      "subject": "Inserisci un oggetto di almeno 5 caratteri.",
+      "message": "Il messaggio deve contenere almeno 10 caratteri."
+    },
     "list": {
       "subtitle": "Supporto",
       "title": "Le mie richieste di supporto",
@@ -404,7 +466,6 @@
       },
       "actions": {
         "new_request": "Nuova richiesta",
-        "contact": "Contatta il supporto",
         "open": "Vedi richiesta"
       }
     },
@@ -558,7 +619,9 @@
     "language": "Lingue",
     "location": "Localizzazione",
     "favorites": "Preferiti",
-    "sales": "Vendite",
+    "sales": "I miei annunci",
+    "purchases_history": "I miei acquisti",
+    "sales_history": "Le mie vendite",
     "support_requests": "Le mie richieste",
     "edit": "Modifica profilo",
     "delete": "Elimina account",
@@ -571,6 +634,7 @@
       "pc_label": "Codice Postale",
       "dob_label": "Data di nascita",
       "languages_title": "Lingue parlate",
+      "languages_empty": "Nessuna lingua aggiunta.",
       "language_label": "Lingua",
       "level_label": "Livello",
       "level_native": "Madrelingua",
@@ -582,6 +646,19 @@
     },
     "public": {
       "error": "Attualmente non è possibile caricare il profilo utente. L'utente potrebbe non aver impostato il profilo come pubblico o il profilo potrebbe essere stato rimosso."
+    },
+    "reviews": {
+      "title": "Recensioni ricevute",
+      "empty": "Non sono state ancora lasciate recensioni per questo utente.",
+      "count": "{count} recensioni",
+      "one_review": "1 recensione",
+      "buyer": "Acquirente",
+      "seller": "Venditore",
+      "filter_all": "Tutte le recensioni",
+      "filter_buyer": "Come acquirente",
+      "filter_seller": "Come venditore",
+      "average": "Media",
+      "star_distribution": "Distribuzione delle stelle"
     }
   }
 }

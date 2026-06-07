@@ -10,9 +10,14 @@ const localePath = useLocalePath()
 const { t } = useI18n()
 const usersStore = useUsersStore()
 const { data: advert } = await useAdvert(String(route.params.id))
-const { data: advertQuestions, refresh: refreshQuestions } = await useAsyncData<QuestionResponse[]>(
+const { data: advertQuestions, refresh: refreshQuestions } = await useAsyncData(
   `advert-questions:${String(route.params.id)}`,
-  () => getAdvertService().getQuestions(Number(route.params.id))
+  async () => {
+    if (!usersStore.isAuthenticated) {
+      return [] as QuestionResponse[]
+    }
+    return await getAdvertService().getQuestions(Number(route.params.id))
+  }
 )
 
 const breadcrumbItems = computed(() => {
@@ -109,7 +114,8 @@ const advertSummary = computed(() => {
     type: advert.value.type,
     condition: advert.value.condition,
     price: advert.value.price,
-    image: advert.value.image || advert.value.images?.[0] || ''
+    image: advert.value.image || advert.value.images?.[0] || '',
+    seller: advert.value.seller?.username
   }
 })
 </script>
@@ -122,9 +128,10 @@ const advertSummary = computed(() => {
       <div class="mb-8">
         <NuxtLink
           :to="localePath('/shop')"
-          class="inline-flex items-center gap-2 text-emerald-700 dark:text-emerald-400 hover:underline font-medium focus:ring-2 focus:ring-emerald-500 outline-none rounded"
+          class="group inline-flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-medium no-underline focus:ring-2 focus:ring-emerald-500 outline-none rounded"
         >
-          <span aria-hidden="true">←</span> {{ $t('common.back_to_catalog') }}
+          <span aria-hidden="true">←</span>
+          <span class="border-b border-transparent pb-px group-hover:border-current">{{ $t('common.back_to_catalog') }}</span>
         </NuxtLink>
       </div>
 
@@ -136,7 +143,7 @@ const advertSummary = computed(() => {
           />
         </div>
 
-        <div class="lg:col-span-1">
+        <div class="lg:col-span-1 space-y-4">
           <AdvertInfo
             v-if="advert"
             :condition="showCondition ? advert.condition : ''"
@@ -157,7 +164,11 @@ const advertSummary = computed(() => {
           <AdvertSellerCard
             v-if="advert && advert.seller.username"
             :seller="advert.seller"
-            @view-profile="() => {}"
+            @view-profile="() => {
+              if (advert?.seller?.id) {
+                navigateTo(localePath(`/users/${advert.seller.id}`))
+              }
+            }"
           />
           <AdvertActionButtons
             :advert="advertSummary"
@@ -182,7 +193,7 @@ const advertSummary = computed(() => {
       >
         <AdvertPublicQuestions
           :seller="advert.seller"
-          :can-ask="!isOwnAdvert"
+          :can-ask="usersStore.isAuthenticated && !isOwnAdvert"
           :can-answer="isOwnAdvert"
           :answering-question-id="answeringQuestionId"
           :questions="advertQuestions || []"
