@@ -104,21 +104,18 @@
       "title": "Filtres",
       "subtitle": "Affinez votre recherche.",
       "mobile_toggle": "Afficher / masquer les filtres",
+      "book_category_heading": "Catégorie du livre",
       "category_legend": "Type d’annonce",
       "category_supplies": "Tout le matériel",
       "category_textbooks": "Manuels scolaires",
       "category_tutoring": "Cours & soutien",
       "show_all": "Tout afficher",
       "grade_heading": "Niveau scolaire",
-      "grade_primary": "Primaire",
-      "grade_secondary": "Secondaire",
-      "grade_maturity": "Maturité",
-      "grade_university": "Supérieur",
       "subject_heading": "Matière",
-      "subject_math": "Mathématiques",
-      "subject_french": "Français",
-      "subject_german": "Allemand",
-      "reset": "Réinitialiser les filtres"
+      "reset": "Réinitialiser les filtres",
+      "references_loading": "Chargement des filtres…",
+      "references_load_error": "Impossible de charger les filtres.",
+      "supplies_no_subfilters": "Aucun filtre supplémentaire pour les fournitures pour le moment."
     },
     "banner": {
       "api_error_retry": "Le catalogue ne s’est pas synchronisé avec le serveur. Vérifiez l’API puis actualisez la page.",
@@ -146,9 +143,6 @@
     },
     "card": {
       "alt_image": "visuel de l’annonce",
-      "meta_supplies": "Cat. fournitures",
-      "meta_textbooks": "ISBN — disponible après scan",
-      "meta_tutoring": "Répétiteur • 4 séances mini",
       "hourly": "Tarif",
       "demo_rating": "4,9/5 démo",
       "book_lesson": "Réserver"
@@ -445,7 +439,8 @@
       "reason_placeholder": "Sélectionnez une option",
       "message": "Votre message",
       "email_placeholder": "exemple{'@'}email.com",
-      "message_placeholder": "Comment pouvons-nous vous aider ?"
+      "message_placeholder": "Comment pouvons-nous vous aider ?",
+      "message_hint": "Minimum {min} caractères."
     },
     "reasons": {
       "account": "Problème de compte",
@@ -459,6 +454,12 @@
     },
     "success": "Merci ! Votre message a été envoyé.",
     "error_submit": "Impossible d'envoyer le message. Réessayez plus tard.",
+    "validation": {
+      "email": "Veuillez saisir une adresse e-mail valide.",
+      "reason": "Veuillez sélectionner une raison de contact.",
+      "subject": "Veuillez saisir un objet d'au moins 5 caractères.",
+      "message": "Votre message doit contenir au moins 10 caractères."
+    },
     "list": {
       "subtitle": "Support",
       "title": "Mes demandes de support",
@@ -475,7 +476,6 @@
       },
       "actions": {
         "new_request": "Nouvelle demande",
-        "contact": "Contacter le support",
         "open": "Voir la demande"
       }
     },
@@ -639,6 +639,19 @@
     },
     "public": {
       "error": "Il est actuellement impossible de charger le profil utilisateur. Il se peut que l'utilisateur ne soit pas en public ou que le profil ait été supprimé."
+    },
+    "reviews": {
+      "title": "Avis reçus",
+      "empty": "Aucun avis n'a été laissé pour cet utilisateur.",
+      "count": "{count} avis",
+      "one_review": "1 avis",
+      "buyer": "Acheteur",
+      "seller": "Vendeur",
+      "filter_all": "Tous les avis",
+      "filter_buyer": "En tant qu'acheteur",
+      "filter_seller": "En tant que vendeur",
+      "average": "Moyenne",
+      "star_distribution": "Répartition des notes"
     }
   }
 }

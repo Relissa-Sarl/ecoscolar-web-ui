@@ -109,16 +109,13 @@
       "category_textbooks": "Schulbücher",
       "category_tutoring": "Nachhilfe",
       "show_all": "Alles anzeigen",
+      "book_category_heading": "Buchkategorie",
+      "supplies_no_subfilters": "Für Material gibt es derzeit keine weiteren Filter.",
       "grade_heading": "Schulstufe",
-      "grade_primary": "Primar",
-      "grade_secondary": "Sekundar",
-      "grade_maturity": "Maturität",
-      "grade_university": "Höhere Schule/FH",
       "subject_heading": "Fach",
-      "subject_math": "Mathematik",
-      "subject_french": "Französisch",
-      "subject_german": "Deutsch",
-      "reset": "Filter zurücksetzen"
+      "reset": "Filter zurücksetzen",
+      "references_loading": "Filter werden geladen…",
+      "references_load_error": "Filter konnten nicht geladen werden."
     },
     "banner": {
       "api_error_retry": "Der Katalog konnte nicht geladen werden. API prüfen und Seite neu laden.",
@@ -146,9 +143,6 @@
     },
     "card": {
       "alt_image": "Artikelbild",
-      "meta_supplies": "Kat. Material",
-      "meta_textbooks": "ISBN — nach Scan verfügbar",
-      "meta_tutoring": "Nachhilfe • mind. 4 Lektionen",
       "hourly": "Preis",
       "demo_rating": "4,9/5 Demo",
       "book_lesson": "Buchen"
@@ -447,7 +441,8 @@
       "reason_placeholder": "Wählen Sie eine Option",
       "message": "Ihre Nachricht",
       "email_placeholder": "beispiel{'@'}email.com",
-      "message_placeholder": "Wie können wir Ihnen helfen?"
+      "message_placeholder": "Wie können wir Ihnen helfen?",
+      "message_hint": "Mindestens {min} Zeichen."
     },
     "reasons": {
       "account": "Kontoproblem",
@@ -461,6 +456,12 @@
     },
     "success": "Vielen Dank! Ihre Nachricht wurde gesendet.",
     "error_submit": "Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
+    "validation": {
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "reason": "Bitte wählen Sie einen Kontaktgrund aus.",
+      "subject": "Bitte geben Sie einen Betreff mit mindestens 5 Zeichen ein.",
+      "message": "Ihre Nachricht muss mindestens 10 Zeichen enthalten."
+    },
     "list": {
       "subtitle": "Support",
       "title": "Meine Support-Anfragen",
@@ -477,7 +478,6 @@
       },
       "actions": {
         "new_request": "Neue Anfrage",
-        "contact": "Support kontaktieren",
         "open": "Anfrage ansehen"
       }
     },
@@ -636,6 +636,19 @@
     },
     "public": {
       "error": "Es ist derzeit nicht möglich, das Benutzerprofil zu laden. Es könnte sein, dass der Benutzer sein Profil nicht öffentlich gemacht hat oder dass das Profil gelöscht wurde."
+    },
+    "reviews": {
+      "title": "Erhaltene Bewertungen",
+      "empty": "Für diesen Benutzer wurden noch keine Bewertungen abgegeben.",
+      "count": "{count} Bewertungen",
+      "one_review": "1 Bewertung",
+      "buyer": "Käufer",
+      "seller": "Verkäufer",
+      "filter_all": "Alle Bewertungen",
+      "filter_buyer": "Als Käufer",
+      "filter_seller": "Als Verkäufer",
+      "average": "Durchschnitt",
+      "star_distribution": "Verteilung der Sterne"
     }
   }
 }

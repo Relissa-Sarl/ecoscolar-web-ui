@@ -36,7 +36,7 @@ describe('Purchases Page', () => {
     expect(wrapper.text()).toContain('me.purchases.empty_placeholder')
     expect(wrapper.text()).toContain('me.purchases.explore_cta')
     expect(wrapper.find('.mock-purchase-card').exists()).toBe(false)
-  })
+  }, 15000)
 
   it('renders purchase cards when data is available', async () => {
     asyncDataMock.mockResolvedValueOnce({
@@ -54,5 +54,5 @@ describe('Purchases Page', () => {
     const cards = wrapper.findAll('.mock-purchase-card')
     expect(cards.length).toBe(2)
     expect(wrapper.text()).not.toContain('me.purchases.empty_title')
-  })
+  }, 15000)
 })

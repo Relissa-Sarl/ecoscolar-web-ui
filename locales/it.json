@@ -109,16 +109,13 @@
       "category_textbooks": "Manuali",
       "category_tutoring": "Ripetizioni",
       "show_all": "Mostra tutto",
+      "book_category_heading": "Categoria del libro",
+      "supplies_no_subfilters": "Nessun filtro aggiuntivo per le forniture al momento.",
       "grade_heading": "Livello",
-      "grade_primary": "Elementare",
-      "grade_secondary": "Media",
-      "grade_maturity": "Maturità",
-      "grade_university": "Superiore",
       "subject_heading": "Materia",
-      "subject_math": "Matematica",
-      "subject_french": "Francese",
-      "subject_german": "Tedesco",
-      "reset": "Azzera i filtri"
+      "reset": "Azzera i filtri",
+      "references_loading": "Caricamento filtri…",
+      "references_load_error": "Impossibile caricare i filtri."
     },
     "banner": {
       "api_error_retry": "Impossibile sincronizzare il catalogo. Controlla l’API e aggiorna la pagina.",
@@ -146,9 +143,6 @@
     },
     "card": {
       "alt_image": "Immagine dell’annuncio",
-      "meta_supplies": "Cat. materiale",
-      "meta_textbooks": "ISBN — disponibile dopo scansione",
-      "meta_tutoring": "Ripetizioni • min. 4 lezioni",
       "hourly": "Tariffa",
       "demo_rating": "4.9/5 demo",
       "book_lesson": "Prenota"
@@ -447,7 +441,8 @@
       "reason_placeholder": "Seleziona un'opzione",
       "message": "Il tuo messaggio",
       "email_placeholder": "esempio{'@'}email.com",
-      "message_placeholder": "Come possiamo aiutarti?"
+      "message_placeholder": "Come possiamo aiutarti?",
+      "message_hint": "Minimo {min} caratteri."
     },
     "reasons": {
       "account": "Problema con l'account",
@@ -461,6 +456,12 @@
     },
     "success": "Grazie! Il tuo messaggio è stato inviato.",
     "error_submit": "Impossibile inviare il messaggio. Riprova più tardi.",
+    "validation": {
+      "email": "Inserisci un indirizzo e-mail valido.",
+      "reason": "Seleziona un motivo di contatto.",
+      "subject": "Inserisci un oggetto di almeno 5 caratteri.",
+      "message": "Il messaggio deve contenere almeno 10 caratteri."
+    },
     "list": {
       "subtitle": "Supporto",
       "title": "Le mie richieste di supporto",
@@ -477,7 +478,6 @@
       },
       "actions": {
         "new_request": "Nuova richiesta",
-        "contact": "Contatta il supporto",
         "open": "Vedi richiesta"
       }
     },
@@ -636,6 +636,19 @@
     },
     "public": {
       "error": "Attualmente non è possibile caricare il profilo utente. L'utente potrebbe non aver impostato il profilo come pubblico o il profilo potrebbe essere stato rimosso."
+    },
+    "reviews": {
+      "title": "Recensioni ricevute",
+      "empty": "Non sono state ancora lasciate recensioni per questo utente.",
+      "count": "{count} recensioni",
+      "one_review": "1 recensione",
+      "buyer": "Acquirente",
+      "seller": "Venditore",
+      "filter_all": "Tutte le recensioni",
+      "filter_buyer": "Come acquirente",
+      "filter_seller": "Come venditore",
+      "average": "Media",
+      "star_distribution": "Distribuzione delle stelle"
     }
   }
 }

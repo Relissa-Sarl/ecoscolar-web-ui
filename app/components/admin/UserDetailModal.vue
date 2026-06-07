@@ -108,7 +108,10 @@ defineEmits(['close'])
           <p class="text-gray-500 text-xs uppercase mb-2">
             Status
           </p>
-          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-600">
+          <span
+            class="inline-flex items-center gap-1.5 text-xs font-medium"
+            :class="user.isBanned ? 'text-red-600' : 'text-emerald-600'"
+          >
             <span :class="['w-2 h-2 rounded-full', user.isBanned ? 'bg-red-500' : 'bg-emerald-500']" />
             {{ user.isBanned ? 'Banned' : (user.isOnboarded ? 'Active' : 'Pending') }}
           </span>

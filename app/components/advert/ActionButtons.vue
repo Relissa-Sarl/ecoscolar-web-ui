@@ -69,7 +69,6 @@ const handleBuy = async () => {
       imageUrl: props.advert.image || '',
       location: '',
       hourly: props.advert.type === AdvertType.SERVICE,
-      metaLineKey: props.advert.type === AdvertType.BOOK ? 'catalog.card.meta_textbooks' : (props.advert.type === AdvertType.PRODUCT ? 'catalog.card.meta_supplies' : 'catalog.card.meta_tutoring'),
       seller: props.advert.seller
     }
     await cartStore.addToCart(listing)

@@ -7,8 +7,9 @@ import type {
 import type { AdvertCatalogDetailApiItem } from '@/types/catalog'
 import { AdvertType } from '@/utils/enum/advertType'
 
-function sellerFromApi(sellerPseudo: string): Advert['seller'] {
+function sellerFromApi(sellerPseudo: string, userId?: string): Advert['seller'] {
   return {
+    id: userId,
     avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(sellerPseudo)}`,
     username: sellerPseudo,
     zip: '',
@@ -55,7 +56,7 @@ export function mapCatalogSummaryToAdvert(item: AdvertCatalogDetailApiItem): Adv
     image,
     images,
     isbn: item.isbn ?? '',
-    subject: item.subject ?? '',
+    subject: item.subjects ?? '',
     grade: item.grade ?? '',
     school: '',
     description: item.description,
@@ -94,7 +95,7 @@ export function mapBookToAdvert(item: BookReadApiItem, catalogId: string): Adver
     school: '',
     description: item.description,
     conditions: [],
-    seller: sellerFromApi(item.sellerPseudo),
+    seller: sellerFromApi(item.sellerPseudo, item.userId),
     questions: [],
     answers: []
   }
@@ -122,7 +123,7 @@ export function mapProductToAdvert(item: ProductReadApiItem, catalogId: string):
     school: '',
     description: item.description,
     conditions: [],
-    seller: sellerFromApi(item.sellerPseudo),
+    seller: sellerFromApi(item.sellerPseudo, item.userId),
     questions: [],
     answers: []
   }
@@ -150,7 +151,7 @@ export function mapServiceToAdvert(item: ServiceReadApiItem, catalogId: string):
     school: item.studyLevel,
     description: item.description,
     conditions: [],
-    seller: sellerFromApi(item.sellerPseudo),
+    seller: sellerFromApi(item.sellerPseudo, item.userId),
     questions: [],
     answers: []
   }
