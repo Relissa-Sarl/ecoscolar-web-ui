@@ -14,14 +14,12 @@ export const useApi = <T>(
 ) => {
   // Default fallback values
   let apiBase = 'https://localhost:5001/api'
-  let enableJwt = false
   let reqCookies: string | undefined = undefined
 
   try {
     // If Nuxt context is available, use dynamic runtime configuration
     const config = useRuntimeConfig()
     apiBase = config.public.apiBase || apiBase
-    enableJwt = config.public.enableJwt ?? enableJwt
 
     // Capture cookies during Server-Side Rendering (SSR) to maintain session
     if (import.meta.server) {
@@ -31,7 +29,6 @@ export const useApi = <T>(
     // Safe fallback to environment variables if Nuxt context is lost after an 'await' in SSR.
     // This prevents application crashes while completely avoiding global state memory leaks.
     apiBase = process.env.NUXT_PUBLIC_API_BASE || apiBase
-    enableJwt = process.env.NUXT_PUBLIC_ENABLE_JWT === 'true' || enableJwt
   }
 
   const { skipAuth, ...fetchOptions } = options ?? {}
@@ -53,7 +50,7 @@ export const useApi = <T>(
 
     async onResponseError({ response }) {
       // Redirect to login/home page if unauthorized on authenticated routes
-      if (response.status === 401 && enableJwt && !skipAuth) {
+      if (response.status === 401 && !skipAuth) {
         try {
           await navigateTo('/')
         } catch {
