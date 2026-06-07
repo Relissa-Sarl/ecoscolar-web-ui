@@ -2,6 +2,8 @@
 import Sidebar from '@/components/admin/Sidebar.vue'
 // import StatCard from '@/components/admin/StatCard.vue'
 import UserDetailModal from '@/components/admin/UserDetailModal.vue'
+import DeleteConfirmationPopup from '~/components/common/DeleteConfirmationPopup.vue'
+import PopUp from '~/components/common/PopUp.vue'
 import { getUserService } from '~/services/usersService'
 import type { User } from '~/types/user'
 
@@ -13,6 +15,18 @@ const users = ref<User[]>([])
 definePageMeta({
   middleware: ['admin']
 })
+
+// Pop-up
+const showPopUp = ref(false)
+const popUpType = ref<'info' | 'success' | 'warning' | 'error'>('info')
+const popUpTitle = ref('')
+const popUpDescription = ref('')
+
+const closePopUp = () => {
+  showPopUp.value = false
+  popUpTitle.value = ''
+  popUpDescription.value = ''
+}
 
 // Filters
 const searchQuery = ref('')
@@ -73,6 +87,52 @@ const openUserModal = (user: User) => {
   isModalOpen.value = true
 }
 
+// ban/unban user
+const showBanConfirm = ref<boolean>(false)
+const userToBan = ref<User | null>(null)
+
+const toggleUserStatus = (id: string) => {
+  showBanConfirm.value = true
+  userToBan.value = users.value.find(user => user.id === id) || null
+}
+const confirmBan = async () => {
+  if (userToBan.value) {
+    try {
+      const updatedUser = await userService.banUserToggle(userToBan.value.id)
+
+      const index = users.value.findIndex(u => u.id === userToBan.value?.id)
+
+      if (index !== -1) {
+        users.value[index] = updatedUser
+        showPopUp.value = true
+        popUpType.value = 'success'
+        if (updatedUser.isBanned) {
+          popUpTitle.value = 'User Banned'
+          popUpDescription.value = `The user has been banned successfully.`
+        } else {
+          popUpTitle.value = 'User Unbanned'
+          popUpDescription.value = `The user has been unbanned successfully.`
+        }
+      }
+      showBanConfirm.value = false
+      userToBan.value = null
+    } catch (error) {
+      console.error('Error toggling user status:', error)
+      showPopUp.value = true
+      popUpType.value = 'error'
+      popUpTitle.value = 'User Status Updated'
+      popUpDescription.value = `An error occurred while updating the user status or the user cannot be banned. Please try again later.`
+      showBanConfirm.value = false
+      userToBan.value = null
+    }
+  }
+}
+
+const cancelBan = () => {
+  showBanConfirm.value = false
+  userToBan.value = null
+}
+
 onMounted(async () => {
   me.value = await userService.getMyProfile()
   users.value = await userService.getAllUsers()
@@ -80,7 +140,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="min-h-screen px-4 py-10 text-gray-900 dark:bg-gray-950 dark:text-gray-100 flex">
+  <section class="min-h-screen px-4 text-gray-900 dark:bg-gray-950 dark:text-gray-100 flex">
+    <PopUp
+      :show="showPopUp"
+      :pop-up-type="popUpType"
+      :title="popUpTitle"
+      :description="popUpDescription"
+      :duration="3000"
+      @close="closePopUp"
+    />
     <Sidebar :user="me" />
     <div class="flex-1 p-8">
       <!-- Header -->
@@ -126,6 +194,16 @@ onMounted(async () => {
         :user="selectedUser"
         :is-open="isModalOpen"
         @close="isModalOpen = false"
+      />
+
+      <DeleteConfirmationPopup
+        :show="showBanConfirm"
+        title="Ban User"
+        message="Are you sure you want to ban this user? This action cannot be undone."
+        cancel-text="Cancel"
+        confirm-text="Confirm"
+        @confirm-delete="confirmBan"
+        @cancel-delete="cancelBan"
       />
 
       <div class="flex gap-4 mb-6">
@@ -212,15 +290,18 @@ onMounted(async () => {
               </td>
 
               <td class="p-4">
-                <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-600">
-                  <span :class="['w-2 h-2 rounded-full', user.isBanned ? 'bg-red-500' : 'bg-emerald-500']" />
+                <span
+                  class="inline-flex items-center gap-1.5 text-xs font-medium"
+                  :class="user.isBanned ? 'text-red-600' : 'text-emerald-600'"
+                >
+                  <span :class="['w-2 h-2 rounded-full', user.isBanned ? 'bg-red-500 text-red-600' : 'bg-emerald-500 text-emerald-600']" />
                   {{ user.isBanned ? 'Banned' : (user.isOnboarded ? 'Active' : 'Pending') }}
                 </span>
               </td>
 
               <td class="p-4 text-right flex">
                 <button
-                  class="text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm"
+                  class="text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer"
                   @click="openUserModal(user)"
                 >
                   <svg
@@ -237,7 +318,7 @@ onMounted(async () => {
                     />
                   </svg>
                 </button>
-                <button class="ml-2 text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm">
+                <button class="ml-2 text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -251,7 +332,10 @@ onMounted(async () => {
                     />
                   </svg>
                 </button>
-                <button class="ml-2 text-gray-400 hover:text-red-600 transition-colors font-medium text-sm">
+                <button
+                  class="ml-2 text-gray-400 hover:text-red-600 transition-colors font-medium text-sm cursor-pointer"
+                  @click="toggleUserStatus(user.id)"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -275,7 +359,7 @@ onMounted(async () => {
         >
           <button
             :disabled="currentPage === 1"
-            class="px-3 py-1 text-sm border rounded-lg disabled:opacity-50"
+            class="px-3 py-1 text-sm border rounded-lg disabled:opacity-50  cursor-pointer"
             @click="changePage(currentPage - 1)"
           >
             Previous
@@ -285,7 +369,7 @@ onMounted(async () => {
             <button
               v-for="page in totalPages"
               :key="page"
-              :class="['px-3 py-1 text-sm rounded-lg', currentPage === page ? 'bg-emerald-800 text-white' : 'hover:bg-gray-100']"
+              :class="['px-3 py-1 text-sm rounded-lg', currentPage === page ? 'bg-emerald-800 text-white' : 'hover:bg-gray-100 cursor-pointer dark:hover:bg-gray-800']"
               @click="changePage(page)"
             >
               {{ page }}
@@ -294,7 +378,7 @@ onMounted(async () => {
 
           <button
             :disabled="currentPage === totalPages"
-            class="px-3 py-1 text-sm border rounded-lg disabled:opacity-50"
+            class="px-3 py-1 text-sm border rounded-lg disabled:opacity-50 cursor-pointer"
             @click="changePage(currentPage + 1)"
           >
             Next
