@@ -429,7 +429,8 @@
       "reason_placeholder": "Seleziona un'opzione",
       "message": "Il tuo messaggio",
       "email_placeholder": "esempio{'@'}email.com",
-      "message_placeholder": "Come possiamo aiutarti?"
+      "message_placeholder": "Come possiamo aiutarti?",
+      "message_hint": "Minimo {min} caratteri."
     },
     "reasons": {
       "account": "Problema con l'account",
@@ -443,6 +444,12 @@
     },
     "success": "Grazie! Il tuo messaggio è stato inviato.",
     "error_submit": "Impossibile inviare il messaggio. Riprova più tardi.",
+    "validation": {
+      "email": "Inserisci un indirizzo e-mail valido.",
+      "reason": "Seleziona un motivo di contatto.",
+      "subject": "Inserisci un oggetto di almeno 5 caratteri.",
+      "message": "Il messaggio deve contenere almeno 10 caratteri."
+    },
     "list": {
       "subtitle": "Supporto",
       "title": "Le mie richieste di supporto",
@@ -459,7 +466,6 @@
       },
       "actions": {
         "new_request": "Nuova richiesta",
-        "contact": "Contatta il supporto",
         "open": "Vedi richiesta"
       }
     },

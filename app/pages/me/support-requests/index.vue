@@ -80,12 +80,6 @@ onMounted(() => {
         <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
           {{ $t('support.list.empty.message') }}
         </p>
-        <NuxtLink
-          :to="localePath('/support')"
-          class="mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-emerald-800 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
-        >
-          {{ $t('support.list.actions.contact') }}
-        </NuxtLink>
       </div>
 
       <ul
