@@ -164,7 +164,11 @@ const advertSummary = computed(() => {
           <AdvertSellerCard
             v-if="advert && advert.seller.username"
             :seller="advert.seller"
-            @view-profile="() => {}"
+            @view-profile="() => {
+              if (advert?.seller?.id) {
+                navigateTo(localePath(`/users/${advert.seller.id}`))
+              }
+            }"
           />
           <AdvertActionButtons
             :advert="advertSummary"

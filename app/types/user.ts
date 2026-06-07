@@ -35,3 +35,16 @@ export interface UpdateProfileInput {
   birthdayDate: string
   languages: SpokenLanguage[]
 }
+
+export interface UserReview {
+  reviewId: number
+  comment: string
+  rating: number
+  date: string
+  reviewerId: string
+  reviewerNickname: string
+  reviewedId: string
+  reviewedNickname: string
+  transactionId: number
+  reviewedRole: 'BUYER' | 'SELLER'
+}

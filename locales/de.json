@@ -622,6 +622,19 @@
     },
     "public": {
       "error": "Es ist derzeit nicht möglich, das Benutzerprofil zu laden. Es könnte sein, dass der Benutzer sein Profil nicht öffentlich gemacht hat oder dass das Profil gelöscht wurde."
-     }
+    },
+    "reviews": {
+      "title": "Erhaltene Bewertungen",
+      "empty": "Für diesen Benutzer wurden noch keine Bewertungen abgegeben.",
+      "count": "{count} Bewertungen",
+      "one_review": "1 Bewertung",
+      "buyer": "Käufer",
+      "seller": "Verkäufer",
+      "filter_all": "Alle Bewertungen",
+      "filter_buyer": "Als Käufer",
+      "filter_seller": "Als Verkäufer",
+      "average": "Durchschnitt",
+      "star_distribution": "Verteilung der Sterne"
+    }
   }
 }
