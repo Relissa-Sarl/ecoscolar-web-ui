@@ -45,20 +45,12 @@ export const useCartStore = defineStore('cart', () => {
           ? 'supplies'
           : 'tutoring'
 
-    const metaLineKey
-      = dto.type === AdvertType.BOOK
-        ? 'catalog.card.meta_textbooks'
-        : dto.type === AdvertType.PRODUCT
-          ? 'catalog.card.meta_supplies'
-          : 'catalog.card.meta_tutoring'
-
     return {
       id: String(dto.advertId),
       title: dto.title,
       price: dto.price,
       type: dto.type as AdvertType,
       categoryTab,
-      metaLineKey,
       location: '', // not returned by API
       imageUrl: dto.primaryImage || '',
       hourly: isHourly,

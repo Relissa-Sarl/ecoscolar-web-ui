@@ -131,9 +131,6 @@
     },
     "card": {
       "alt_image": "Artikelbild",
-      "meta_supplies": "Kat. Material",
-      "meta_textbooks": "ISBN — nach Scan verfügbar",
-      "meta_tutoring": "Nachhilfe • mind. 4 Lektionen",
       "hourly": "Preis",
       "demo_rating": "4,9/5 Demo",
       "book_lesson": "Buchen"

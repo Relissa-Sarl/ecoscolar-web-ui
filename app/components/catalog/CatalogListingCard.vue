@@ -114,8 +114,11 @@ onBeforeMount(() => {
     </div>
 
     <div class="flex flex-1 flex-col gap-3 p-4 sm:p-5">
-      <p class="line-clamp-1 text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500 sm:text-xs">
-        {{ $t(listing.metaLineKey) }}
+      <p
+        v-if="listing.metaLine"
+        class="line-clamp-1 text-xs font-medium text-slate-500 dark:text-slate-400 sm:text-sm"
+      >
+        {{ listing.metaLine }}
       </p>
       <h3 class="text-lg font-bold leading-snug text-slate-900 dark:text-white">
         <NuxtLink
