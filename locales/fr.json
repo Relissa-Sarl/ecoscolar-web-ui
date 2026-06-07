@@ -90,6 +90,10 @@
       "confirmed": "Confirmé",
       "back_home": "Retourner à l'accueil",
       "continue_shopping": "Continuer mes achats"
+    },
+    "denied": {
+      "title": "Paiement Refusé !",
+      "subtitle": "Votre transaction n'a pas pu être complétée. Veuillez réessayer ou contacter le support si le problème persiste."
     }
   },
   "catalog": {

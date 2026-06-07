@@ -3,10 +3,10 @@ import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n, useSeoMeta } from '#imports'
 import { useCartStore } from '~/stores/cartStore'
-import SuccessIcon from '~/components/success/SuccessIcon.vue'
-import SuccessMainMessage from '~/components/success/SuccessMainMessage.vue'
-import SuccessInfos from '~/components/success/SuccessInfos.vue'
-import SuccessButton from '~/components/success/SuccessButton.vue'
+import SuccessIcon from '~/components/paimentState/SuccessIcon.vue'
+import SuccessMainMessage from '~/components/paimentState/SuccessMainMessage.vue'
+import SuccessInfos from '~/components/paimentState/SuccessInfos.vue'
+import SuccessButton from '~/components/paimentState/PaimentStateButton.vue'
 
 const { t } = useI18n()
 const route = useRoute()
