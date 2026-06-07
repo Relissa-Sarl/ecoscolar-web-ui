@@ -42,8 +42,43 @@
     "impact_unit": "eingespart"
   },
   "cart": {
+    "seo_title": "Mein Warenkorb | EcoScolar",
     "title": "Mein Warenkorb",
-    "empty": "Ihr Warenkorb ist zur Zeit leer"
+    "remove_from_cart": "Aus dem Warenkorb entfernen",
+    "clear": "Warenkorb leeren",
+    "added_success": "Artikel zum Warenkorb hinzugefügt!",
+    "tva": "MwSt. und Gebühren inbegriffen",
+    "one_advert": "Artikel",
+    "many_adverts": "Artikel",
+    "items": {
+      "books": "Bücher",
+      "supplies": "Schulmaterial",
+      "tutoring": "Kurse",
+      "quantity": "Menge",
+      "vendor": "Verkäufer"
+    },
+    "checkout": {
+      "title": "Bestellübersicht",
+      "subtotal": "Zwischensumme",
+      "shipping": "Versandart",
+      "shipping_fee": "Versandkosten",
+      "service_fee": "Servicegebühr",
+      "free": "Kostenlos",
+      "total": "Gesamtsumme",
+      "confirm": "Zur Kasse gehen"
+    },
+    "text_under_resume": {
+      "circular_trade": " Kreislaufwirtschaft: ",
+      "circular_text": " Bevorzugen Sie lokales Second-Hand-Material und reduzieren Sie Ihren CO2-Fußabdruck.",
+      "payment_note": "Sichere Transaktionen:",
+      "payment_text": "Vollständiger Schutz der Zahlungsdaten über Stripe"
+    },
+    "empty": {
+      "title": "Ihr Warenkorb ist zurzeit leer",
+      "subtitle": "Stöbern Sie in den Anzeigen und finden Sie das passende Buch, Schulmaterial oder den passenden Kurs.",
+      "go_to_shop": "Shop durchsuchen",
+      "back_to_home": "Zurück zur Startseite"
+    }
   },
   "catalog": {
     "seo_title": "Katalog | EcoScolar",
@@ -118,6 +153,37 @@
     }
   },
   "me": {
+    "purchases": {
+      "title": "Meine Kaufhistorie",
+      "subtitle": "Finden Sie die vollständige Historie der Bücher und Schulmaterialien, die Sie auf EcoScolar gekauft haben.",
+      "loading": "Ihre Kaufhistorie wird geladen...",
+      "error": "Beim Abrufen Ihrer Käufe ist ein Fehler aufgetreten.",
+      "error_detail": "Bitte aktualisieren Sie die Seite oder versuchen Sie es später erneut.",
+      "empty_title": "Keine Käufe erfasst",
+      "empty_placeholder": "Ihre Kaufhistorie wird hier angezeigt.",
+      "explore_cta": "Marktplatz erkunden",
+      "seller_label": "Verkäufer",
+      "view_advert": "Inserat ansehen"
+    },
+    "sales": {
+      "title": "Meine Verkaufshistorie",
+      "subtitle": "Verfolgen Sie Ihre Verkäufe, aktiven Anzeigen und die Geschichte der Artikel, die Sie mit der EcoScolar-Gemeinschaft geteilt haben.",
+      "loading": "Ihre Verkaufshistorie wird geladen...",
+      "error": "Beim Abrufen Ihrer Verkäufe ist ein Fehler aufgetreten.",
+      "error_detail": "Bitte aktualisieren Sie die Seite oder versuchen Sie es später erneut.",
+      "empty_title": "Keine Verkäufe erfasst",
+      "empty_placeholder": "Ihre Verkaufshistorie wird hier angezeigt.",
+      "sell_cta": "Inserat erstellen",
+      "buyer_label": "Gekauft von",
+      "view": "Ansehen",
+      "edit": "Bearbeiten",
+      "status": {
+        "active": "Zum Verkauf",
+        "sold": "Verkauft",
+        "paused": "Pausiert",
+        "expired": "Abgelaufen"
+      }
+    },
     "adverts": {
       "title": "Meine Anzeigen",
       "description": "Verwalten Sie Ihre Verkaufsanzeigen und Ihre Nachhilfeleistungen.",
@@ -228,7 +294,7 @@
     "createAdvert": "Anzeige erstellen",
     "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
     "creationFailed": "Beim Erstellen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
-    
+
   },
   "modifyAdvert": {
     "existingAdvert": "Anzeige",
@@ -240,7 +306,8 @@
   },
   "advert": {
     "actions": {
-      "buy_now": "Jetzt kaufen",
+      "buy_now": "In den Warenkorb",
+      "already_in_cart": "Bereits im Warenkorb",
       "favorite_add": "Zu Favoriten hinzufügen",
       "favorite_remove": "Aus Favoriten entfernen"
     },
@@ -528,7 +595,9 @@
     "language": "Sprachen",
     "location": "Standort",
     "favorites": "Favoriten",
-    "sales": "Verkäufe",
+    "sales": "Meine Anzeigen",
+    "purchases_history": "Meine Käufe",
+    "sales_history": "Meine Verkäufe",
     "support_requests": "Meine Anfragen",
     "edit": "Profil bearbeiten",
     "delete": "Konto löschen",
@@ -541,6 +610,7 @@
       "pc_label": "Postleitzahl",
       "dob_label": "Geburtsdatum",
       "languages_title": "Gesprochene Sprachen",
+      "languages_empty": "Keine Sprache hinzugefügt.",
       "language_label": "Sprache",
       "level_label": "Niveau",
       "level_native": "Muttersprache",

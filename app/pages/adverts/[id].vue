@@ -10,9 +10,14 @@ const localePath = useLocalePath()
 const { t } = useI18n()
 const usersStore = useUsersStore()
 const { data: advert } = await useAdvert(String(route.params.id))
-const { data: advertQuestions, refresh: refreshQuestions } = await useAsyncData<QuestionResponse[]>(
+const { data: advertQuestions, refresh: refreshQuestions } = await useAsyncData(
   `advert-questions:${String(route.params.id)}`,
-  () => getAdvertService().getQuestions(Number(route.params.id))
+  async () => {
+    if (!usersStore.isAuthenticated) {
+      return [] as QuestionResponse[]
+    }
+    return await getAdvertService().getQuestions(Number(route.params.id))
+  }
 )
 
 const breadcrumbItems = computed(() => {
@@ -109,7 +114,8 @@ const advertSummary = computed(() => {
     type: advert.value.type,
     condition: advert.value.condition,
     price: advert.value.price,
-    image: advert.value.image || advert.value.images?.[0] || ''
+    image: advert.value.image || advert.value.images?.[0] || '',
+    seller: advert.value.seller?.username
   }
 })
 </script>
@@ -183,7 +189,7 @@ const advertSummary = computed(() => {
       >
         <AdvertPublicQuestions
           :seller="advert.seller"
-          :can-ask="!isOwnAdvert"
+          :can-ask="usersStore.isAuthenticated && !isOwnAdvert"
           :can-answer="isOwnAdvert"
           :answering-question-id="answeringQuestionId"
           :questions="advertQuestions || []"

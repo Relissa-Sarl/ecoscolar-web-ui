@@ -56,6 +56,7 @@ export interface CatalogListing {
   bookCategoryName?: string
   schoolGradeName?: string
   subjectName?: string
+  seller?: string
 }
 
 export interface CatalogFetchResult {
