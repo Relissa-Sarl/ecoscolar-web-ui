@@ -7,7 +7,7 @@ import PopUp from '~/components/common/PopUp.vue'
 import { useAdminsStore } from '~/stores/adminsStore'
 import type { User } from '~/types/user'
 
-const adminsStore = useAdminsStore()
+const store = useAdminsStore()
 
 definePageMeta({
   middleware: ['admin']
@@ -31,7 +31,7 @@ const searchQuery = ref('')
 const statusFilter = ref<'All' | 'Active' | 'Pending' | 'Banned'>('All')
 
 const filteredUsers = computed(() => {
-  let result = adminsStore.users
+  let result = store.users
 
   // 1. Filtre recherche
   if (searchQuery.value) {
@@ -91,17 +91,17 @@ const userToBan = ref<User | null>(null)
 
 const toggleUserStatus = (id: string) => {
   showBanConfirm.value = true
-  userToBan.value = adminsStore.users?.find(user => user.id === id) || null
+  userToBan.value = store.users?.find(user => user.id === id) || null
 }
 const confirmBan = async () => {
   if (userToBan.value) {
     try {
-      const updatedUser = await adminsStore.banUserToggle(userToBan.value)
+      const updatedUser = await store.banUserToggle(userToBan.value)
 
-      const index = adminsStore.users?.findIndex(u => u.id === userToBan.value?.id)
+      const index = store.users?.findIndex(u => u.id === userToBan.value?.id)
 
       if (index !== -1) {
-        adminsStore.users![index] = updatedUser
+        store.users![index] = updatedUser
         triggerPopUp('success', updatedUser.isBanned ? 'User Banned' : 'User Unbanned', `The user has been ${updatedUser.isBanned ? 'banned' : 'unbanned'} successfully.`)
       }
       showBanConfirm.value = false
@@ -122,8 +122,8 @@ const cancelBan = () => {
 }
 
 onMounted(async () => {
-  await adminsStore.fetchProfile()
-  await adminsStore.fetchAllUsers()
+  await store.fetchProfile()
+  await store.fetchAllUsers()
 })
 </script>
 
@@ -137,7 +137,7 @@ onMounted(async () => {
       :duration="3000"
       @close="closePopUp"
     />
-    <Sidebar :user="adminsStore.user" />
+    <Sidebar :user="store.user" />
     <div class="flex-1 p-8">
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
@@ -221,10 +221,10 @@ onMounted(async () => {
         </select>
       </div>
 
-      <div class="bg-white rounded-xl border border-gray-100 shadow-sm dark:bg-gray-950 dark:border-gray-800 overflow-hidden">
+      <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden mb-8">
         <table class="w-full text-left border-collapse table-fixed">
           <thead>
-            <tr class="border-b border-gray-300 dark:border-gray-800 text-gray-500 text-sm">
+            <tr class="bg-gray-50 dark:bg-gray-800 text-gray-500 text-xs uppercase">
               <th class="p-4 font-medium w-1/4">
                 User
               </th>
@@ -241,7 +241,10 @@ onMounted(async () => {
               </th>
             </tr>
           </thead>
-          <tbody class="divide-y dark:divide-gray-800">
+          <tbody
+            v-if="!store.isLoading"
+            class="divide-y dark:divide-gray-800"
+          >
             <tr
               v-for="user in paginatedUsers"
               :key="user.id"
@@ -340,6 +343,16 @@ onMounted(async () => {
               </td>
             </tr>
           </tbody>
+          <tbody v-else>
+            <tr>
+              <td
+                colspan="5"
+                class="p-8 text-center text-gray-500"
+              >
+                Loading users...
+              </td>
+            </tr>
+          </tbody>
         </table>
         <div
           v-if="totalPages > 1"
@@ -374,7 +387,7 @@ onMounted(async () => {
         </div>
 
         <div
-          v-if="adminsStore.users.length === 0"
+          v-if="store.users.length === 0 && !store.isLoading"
           class="p-8 text-center text-gray-500"
         >
           No users found.
