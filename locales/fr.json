@@ -67,7 +67,8 @@
       "post": "Poste",
       "free": "Gratuit",
       "total": "Total",
-      "confirm": "Passer au paiement"
+      "confirm": "Passer au paiement",
+      "loading": "Redirection vers Stripe..."
     },
     "text_under_resume": {
       "circular_trade": " Économie Circulaire : ",

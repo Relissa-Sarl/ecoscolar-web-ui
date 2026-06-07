@@ -67,7 +67,8 @@
       "service_fee": "Commissione di servizio",
       "free": "Gratuito",
       "total": "Totale",
-      "confirm": "Procedi al pagamento"
+      "confirm": "Procedi al pagamento",
+      "loading": "Reindirizzamento a Stripe..."
     },
     "text_under_resume": {
       "circular_trade": " Economia Circolare: ",

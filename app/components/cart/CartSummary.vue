@@ -3,6 +3,7 @@ defineProps<{
   subtotal: number
   shippingCost: number
   total: number
+  loading?: boolean
 }>()
 
 defineEmits<{
@@ -76,10 +77,15 @@ const shippingMethod = defineModel<'post' | 'handToHand'>({ default: 'post' })
 
       <!-- Checkout Button -->
       <button
-        class="w-full bg-emerald-800 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-lg transition-colors focus:ring-4 focus:ring-emerald-500/50 outline-none"
+        :disabled="loading"
+        class="w-full bg-emerald-800 hover:bg-emerald-700 disabled:bg-emerald-800/50 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition-colors focus:ring-4 focus:ring-emerald-500/50 outline-none flex items-center justify-center gap-2"
         @click="$emit('checkout')"
       >
-        {{ $t('cart.checkout.confirm') }}
+        <span
+          v-if="loading"
+          class="animate-spin inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full"
+        />
+        {{ loading ? $t('cart.checkout.loading') : $t('cart.checkout.confirm') }}
       </button>
 
       <!-- Secure check banner -->

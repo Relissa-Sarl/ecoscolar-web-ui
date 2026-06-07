@@ -67,7 +67,8 @@
       "service_fee": "Servicegebühr",
       "free": "Kostenlos",
       "total": "Gesamtsumme",
-      "confirm": "Zur Kasse gehen"
+      "confirm": "Zur Kasse gehen",
+      "loading": "Weiterleitung zu Stripe..."
     },
     "text_under_resume": {
       "circular_trade": " Kreislaufwirtschaft: ",
