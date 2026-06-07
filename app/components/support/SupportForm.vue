@@ -27,10 +27,14 @@ const isSubmitting = ref(false)
 
 function setFieldError(field: 'email' | 'reason' | 'message', key?: string | null) {
   if (!key) {
-    delete fieldErrors.value[field]
+    const { [field]: _removed, ...rest } = fieldErrors.value
+    fieldErrors.value = rest
     return
   }
-  fieldErrors.value[field] = t(`support.validation.${key}`)
+  fieldErrors.value = {
+    ...fieldErrors.value,
+    [field]: t(`support.validation.${key}`)
+  }
 }
 
 function clearFieldErrors() {
