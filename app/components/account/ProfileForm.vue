@@ -68,6 +68,18 @@ const onLanguageChange = (index: number) => {
 }
 
 /**
+ * Get available language options for a specific dropdown
+ * @param currentIndex index of the current dropdown
+ */
+const getAvailableLanguages = (currentIndex: number) => {
+  const selectedValues = spokenLanguages.value
+    .map((lang, i) => i !== currentIndex ? lang.label : null)
+    .filter(Boolean)
+  
+  return languageOptions.filter(opt => !selectedValues.includes(opt.value))
+}
+
+/**
  * Handle form submission
  */
 const handleSubmit = () => {
@@ -207,7 +219,7 @@ const handleSubmit = () => {
               {{ $t(`${props.traductionBasePath}.language_placeholder`) }}
             </option>
             <option
-              v-for="opt in languageOptions"
+              v-for="opt in getAvailableLanguages(index)"
               :key="opt.value"
               :value="opt.value"
             >
