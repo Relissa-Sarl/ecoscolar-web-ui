@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n, useSeoMeta } from '#imports'
 import { useCartStore } from '~/stores/cartStore'
@@ -16,15 +16,7 @@ useSeoMeta({
   title: () => t('cart.success.title')
 })
 
-// Extract query parameters from Stripe redirect
-const totalAmount = computed(() => {
-  const tParam = route.query.total
-  if (!tParam) return null
-  const val = Array.isArray(tParam) ? tParam[0] : tParam
-  if (!val) return null
-  const num = parseFloat(val)
-  return isNaN(num) ? null : num
-})
+const totalAmount = ref<number | null>(null)
 
 const orderId = computed(() => {
   const oParam = route.query.orderId
@@ -33,8 +25,14 @@ const orderId = computed(() => {
   return val || null
 })
 
-// Clear the cart when the user lands on the success page
+// Clear the cart when the user lands on the success page and retrive the price information
 onMounted(async () => {
+  const storedTotal = sessionStorage.getItem('last_payment_total')
+  if (storedTotal) {
+    totalAmount.value = parseFloat(storedTotal)
+    sessionStorage.removeItem('last_payment_total')
+  }
+
   try {
     await cartStore.clearCart()
   } catch (err) {

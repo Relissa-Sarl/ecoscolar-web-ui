@@ -11,7 +11,7 @@ defineProps<{
     v-if="orderId"
     class="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-800"
   >
-    <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">{{ $t('cart.success.order_number') }}</span>
+    <span class="flex justify-between text-slate-500 dark:text-slate-400">{{ $t('cart.success.order_number') }}</span>
     <span
       class="text-xs font-mono font-bold text-slate-700 dark:text-slate-300 truncate max-w-[180px] bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded"
       :title="orderId"
@@ -25,7 +25,7 @@ defineProps<{
     v-if="totalAmount !== null"
     class="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-800"
   >
-    <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">{{ $t('cart.success.amount_paid') }}</span>
+    <span class="flex justify-between text-slate-500 dark:text-slate-400">{{ $t('cart.success.amount_paid') }}</span>
     <span class="text-sm font-bold text-slate-800 dark:text-slate-200">
       {{ totalAmount.toFixed(2) }} CHF
     </span>

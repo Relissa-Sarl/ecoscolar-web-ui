@@ -67,7 +67,7 @@ const subtotal = computed(() => {
 })
 
 const shippingCost = computed(() => {
-  return shippingMethod.value === 'post' ? 7 : 0
+  return shippingMethod.value === 'post' ? 2 : 0
 })
 
 const total = computed(() => {
@@ -96,6 +96,7 @@ const handleCheckout = async () => {
     })
 
     if (response && response.url) {
+      sessionStorage.setItem('last_payment_total', total.value.toString())
       await navigateTo(response.url, { external: true })
     } else {
       throw new Error('Url de session Stripe manquante dans la réponse de l\'API')
