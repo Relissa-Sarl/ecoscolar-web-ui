@@ -60,7 +60,6 @@ const buildListing = (id: string, price = 10, title = 'Math book'): CatalogListi
   title,
   price,
   categoryTab: 'textbooks',
-  metaLineKey: 'catalog.card.meta_textbooks',
   location: 'Lausanne',
   imageUrl: 'https://example.com/math.jpg',
   hourly: false

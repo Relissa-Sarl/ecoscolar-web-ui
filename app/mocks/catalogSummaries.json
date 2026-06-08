@@ -3,7 +3,8 @@
     "id": 1,
     "title": "Exemple catalogue démo · fournitures",
     "price": 18.5,
-    "type": "PRODUCT"
+    "type": "PRODUCT",
+    "category": "Papeterie"
   },
   {
     "id": 2,
@@ -16,7 +17,8 @@
     "id": 3,
     "title": "Calculatrice scientifique (mock)",
     "price": 52.75,
-    "type": "PRODUCT"
+    "type": "PRODUCT",
+    "category": "Calculatrices"
   },
   {
     "id": 4,

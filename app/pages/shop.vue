@@ -360,7 +360,7 @@ watch(
     </section>
 
     <NuxtLink
-      :to="localePath('/sell')"
+      :to="localePath('/adverts/create-advert')"
       class="fixed bottom-8 right-6 z-40 flex size-14 items-center justify-center rounded-full bg-emerald-900 text-2xl text-white shadow-xl ring-2 ring-white/30 transition hover:scale-[1.06] hover:bg-emerald-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-400 md:right-10"
       :aria-label="$t('catalog.fab.place_advert')"
     >

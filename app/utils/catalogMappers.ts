@@ -1,6 +1,7 @@
 import type { AdvertCatalogApiItem, CatalogListing } from '../types/catalog'
 import { CatalogItemCondition, CatalogServiceBadge } from '../types/catalog'
 import { AdvertType } from './enum/advertType'
+import { buildCatalogMetaLine } from './catalogMetaLine'
 
 function assertNever(value: never): never {
   throw new Error(`Unknown advert type: ${String(value)}`)
@@ -23,12 +24,21 @@ export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): Ca
   const categoryTab = categoryTabFromApiType(item.type)
   const conditions = [CatalogItemCondition.New, CatalogItemCondition.Used, CatalogItemCondition.Good]
 
+  const metaLine = buildCatalogMetaLine({
+    type: item.type,
+    isbn: item.isbn,
+    category: item.category,
+    subjects: item.subjects,
+    grade: item.grade
+  })
+
   const base = {
     id: String(item.id),
     title: item.title,
     price: item.price,
     type: item.type,
     categoryTab,
+    metaLine,
     location: `${1005 + index} Lausanne`,
     imageUrl: `https://picsum.photos/seed/ecoscolar_${String(item.id)}_400/520/440`,
     bookCategoryName: item.category ?? undefined,
@@ -40,7 +50,6 @@ export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): Ca
     return {
       ...base,
       itemCondition: conditions[index % conditions.length],
-      metaLineKey: 'catalog.card.meta_supplies',
       hourly: false
     }
   }
@@ -49,7 +58,6 @@ export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): Ca
     return {
       ...base,
       itemCondition: conditions[index % conditions.length],
-      metaLineKey: 'catalog.card.meta_textbooks',
       hourly: false
     }
   }
@@ -57,7 +65,6 @@ export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): Ca
   return {
     ...base,
     serviceBadge: CatalogServiceBadge.VerifiedTutor,
-    metaLineKey: 'catalog.card.meta_tutoring',
     hourly: true
   }
 }
