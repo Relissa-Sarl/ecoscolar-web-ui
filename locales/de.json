@@ -581,6 +581,9 @@
     "instruction": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.",
     "submit_button": "Link senden",
     "back_to_login": "Zurück zur Anmeldung",
+    "status": {
+      "loading": "Link wird gesendet..."
+    },
     "instruction_success": "Wenn ein Konto mit dieser E-Mail-Adresse existiert, erhalten Sie in Kürze einen Link zum Zurücksetzen Ihres Passworts."
   },
   "reset_password": {
