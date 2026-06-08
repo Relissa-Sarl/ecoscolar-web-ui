@@ -11,10 +11,22 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const { getSales } = useHistory()
 
-const { data: sales, pending, error } = await useAsyncData(
+const { data: sales, pending, error, refresh } = await useAsyncData(
   'user-sales',
   () => getSales()
 )
+
+const handleConfirmShipping = async (transactionId: number) => {
+  if (!confirm("Avez-vous vraiment expédié l'article ?")) return
+  try {
+    const { getHistoryService } = await import('~/services/historyService')
+    await getHistoryService().confirmShipping(transactionId.toString())
+    alert("Le statut a été mis à jour : Expédié.")
+    refresh()
+  } catch (e: any) {
+    alert("Erreur: " + e.message)
+  }
+}
 </script>
 
 <template>
@@ -134,6 +146,7 @@ const { data: sales, pending, error } = await useAsyncData(
           v-for="sale in sales"
           :key="sale.id"
           :sale="sale"
+          @confirm-shipping="handleConfirmShipping"
         />
       </div>
     </div>

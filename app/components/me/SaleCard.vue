@@ -10,6 +10,10 @@ const props = defineProps<{
 const { locale, t } = useI18n()
 const localePath = useLocalePath()
 
+const emit = defineEmits<{
+  (e: 'confirm-shipping', id: number): void
+}>()
+
 const formatDate = (dateStr: string) => {
   try {
     return new Date(dateStr).toLocaleDateString(locale.value, {
@@ -141,6 +145,14 @@ const canModify = (status: AdvertStatus) => {
           >
             {{ t('me.sales.view') }}
           </NuxtLink>
+          <button
+            v-if="props.sale.transactionStatus === 'PAID_WAITING_SHIPPING'"
+            @click="emit('confirm-shipping', props.sale.transactionId!)"
+            class="inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-3 text-xs font-semibold transition-colors"
+          >
+            J'ai expédié l'article
+          </button>
+
           <NuxtLink
             v-if="canModify(props.sale.status)"
             :to="localePath(`/adverts/modify-advert-${props.sale.id}`)"

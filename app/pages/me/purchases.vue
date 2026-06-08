@@ -11,10 +11,46 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const { getPurchases } = useHistory()
 
-const { data: purchases, pending, error } = await useAsyncData(
+const { data: purchases, pending, error, refresh } = await useAsyncData(
   'user-purchases',
   () => getPurchases()
 )
+
+const handleConfirmReception = async (id: string) => {
+  if (!confirm("Voulez-vous vraiment confirmer la réception ? L'argent sera transféré au vendeur.")) return
+  try {
+    const { getHistoryService } = await import('~/services/historyService')
+    await getHistoryService().confirmReception(id)
+    alert("Réception confirmée avec succès !")
+    refresh()
+  } catch (e: any) {
+    alert("Erreur: " + e.message)
+  }
+}
+
+const handleDispute = async (id: string) => {
+  if (!confirm("Voulez-vous vraiment signaler un problème ? La transaction sera bloquée.")) return
+  try {
+    const { getHistoryService } = await import('~/services/historyService')
+    await getHistoryService().disputePurchase(id)
+    alert("Un litige a été ouvert pour cette commande.")
+    refresh()
+  } catch (e: any) {
+    alert("Erreur: " + e.message)
+  }
+}
+
+const handleCancel = async (id: string) => {
+  if (!confirm("Voulez-vous vraiment annuler cette commande ? Vous serez remboursé.")) return
+  try {
+    const { getHistoryService } = await import('~/services/historyService')
+    await getHistoryService().cancelPurchase(id)
+    alert("Commande annulée avec succès.")
+    refresh()
+  } catch (e: any) {
+    alert("Erreur: " + e.message)
+  }
+}
 </script>
 
 <template>
@@ -134,6 +170,9 @@ const { data: purchases, pending, error } = await useAsyncData(
           v-for="purchase in purchases"
           :key="purchase.id"
           :purchase="purchase"
+          @confirm-reception="handleConfirmReception"
+          @dispute="handleDispute"
+          @cancel="handleCancel"
         />
       </div>
     </div>

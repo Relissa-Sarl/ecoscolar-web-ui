@@ -28,6 +28,8 @@ interface CartItem {
   author?: string
   seller: string
   imageUrl?: string
+  reservedUntil?: string | null
+  shippingCost?: number
 }
 
 const cartStore = useCartStore()
@@ -45,7 +47,9 @@ const cartItems = computed<CartItem[]>(() => {
     price: item.listing.price,
     quantity: item.quantity,
     seller: item.listing.seller || 'Vendeur',
-    imageUrl: item.listing.imageUrl
+    imageUrl: item.listing.imageUrl,
+    reservedUntil: item.reservedUntil,
+    shippingCost: item.shippingCost
   }))
 })
 
@@ -62,7 +66,9 @@ const subtotal = computed(() => {
   return cartItems.value.reduce((sum, item) => sum + (item.price * item.quantity), 0)
 })
 
-const shippingCost = computed(() => 0)
+const shippingCost = computed(() => {
+  return cartItems.value.reduce((sum, item) => sum + (item.shippingCost || 0), 0)
+})
 
 const total = computed(() => {
   return subtotal.value + shippingCost.value
@@ -71,6 +77,17 @@ const total = computed(() => {
 const itemsCount = computed(() => {
   return cartItems.value.reduce((sum, item) => sum + item.quantity, 0)
 })
+
+const router = useRouter()
+
+const goToCheckout = () => {
+  if (cartItems.value.length === 0) return
+  // Pour l'instant, on checkout le premier item (Backend actuel)
+  const firstItem = cartItems.value[0]
+  if (firstItem) {
+    router.push({ path: '/checkout', query: { advertId: firstItem.id } })
+  }
+}
 </script>
 
 <template>
@@ -99,6 +116,7 @@ const itemsCount = computed(() => {
           :subtotal="subtotal"
           :shipping-cost="shippingCost"
           :total="total"
+          @checkout="goToCheckout"
         />
       </div>
 

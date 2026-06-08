@@ -9,6 +9,12 @@ const props = defineProps<{
 const { locale, t } = useI18n()
 const localePath = useLocalePath()
 
+const emit = defineEmits<{
+  (e: 'confirm-reception', id: string): void
+  (e: 'dispute', id: string): void
+  (e: 'cancel', id: string): void
+}>()
+
 const formatDate = (dateStr: string) => {
   try {
     return new Date(dateStr).toLocaleDateString(locale.value, {
@@ -91,12 +97,38 @@ const getStatusBadgeClass = (status: string) => {
         <span class="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
           {{ props.purchase.price }} CHF
         </span>
-        <NuxtLink
-          :to="localePath(`/adverts/${props.purchase.advertId}`)"
-          class="inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-700 py-1.5 px-3 text-xs font-semibold transition-colors"
-        >
-          {{ t('me.purchases.view_advert') }}
-        </NuxtLink>
+        <div class="flex gap-2">
+          <button
+            v-if="props.purchase.status === 'PAID_WAITING_SHIPPING'"
+            @click="emit('cancel', props.purchase.id)"
+            class="inline-flex items-center justify-center rounded-xl border border-red-200 text-red-600 hover:bg-red-50 py-1.5 px-3 text-xs font-semibold transition-colors"
+          >
+            Annuler la commande
+          </button>
+          
+          <button
+            v-if="props.purchase.status === 'SHIPPED'"
+            @click="emit('dispute', props.purchase.id)"
+            class="inline-flex items-center justify-center rounded-xl border border-orange-200 text-orange-600 hover:bg-orange-50 py-1.5 px-3 text-xs font-semibold transition-colors"
+          >
+            Signaler un problème
+          </button>
+          
+          <button
+            v-if="props.purchase.status === 'SHIPPED'"
+            @click="emit('confirm-reception', props.purchase.id)"
+            class="inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-3 text-xs font-semibold transition-colors"
+          >
+            Confirmer la réception
+          </button>
+
+          <NuxtLink
+            :to="localePath(`/adverts/${props.purchase.advertId}`)"
+            class="inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-700 py-1.5 px-3 text-xs font-semibold transition-colors"
+          >
+            {{ t('me.purchases.view_advert') }}
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </article>
