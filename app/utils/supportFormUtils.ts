@@ -1,7 +1,7 @@
 export const SUPPORT_REASON_CODES = ['account', 'order', 'bug', 'other'] as const
 export type SupportReasonCode = typeof SUPPORT_REASON_CODES[number]
 
-export const SUPPORT_SUBJECT_MIN_LENGTH = 5
+export const SUPPORT_SUBJECT_MIN_LENGTH = 3
 export const SUPPORT_MESSAGE_MIN_LENGTH = 10
 
 const DEFAULT_REASON_LABELS: Record<SupportReasonCode, string> = {
