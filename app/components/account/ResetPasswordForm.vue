@@ -31,7 +31,7 @@ const handleSubmit = async () => {
 }
 
 // Extract and format any errors from the users store to be displayed in the form
-const { displayErrors } = useFormErrors(() => usersStore.errors, 'reset_password.errors')
+const { globalErrors, hasErrors } = useFormErrors(() => usersStore.errors, 'reset_password.errors')
 </script>
 
 <template>
@@ -92,7 +92,10 @@ const { displayErrors } = useFormErrors(() => usersStore.errors, 'reset_password
       {{ $t('reset_password.status.loading') }}
     </p>
 
-    <FormErrors :errors="displayErrors" />
+    <FormErrors
+      :errors="globalErrors"
+      :has-errors="hasErrors"
+    />
 
     <button
       type="submit"

@@ -9,7 +9,7 @@ const handleResetRequest = async () => {
   await usersStore.forgotPassword(email.value)
 }
 
-const { displayErrors } = useFormErrors(() => usersStore.errors, 'reset_password.errors')
+const { globalErrors, hasErrors } = useFormErrors(() => usersStore.errors, 'reset_password.errors')
 </script>
 
 <template>
@@ -57,7 +57,10 @@ const { displayErrors } = useFormErrors(() => usersStore.errors, 'reset_password
       {{ $t('forgot_password.instruction_success') }}
     </p>
 
-    <FormErrors :errors="displayErrors" />
+    <FormErrors
+      :errors="globalErrors"
+      :has-errors="hasErrors"
+    />
 
     <button
       type="submit"
