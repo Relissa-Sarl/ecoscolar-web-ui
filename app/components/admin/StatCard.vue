@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   title: string
-  value: string
+  value: string | number
   icon?: string
   trend?: string
   trendColor?: 'green' | 'red'

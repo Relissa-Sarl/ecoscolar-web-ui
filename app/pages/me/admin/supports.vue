@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import Sidebar from '@/components/admin/Sidebar.vue'
 import PopUp from '~/components/admin/PopUp.vue'
-import StatCard from '~/components/admin/StatCard.vue'
+// import StatCard from '~/components/admin/StatCard.vue'
 import TicketDetailModal from '~/components/admin/TicketDetailModal.vue'
 import type { SupportTicketAdminDetail } from '~/types/support'
 import { useAdminsStore } from '~/stores/adminsStore'
+import { SupportReason } from '~/utils/enum/supportReason'
 
 const store = useAdminsStore()
 
@@ -24,6 +25,58 @@ const triggerPopUp = (type: typeof popUpData.value.type, title: string, desc: st
   popUpData.value = { type, title, description: desc }
   showPopUp.value = true
 }
+
+// Filters
+const searchQuery = ref('')
+const reasonOptions = Object.entries(SupportReason).map(([key, value]) => ({
+  key,
+  value
+}))
+const statusFilter = ref(SupportReason.REASON_PLACEHOLDER)
+
+const filteredUsers = computed(() => {
+  let result = store.supports
+
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase()
+    result = result.filter(t =>
+      t.email?.toLowerCase().includes(q)
+      || t.user.firstName?.toLowerCase().includes(q)
+      || t.user.nickname?.toLowerCase().includes(q)
+    )
+  }
+
+  if (statusFilter.value !== SupportReason.REASON_PLACEHOLDER) {
+    result = result.filter((t) => {
+      if (statusFilter.value === SupportReason.ACCOUNT) return t.subject === SupportReason.ACCOUNT
+      if (statusFilter.value === SupportReason.ORDER) return t.subject === SupportReason.ORDER
+      if (statusFilter.value === SupportReason.BUG) return t.subject === SupportReason.BUG
+      if (statusFilter.value === SupportReason.OTHER) return t.subject === SupportReason.OTHER
+      return true
+    })
+  }
+
+  return result
+})
+
+// Pagination
+const currentPage = ref(1)
+const pageSize = 10
+
+const totalPages = computed(() => Math.ceil(filteredUsers.value.length / pageSize))
+
+const paginatedUsers = computed(() => {
+  const start = (currentPage.value - 1) * pageSize
+  return filteredUsers.value.slice(start, start + pageSize)
+})
+
+const changePage = (page: number) => {
+  currentPage.value = page
+}
+
+watch([searchQuery, statusFilter], () => {
+  currentPage.value = 1
+})
 
 // Ticket Modal
 const isModalOpen = ref(false)
@@ -99,7 +152,7 @@ onMounted(async () => {
         </div> -->
       </div>
 
-      <div class="grid grid-cols-3 gap-6 mb-8">
+      <!-- <div class="grid grid-cols-3 gap-6 mb-8">
         <StatCard
           title="Flagged Listings"
           value="42"
@@ -108,7 +161,7 @@ onMounted(async () => {
         />
         <StatCard
           title="User Fraud Reports"
-          value="store.supports.length"
+          :value="store.supports.length"
           trend="85% resolved"
           trend-color="green"
         />
@@ -116,7 +169,7 @@ onMounted(async () => {
           title="Avg. Response Time"
           value="4.2h"
         />
-      </div>
+      </div> -->
 
       <TicketDetailModal
         :is-open="isModalOpen"
@@ -127,20 +180,42 @@ onMounted(async () => {
         @send="handleSendMessage"
       />
 
+      <div class="flex gap-4 mb-6">
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search by name, email, or nickname..."
+          class="flex-1 px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-800 dark:bg-gray-950 outline-none focus:border-emerald-700"
+        >
+
+        <select
+          v-model="statusFilter"
+          class="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-800 dark:bg-gray-950 outline-none"
+        >
+          <option
+            v-for="option in reasonOptions"
+            :key="option.key"
+            :value="option.value"
+          >
+            {{ option.value || 'All Categories' }}
+          </option>
+        </select>
+      </div>
+
       <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 mb-8 overflow-hidden">
         <table class="w-full text-left">
           <thead class="bg-gray-50 dark:bg-gray-800 text-gray-500 text-xs uppercase">
             <tr>
-              <th class="p-4">
+              <th class="p-4 font-medium w-1/12">
                 ID
               </th>
-              <th class="p-4">
+              <th class="p-4 font-medium w-1/4">
                 Reporter
               </th>
-              <th class="p-4">
+              <th class="p-4 font-medium w-1/4">
                 Subject / Description
               </th>
-              <th class="p-4">
+              <th class="p-4 font-medium w-1/12">
                 Actions
               </th>
             </tr>
@@ -150,8 +225,9 @@ onMounted(async () => {
             class="divide-y"
           >
             <tr
-              v-for="support in store.supports"
+              v-for="support in paginatedUsers"
               :key="support.id"
+              class="hover:bg-gray-50 border-gray-300 dark:border-gray-800 dark:hover:bg-gray-900 transition-colors"
             >
               <td class="p-4">
                 <p class="font-bold">
@@ -232,6 +308,38 @@ onMounted(async () => {
             </tr>
           </tbody>
         </table>
+        <div
+          v-if="totalPages > 1"
+          class="flex justify-between items-center p-4 border-t border-gray-300 dark:border-gray-800"
+        >
+          <button
+            :disabled="currentPage === 1"
+            class="px-3 py-1 text-sm border rounded-lg disabled:opacity-50  cursor-pointer"
+            @click="changePage(currentPage - 1)"
+          >
+            Previous
+          </button>
+
+          <div class="flex gap-1">
+            <button
+              v-for="page in totalPages"
+              :key="page"
+              :class="['px-3 py-1 text-sm rounded-lg', currentPage === page ? 'bg-emerald-800 text-white' : 'hover:bg-gray-100 cursor-pointer dark:hover:bg-gray-800']"
+              @click="changePage(page)"
+            >
+              {{ page }}
+            </button>
+          </div>
+
+          <button
+            :disabled="currentPage === totalPages"
+            class="px-3 py-1 text-sm border rounded-lg disabled:opacity-50 cursor-pointer"
+            @click="changePage(currentPage + 1)"
+          >
+            Next
+          </button>
+        </div>
+
         <div
           v-if="store.supports.length === 0 && !store.isLoading"
           class="p-8 text-center text-gray-500"

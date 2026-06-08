@@ -22,7 +22,7 @@ const createdLabel = computed(() =>
         {{ $t('support.list.ticket_label', { id: ticket.id }) }}
       </p>
       <h3 class="mt-1 truncate text-lg font-semibold text-slate-900 group-hover:text-emerald-900 dark:text-white dark:group-hover:text-emerald-200">
-        {{ ticket.subject }}
+        {{ $t('support.reasons.' + ticket.subject) }}
       </h3>
       <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
         {{ createdLabel }} · {{ ticket.email }}
