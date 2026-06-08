@@ -11,7 +11,7 @@ export interface CheckoutResponseDto {
 
 export function getPaymentsService() {
   const config = useRuntimeConfig()
-  const { $authFetch } = useNuxtApp()
+  const { $authFetch } = useNuxtApp() as any
   const baseUrl = config.public.apiBaseUrl
 
   const checkout = async (request: CheckoutRequestDto): Promise<CheckoutResponseDto> => {

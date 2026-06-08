@@ -145,7 +145,9 @@ describe('AdvertActionButtons', () => {
         imageUrl: 'https://example.com/chem.jpg',
         hourly: false
       },
-      quantity: 1
+      quantity: 1,
+      reservedUntil: undefined,
+      shippingCost: undefined
     }]
     const wrapper = mount(ActionButtons, {
       props: {

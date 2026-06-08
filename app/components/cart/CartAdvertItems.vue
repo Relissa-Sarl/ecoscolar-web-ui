@@ -13,6 +13,7 @@ interface CartItem {
   author?: string
   seller: string
   imageUrl?: string
+  reservedUntil?: string
 }
 
 const props = defineProps<{
