@@ -63,7 +63,9 @@ const useFormErrors = <K extends string = string>(
   })
 
   /**
-   * All translated errors, unmodified.
+   * A computed array of error messages that have not been accessed for display yet.
+   * This can be used to show a summary of remaining errors or to conditionally render
+   * error containers if there are any errors left to display.
    */
   const globalErrors = computed<string[]>(() => {
     // Get the current translated errors
