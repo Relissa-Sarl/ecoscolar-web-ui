@@ -124,7 +124,8 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
     updateProfile,
     deleteAccount,
     getPublicProfile,
-    getMeAdvert
+    getMeAdvert,
+    getReviews
   }
 }
 
