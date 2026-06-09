@@ -30,38 +30,38 @@ const filteredPurchases = computed(() => {
 })
 
 const handleConfirmReception = async (id: string) => {
-  if (!confirm('Voulez-vous vraiment confirmer la réception ? L\'argent sera transféré au vendeur.')) return
+  if (!confirm(t('me.purchases.alerts.confirm_reception_prompt'))) return
   try {
     const { getHistoryService } = await import('~/services/historyService')
     await getHistoryService().confirmReception(id)
-    alert('Réception confirmée avec succès !')
+    alert(t('me.purchases.alerts.reception_success'))
     refresh()
   } catch (e: unknown) {
-    alert('Erreur: ' + (e instanceof Error ? e.message : String(e)))
+    alert(t('me.purchases.alerts.error', { message: e instanceof Error ? e.message : String(e) }))
   }
 }
 
 const handleDispute = async (id: string) => {
-  if (!confirm('Voulez-vous vraiment signaler un problème ? La transaction sera bloquée.')) return
+  if (!confirm(t('me.purchases.alerts.dispute_prompt'))) return
   try {
     const { getHistoryService } = await import('~/services/historyService')
     await getHistoryService().disputePurchase(id)
-    alert('Un litige a été ouvert pour cette commande.')
+    alert(t('me.purchases.alerts.dispute_success'))
     refresh()
   } catch (e: unknown) {
-    alert('Erreur: ' + (e instanceof Error ? e.message : String(e)))
+    alert(t('me.purchases.alerts.error', { message: e instanceof Error ? e.message : String(e) }))
   }
 }
 
 const handleCancel = async (id: string) => {
-  if (!confirm('Voulez-vous vraiment annuler cette commande ? Vous serez remboursé.')) return
+  if (!confirm(t('me.purchases.alerts.cancel_prompt'))) return
   try {
     const { getHistoryService } = await import('~/services/historyService')
     await getHistoryService().cancelPurchase(id)
-    alert('Commande annulée avec succès.')
+    alert(t('me.purchases.alerts.cancel_success'))
     refresh()
   } catch (e: unknown) {
-    alert('Erreur: ' + (e instanceof Error ? e.message : String(e)))
+    alert(t('me.purchases.alerts.error', { message: e instanceof Error ? e.message : String(e) }))
   }
 }
 </script>
@@ -88,7 +88,7 @@ const handleCancel = async (id: string) => {
             d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
           />
         </svg>
-        Retour à la page précédente
+        {{ t('common.back_previous') }}
       </button>
 
       <!-- Page Header -->
@@ -108,7 +108,7 @@ const handleCancel = async (id: string) => {
           :class="activeTab === 'ongoing' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'"
           @click="activeTab = 'ongoing'"
         >
-          En cours
+          {{ t('me.purchases.tabs.ongoing') }}
           <span
             v-if="activeTab === 'ongoing'"
             class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-t-full"
@@ -119,7 +119,7 @@ const handleCancel = async (id: string) => {
           :class="activeTab === 'past' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'"
           @click="activeTab = 'past'"
         >
-          Passées
+          {{ t('me.purchases.tabs.past') }}
           <span
             v-if="activeTab === 'past'"
             class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-t-full"

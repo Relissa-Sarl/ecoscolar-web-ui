@@ -158,7 +158,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
             class="inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-3 text-xs font-semibold transition-colors"
             @click="emit('confirm-shipping', props.sale.transactionId!)"
           >
-            J'ai expédié l'article
+            {{ t('me.sales.actions.confirm_shipping') }}
           </button>
         </div>
       </div>

@@ -186,7 +186,33 @@
       "submit_review": "Invia recensione",
       "cancel_review": "Annulla",
       "review_success": "La tua recensione è stata registrata con successo.",
-      "review_error": "Si è verificato un errore durante la registrazione della recensione."
+      "review_error": "Si è verificato un errore durante la registrazione della recensione.",
+      "tabs": {
+        "ongoing": "In corso",
+        "past": "Passate"
+      },
+      "actions": {
+        "cancel": "Annulla l'ordine",
+        "dispute": "Segnala un problema",
+        "confirm_reception": "Conferma la ricezione",
+        "details": "Dettagli"
+      },
+      "details": {
+        "title": "Dettagli dell'ordine",
+        "item": "Articolo",
+        "price": "Prezzo",
+        "date": "Data d'acquisto",
+        "status": "Stato"
+      },
+      "alerts": {
+        "confirm_reception_prompt": "Vuoi davvero confermare la ricezione? Il denaro verrà trasferito al venditore.",
+        "reception_success": "Ricezione confermata con successo!",
+        "dispute_prompt": "Vuoi davvero segnalare un problema? La transazione verrà bloccata.",
+        "dispute_success": "È stata aperta una controversia per questo ordine.",
+        "cancel_prompt": "Vuoi davvero annullare questo ordine? Verrai rimborsato.",
+        "cancel_success": "Ordine annullato con successo.",
+        "error": "Errore: {message}"
+      }
     },
     "sales": {
       "title": "Cronologia delle mie vendite",
@@ -198,6 +224,18 @@
       "empty_placeholder": "La cronologia delle tue vendite apparir\u00e0 qui.",
       "sell_cta": "Crea un annuncio",
       "buyer_label": "Acquistato da",
+      "tabs": {
+        "ongoing": "In corso",
+        "past": "Passate"
+      },
+      "actions": {
+        "confirm_shipping": "Ho spedito l'articolo"
+      },
+      "alerts": {
+        "confirm_shipping_prompt": "Hai davvero spedito l'articolo?",
+        "shipping_success": "Lo stato è stato aggiornato: Spedito.",
+        "error": "Errore: {message}"
+      },
       "view": "Vedi",
       "edit": "Modifica",
       "status": {
@@ -415,6 +453,7 @@
   },
   "common": {
     "back": "Indietro",
+    "back_previous": "Torna alla pagina precedente",
     "back_to_home": "Torna alla home",
     "back_to_catalog": "Torna al catalogo",
     "skip_to_content": "Vai al contenuto principale",

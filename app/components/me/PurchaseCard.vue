@@ -123,7 +123,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
             class="inline-flex items-center justify-center rounded-xl border border-red-200 text-red-600 hover:bg-red-50 py-1.5 px-3 text-xs font-semibold transition-colors"
             @click="emit('cancel', props.purchase.id)"
           >
-            Annuler la commande
+            {{ t('me.purchases.actions.cancel') }}
           </button>
 
           <button
@@ -131,7 +131,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
             class="inline-flex items-center justify-center rounded-xl border border-orange-200 text-orange-600 hover:bg-orange-50 py-1.5 px-3 text-xs font-semibold transition-colors"
             @click="emit('dispute', props.purchase.id)"
           >
-            Signaler un problème
+            {{ t('me.purchases.actions.dispute') }}
           </button>
 
           <button
@@ -139,7 +139,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
             class="inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-3 text-xs font-semibold transition-colors"
             @click="emit('confirm-reception', props.purchase.id)"
           >
-            Confirmer la réception
+            {{ t('me.purchases.actions.confirm_reception') }}
           </button>
 
           <button
@@ -156,7 +156,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
             class="inline-flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 py-1.5 px-3 text-xs font-semibold transition-colors"
             @click="showDetails = !showDetails"
           >
-            Détails
+            {{ t('me.purchases.actions.details') }}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -190,32 +190,32 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
         class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/80 animate-in fade-in slide-in-from-top-2 duration-300"
       >
         <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-2">
-          Détails de la commande
+          {{ t('me.purchases.details.title') }}
         </h4>
         <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
           <div class="text-slate-500 dark:text-slate-400">
-            Article
+            {{ t('me.purchases.details.item') }}
           </div>
           <div class="font-medium text-slate-900 dark:text-white text-right">
             {{ props.purchase.advertTitle }}
           </div>
 
           <div class="text-slate-500 dark:text-slate-400">
-            Prix
+            {{ t('me.purchases.details.price') }}
           </div>
           <div class="font-medium text-slate-900 dark:text-white text-right">
             {{ props.purchase.price }} CHF
           </div>
 
           <div class="text-slate-500 dark:text-slate-400">
-            Date d'achat
+            {{ t('me.purchases.details.date') }}
           </div>
           <div class="font-medium text-slate-900 dark:text-white text-right">
             {{ formatDate(props.purchase.purchaseDate) }}
           </div>
 
           <div class="text-slate-500 dark:text-slate-400">
-            Statut
+            {{ t('me.purchases.details.status') }}
           </div>
           <div class="font-medium text-slate-900 dark:text-white text-right">
             {{ props.purchase.status }}

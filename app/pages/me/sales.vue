@@ -39,15 +39,15 @@ const filteredSales = computed(() => {
   }
 })
 
-const handleConfirmShipping = async (transactionId: number) => {
-  if (!confirm('Avez-vous vraiment expédié l\'article ?')) return
+const handleConfirmShipping = async (id: number) => {
+  if (!confirm(t('me.sales.alerts.confirm_shipping_prompt'))) return
   try {
     const { getHistoryService } = await import('~/services/historyService')
-    await getHistoryService().confirmShipping(transactionId.toString())
-    alert('Le statut a été mis à jour : Expédié.')
+    await getHistoryService().confirmShipping(id.toString())
+    alert(t('me.sales.alerts.shipping_success'))
     refresh()
   } catch (e: unknown) {
-    alert('Erreur: ' + (e instanceof Error ? e.message : String(e)))
+    alert(t('me.sales.alerts.error', { message: e instanceof Error ? e.message : String(e) }))
   }
 }
 </script>
@@ -74,7 +74,7 @@ const handleConfirmShipping = async (transactionId: number) => {
             d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
           />
         </svg>
-        Retour à la page précédente
+        {{ t('common.back_previous') }}
       </button>
 
       <!-- Page Header -->
@@ -94,7 +94,7 @@ const handleConfirmShipping = async (transactionId: number) => {
           :class="activeTab === 'ongoing' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'"
           @click="activeTab = 'ongoing'"
         >
-          En cours
+          {{ t('me.sales.tabs.ongoing') }}
           <span
             v-if="activeTab === 'ongoing'"
             class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-t-full"
@@ -105,7 +105,7 @@ const handleConfirmShipping = async (transactionId: number) => {
           :class="activeTab === 'past' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'"
           @click="activeTab = 'past'"
         >
-          Passées
+          {{ t('me.sales.tabs.past') }}
           <span
             v-if="activeTab === 'past'"
             class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-t-full"
