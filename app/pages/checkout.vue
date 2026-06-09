@@ -40,7 +40,7 @@ const submitCheckout = async () => {
       error.value = 'Erreur lors de l\'initialisation du paiement.'
     }
   } catch (e: unknown) {
-    error.value = e.message || 'Une erreur est survenue lors de la validation.'
+    error.value = (e instanceof Error ? e.message : String(e)) || 'Une erreur est survenue lors de la validation.'
   } finally {
     isLoading.value = false
   }
