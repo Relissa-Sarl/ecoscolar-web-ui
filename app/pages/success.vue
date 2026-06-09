@@ -92,7 +92,7 @@ onMounted(async () => {
       <SuccessIcon />
 
       <!-- Main Messages -->
-      <SuccessMainMessage />
+      <SuccessMainMessage :order-id="orderId" />
 
       <!-- Success Paiment Informations -->
       <div class="p-6 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-white/75 dark:bg-slate-900/70 backdrop-blur-md shadow-sm space-y-4 text-left">
