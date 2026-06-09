@@ -173,7 +173,6 @@ onBeforeMount(() => {
             v-if="listing.hourly"
             type="button"
             class="rounded-full transition bg-emerald-800 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer"
-            @click=""
           >
             {{ $t('catalog.card.book_lesson') }}
           </button>
