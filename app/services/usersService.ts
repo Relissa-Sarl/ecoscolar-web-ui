@@ -21,8 +21,6 @@ export interface UserService {
   getPublicProfile: (id: string) => Promise<PublicUser>
   getReviews: (userId: string) => Promise<UserReview[]>
   getMeAdvert: () => Promise<MyAdvert[]>
-  getAllUsers: () => Promise<User[]>
-  banUserToggle: (id: string) => Promise<User>
 }
 
 /**
@@ -118,12 +116,6 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
 
   const getMeAdvert = async () => apiClient<MyAdvert[]>(`${USER_PATH}/me/adverts`)
 
-  const getAllUsers = async () => apiClient<User[]>(`${USER_PATH}`)
-
-  const banUserToggle = async (id: string) => apiClient<User>(`${USER_PATH}/${id}/ban`, {
-    method: 'PATCH'
-  })
-
   return {
     register,
     login,
@@ -132,10 +124,8 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
     updateProfile,
     deleteAccount,
     getPublicProfile,
-    getReviews,
     getMeAdvert,
-    getAllUsers,
-    banUserToggle
+    getReviews
   }
 }
 
