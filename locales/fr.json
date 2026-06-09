@@ -47,7 +47,7 @@
     "remove_from_cart": "Supprimer du panier",
     "clear": "Vider le panier",
     "added_success": "Article ajouté au panier !",
-    "tva": "TVA et frais inclus",
+    "tva": "TVA 8.1% et frais inclus",
     "one_advert": "article",
     "many_adverts": "articles",
     "items": {
@@ -62,10 +62,13 @@
       "subtotal": "Sous-total",
       "shipping": "Mode de livraison",
       "shipping_fee": "Frais de livraison",
-      "service_fee": "Frais de service",
+      "service_fee": "Frais de service 10%",
+      "hand-to-hand": "Main propre",
+      "post": "Poste",
       "free": "Gratuit",
       "total": "Total",
-      "confirm": "Passer au paiement"
+      "confirm": "Passer au paiement",
+      "loading": "Redirection vers Stripe..."
     },
     "text_under_resume": {
       "circular_trade": " Économie Circulaire : ",
@@ -78,6 +81,20 @@
       "subtitle": "Parcourez les annonces et trouvez le livre, la fourniture ou le cours qui vous convient.",
       "go_to_shop": "Explorer la boutique",
       "back_to_home": "Retour à l'accueil"
+    },
+    "success": {
+      "title": "Paiement Réussi !",
+      "subtitle": "Merci pour votre commande. Votre transaction a été validée avec succès.",
+      "order_number": "Numéro de commande",
+      "amount_paid": "Montant payé",
+      "status": "Statut du paiement",
+      "confirmed": "Confirmé",
+      "back_home": "Retourner à l'accueil",
+      "continue_shopping": "Continuer mes achats"
+    },
+    "denied": {
+      "title": "Paiement Refusé !",
+      "subtitle": "Votre transaction n'a pas pu être complétée. Veuillez réessayer ou contacter le support si le problème persiste."
     }
   },
   "catalog": {
@@ -404,7 +421,6 @@
       "cancel": "Annuler",
       "confirm": "Supprimer"
     }
-
   },
   "error": {
     "not_found": {
@@ -608,24 +624,24 @@
       "message": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et entraînera la perte de toutes vos données.",
       "confirm": "Supprimer mon compte"
     },
-    "settings" : {
+    "settings": {
       "title": "Modifier mon profil",
       "subtitle": "Mettez à jour vos informations personnelles pour une expérience personnalisée.",
-        "nickname_label": "Pseudo",
-        "firstName_label": "Prénom",
-        "lastName_label": "Nom",
-        "pc_label": "Code Postal",
-        "dob_label": "Date de naissance",
-        "languages_title": "Langues parlées",
-        "languages_empty": "Aucune langue ajoutée.",
-        "language_label": "Langue",
-        "level_label": "Niveau",
-        "level_native": "Langue maternelle",
-        "add_language": "Ajouter une langue",
-        "submit_button": "Enregistrer les modifications",
-        "language_placeholder": "Choisir une langue",
-        "level_placeholder": "Choisir un niveau",
-        "pc_placeholder": "Ex: 1000"
+      "nickname_label": "Pseudo",
+      "firstName_label": "Prénom",
+      "lastName_label": "Nom",
+      "pc_label": "Code Postal",
+      "dob_label": "Date de naissance",
+      "languages_title": "Langues parlées",
+      "languages_empty": "Aucune langue ajoutée.",
+      "language_label": "Langue",
+      "level_label": "Niveau",
+      "level_native": "Langue maternelle",
+      "add_language": "Ajouter une langue",
+      "submit_button": "Enregistrer les modifications",
+      "language_placeholder": "Choisir une langue",
+      "level_placeholder": "Choisir un niveau",
+      "pc_placeholder": "Ex: 1000"
     },
     "public": {
       "error": "Il est actuellement impossible de charger le profil utilisateur. Il se peut que l'utilisateur ne soit pas en public ou que le profil ait été supprimé."

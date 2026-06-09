@@ -58,7 +58,9 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  const loadCart = async (force = false) => {
+  let activeLoadPromise: Promise<void> | null = null
+
+  const loadCart = async (force = false): Promise<void> => {
     if (import.meta.server) {
       return
     }
@@ -67,66 +69,76 @@ export const useCartStore = defineStore('cart', () => {
       return
     }
 
-    isLoading.value = true
-    error.value = null
+    if (activeLoadPromise && !force) {
+      return activeLoadPromise
+    }
 
-    try {
-      if (usersStore.isAuthenticated) {
-        // 1. Sync guest cart items to backend if there are any
-        if (typeof localStorage !== 'undefined' && cartKey.value) {
-          const data = localStorage.getItem(cartKey.value)
-          if (data) {
-            try {
-              const localItems: CartStoreItem[] = JSON.parse(data)
-              if (Array.isArray(localItems) && localItems.length > 0) {
-                for (const item of localItems) {
-                  try {
-                    await cartService.addToCart({ advertId: Number(item.listing.id) })
-                  } catch (e) {
-                    console.error('Failed to sync guest cart item to backend:', e)
+    const runLoad = async () => {
+      isLoading.value = true
+      error.value = null
+
+      try {
+        if (usersStore.isAuthenticated) {
+          // 1. Sync guest cart items to backend if there are any
+          if (typeof localStorage !== 'undefined' && cartKey.value) {
+            const data = localStorage.getItem(cartKey.value)
+            if (data) {
+              try {
+                const localItems: CartStoreItem[] = JSON.parse(data)
+                if (Array.isArray(localItems) && localItems.length > 0) {
+                  for (const item of localItems) {
+                    try {
+                      await cartService.addToCart({ advertId: Number(item.listing.id) })
+                    } catch (e) {
+                      console.error('Failed to sync guest cart item to backend:', e)
+                    }
                   }
                 }
+              } catch {
+                // Ignore parsing errors for malformed local storage data
               }
-            } catch {
-              // Ignore parsing errors for malformed local storage data
+              // Clear the guest cart from localStorage
+              localStorage.removeItem(cartKey.value)
             }
-            // Clear the guest cart from localStorage
-            localStorage.removeItem(cartKey.value)
           }
-        }
 
-        // 2. Fetch the cart items from backend
-        const apiItems = await cartService.getCartItems()
-        items.value = apiItems.map(dto => ({
-          listing: mapCartItemToCatalogListing(dto),
-          quantity: 1
-        }))
-      } else {
-        // Load local cart for guest
-        if (typeof localStorage !== 'undefined' && cartKey.value) {
-          const data = localStorage.getItem(cartKey.value)
-          if (data) {
-            try {
-              const parsed = JSON.parse(data)
-              items.value = Array.isArray(parsed)
-                ? parsed.map((item: CartStoreItem) => ({ ...item, quantity: 1 }))
-                : []
-            } catch {
+          // 2. Fetch the cart items from backend
+          const apiItems = await cartService.getCartItems()
+          items.value = apiItems.map(dto => ({
+            listing: mapCartItemToCatalogListing(dto),
+            quantity: 1
+          }))
+        } else {
+          // Load local cart for guest
+          if (typeof localStorage !== 'undefined' && cartKey.value) {
+            const data = localStorage.getItem(cartKey.value)
+            if (data) {
+              try {
+                const parsed = JSON.parse(data)
+                items.value = Array.isArray(parsed)
+                  ? parsed.map((item: CartStoreItem) => ({ ...item, quantity: 1 }))
+                  : []
+              } catch {
+                items.value = []
+              }
+            } else {
               items.value = []
             }
           } else {
             items.value = []
           }
-        } else {
-          items.value = []
         }
+        hasLoaded.value = true
+      } catch (cause) {
+        error.value = cause instanceof Error ? cause.message : 'Unable to load cart'
+      } finally {
+        isLoading.value = false
+        activeLoadPromise = null
       }
-      hasLoaded.value = true
-    } catch (cause) {
-      error.value = cause instanceof Error ? cause.message : 'Unable to load cart'
-    } finally {
-      isLoading.value = false
     }
+
+    activeLoadPromise = runLoad()
+    return activeLoadPromise
   }
 
   // Load the cart from localStorage/API on client side
@@ -203,6 +215,12 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   const clearCart = async () => {
+    if (activeLoadPromise) {
+      await activeLoadPromise
+    } else if (!hasLoaded.value) {
+      await loadCart()
+    }
+
     if (usersStore.isAuthenticated) {
       isLoading.value = true
       error.value = null
