@@ -6,6 +6,7 @@ const { locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
 const usersStore = useUsersStore()
 const searchAlertsStore = useSearchAlertsStore()
+const cartStore = useCartStore()
 
 // Main navigation
 const navigationLinks = computed(() => [
@@ -142,10 +143,18 @@ const successfulAlertsCount = computed(() =>
         ]"
         :to="link.to"
       >
-        <Icon
-          :name="link.icon"
-          class="w-4 h-4 shrink-0"
-        />
+        <span class="relative inline-flex">
+          <Icon
+            :name="link.icon"
+            class="w-4 h-4 shrink-0"
+          />
+          <span
+            v-if="link.slug === 'cart' && cartStore.totalItems > 0"
+            class="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-800 text-[9px] font-bold text-white ring-2 ring-white dark:ring-slate-900"
+          >
+            {{ cartStore.totalItems }}
+          </span>
+        </span>
         <span>{{ $t(link.labelKey) }}</span>
         <span
           v-if="link.slug === 'search-alerts' && successfulAlertsCount > 0"
