@@ -358,9 +358,36 @@
     "saving": "Salvataggio…",
     "saved": "Ricerca salvata",
     "save_error": "Impossibile salvare la ricerca",
+    "form": {
+      "title": "Crea un avviso",
+      "description": "Definisci i criteri da sorvegliare quando il backend attiverà le notifiche.",
+      "advert_type": "Tipo di annuncio",
+      "keyword": "Parola chiave",
+      "keyword_placeholder": "Es. calcolatrice, matematica, francese…",
+      "max_price": "Prezzo massimo",
+      "max_price_placeholder": "Es. 50",
+      "product_category": "Categoria forniture",
+      "any_product_category": "Tutte le forniture",
+      "book_category": "Categoria manuale",
+      "any_book_category": "Tutti i manuali",
+      "isbn": "ISBN",
+      "isbn_placeholder": "Es. 978-2-09-172887-6",
+      "subject": "Materia",
+      "any_subject": "Tutte le materie",
+      "grade": "Livello scolastico",
+      "any_grade": "Tutti i livelli",
+      "helper": "Aggiungi almeno un criterio oltre al tipo di annuncio.",
+      "submit": "Crea avviso",
+      "references_error": "Impossibile caricare alcune liste di filtri.",
+      "types": {
+        "product": "Forniture",
+        "book": "Manuali",
+        "service": "Ripetizioni"
+      }
+    },
     "empty": {
       "title": "Nessun avviso per ora",
-      "message": "Salva una ricerca dal negozio per ritrovarla qui."
+      "message": "Crea un avviso qui sopra o salva una ricerca dal negozio."
     },
     "status": {
       "loading": "Caricamento avvisi…",
@@ -371,7 +398,13 @@
       "browse_shop": "Esplora il negozio",
       "delete": "Elimina",
       "deleting": "Eliminazione…",
-      "run_search": "Ripeti la ricerca"
+      "run_search": "Ripeti la ricerca",
+      "view_matches": "Vedi articoli"
+    },
+    "matches": {
+      "badge": "{count} trovato/i",
+      "found": "{count} articolo/i corrispondono a questo avviso.",
+      "none": "Nessun articolo corrispondente per ora."
     }
   },
   "header": {

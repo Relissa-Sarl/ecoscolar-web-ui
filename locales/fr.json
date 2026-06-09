@@ -356,9 +356,36 @@
     "saving": "Enregistrement…",
     "saved": "Recherche enregistrée",
     "save_error": "Impossible d'enregistrer la recherche",
+    "form": {
+      "title": "Créer une alerte",
+      "description": "Définissez les critères à surveiller pour être prêt quand le back déclenchera les notifications.",
+      "advert_type": "Type d’annonce",
+      "keyword": "Mot-clé",
+      "keyword_placeholder": "Ex. calculatrice, math, français…",
+      "max_price": "Prix maximum",
+      "max_price_placeholder": "Ex. 50",
+      "product_category": "Catégorie de fourniture",
+      "any_product_category": "Toutes les fournitures",
+      "book_category": "Catégorie du manuel",
+      "any_book_category": "Tous les manuels",
+      "isbn": "ISBN",
+      "isbn_placeholder": "Ex. 978-2-09-172887-6",
+      "subject": "Matière",
+      "any_subject": "Toutes les matières",
+      "grade": "Niveau scolaire",
+      "any_grade": "Tous les niveaux",
+      "helper": "Ajoutez au moins un critère en plus du type d’annonce.",
+      "submit": "Créer l’alerte",
+      "references_error": "Impossible de charger certaines listes de filtres.",
+      "types": {
+        "product": "Fournitures",
+        "book": "Manuels scolaires",
+        "service": "Cours & soutien"
+      }
+    },
     "empty": {
       "title": "Aucune alerte pour le moment",
-      "message": "Sauvegardez une recherche depuis la boutique pour la retrouver ici."
+      "message": "Créez une alerte ci-dessus ou sauvegardez une recherche depuis la boutique."
     },
     "status": {
       "loading": "Chargement des alertes…",
@@ -369,7 +396,13 @@
       "browse_shop": "Explorer la boutique",
       "delete": "Supprimer",
       "deleting": "Suppression…",
-      "run_search": "Relancer la recherche"
+      "run_search": "Relancer la recherche",
+      "view_matches": "Voir les articles"
+    },
+    "matches": {
+      "badge": "{count} trouvé(s)",
+      "found": "{count} article(s) correspondent à cette alerte.",
+      "none": "Aucun article correspondant pour le moment."
     }
   },
   "header": {

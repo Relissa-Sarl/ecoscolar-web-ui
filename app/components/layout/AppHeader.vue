@@ -1,8 +1,11 @@
 <script lang="ts" setup>
+import { useSearchAlertsStore } from '~/stores/searchAlertsStore'
+
 const route = useRoute()
 const { locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
 const usersStore = useUsersStore()
+const searchAlertsStore = useSearchAlertsStore()
 
 // Main navigation
 const navigationLinks = computed(() => [
@@ -93,6 +96,22 @@ const linkIsActive = (slug: string) => {
   const parts = route.path.split('/').filter(Boolean)
   return parts.includes(slug)
 }
+
+watch(
+  () => usersStore.isAuthenticated,
+  async (isAuthenticated) => {
+    if (isAuthenticated) {
+      await searchAlertsStore.loadAlerts().catch(() => undefined)
+    } else {
+      searchAlertsStore.clearAlerts()
+    }
+  },
+  { immediate: true }
+)
+
+const successfulAlertsCount = computed(() =>
+  searchAlertsStore.alerts.filter(alert => (alert.matchedCount ?? 0) > 0).length
+)
 </script>
 
 <template>
@@ -118,7 +137,7 @@ const linkIsActive = (slug: string) => {
         v-for="link in visibleLinks"
         :key="link.slug"
         :class="[
-          'flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 transition-colors duration-200 hover:bg-slate-50 hover:text-emerald-800 dark:text-gray-300 dark:hover:bg-slate-800 dark:hover:text-emerald-400',
+          'relative flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 transition-colors duration-200 hover:bg-slate-50 hover:text-emerald-800 dark:text-gray-300 dark:hover:bg-slate-800 dark:hover:text-emerald-400',
           linkIsActive(link.slug) ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-300 font-bold' : ''
         ]"
         :to="link.to"
@@ -128,6 +147,12 @@ const linkIsActive = (slug: string) => {
           class="w-4 h-4 shrink-0"
         />
         <span>{{ $t(link.labelKey) }}</span>
+        <span
+          v-if="link.slug === 'search-alerts' && successfulAlertsCount > 0"
+          class="absolute -right-1 -top-1 flex min-h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1 text-[11px] font-bold leading-none text-white ring-2 ring-white dark:ring-slate-900"
+        >
+          {{ successfulAlertsCount > 9 ? '9+' : successfulAlertsCount }}
+        </span>
       </NuxtLink>
     </nav>
 

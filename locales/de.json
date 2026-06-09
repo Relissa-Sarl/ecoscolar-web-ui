@@ -359,9 +359,36 @@
     "saving": "Wird gespeichert…",
     "saved": "Suche gespeichert",
     "save_error": "Suche konnte nicht gespeichert werden",
+    "form": {
+      "title": "Suchalarm erstellen",
+      "description": "Lege Kriterien fest, die später vom Backend für Benachrichtigungen verwendet werden.",
+      "advert_type": "Anzeigentyp",
+      "keyword": "Suchbegriff",
+      "keyword_placeholder": "z. B. Rechner, Mathe, Französisch…",
+      "max_price": "Maximaler Preis",
+      "max_price_placeholder": "z. B. 50",
+      "product_category": "Materialkategorie",
+      "any_product_category": "Alle Materialien",
+      "book_category": "Schulbuchkategorie",
+      "any_book_category": "Alle Schulbücher",
+      "isbn": "ISBN",
+      "isbn_placeholder": "z. B. 978-2-09-172887-6",
+      "subject": "Fach",
+      "any_subject": "Alle Fächer",
+      "grade": "Schulstufe",
+      "any_grade": "Alle Stufen",
+      "helper": "Füge mindestens ein Kriterium zusätzlich zum Anzeigentyp hinzu.",
+      "submit": "Alarm erstellen",
+      "references_error": "Einige Filterlisten konnten nicht geladen werden.",
+      "types": {
+        "product": "Material",
+        "book": "Schulbücher",
+        "service": "Nachhilfe"
+      }
+    },
     "empty": {
       "title": "Noch keine Alarme",
-      "message": "Speichere eine Suche im Shop, um sie hier wiederzufinden."
+      "message": "Erstelle oben einen Alarm oder speichere eine Suche im Shop."
     },
     "status": {
       "loading": "Alarme werden geladen…",
@@ -372,7 +399,13 @@
       "browse_shop": "Shop durchsuchen",
       "delete": "Löschen",
       "deleting": "Wird gelöscht…",
-      "run_search": "Suche erneut starten"
+      "run_search": "Suche erneut starten",
+      "view_matches": "Artikel ansehen"
+    },
+    "matches": {
+      "badge": "{count} Treffer",
+      "found": "{count} Artikel passen zu diesem Alarm.",
+      "none": "Derzeit passt kein Artikel zu diesem Alarm."
     }
   },
   "header": {
