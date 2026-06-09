@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { useI18n, useAsyncData, useLocalePath } from '#imports'
+import { useI18n, useAsyncData, useLocalePath, useRouter } from '#imports'
 import { useHistory } from '~/composables/useHistory'
 import SaleCard from '~/components/me/SaleCard.vue'
 
 definePageMeta({
   middleware: 'auth'
 })
+
+const router = useRouter()
 
 const { t } = useI18n()
 const localePath = useLocalePath()
@@ -54,8 +56,8 @@ const handleConfirmShipping = async (transactionId: number) => {
   <div class="min-h-screen bg-slate-50 dark:bg-gray-950 py-10 px-4 sm:px-6 lg:px-8">
     <div class="max-w-5xl mx-auto">
       <!-- Back Navigation -->
-      <NuxtLink
-        :to="localePath('/me/profile')"
+      <button
+        @click="router.back()"
         class="inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors mb-6 group"
       >
         <svg
@@ -72,8 +74,8 @@ const handleConfirmShipping = async (transactionId: number) => {
             d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
           />
         </svg>
-        {{ t('common.back_to_home') }}
-      </NuxtLink>
+        Retour à la page précédente
+      </button>
 
       <!-- Page Header -->
       <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm mb-6">

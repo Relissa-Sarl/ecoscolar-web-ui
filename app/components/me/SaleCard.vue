@@ -153,13 +153,6 @@ const canModify = (status: AdvertStatus) => {
             J'ai expédié l'article
           </button>
 
-          <NuxtLink
-            v-if="canModify(props.sale.status)"
-            :to="localePath(`/adverts/modify-advert-${props.sale.id}`)"
-            class="inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-700 py-1.5 px-3 text-xs font-semibold transition-colors"
-          >
-            {{ t('me.sales.edit') }}
-          </NuxtLink>
         </div>
       </div>
     </div>
