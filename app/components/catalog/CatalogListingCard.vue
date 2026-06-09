@@ -172,22 +172,9 @@ onBeforeMount(() => {
           <button
             v-if="listing.hourly"
             type="button"
-            class="rounded-full transition"
-            :class="isInCart
-              ? 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-600 border border-slate-200 dark:border-slate-800 cursor-not-allowed size-10 flex items-center justify-center shrink-0'
-              : 'bg-emerald-800 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer'"
-            :disabled="isInCart"
-            :aria-label="isInCart ? $t('advert.actions.already_in_cart') : $t('catalog.card.book_lesson')"
-            @click="handleCartAdd"
+            class="rounded-full transition bg-emerald-800 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer"
           >
-            <Icon
-              v-if="isInCart"
-              name="material-symbols:check"
-              class="size-5 text-emerald-650 dark:text-emerald-500 font-bold"
-            />
-            <template v-else>
-              {{ $t('catalog.card.book_lesson') }}
-            </template>
+            {{ $t('catalog.card.book_lesson') }}
           </button>
           <button
             v-else
