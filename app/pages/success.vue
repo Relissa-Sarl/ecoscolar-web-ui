@@ -33,7 +33,7 @@ const productId = computed(() => {
   return val ? Number(val) : null
 })
 
-// Clear the cart when the user lands on the success page and retrive the price information
+// Clear the cart when the user lands on the success page and retrive the price information 
 onMounted(async () => {
   const storedTotal = sessionStorage.getItem('last_payment_total')
   if (storedTotal) {
@@ -41,19 +41,13 @@ onMounted(async () => {
     sessionStorage.removeItem('last_payment_total')
   }
 
-  // Update status of the purchased product to SOLD
-  if (productId.value) {
-    try {
-      const advertService = getAdvertService()
-      await advertService.updateAdvertStatus(productId.value, 'SOLD')
-    } catch (err) {
-      console.error(`Failed to update status for advert ${productId.value}:`, err)
-    }
-  } else {
-    // Fallback: update all items currently in cart to SOLD before clearing it
-    try {
-      await cartStore.loadCart()
-      const advertService = getAdvertService()
+  try {
+    // Force reload the cart to get the items from the correct source (API or localStorage)
+    await cartStore.loadCart(true)
+    const advertService = getAdvertService()
+
+    if (cartStore.items.length > 0) {
+      // Update status to SOLD for all items in the cart
       for (const item of cartStore.items) {
         const advertId = Number(item.listing.id)
         try {
@@ -62,8 +56,24 @@ onMounted(async () => {
           console.error(`Failed to update status for advert ${advertId}:`, err)
         }
       }
-    } catch (err) {
-      console.error('Failed to load cart for fallback status update:', err)
+    } else if (productId.value) {
+      // Fallback if cart is already empty (e.g. page refreshed)
+      try {
+        await advertService.updateAdvertStatus(productId.value, 'SOLD')
+      } catch (err) {
+        console.error(`Failed to update status for advert ${productId.value}:`, err)
+      }
+    }
+  } catch (err) {
+    console.error('Failed to load cart for status updates:', err)
+    // Fallback to query param if loading cart fails
+    if (productId.value) {
+      try {
+        const advertService = getAdvertService()
+        await advertService.updateAdvertStatus(productId.value, 'SOLD')
+      } catch (err2) {
+        console.error(`Failed to update status for advert ${productId.value}:`, err2)
+      }
     }
   }
 
