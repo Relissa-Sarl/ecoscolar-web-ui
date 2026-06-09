@@ -57,6 +57,10 @@
       "quantity": "Quantité",
       "vendor": "Vendeur"
     },
+    "timer": {
+      "expired": "Réservation expirée",
+      "reserved": "Réservé ({time})"
+    },
     "checkout": {
       "title": "Résume de la commande",
       "subtotal": "Sous-total",
@@ -177,7 +181,42 @@
       "empty_placeholder": "Votre historique d'achats apparaîtra ici.",
       "explore_cta": "Explorer la boutique",
       "seller_label": "Vendeur",
-      "view_advert": "Voir l'annonce"
+      "view_advert": "Voir l'annonce",
+      "leave_review": "Laisser un avis",
+      "review_modal_title": "Laisser un avis à {name}",
+      "rating_label": "Note",
+      "comment_label": "Commentaire",
+      "comment_placeholder": "Rédigez votre commentaire...",
+      "submit_review": "Envoyer l'avis",
+      "cancel_review": "Annuler",
+      "review_success": "Votre avis a été enregistré avec succès.",
+      "review_error": "Une erreur est survenue lors de l'enregistrement de l'avis.",
+      "tabs": {
+        "ongoing": "En cours",
+        "past": "Passées"
+      },
+      "actions": {
+        "cancel": "Annuler la commande",
+        "dispute": "Signaler un problème",
+        "confirm_reception": "Confirmer la réception",
+        "details": "Détails"
+      },
+      "details": {
+        "title": "Détails de la commande",
+        "item": "Article",
+        "price": "Prix",
+        "date": "Date d'achat",
+        "status": "Statut"
+      },
+      "alerts": {
+        "confirm_reception_prompt": "Voulez-vous vraiment confirmer la réception ? L'argent sera transféré au vendeur.",
+        "reception_success": "Réception confirmée avec succès !",
+        "dispute_prompt": "Voulez-vous vraiment signaler un problème ? La transaction sera bloquée.",
+        "dispute_success": "Un litige a été ouvert pour cette commande.",
+        "cancel_prompt": "Voulez-vous vraiment annuler cette commande ? Vous serez remboursé.",
+        "cancel_success": "Commande annulée avec succès.",
+        "error": "Erreur : {message}"
+      }
     },
     "sales": {
       "title": "Historique de mes ventes",
@@ -189,6 +228,18 @@
       "empty_placeholder": "Votre historique de ventes apparaîtra ici.",
       "sell_cta": "Créer une annonce",
       "buyer_label": "Acheté par",
+      "tabs": {
+        "ongoing": "En cours",
+        "past": "Passées"
+      },
+      "actions": {
+        "confirm_shipping": "J'ai expédié l'article"
+      },
+      "alerts": {
+        "confirm_shipping_prompt": "Avez-vous vraiment expédié l'article ?",
+        "shipping_success": "Le statut a été mis à jour : Expédié.",
+        "error": "Erreur : {message}"
+      },
       "view": "Voir",
       "edit": "Modifier",
       "status": {
@@ -404,6 +455,7 @@
   },
   "common": {
     "back": "Retour",
+    "back_previous": "Retour à la page précédente",
     "back_to_home": "Retour à l'accueil",
     "back_to_catalog": "Retour au catalogue",
     "skip_to_content": "Passer au contenu principal",
@@ -595,7 +647,32 @@
   "forgot_password": {
     "instruction": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
     "submit_button": "Envoyer le lien",
-    "back_to_login": "Retour à la connexion"
+    "back_to_login": "Retour à la connexion",
+    "status": {
+      "loading": "Envoi du lien de réinitialisation..."
+    },
+    "instruction_success": "Si un compte avec cette adresse e-mail existe, vous recevrez bientôt un lien pour réinitialiser votre mot de passe."
+  },
+  "reset_password": {
+    "return_to_login": "Retour à la connexion",
+    "title": "Réinitialiser le mot de passe",
+    "subtitle": "Saisissez votre nouveau mot de passe pour sécuriser votre compte EcoScolar.",
+    "email_label": "Adresse e-mail",
+    "password_label": "Nouveau mot de passe",
+    "confirm_password_label": "Confirmer le mot de passe",
+    "submit_button": "Réinitialiser le mot de passe",
+    "errors": {
+      "Default": "Une erreur est survenue lors de la réinitialisation du mot de passe. Veuillez réessayer.",
+      "passwords_do_not_match": "Les mots de passe ne correspondent pas.",
+      "PasswordTooShort": "Votre mot de passe doit faire au moins 6 caractères.",
+      "PasswordRequiresNonAlphanumeric": "Le mot de passe doit contenir un caractère spécial.",
+      "PasswordRequiresUpper": "Le mot de passe doit contenir une majuscule.",
+      "PasswordRequiresDigit": "Le mot de passe doit contenir un chiffre.",
+      "InvalidToken": "Le code de réinitialisation est invalide ou a expiré."
+    },
+    "status": {
+      "loading": "Réinitialisation en cours..."
+    }
   },
   "admin": {
     "nav_label": "Menu administration",
@@ -658,6 +735,18 @@
       "filter_seller": "En tant que vendeur",
       "average": "Moyenne",
       "star_distribution": "Répartition des notes"
+    }
+  },
+  "checkout": {
+    "title": "Validation de la commande",
+    "instruction": "Veuillez indiquer votre adresse d'expédition pour continuer vers le paiement sécurisé.",
+    "address_label": "Adresse d'expédition complète",
+    "address_placeholder": "Nom, Prénom\nRue, Numéro\nNPA, Localité",
+    "submit": "Procéder au paiement (Stripe)",
+    "errors": {
+      "address_required": "L'adresse d'expédition est requise.",
+      "init_failed": "Erreur lors de l'initialisation du paiement.",
+      "general": "Une erreur est survenue lors de la validation."
     }
   }
 }

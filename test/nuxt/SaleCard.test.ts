@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
 import SaleCard from '~/components/me/SaleCard.vue'
@@ -11,6 +11,25 @@ mockNuxtImport('useI18n', () => () => ({
 }))
 
 mockNuxtImport('useLocalePath', () => () => (path: string) => path)
+
+const mockCreateReview = vi.fn()
+mockNuxtImport('useHistory', () => () => ({
+  createReview: mockCreateReview
+}))
+
+const mockToastAdd = vi.fn()
+mockNuxtImport('useToast', () => () => ({
+  add: mockToastAdd
+}))
+
+const stubs = {
+  NuxtLink: { template: '<a><slot /></a>' },
+  UModal: { template: '<div><slot name="body" /><slot name="footer" /></div>' },
+  UButton: { template: '<button><slot /></button>' },
+  UIcon: { template: '<span class="icon-mock">icon</span>' },
+  Stars: { template: '<div class="stars-mock"><slot /></div>' },
+  ReviewModal: { template: '<div class="review-modal-mock">modal-stub</div>' }
+}
 
 const mockSale: MySaleAdvert = {
   id: 1,
@@ -30,7 +49,7 @@ describe('SaleCard', () => {
   it('renders correctly with all information for ACTIVE status', () => {
     const wrapper = mount(SaleCard, {
       props: { sale: mockSale },
-      global: { stubs: { NuxtLink: { template: '<a><slot /></a>' } } }
+      global: { stubs }
     })
 
     // Check texts
@@ -53,7 +72,7 @@ describe('SaleCard', () => {
     const soldSale = { ...mockSale, status: AdvertStatus.SOLD, buyerName: 'JohnDoe' }
     const wrapper = mount(SaleCard, {
       props: { sale: soldSale },
-      global: { stubs: { NuxtLink: { template: '<a><slot /></a>' } } }
+      global: { stubs }
     })
 
     expect(wrapper.text()).toContain('me.sales.status.sold')
@@ -68,7 +87,7 @@ describe('SaleCard', () => {
     const expiredSale = { ...mockSale, status: AdvertStatus.EXPIRED }
     const wrapper = mount(SaleCard, {
       props: { sale: expiredSale },
-      global: { stubs: { NuxtLink: { template: '<a><slot /></a>' } } }
+      global: { stubs }
     })
 
     expect(wrapper.text()).toContain('me.sales.status.expired')
@@ -79,21 +98,62 @@ describe('SaleCard', () => {
     const pausedSale = { ...mockSale, status: AdvertStatus.PAUSED }
     const wrapper = mount(SaleCard, {
       props: { sale: pausedSale },
-      global: { stubs: { NuxtLink: { template: '<a><slot /></a>' } } }
+      global: { stubs }
     })
 
     expect(wrapper.text()).toContain('me.sales.status.paused')
     expect(wrapper.text()).toContain('me.sales.edit')
   })
 
-  it('renders fallback svg when primaryImage is empty', () => {
+  it('renders fallback icon when primaryImage is empty', () => {
     const noImageSale = { ...mockSale, primaryImage: null }
     const wrapper = mount(SaleCard, {
       props: { sale: noImageSale },
-      global: { stubs: { NuxtLink: { template: '<a><slot /></a>' } } }
+      global: { stubs }
     })
 
     expect(wrapper.find('img').exists()).toBe(false)
-    expect(wrapper.find('svg').exists()).toBe(true)
+    expect(wrapper.find('.icon-mock').exists()).toBe(true)
+  })
+
+  it('renders leave review button for SOLD status', () => {
+    const soldSale = { ...mockSale, status: AdvertStatus.SOLD, buyerName: 'JohnDoe' }
+    const wrapper = mount(SaleCard, {
+      props: { sale: soldSale },
+      global: { stubs }
+    })
+    const btn = wrapper.findAll('button').find(b => b.text().includes('me.purchases.leave_review'))
+    expect(btn?.exists()).toBe(true)
+  })
+
+  it('does not render leave review button for ACTIVE status', () => {
+    const wrapper = mount(SaleCard, {
+      props: { sale: mockSale },
+      global: { stubs }
+    })
+    const btns = wrapper.findAll('button').filter(b => b.text().includes('me.purchases.leave_review'))
+    expect(btns.length).toBe(0)
+  })
+
+  it('hides leave review button and renders Stars component when already reviewed', () => {
+    const reviewedSale = {
+      ...mockSale,
+      status: AdvertStatus.SOLD,
+      buyerName: 'JohnDoe',
+      review: { rating: 5, comment: 'Amazing!' }
+    }
+    const wrapper = mount(SaleCard, {
+      props: { sale: reviewedSale },
+      global: {
+        stubs: {
+          ...stubs,
+          Stars: { template: '<div class="stars-mock">{{ rating }} stars</div>', props: ['rating'] }
+        }
+      }
+    })
+    const btns = wrapper.findAll('button').filter(b => b.text().includes('me.purchases.leave_review'))
+    expect(btns.length).toBe(0)
+    expect(wrapper.find('.stars-mock').exists()).toBe(true)
+    expect(wrapper.find('.stars-mock').text()).toContain('5 stars')
   })
 })

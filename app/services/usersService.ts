@@ -1,4 +1,4 @@
-import type { User, UpdateProfileInput, PublicUser, UserReview } from '~/types/user'
+import type { User, UpdateProfileInput, PublicUser, UserReview, ResetPasswordInput } from '~/types/user'
 import { useApi } from '../composables/useApi'
 import type { MyAdvert } from '~/types/advert'
 
@@ -18,6 +18,8 @@ export interface UserService {
   getMyProfile: () => Promise<User>
   updateProfile: (input: UpdateProfileInput) => Promise<User>
   deleteAccount: () => Promise<undefined>
+  forgotPassword: (email: string) => Promise<undefined>
+  resetPassword: (input: ResetPasswordInput) => Promise<undefined>
   getPublicProfile: (id: string) => Promise<PublicUser>
   getReviews: (userId: string) => Promise<UserReview[]>
   getMeAdvert: () => Promise<MyAdvert[]>
@@ -101,6 +103,38 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
       })
 
   /**
+   * Initiate a password reset request for the user with the provided email by
+   * calling the API's forgot password endpoint. This will typically trigger
+   * the API to send a password reset email to the user with instructions on how to reset their password.
+   * @param email The email address of the user who wants to reset their password.
+   * @returns A promise that resolves when the password reset request is successfully initiated.
+   * The API is expected to handle the logic for sending the password reset email and return an
+   * appropriate response.
+   */
+  const forgotPassword = async (email: string) =>
+    apiClient<undefined>(`${AUTH_PATH}/forgotPassword`,
+      {
+        method: 'POST',
+        body: { email }
+      })
+
+  /**
+   * Reset the password for the user with the provided email, new password, and reset code by
+   * calling the API's reset password endpoint. This operation typically requires the user to
+   * have received a password reset code via email, which is used to authorize the password reset request.
+   * @param input An object containing the email, new password, and reset code for the password reset operation.
+   * @returns A promise that resolves when the password reset operation is complete. If the operation is successful,
+   * the user's password will be updated to the new password provided. If there is an error during the
+   * operation, the promise will reject with an appropriate error message.
+   */
+  const resetPassword = async (input: ResetPasswordInput) =>
+    apiClient<undefined>(`${AUTH_PATH}/resetPassword`,
+      {
+        method: 'POST',
+        body: input
+      })
+
+  /**
    * Retrieve the public profile of a user by their ID.
    * @param id The unique identifier of the user whose public profile is being requested.
    * @returns A promise that resolves to a PublicUser object containing the public information of the user.
@@ -122,7 +156,9 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
     logout,
     getMyProfile,
     updateProfile,
+    forgotPassword,
     deleteAccount,
+    resetPassword,
     getPublicProfile,
     getMeAdvert,
     getReviews
