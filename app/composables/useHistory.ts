@@ -32,8 +32,16 @@ export const useHistory = () => {
     }
   }
 
+  /**
+   * Submits a review for a transaction.
+   */
+  const createReview = async (transactionId: string, rating: number, comment?: string): Promise<void> => {
+    await service.createReview(transactionId, rating, comment)
+  }
+
   return {
     getPurchases,
-    getSales
+    getSales,
+    createReview
   }
 }
