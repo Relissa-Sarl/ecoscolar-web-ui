@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useI18n } from '#imports'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   targetDate: string
@@ -42,26 +45,16 @@ onUnmounted(() => {
     class="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide"
     :class="isExpired ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-orange-50 text-orange-700 border border-orange-200'"
   >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
+    <UIcon
+      name="i-mdi-clock-outline"
       class="h-3.5 w-3.5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      stroke-width="2"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-      />
-    </svg>
+    />
     <span>
       <template v-if="isExpired">
-        Réservation expirée
+        {{ t('cart.timer.expired') }}
       </template>
       <template v-else>
-        Réservé ({{ timeLeft }})
+        {{ t('cart.timer.reserved', { time: timeLeft }) }}
       </template>
     </span>
   </div>

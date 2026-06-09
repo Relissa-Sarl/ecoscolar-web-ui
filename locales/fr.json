@@ -57,6 +57,10 @@
       "quantity": "Quantité",
       "vendor": "Vendeur"
     },
+    "timer": {
+      "expired": "Réservation expirée",
+      "reserved": "Réservé ({time})"
+    },
     "checkout": {
       "title": "Résume de la commande",
       "subtotal": "Sous-total",
@@ -731,6 +735,18 @@
       "filter_seller": "En tant que vendeur",
       "average": "Moyenne",
       "star_distribution": "Répartition des notes"
+    }
+  },
+  "checkout": {
+    "title": "Validation de la commande",
+    "instruction": "Veuillez indiquer votre adresse d'expédition pour continuer vers le paiement sécurisé.",
+    "address_label": "Adresse d'expédition complète",
+    "address_placeholder": "Nom, Prénom\nRue, Numéro\nNPA, Localité",
+    "submit": "Procéder au paiement (Stripe)",
+    "errors": {
+      "address_required": "L'adresse d'expédition est requise.",
+      "init_failed": "Erreur lors de l'initialisation du paiement.",
+      "general": "Une erreur est survenue lors de la validation."
     }
   }
 }
