@@ -71,7 +71,7 @@ const shippingCost = computed(() => {
 })
 
 const serviceFee = computed(() => {
-  return subtotal.value * 0.1 
+  return subtotal.value * 0.1
 })
 
 const taxTva = computed(() => {
