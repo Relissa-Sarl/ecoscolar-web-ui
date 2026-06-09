@@ -388,6 +388,7 @@
     "support_requests": "Le mie richieste"
   },
   "common": {
+    "back": "Indietro",
     "back_to_home": "Torna alla home",
     "back_to_catalog": "Torna al catalogo",
     "skip_to_content": "Vai al contenuto principale",
