@@ -1,6 +1,6 @@
 export interface CheckoutRequest {
   productId: number
-  productPrice: number
+  productPrice: string
 }
 
 export interface CheckoutResponse {

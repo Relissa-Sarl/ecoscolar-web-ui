@@ -70,8 +70,16 @@ const shippingCost = computed(() => {
   return shippingMethod.value === 'post' ? 2 : 0
 })
 
+const serviceFee = computed(() => {
+  return subtotal.value * 0.1 
+})
+
+const taxTva = computed(() => {
+  return (subtotal.value + shippingCost.value + serviceFee.value) * 0.081
+})
+
 const total = computed(() => {
-  return subtotal.value + shippingCost.value
+  return subtotal.value + shippingCost.value + serviceFee.value + taxTva.value
 })
 
 const itemsCount = computed(() => {
@@ -81,22 +89,27 @@ const itemsCount = computed(() => {
 const isCheckingOut = ref(false)
 const checkoutError = ref<string | null>(null)
 
+// handle checkout with stripe
 const handleCheckout = async () => {
+  // if cart is empty or checkout is already in progress, return
   if (cartItems.value.length === 0 || isCheckingOut.value) return
 
+  // set checking out flag and clear any previous error
   isCheckingOut.value = true
   checkoutError.value = null
 
+  // try to create a checkout session with stripe
   try {
     const paymentService = getPaymentService()
     const firstItem = cartItems.value[0]
     const response = await paymentService.createCheckoutSession({
       productId: firstItem ? Number(firstItem.id) : 0,
-      productPrice: total.value
+      productPrice: total.value.toFixed(2)
     })
 
+    // set last_payment_total in sessionStorage for the payment success page
     if (response && response.url) {
-      sessionStorage.setItem('last_payment_total', total.value.toString())
+      sessionStorage.setItem('last_payment_total', total.value.toFixed(2))
       await navigateTo(response.url, { external: true })
     } else {
       throw new Error('Url de session Stripe manquante dans la réponse de l\'API')
@@ -179,6 +192,7 @@ const handleCheckout = async () => {
           v-model="shippingMethod"
           :subtotal="subtotal"
           :shipping-cost="shippingCost"
+          :service-fee="serviceFee"
           :total="total"
           :loading="isCheckingOut"
           @checkout="handleCheckout"

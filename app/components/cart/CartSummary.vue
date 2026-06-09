@@ -2,6 +2,7 @@
 defineProps<{
   subtotal: number
   shippingCost: number
+  serviceFee: number
   total: number
   loading?: boolean
 }>()
@@ -26,6 +27,11 @@ const shippingMethod = defineModel<'post' | 'handToHand'>({ default: 'post' })
         <div class="flex justify-between text-slate-500 dark:text-slate-400">
           <span>{{ $t('cart.checkout.subtotal') }}</span>
           <span class="font-semibold text-slate-800 dark:text-slate-200">{{ subtotal.toFixed(2) }} CHF</span>
+        </div>
+
+        <div class="flex justify-between text-slate-500 dark:text-slate-400">
+          <span>{{ $t('cart.checkout.service_fee') }}</span>
+          <span class="font-semibold text-slate-800 dark:text-slate-200">{{ serviceFee.toFixed(2) }} CHF</span>
         </div>
 
         <div class="flex justify-between text-slate-500 dark:text-slate-400">
