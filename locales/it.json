@@ -47,7 +47,7 @@
     "remove_from_cart": "Rimuovi dal carrello",
     "clear": "Svuota il carrello",
     "added_success": "Articolo aggiunto al carrello!",
-    "tva": "IVA e costi inclusi",
+    "tva": "IVA 8.1% e costi inclusi",
     "one_advert": "articolo",
     "many_adverts": "articoli",
     "items": {
@@ -62,10 +62,13 @@
       "subtotal": "Totale parziale",
       "shipping": "Metodo di spedizione",
       "shipping_fee": "Spese di spedizione",
-      "service_fee": "Commissione di servizio",
+      "hand-to-hand": "A mani pulite",
+      "post": "Posta",
+      "service_fee": "Commissione di servizio 10%",
       "free": "Gratuito",
       "total": "Totale",
-      "confirm": "Procedi al pagamento"
+      "confirm": "Procedi al pagamento",
+      "loading": "Reindirizzamento a Stripe..."
     },
     "text_under_resume": {
       "circular_trade": " Economia Circolare: ",
@@ -78,6 +81,20 @@
       "subtitle": "Sfoglia gli annunci e trova il libro, la fornitura o il corso che fa per te.",
       "go_to_shop": "Esplora il negozio",
       "back_to_home": "Torna alla home"
+    },
+    "success": {
+      "title": "Pagamento Completato!",
+      "subtitle": "Grazie per il tuo ordine. La transazione è stata completata con successo.",
+      "order_number": "Numero dell'ordine",
+      "amount_paid": "Importo pagato",
+      "status": "Stato del pagamento",
+      "confirmed": "Confermato",
+      "back_home": "Torna alla home",
+      "continue_shopping": "Continua lo shopping"
+    },
+    "denied": {
+      "title": "Pagamento Rifiutato!",
+      "subtitle": "La tua transazione non è potuta essere completata. Riprova o contatta il supporto se il problema persiste."
     }
   },
   "catalog": {
@@ -93,7 +110,7 @@
       "subtitle": "Restringi i risultati.",
       "mobile_toggle": "Mostra / nascondi filtri",
       "category_legend": "Tipo di annuncio",
-      "category_supplies": "Tutto il materiale",
+      "category_supplies": "Forniture",
       "category_textbooks": "Manuali",
       "category_tutoring": "Ripetizioni",
       "show_all": "Mostra tutto",
@@ -160,7 +177,16 @@
       "empty_placeholder": "La cronologia dei tuoi acquisti apparir\u00e0 qui.",
       "explore_cta": "Esplora il negozio",
       "seller_label": "Venditore",
-      "view_advert": "Vedi l'annuncio"
+      "view_advert": "Vedi l'annuncio",
+      "leave_review": "Lascia una recensione",
+      "review_modal_title": "Lascia una recensione per {name}",
+      "rating_label": "Valutazione",
+      "comment_label": "Commento",
+      "comment_placeholder": "Scrivi il tuo commento...",
+      "submit_review": "Invia recensione",
+      "cancel_review": "Annulla",
+      "review_success": "La tua recensione è stata registrata con successo.",
+      "review_error": "Si è verificato un errore durante la registrazione della recensione."
     },
     "sales": {
       "title": "Cronologia delle mie vendite",
@@ -388,6 +414,7 @@
     "support_requests": "Le mie richieste"
   },
   "common": {
+    "back": "Indietro",
     "back_to_home": "Torna alla home",
     "back_to_catalog": "Torna al catalogo",
     "skip_to_content": "Vai al contenuto principale",
@@ -579,7 +606,32 @@
   "forgot_password": {
     "instruction": "Inserisci il tuo indirizzo e-mail e ti invieremo un link per reimpostare la tua password.",
     "submit_button": "Invia il link",
-    "back_to_login": "Torna all'accesso"
+    "back_to_login": "Torna all'accesso",
+    "status": {
+      "loading": "Invio del link in corso..."
+    },
+    "instruction_success": "Se un account con questo indirizzo e-mail esiste, riceverai a breve un link per reimpostare la tua password."
+  },
+  "reset_password": {
+    "return_to_login": "Torna all'accesso",
+    "title": "Reimposta la password",
+    "subtitle": "Inserisci la tua nuova password per proteggere il tuo account EcoScolar.",
+    "email_label": "Indirizzo e-mail",
+    "password_label": "Nuova password",
+    "confirm_password_label": "Confirma la password",
+    "submit_button": "Reimposta la password",
+    "errors": {
+      "Default": "Si è verificato un errore durante la reimpostazione della password. Riprova.",
+      "passwords_do_not_match": "Le password inserite non corrispondono.",
+      "PasswordTooShort": "La password deve contenere almeno 6 caratteri.",
+      "PasswordRequiresNonAlphanumeric": "La password deve contenere un carattere speciale.",
+      "PasswordRequiresUpper": "La password deve contenere una lettera maiuscola.",
+      "PasswordRequiresDigit": "La password deve contenere un numero.",
+      "InvalidToken": "Il codice di reset non è valido o è scaduto."
+    },
+    "status": {
+      "loading": "Reimpostazione della password in corso..."
+    }
   },
   "admin": {
     "nav_label": "Menu amministrazione",
@@ -603,7 +655,7 @@
     "support_requests": "Le mie richieste",
     "edit": "Modifica profilo",
     "delete": "Elimina account",
-    "settings" : {
+    "settings": {
       "title": "Modifica il mio profilo",
       "subtitle": "Aggiorna le tue informazioni personali per un'esperienza personalizzata.",
       "nickname_label": "Nickname",

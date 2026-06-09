@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
 import PurchaseCard from '~/components/me/PurchaseCard.vue'
@@ -10,6 +10,25 @@ mockNuxtImport('useI18n', () => () => ({
 }))
 
 mockNuxtImport('useLocalePath', () => () => (path: string) => path)
+
+const mockCreateReview = vi.fn()
+mockNuxtImport('useHistory', () => () => ({
+  createReview: mockCreateReview
+}))
+
+const mockToastAdd = vi.fn()
+mockNuxtImport('useToast', () => () => ({
+  add: mockToastAdd
+}))
+
+const stubs = {
+  NuxtLink: { template: '<a><slot /></a>' },
+  UModal: { template: '<div><slot name="body" /><slot name="footer" /></div>' },
+  UButton: { template: '<button><slot /></button>' },
+  UIcon: { template: '<span class="icon-mock">icon</span>' },
+  Stars: { template: '<div class="stars-mock"><slot /></div>' },
+  ReviewModal: { template: '<div class="review-modal-mock">modal-stub</div>' }
+}
 
 const mockPurchase: Purchase = {
   id: 'txn-1',
@@ -26,7 +45,7 @@ describe('PurchaseCard', () => {
   it('renders correctly with all information', () => {
     const wrapper = mount(PurchaseCard, {
       props: { purchase: mockPurchase },
-      global: { stubs: { NuxtLink: { template: '<a><slot /></a>' } } }
+      global: { stubs }
     })
 
     // Check texts
@@ -42,26 +61,26 @@ describe('PurchaseCard', () => {
     expect(img.exists()).toBe(true)
     expect(img.attributes('src')).toBe('https://example.com/calc.jpg')
 
-    // Check fallback SVG is absent
-    const svg = wrapper.find('svg')
-    expect(svg.exists()).toBe(false)
+    // Check fallback UIcon is absent
+    const fallbackIcon = wrapper.find('.icon-mock')
+    expect(fallbackIcon.exists()).toBe(false)
   })
 
-  it('renders fallback svg when imageUrl is empty', () => {
+  it('renders fallback icon when imageUrl is empty', () => {
     const purchaseWithoutImage = { ...mockPurchase, imageUrl: null }
     const wrapper = mount(PurchaseCard, {
       props: { purchase: purchaseWithoutImage },
-      global: { stubs: { NuxtLink: { template: '<a><slot /></a>' } } }
+      global: { stubs }
     })
 
     expect(wrapper.find('img').exists()).toBe(false)
-    expect(wrapper.find('svg').exists()).toBe(true)
+    expect(wrapper.find('.icon-mock').exists()).toBe(true)
   })
 
   it('displays the correct status text for COMPLETED status', () => {
     const wrapper = mount(PurchaseCard, {
       props: { purchase: { ...mockPurchase, status: 'COMPLETED' } },
-      global: { stubs: { NuxtLink: { template: '<a><slot /></a>' } } }
+      global: { stubs }
     })
     expect(wrapper.text()).toContain('COMPLETED')
   })
@@ -69,7 +88,7 @@ describe('PurchaseCard', () => {
   it('displays the correct status text for PENDING status', () => {
     const wrapper = mount(PurchaseCard, {
       props: { purchase: { ...mockPurchase, status: 'PENDING' } },
-      global: { stubs: { NuxtLink: { template: '<a><slot /></a>' } } }
+      global: { stubs }
     })
     expect(wrapper.text()).toContain('PENDING')
   })
@@ -77,8 +96,47 @@ describe('PurchaseCard', () => {
   it('displays the raw status text as fallback for unknown status', () => {
     const wrapper = mount(PurchaseCard, {
       props: { purchase: { ...mockPurchase, status: 'UNKNOWN' } },
-      global: { stubs: { NuxtLink: { template: '<a><slot /></a>' } } }
+      global: { stubs }
     })
     expect(wrapper.text()).toContain('UNKNOWN')
+  })
+
+  it('renders leave review button for completed purchase', () => {
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: mockPurchase },
+      global: { stubs }
+    })
+    const btn = wrapper.findAll('button').find(b => b.text().includes('me.purchases.leave_review'))
+    expect(btn?.exists()).toBe(true)
+  })
+
+  it('does not render leave review button for pending purchase', () => {
+    const pendingPurchase = { ...mockPurchase, status: 'PENDING' }
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: pendingPurchase },
+      global: { stubs }
+    })
+    const btns = wrapper.findAll('button').filter(b => b.text().includes('me.purchases.leave_review'))
+    expect(btns.length).toBe(0)
+  })
+
+  it('hides leave review button and renders Stars component when already reviewed', () => {
+    const reviewedPurchase = {
+      ...mockPurchase,
+      review: { rating: 4, comment: 'Nice' }
+    }
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: reviewedPurchase },
+      global: {
+        stubs: {
+          ...stubs,
+          Stars: { template: '<div class="stars-mock">{{ rating }} stars</div>', props: ['rating'] }
+        }
+      }
+    })
+    const btns = wrapper.findAll('button').filter(b => b.text().includes('me.purchases.leave_review'))
+    expect(btns.length).toBe(0)
+    expect(wrapper.find('.stars-mock').exists()).toBe(true)
+    expect(wrapper.find('.stars-mock').text()).toContain('4 stars')
   })
 })

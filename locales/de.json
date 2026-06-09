@@ -47,7 +47,7 @@
     "remove_from_cart": "Aus dem Warenkorb entfernen",
     "clear": "Warenkorb leeren",
     "added_success": "Artikel zum Warenkorb hinzugefügt!",
-    "tva": "MwSt. und Gebühren inbegriffen",
+    "tva": "MwSt. 8.1% und Gebühren inbegriffen",
     "one_advert": "Artikel",
     "many_adverts": "Artikel",
     "items": {
@@ -62,10 +62,13 @@
       "subtotal": "Zwischensumme",
       "shipping": "Versandart",
       "shipping_fee": "Versandkosten",
-      "service_fee": "Servicegebühr",
+      "hand-to-hand": "Abholung",
+      "post": "Postversand",
+      "service_fee": "Servicegebühr 10%",
       "free": "Kostenlos",
       "total": "Gesamtsumme",
-      "confirm": "Zur Kasse gehen"
+      "confirm": "Zur Kasse gehen",
+      "loading": "Weiterleitung zu Stripe..."
     },
     "text_under_resume": {
       "circular_trade": " Kreislaufwirtschaft: ",
@@ -78,6 +81,20 @@
       "subtitle": "Stöbern Sie in den Anzeigen und finden Sie das passende Buch, Schulmaterial oder den passenden Kurs.",
       "go_to_shop": "Shop durchsuchen",
       "back_to_home": "Zurück zur Startseite"
+    },
+    "success": {
+      "title": "Zahlung erfolgreich!",
+      "subtitle": "Vielen Dank für Ihre Bestellung. Ihre Transaktion wurde erfolgreich abgeschlossen.",
+      "order_number": "Bestellnummer",
+      "amount_paid": "Bezahlter Betrag",
+      "status": "Zahlungsstatus",
+      "confirmed": "Bestätigt",
+      "back_home": "Zurück zur Startseite",
+      "continue_shopping": "Weiter einkaufen"
+    },
+    "denied": {
+      "title": "Zahlung abgelehnt!",
+      "subtitle": "Ihre Transaktion konnte nicht abgeschlossen werden. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support, falls das Problem weiterhin besteht."
     }
   },
   "catalog": {
@@ -160,7 +177,16 @@
       "empty_placeholder": "Ihre Kaufhistorie wird hier angezeigt.",
       "explore_cta": "Marktplatz erkunden",
       "seller_label": "Verkäufer",
-      "view_advert": "Inserat ansehen"
+      "view_advert": "Inserat ansehen",
+      "leave_review": "Bewertung abgeben",
+      "review_modal_title": "Bewertung für {name} abgeben",
+      "rating_label": "Bewertung",
+      "comment_label": "Kommentar",
+      "comment_placeholder": "Schreiben Sie Ihren Kommentar...",
+      "submit_review": "Bewertung senden",
+      "cancel_review": "Abbrechen",
+      "review_success": "Ihre Bewertung wurde erfolgreich registriert.",
+      "review_error": "Beim Registrieren der Bewertung ist ein Fehler aufgetreten."
     },
     "sales": {
       "title": "Meine Verkaufshistorie",
@@ -291,7 +317,6 @@
     "createAdvert": "Anzeige erstellen",
     "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
     "creationFailed": "Beim Erstellen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
-
   },
   "modifyAdvert": {
     "existingAdvert": "Anzeige",
@@ -389,6 +414,7 @@
     "support_requests": "Meine Anfragen"
   },
   "common": {
+    "back": "Zurück",
     "back_to_home": "Zurück zur Startseite",
     "back_to_catalog": "Zurück zum Katalog",
     "skip_to_content": "Zum Hauptinhalt springen",
@@ -580,7 +606,32 @@
   "forgot_password": {
     "instruction": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.",
     "submit_button": "Link senden",
-    "back_to_login": "Zurück zur Anmeldung"
+    "back_to_login": "Zurück zur Anmeldung",
+    "status": {
+      "loading": "Link wird gesendet..."
+    },
+    "instruction_success": "Wenn ein Konto mit dieser E-Mail-Adresse existiert, erhalten Sie in Kürze einen Link zum Zurücksetzen Ihres Passworts."
+  },
+  "reset_password": {
+    "return_to_login": "Zurück zur Anmeldung",
+    "title": "Passwort zurücksetzen",
+    "subtitle": "Geben Sie Ihr neues Passwort ein, um Ihr EcoScolar-Konto zu sichern.",
+    "email_label": "E-Mail-Adresse",
+    "password_label": "Neues Passwort",
+    "confirm_password_label": "Passwort bestätigen",
+    "submit_button": "Passwort zurücksetzen",
+    "errors": {
+      "Default": "Ein Fehler ist aufgetreten beim Zurücksetzen des Passworts. Bitte versuchen Sie es erneut.",
+      "passwords_do_not_match": "Die Passwörter stimmen nicht überein.",
+      "PasswordTooShort": "Ihr Passwort muss mindestens 6 Zeichen lang sein.",
+      "PasswordRequiresNonAlphanumeric": "Ihr Passwort muss ein Sonderzeichen enthalten.",
+      "PasswordRequiresUpper": "Ihr Passwort muss einen Großbuchstaben enthalten.",
+      "PasswordRequiresDigit": "Ihr Passwort muss eine Zahl enthalten.",
+      "InvalidToken": "Der Reset-Code ist ungültig oder abgelaufen."
+    },
+    "status": {
+      "loading": "Passwort wird zurückgesetzt..."
+    }
   },
   "admin": {
     "nav_label": "Admin-Menü",
@@ -604,7 +655,7 @@
     "support_requests": "Meine Anfragen",
     "edit": "Profil bearbeiten",
     "delete": "Konto löschen",
-    "settings" : {
+    "settings": {
       "title": "Mein Profil bearbeiten",
       "subtitle": "Aktualisieren Sie Ihre persönlichen Informationen für eine personalisierte Erfahrung.",
       "nickname_label": "Benutzername",

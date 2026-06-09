@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { useI18n, useLocalePath } from '#imports'
+import { ref, computed, watch } from 'vue'
+import { useI18n, useLocalePath, refreshNuxtData } from '#imports'
 import type { Purchase } from '~/services/historyService'
+import Stars from '~/components/profile/Stars.vue'
+import ReviewModal from '~/components/me/ReviewModal.vue'
 
 const props = defineProps<{
   purchase: Purchase
@@ -14,6 +17,18 @@ const emit = defineEmits<{
   'dispute': [id: string]
   'cancel': [id: string]
 }>()
+
+const isOpen = ref(false)
+const localReview = ref(props.purchase.review)
+
+watch(() => props.purchase.review, (newReview) => {
+  localReview.value = newReview
+})
+
+const isCompleted = computed(() => {
+  const normalized = props.purchase.status.toLowerCase()
+  return normalized === 'completed' || normalized === 'succès' || normalized === 'payé'
+})
 
 const formatDate = (dateStr: string) => {
   try {
@@ -39,6 +54,11 @@ const getStatusBadgeClass = (status: string) => {
 }
 
 const showDetails = ref(false)
+
+const handleReviewSuccess = (review: { rating: number, comment: string | null }) => {
+  localReview.value = review
+  refreshNuxtData('user-purchases')
+}
 </script>
 
 <template>
@@ -55,20 +75,10 @@ const showDetails = ref(false)
         v-else
         class="h-full w-full flex items-center justify-center text-slate-400 dark:text-slate-600 bg-slate-100 dark:bg-slate-800"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.2"
-          stroke="currentColor"
-          class="w-8 h-8"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
-          />
-        </svg>
+        <UIcon
+          name="i-heroicons-book-open"
+          class="w-8 h-8 text-slate-400 dark:text-slate-600"
+        />
       </div>
     </div>
 
@@ -89,17 +99,25 @@ const showDetails = ref(false)
         <h3 class="mt-2 text-base font-bold text-slate-950 dark:text-white leading-snug truncate">
           {{ props.purchase.advertTitle }}
         </h3>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
-          <span>{{ t('me.purchases.seller_label') }} :</span>
-          <span class="font-semibold text-slate-700 dark:text-slate-300">{{ props.purchase.sellerName }}</span>
-        </p>
+        <div class="flex items-center gap-2 mt-1 flex-wrap">
+          <p class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
+            <span>{{ t('me.purchases.seller_label') }} :</span>
+            <span class="font-semibold text-slate-700 dark:text-slate-300">{{ props.purchase.sellerName }}</span>
+          </p>
+          <Stars
+            v-if="localReview"
+            :rating="localReview.rating"
+            :show-text="true"
+            class="scale-90 origin-left"
+          />
+        </div>
       </div>
 
       <div class="mt-4 flex items-center justify-between gap-4">
         <span class="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
           {{ props.purchase.price }} CHF
         </span>
-        <div class="flex gap-2">
+        <div class="flex flex-wrap items-center gap-2">
           <button
             v-if="props.purchase.status === 'PAID_WAITING_SHIPPING'"
             class="inline-flex items-center justify-center rounded-xl border border-red-200 text-red-600 hover:bg-red-50 py-1.5 px-3 text-xs font-semibold transition-colors"
@@ -122,6 +140,15 @@ const showDetails = ref(false)
             @click="emit('confirm-reception', props.purchase.id)"
           >
             Confirmer la réception
+          </button>
+
+          <button
+            v-if="isCompleted && !localReview"
+            type="button"
+            class="inline-flex items-center justify-center rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 py-1.5 px-3 text-xs font-semibold transition-colors cursor-pointer"
+            @click="isOpen = true"
+          >
+            {{ t('me.purchases.leave_review') }}
           </button>
 
           <button
@@ -196,5 +223,13 @@ const showDetails = ref(false)
         </div>
       </div>
     </div>
+
+    <!-- Review Modal -->
+    <ReviewModal
+      v-model:open="isOpen"
+      :transaction-id="props.purchase.id"
+      :name="props.purchase.sellerName"
+      @success="handleReviewSuccess"
+    />
   </article>
 </template>

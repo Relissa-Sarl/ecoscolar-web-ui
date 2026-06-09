@@ -48,3 +48,9 @@ export interface UserReview {
   transactionId: number
   reviewedRole: 'BUYER' | 'SELLER'
 }
+
+export interface ResetPasswordInput {
+  email: string
+  newPassword: string
+  resetCode: string
+}

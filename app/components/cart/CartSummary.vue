@@ -2,12 +2,16 @@
 defineProps<{
   subtotal: number
   shippingCost: number
+  serviceFee: number
   total: number
+  loading?: boolean
 }>()
 
 defineEmits<{
   (e: 'checkout'): void
 }>()
+
+const shippingMethod = defineModel<'post' | 'handToHand'>({ default: 'post' })
 </script>
 
 <template>
@@ -26,13 +30,37 @@ defineEmits<{
         </div>
 
         <div class="flex justify-between text-slate-500 dark:text-slate-400">
+          <span>{{ $t('cart.checkout.service_fee') }}</span>
+          <span class="font-semibold text-slate-800 dark:text-slate-200">{{ serviceFee.toFixed(2) }} CHF</span>
+        </div>
+
+        <div class="flex justify-between text-slate-500 dark:text-slate-400">
           <span>{{ $t('cart.checkout.shipping') }}</span>
-          <span class="font-semibold text-slate-800 dark:text-slate-200">Main propre</span>
+          <select
+            v-model="shippingMethod"
+            class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-semibold rounded-lg px-2 py-1 outline-none cursor-pointer focus:ring-2 focus:ring-emerald-500 transition-all"
+          >
+            <option value="post">
+              {{ $t('cart.checkout.post') }}
+            </option>
+            <option value="handToHand">
+              {{ $t('cart.checkout.hand-to-hand') }}
+            </option>
+          </select>
         </div>
 
         <div class="flex justify-between text-slate-500 dark:text-slate-400">
           <span>{{ $t('cart.checkout.shipping_fee') }}</span>
-          <span class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+          <span
+            v-if="shippingCost > 0"
+            class="font-semibold text-slate-800 dark:text-slate-200"
+          >
+            {{ shippingCost.toFixed(2) }} CHF
+          </span>
+          <span
+            v-else
+            class="font-bold text-emerald-600 dark:text-emerald-400"
+          >
             {{ $t('cart.checkout.free') }}
           </span>
         </div>
@@ -55,10 +83,15 @@ defineEmits<{
 
       <!-- Checkout Button -->
       <button
-        class="w-full bg-emerald-800 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-lg transition-colors focus:ring-4 focus:ring-emerald-500/50 outline-none"
+        :disabled="loading"
+        class="w-full bg-emerald-800 hover:bg-emerald-700 disabled:bg-emerald-800/50 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition-colors focus:ring-4 focus:ring-emerald-500/50 outline-none flex items-center justify-center gap-2"
         @click="$emit('checkout')"
       >
-        {{ $t('cart.checkout.confirm') }}
+        <span
+          v-if="loading"
+          class="animate-spin inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full"
+        />
+        {{ loading ? $t('cart.checkout.loading') : $t('cart.checkout.confirm') }}
       </button>
 
       <!-- Secure check banner -->

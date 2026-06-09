@@ -3,14 +3,11 @@ import Sidebar from '@/components/admin/Sidebar.vue'
 // import StatCard from '@/components/admin/StatCard.vue'
 import UserDetailModal from '@/components/admin/UserDetailModal.vue'
 import DeleteConfirmationPopup from '~/components/common/DeleteConfirmationPopup.vue'
-import PopUp from '~/components/common/PopUp.vue'
-import { getUserService } from '~/services/usersService'
+import PopUp from '~/components/admin/PopUp.vue'
+import { useAdminsStore } from '~/stores/adminsStore'
 import type { User } from '~/types/user'
 
-const userService = getUserService()
-
-const me = ref<User | null>(null)
-const users = ref<User[]>([])
+const store = useAdminsStore()
 
 definePageMeta({
   middleware: ['admin']
@@ -18,14 +15,15 @@ definePageMeta({
 
 // Pop-up
 const showPopUp = ref(false)
-const popUpType = ref<'info' | 'success' | 'warning' | 'error'>('info')
-const popUpTitle = ref('')
-const popUpDescription = ref('')
+const popUpData = ref({ type: 'info' as 'info' | 'success' | 'error', title: '', description: '' })
 
 const closePopUp = () => {
   showPopUp.value = false
-  popUpTitle.value = ''
-  popUpDescription.value = ''
+  popUpData.value = { type: 'info', title: '', description: '' }
+}
+const triggerPopUp = (type: typeof popUpData.value.type, title: string, desc: string) => {
+  popUpData.value = { type, title, description: desc }
+  showPopUp.value = true
 }
 
 // Filters
@@ -33,7 +31,7 @@ const searchQuery = ref('')
 const statusFilter = ref<'All' | 'Active' | 'Pending' | 'Banned'>('All')
 
 const filteredUsers = computed(() => {
-  let result = users.value
+  let result = store.users
 
   // 1. Filtre recherche
   if (searchQuery.value) {
@@ -93,35 +91,25 @@ const userToBan = ref<User | null>(null)
 
 const toggleUserStatus = (id: string) => {
   showBanConfirm.value = true
-  userToBan.value = users.value.find(user => user.id === id) || null
+  userToBan.value = store.users?.find(user => user.id === id) || null
 }
 const confirmBan = async () => {
   if (userToBan.value) {
     try {
-      const updatedUser = await userService.banUserToggle(userToBan.value.id)
+      const updatedUser = await store.banUserToggle(userToBan.value)
 
-      const index = users.value.findIndex(u => u.id === userToBan.value?.id)
+      const index = store.users?.findIndex(u => u.id === userToBan.value?.id)
 
       if (index !== -1) {
-        users.value[index] = updatedUser
-        showPopUp.value = true
-        popUpType.value = 'success'
-        if (updatedUser.isBanned) {
-          popUpTitle.value = 'User Banned'
-          popUpDescription.value = `The user has been banned successfully.`
-        } else {
-          popUpTitle.value = 'User Unbanned'
-          popUpDescription.value = `The user has been unbanned successfully.`
-        }
+        store.users![index] = updatedUser
+        triggerPopUp('success', updatedUser.isBanned ? 'User Banned' : 'User Unbanned', `The user has been ${updatedUser.isBanned ? 'banned' : 'unbanned'} successfully.`)
       }
       showBanConfirm.value = false
       userToBan.value = null
     } catch (error) {
       console.error('Error toggling user status:', error)
       showPopUp.value = true
-      popUpType.value = 'error'
-      popUpTitle.value = 'User Status Updated'
-      popUpDescription.value = `An error occurred while updating the user status or the user cannot be banned. Please try again later.`
+      triggerPopUp('error', 'User Status Update Failed', `An error occurred while updating the user status or the user cannot be banned. Please try again later.`)
       showBanConfirm.value = false
       userToBan.value = null
     }
@@ -134,8 +122,8 @@ const cancelBan = () => {
 }
 
 onMounted(async () => {
-  me.value = await userService.getMyProfile()
-  users.value = await userService.getAllUsers()
+  await store.fetchProfile()
+  await store.fetchAllUsers()
 })
 </script>
 
@@ -143,13 +131,13 @@ onMounted(async () => {
   <section class="min-h-screen px-4 text-gray-900 dark:bg-gray-950 dark:text-gray-100 flex">
     <PopUp
       :show="showPopUp"
-      :pop-up-type="popUpType"
-      :title="popUpTitle"
-      :description="popUpDescription"
+      :pop-up-type="popUpData.type"
+      :title="popUpData.title"
+      :description="popUpData.description"
       :duration="3000"
       @close="closePopUp"
     />
-    <Sidebar :user="me" />
+    <Sidebar :user="store.user" />
     <div class="flex-1 p-8">
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
@@ -161,11 +149,11 @@ onMounted(async () => {
             Manage and moderate EcoScolar's community.
           </p>
         </div>
-        <div class="flex gap-3">
+        <!-- <div class="flex gap-3">
           <button class="ml-auto rounded-xl text-sm font-medium px-4 py-2 bg-emerald-800 text-white hover:bg-emerald-700 transition-colors">
             + Add New User
           </button>
-        </div>
+        </div> -->
       </div>
 
       <!-- Stat Section
@@ -233,10 +221,10 @@ onMounted(async () => {
         </select>
       </div>
 
-      <div class="bg-white rounded-xl border border-gray-100 shadow-sm dark:bg-gray-950 dark:border-gray-800 overflow-hidden">
+      <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden mb-8">
         <table class="w-full text-left border-collapse table-fixed">
           <thead>
-            <tr class="border-b border-gray-300 dark:border-gray-800 text-gray-500 text-sm">
+            <tr class="bg-gray-50 dark:bg-gray-800 text-gray-500 text-xs uppercase">
               <th class="p-4 font-medium w-1/4">
                 User
               </th>
@@ -253,7 +241,10 @@ onMounted(async () => {
               </th>
             </tr>
           </thead>
-          <tbody class="divide-y dark:divide-gray-800">
+          <tbody
+            v-if="!store.isLoading"
+            class="divide-y dark:divide-gray-800"
+          >
             <tr
               v-for="user in paginatedUsers"
               :key="user.id"
@@ -352,6 +343,16 @@ onMounted(async () => {
               </td>
             </tr>
           </tbody>
+          <tbody v-else>
+            <tr>
+              <td
+                colspan="5"
+                class="p-8 text-center text-gray-500"
+              >
+                Loading users...
+              </td>
+            </tr>
+          </tbody>
         </table>
         <div
           v-if="totalPages > 1"
@@ -386,7 +387,7 @@ onMounted(async () => {
         </div>
 
         <div
-          v-if="users.length === 0"
+          v-if="store.users.length === 0 && !store.isLoading"
           class="p-8 text-center text-gray-500"
         >
           No users found.

@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed, onBeforeMount } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
+import { navigateTo } from '#imports'
 import CartEmpty from '~/components/cart/CartEmpty.vue'
 import CartHeader from '~/components/cart/CartHeader.vue'
 import CartSummary from '~/components/cart/CartSummary.vue'
 import CartAdvertItems from '~/components/cart/CartAdvertItems.vue'
 import { useCartStore } from '~/stores/cartStore'
+import { getPaymentService } from '~/services/paymentService'
 
 const { t } = useI18n()
 
@@ -61,31 +63,66 @@ const clearCart = () => {
   void cartStore.clearCart()
 }
 
+const shippingMethod = ref<'post' | 'handToHand'>('post')
+
 // Calculations
 const subtotal = computed(() => {
   return cartItems.value.reduce((sum, item) => sum + (item.price * item.quantity), 0)
 })
 
 const shippingCost = computed(() => {
-  return cartItems.value.reduce((sum, item) => sum + (item.shippingCost || 0), 0)
+  return shippingMethod.value === 'post' ? 2 : 0
+})
+
+const serviceFee = computed(() => {
+  return subtotal.value * 0.1
+})
+
+const taxTva = computed(() => {
+  return (subtotal.value + shippingCost.value + serviceFee.value) * 0.081
 })
 
 const total = computed(() => {
-  return subtotal.value + shippingCost.value
+  return subtotal.value + shippingCost.value + serviceFee.value + taxTva.value
 })
 
 const itemsCount = computed(() => {
   return cartItems.value.reduce((sum, item) => sum + item.quantity, 0)
 })
 
-const router = useRouter()
+const isCheckingOut = ref(false)
+const checkoutError = ref<string | null>(null)
 
-const goToCheckout = () => {
-  if (cartItems.value.length === 0) return
-  // Pour l'instant, on checkout le premier item (Backend actuel)
-  const firstItem = cartItems.value[0]
-  if (firstItem) {
-    router.push({ path: '/checkout', query: { advertId: firstItem.id } })
+// handle checkout with stripe
+const handleCheckout = async () => {
+  // if cart is empty or checkout is already in progress, return
+  if (cartItems.value.length === 0 || isCheckingOut.value) return
+
+  // set checking out flag and clear any previous error
+  isCheckingOut.value = true
+  checkoutError.value = null
+
+  // try to create a checkout session with stripe
+  try {
+    const paymentService = getPaymentService()
+    const firstItem = cartItems.value[0]
+    const response = await paymentService.createCheckoutSession({
+      productId: firstItem ? Number(firstItem.id) : 0,
+      productPrice: total.value.toFixed(2)
+    })
+
+    // set last_payment_total in sessionStorage for the payment success page
+    if (response && response.url) {
+      sessionStorage.setItem('last_payment_total', total.value.toFixed(2))
+      await navigateTo(response.url, { external: true })
+    } else {
+      throw new Error('Url de session Stripe manquante dans la réponse de l\'API')
+    }
+  } catch (err: unknown) {
+    console.error('Checkout error:', err)
+    checkoutError.value = err instanceof Error ? err.message : 'Une erreur est survenue lors de l\'initialisation du paiement.'
+  } finally {
+    isCheckingOut.value = false
   }
 }
 </script>
@@ -100,6 +137,49 @@ const goToCheckout = () => {
         @clear="clearCart"
       />
 
+      <!-- Error Banner -->
+      <div
+        v-if="checkoutError"
+        class="mb-6 p-4 rounded-xl border border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-900/50 text-red-800 dark:text-red-300 text-sm flex items-center justify-between gap-3 animate-fade-in"
+      >
+        <div class="flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 flex-shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+          <span>{{ checkoutError }}</span>
+        </div>
+        <button
+          class="hover:text-red-950 dark:hover:text-red-100 transition-colors cursor-pointer"
+          @click="checkoutError = null"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
       <!-- Main Layout -->
       <div
         v-if="cartItems.length > 0"
@@ -113,10 +193,13 @@ const goToCheckout = () => {
 
         <!-- Right: Summary & Order breakdown -->
         <CartSummary
+          v-model="shippingMethod"
           :subtotal="subtotal"
           :shipping-cost="shippingCost"
+          :service-fee="serviceFee"
           :total="total"
-          @checkout="goToCheckout"
+          :loading="isCheckingOut"
+          @checkout="handleCheckout"
         />
       </div>
 
