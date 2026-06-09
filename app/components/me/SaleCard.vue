@@ -153,6 +153,13 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
           >
             {{ t('me.sales.view') }}
           </NuxtLink>
+          <NuxtLink
+            v-if="props.sale.status === AdvertStatus.ACTIVE || props.sale.status === AdvertStatus.PAUSED"
+            :to="localePath(`/adverts/modify-advert-${props.sale.id}`)"
+            class="inline-flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 py-1.5 px-3 text-xs font-semibold transition-colors"
+          >
+            {{ t('me.sales.edit') }}
+          </NuxtLink>
           <button
             v-if="props.sale.transactionStatus === 'PAID_WAITING_SHIPPING'"
             class="inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-3 text-xs font-semibold transition-colors"

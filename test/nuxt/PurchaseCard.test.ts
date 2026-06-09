@@ -54,7 +54,7 @@ describe('PurchaseCard', () => {
     expect(wrapper.text()).toContain('JaneDoe')
     expect(wrapper.text()).toContain('55 CHF')
     expect(wrapper.text()).toContain('me.purchases.seller_label')
-    expect(wrapper.text()).toContain('me.purchases.view_advert')
+    expect(wrapper.text()).toContain('me.purchases.actions.details')
 
     // Check image
     const img = wrapper.find('img')
@@ -91,6 +91,7 @@ describe('PurchaseCard', () => {
       global: { stubs }
     })
     expect(wrapper.text()).toContain('PENDING')
+    expect(wrapper.text()).toContain('me.purchases.view_advert')
   })
 
   it('displays the raw status text as fallback for unknown status', () => {
