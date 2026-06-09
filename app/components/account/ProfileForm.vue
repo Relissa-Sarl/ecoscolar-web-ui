@@ -75,7 +75,7 @@ const getAvailableLanguages = (currentIndex: number) => {
   const selectedValues = spokenLanguages.value
     .map((lang, i) => i !== currentIndex ? lang.label : null)
     .filter(Boolean)
-  
+
   return languageOptions.filter(opt => !selectedValues.includes(opt.value))
 }
 
