@@ -16,6 +16,27 @@ const { data: sales, pending, error, refresh } = await useAsyncData(
   () => getSales()
 )
 
+const activeTab = ref<'ongoing' | 'past'>('ongoing')
+
+const filteredSales = computed(() => {
+  if (!sales.value) return []
+  if (activeTab.value === 'ongoing') {
+    return sales.value.filter(s => {
+      if (s.status === 'SOLD') {
+        return s.transactionStatus && s.transactionStatus !== 'COMPLETED' && s.transactionStatus !== 'CANCELLED'
+      }
+      return true
+    })
+  } else {
+    return sales.value.filter(s => {
+      if (s.status === 'SOLD') {
+        return !s.transactionStatus || s.transactionStatus === 'COMPLETED' || s.transactionStatus === 'CANCELLED'
+      }
+      return false
+    })
+  }
+})
+
 const handleConfirmShipping = async (transactionId: number) => {
   if (!confirm("Avez-vous vraiment expédié l'article ?")) return
   try {
@@ -55,13 +76,33 @@ const handleConfirmShipping = async (transactionId: number) => {
       </NuxtLink>
 
       <!-- Page Header -->
-      <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm mb-8">
+      <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm mb-6">
         <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
           {{ t('me.sales.title') }}
         </h1>
         <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
           {{ t('me.sales.subtitle') }}
         </p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-4 mb-8 border-b border-slate-200 dark:border-slate-800 pb-2">
+        <button
+          @click="activeTab = 'ongoing'"
+          class="pb-2 text-sm font-semibold transition-colors relative"
+          :class="activeTab === 'ongoing' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'"
+        >
+          En cours
+          <span v-if="activeTab === 'ongoing'" class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-t-full"></span>
+        </button>
+        <button
+          @click="activeTab = 'past'"
+          class="pb-2 text-sm font-semibold transition-colors relative"
+          :class="activeTab === 'past' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'"
+        >
+          Passées
+          <span v-if="activeTab === 'past'" class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-t-full"></span>
+        </button>
       </div>
 
       <!-- Loading State -->
@@ -104,7 +145,7 @@ const handleConfirmShipping = async (transactionId: number) => {
 
       <!-- Empty State -->
       <div
-        v-else-if="!sales || sales.length === 0"
+        v-else-if="filteredSales.length === 0"
         class="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 rounded-3xl border border-dashed border-slate-300 dark:border-slate-700 px-6 text-center"
       >
         <div class="p-4 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 mb-4">
@@ -143,7 +184,7 @@ const handleConfirmShipping = async (transactionId: number) => {
         class="grid gap-6 sm:grid-cols-1 md:grid-cols-2"
       >
         <SaleCard
-          v-for="sale in sales"
+          v-for="sale in filteredSales"
           :key="sale.id"
           :sale="sale"
           @confirm-shipping="handleConfirmShipping"

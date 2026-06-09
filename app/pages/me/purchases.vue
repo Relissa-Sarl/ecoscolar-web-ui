@@ -16,6 +16,17 @@ const { data: purchases, pending, error, refresh } = await useAsyncData(
   () => getPurchases()
 )
 
+const activeTab = ref<'ongoing' | 'past'>('ongoing')
+
+const filteredPurchases = computed(() => {
+  if (!purchases.value) return []
+  if (activeTab.value === 'ongoing') {
+    return purchases.value.filter(p => p.status !== 'COMPLETED' && p.status !== 'CANCELLED')
+  } else {
+    return purchases.value.filter(p => p.status === 'COMPLETED' || p.status === 'CANCELLED')
+  }
+})
+
 const handleConfirmReception = async (id: string) => {
   if (!confirm("Voulez-vous vraiment confirmer la réception ? L'argent sera transféré au vendeur.")) return
   try {
@@ -79,13 +90,33 @@ const handleCancel = async (id: string) => {
       </NuxtLink>
 
       <!-- Page Header -->
-      <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm mb-8">
+      <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm mb-6">
         <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
           {{ t('me.purchases.title') }}
         </h1>
         <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
           {{ t('me.purchases.subtitle') }}
         </p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-4 mb-8 border-b border-slate-200 dark:border-slate-800 pb-2">
+        <button
+          @click="activeTab = 'ongoing'"
+          class="pb-2 text-sm font-semibold transition-colors relative"
+          :class="activeTab === 'ongoing' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'"
+        >
+          En cours
+          <span v-if="activeTab === 'ongoing'" class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-t-full"></span>
+        </button>
+        <button
+          @click="activeTab = 'past'"
+          class="pb-2 text-sm font-semibold transition-colors relative"
+          :class="activeTab === 'past' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'"
+        >
+          Passées
+          <span v-if="activeTab === 'past'" class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-t-full"></span>
+        </button>
       </div>
 
       <!-- Loading State -->
@@ -128,7 +159,7 @@ const handleCancel = async (id: string) => {
 
       <!-- Empty State -->
       <div
-        v-else-if="!purchases || purchases.length === 0"
+        v-else-if="filteredPurchases.length === 0"
         class="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 rounded-3xl border border-dashed border-slate-300 dark:border-slate-700 px-6 text-center"
       >
         <div class="p-4 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 mb-4">
@@ -167,7 +198,7 @@ const handleCancel = async (id: string) => {
         class="grid gap-6 sm:grid-cols-1 md:grid-cols-2"
       >
         <PurchaseCard
-          v-for="purchase in purchases"
+          v-for="purchase in filteredPurchases"
           :key="purchase.id"
           :purchase="purchase"
           @confirm-reception="handleConfirmReception"
