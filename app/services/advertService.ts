@@ -33,6 +33,7 @@ export interface AdvertService {
   createBookAdvert: (data: CreateAdvertData) => Promise<void>
 
   deleteAdvert: (id: number) => Promise<void>
+  updateAdvertStatus: (id: number, status: string) => Promise<void>
 }
 
 export interface AdvertServiceDependencies {
@@ -83,6 +84,16 @@ export function createAdvertService({ apiClient }: AdvertServiceDependencies): A
     apiClient<unknown>(`${ADVERTS_PATH}/${id}`, { method: 'DELETE' })
   }
 
+  const updateAdvertStatus = async (id: number, status: string): Promise<void> => {
+    await apiClient<unknown>(`${ADVERTS_PATH}/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify(status),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+  }
+
   return {
     getBook,
     getProduct,
@@ -101,7 +112,8 @@ export function createAdvertService({ apiClient }: AdvertServiceDependencies): A
     createServiceAdvert,
     createBookAdvert,
 
-    deleteAdvert
+    deleteAdvert,
+    updateAdvertStatus
   }
 }
 

@@ -3,6 +3,7 @@ import { onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n, useSeoMeta } from '#imports'
 import { useCartStore } from '~/stores/cartStore'
+import { getAdvertService } from '~/services/advertService'
 import SuccessIcon from '~/components/paimentState/SuccessIcon.vue'
 import SuccessMainMessage from '~/components/paimentState/SuccessMainMessage.vue'
 import SuccessInfos from '~/components/paimentState/SuccessInfos.vue'
@@ -25,12 +26,45 @@ const orderId = computed(() => {
   return val || null
 })
 
+const productId = computed(() => {
+  const pParam = route.query.productId
+  if (!pParam) return null
+  const val = Array.isArray(pParam) ? pParam[0] : pParam
+  return val ? Number(val) : null
+})
+
 // Clear the cart when the user lands on the success page and retrive the price information
 onMounted(async () => {
   const storedTotal = sessionStorage.getItem('last_payment_total')
   if (storedTotal) {
     totalAmount.value = parseFloat(storedTotal)
     sessionStorage.removeItem('last_payment_total')
+  }
+
+  // Update status of the purchased product to SOLD
+  if (productId.value) {
+    try {
+      const advertService = getAdvertService()
+      await advertService.updateAdvertStatus(productId.value, 'SOLD')
+    } catch (err) {
+      console.error(`Failed to update status for advert ${productId.value}:`, err)
+    }
+  } else {
+    // Fallback: update all items currently in cart to SOLD before clearing it
+    try {
+      await cartStore.loadCart()
+      const advertService = getAdvertService()
+      for (const item of cartStore.items) {
+        const advertId = Number(item.listing.id)
+        try {
+          await advertService.updateAdvertStatus(advertId, 'SOLD')
+        } catch (err) {
+          console.error(`Failed to update status for advert ${advertId}:`, err)
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load cart for fallback status update:', err)
+    }
   }
 
   try {
