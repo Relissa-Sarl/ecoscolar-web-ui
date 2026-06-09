@@ -50,7 +50,6 @@ const filteredUsers = computed(() => {
       if (statusFilter.value === 'Banned') return u.isBanned
       if (statusFilter.value === 'Active') return !u.isBanned && u.isOnboarded
       if (statusFilter.value === 'Pending') return !u.isBanned && !u.isOnboarded
-      return true
     })
   }
 
@@ -236,7 +235,7 @@ onMounted(async () => {
               </th> <th class="p-4 font-medium w-1/6">
                 Status
               </th>
-              <th class="p-4 font-medium text-right w-1/12">
+              <th class="p-4 font-medium w-1/12">
                 Actions
               </th>
             </tr>
