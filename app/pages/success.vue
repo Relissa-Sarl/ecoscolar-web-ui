@@ -33,7 +33,7 @@ const productId = computed(() => {
   return val ? Number(val) : null
 })
 
-// Clear the cart when the user lands on the success page and retrive the price information 
+// Clear the cart when the user lands on the success page and retrive the price information
 onMounted(async () => {
   const storedTotal = sessionStorage.getItem('last_payment_total')
   if (storedTotal) {
