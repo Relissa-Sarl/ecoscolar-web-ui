@@ -110,7 +110,7 @@
       "subtitle": "Restringi i risultati.",
       "mobile_toggle": "Mostra / nascondi filtri",
       "category_legend": "Tipo di annuncio",
-      "category_supplies": "Tutto il materiale",
+      "category_supplies": "Forniture",
       "category_textbooks": "Manuali",
       "category_tutoring": "Ripetizioni",
       "show_all": "Mostra tutto",
@@ -405,6 +405,7 @@
     "support_requests": "Le mie richieste"
   },
   "common": {
+    "back": "Indietro",
     "back_to_home": "Torna alla home",
     "back_to_catalog": "Torna al catalogo",
     "skip_to_content": "Vai al contenuto principale",

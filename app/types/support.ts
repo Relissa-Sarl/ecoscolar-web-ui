@@ -28,5 +28,16 @@ export interface SupportTicketMessage {
   createdAt: string
 }
 
+export interface SupportTicketAdminDetail extends SupportTicketDetail {
+  userId: string
+  user: {
+    firstName: string
+    lastName: string
+    nickname: string
+    email: string
+  }
+  messages: SupportTicketMessage[]
+}
+
 /** @deprecated Utiliser SupportTicketSummary pour la liste */
 export type SupportTicket = SupportTicketDetail

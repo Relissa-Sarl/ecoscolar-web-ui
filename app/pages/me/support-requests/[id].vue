@@ -122,7 +122,7 @@ const onSend = async (message: string) => {
             {{ $t('support.list.ticket_label', { id: ticket.id }) }}
           </p>
           <h1 class="mt-2 text-3xl font-bold text-slate-900 dark:text-white">
-            {{ ticket.subject }}
+            {{ $t('support.reasons.' + ticket.subject) }}
           </h1>
           <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
             {{ new Date(ticket.createdAt).toLocaleString() }} · {{ ticket.email }}

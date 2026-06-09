@@ -111,7 +111,7 @@
       "mobile_toggle": "Afficher / masquer les filtres",
       "book_category_heading": "Catégorie du livre",
       "category_legend": "Type d’annonce",
-      "category_supplies": "Tout le matériel",
+      "category_supplies": "Fournitures",
       "category_textbooks": "Manuels scolaires",
       "category_tutoring": "Cours & soutien",
       "show_all": "Tout afficher",
@@ -403,6 +403,7 @@
     "support_requests": "Mes demandes"
   },
   "common": {
+    "back": "Retour",
     "back_to_home": "Retour à l'accueil",
     "back_to_catalog": "Retour au catalogue",
     "skip_to_content": "Passer au contenu principal",

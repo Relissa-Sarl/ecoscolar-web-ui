@@ -130,7 +130,7 @@ const showSuppliesHint = computed(() => activeCategory.value === 'supplies')
       <button
         type="button"
         class="mt-2 w-full rounded-xl border border-dashed border-emerald-300 py-2 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-50 dark:border-emerald-900 dark:text-emerald-300 dark:hover:bg-emerald-950"
-        @click="activeCategory = 'all'"
+        @click="$emit('reset')"
       >
         {{ $t('catalog.filters.show_all') }}
       </button>
@@ -239,13 +239,5 @@ const showSuppliesHint = computed(() => activeCategory.value === 'supplies')
     >
       {{ $t('catalog.filters.supplies_no_subfilters') }}
     </p>
-
-    <button
-      type="button"
-      class="w-full rounded-xl border border-slate-200 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-900"
-      @click="$emit('reset')"
-    >
-      {{ $t('catalog.filters.reset') }}
-    </button>
   </aside>
 </template>
