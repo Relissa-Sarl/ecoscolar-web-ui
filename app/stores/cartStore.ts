@@ -112,11 +112,11 @@ export const useCartStore = defineStore('cart', () => {
             try {
               const parsed = JSON.parse(data)
               items.value = Array.isArray(parsed)
-                ? parsed.map((item: CartStoreItem) => ({ 
-                    ...item, 
+                ? parsed.map((item: CartStoreItem) => ({
+                    ...item,
                     quantity: 1,
                     reservedUntil: item.reservedUntil || null,
-                    shippingCost: item.shippingCost || 0 
+                    shippingCost: item.shippingCost || 0
                   }))
                 : []
             } catch {

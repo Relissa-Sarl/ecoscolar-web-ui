@@ -7,7 +7,7 @@ const props = defineProps<{
 
 const timeLeft = ref('')
 const isExpired = ref(false)
-let interval: any = null
+let interval: ReturnType<typeof setInterval> | null = null
 
 const calculateTimeLeft = () => {
   const target = new Date(props.targetDate).getTime()
@@ -23,7 +23,7 @@ const calculateTimeLeft = () => {
 
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
   const seconds = Math.floor((diff % (1000 * 60)) / 1000)
-  
+
   timeLeft.value = `${minutes}m ${seconds}s`
 }
 
@@ -38,12 +38,23 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div 
+  <div
     class="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide"
     :class="isExpired ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-orange-50 text-orange-700 border border-orange-200'"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-3.5 w-3.5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
     </svg>
     <span>
       <template v-if="isExpired">

@@ -23,14 +23,14 @@ const activeTab = ref<'ongoing' | 'past'>('ongoing')
 const filteredSales = computed(() => {
   if (!sales.value) return []
   if (activeTab.value === 'ongoing') {
-    return sales.value.filter(s => {
+    return sales.value.filter((s) => {
       if (s.status === 'SOLD') {
         return s.transactionStatus && s.transactionStatus !== 'COMPLETED' && s.transactionStatus !== 'CANCELLED'
       }
       return true
     })
   } else {
-    return sales.value.filter(s => {
+    return sales.value.filter((s) => {
       if (s.status === 'SOLD') {
         return !s.transactionStatus || s.transactionStatus === 'COMPLETED' || s.transactionStatus === 'CANCELLED'
       }
@@ -40,14 +40,14 @@ const filteredSales = computed(() => {
 })
 
 const handleConfirmShipping = async (transactionId: number) => {
-  if (!confirm("Avez-vous vraiment expédié l'article ?")) return
+  if (!confirm('Avez-vous vraiment expédié l\'article ?')) return
   try {
     const { getHistoryService } = await import('~/services/historyService')
     await getHistoryService().confirmShipping(transactionId.toString())
-    alert("Le statut a été mis à jour : Expédié.")
+    alert('Le statut a été mis à jour : Expédié.')
     refresh()
-  } catch (e: any) {
-    alert("Erreur: " + e.message)
+  } catch (e: unknown) {
+    alert('Erreur: ' + (e instanceof Error ? e.message : String(e)))
   }
 }
 </script>
@@ -57,8 +57,8 @@ const handleConfirmShipping = async (transactionId: number) => {
     <div class="max-w-5xl mx-auto">
       <!-- Back Navigation -->
       <button
-        @click="router.back()"
         class="inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors mb-6 group"
+        @click="router.back()"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -90,20 +90,26 @@ const handleConfirmShipping = async (transactionId: number) => {
       <!-- Tabs -->
       <div class="flex gap-4 mb-8 border-b border-slate-200 dark:border-slate-800 pb-2">
         <button
-          @click="activeTab = 'ongoing'"
           class="pb-2 text-sm font-semibold transition-colors relative"
           :class="activeTab === 'ongoing' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'"
+          @click="activeTab = 'ongoing'"
         >
           En cours
-          <span v-if="activeTab === 'ongoing'" class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-t-full"></span>
+          <span
+            v-if="activeTab === 'ongoing'"
+            class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-t-full"
+          />
         </button>
         <button
-          @click="activeTab = 'past'"
           class="pb-2 text-sm font-semibold transition-colors relative"
           :class="activeTab === 'past' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'"
+          @click="activeTab = 'past'"
         >
           Passées
-          <span v-if="activeTab === 'past'" class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-t-full"></span>
+          <span
+            v-if="activeTab === 'past'"
+            class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-t-full"
+          />
         </button>
       </div>
 

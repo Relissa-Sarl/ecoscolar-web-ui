@@ -10,9 +10,9 @@ const { locale, t } = useI18n()
 const localePath = useLocalePath()
 
 const emit = defineEmits<{
-  (e: 'confirm-reception', id: string): void
-  (e: 'dispute', id: string): void
-  (e: 'cancel', id: string): void
+  'confirm-reception': [id: string]
+  'dispute': [id: string]
+  'cancel': [id: string]
 }>()
 
 const formatDate = (dateStr: string) => {
@@ -102,39 +102,51 @@ const showDetails = ref(false)
         <div class="flex gap-2">
           <button
             v-if="props.purchase.status === 'PAID_WAITING_SHIPPING'"
-            @click="emit('cancel', props.purchase.id)"
             class="inline-flex items-center justify-center rounded-xl border border-red-200 text-red-600 hover:bg-red-50 py-1.5 px-3 text-xs font-semibold transition-colors"
+            @click="emit('cancel', props.purchase.id)"
           >
             Annuler la commande
           </button>
-          
+
           <button
             v-if="props.purchase.status === 'SHIPPED'"
-            @click="emit('dispute', props.purchase.id)"
             class="inline-flex items-center justify-center rounded-xl border border-orange-200 text-orange-600 hover:bg-orange-50 py-1.5 px-3 text-xs font-semibold transition-colors"
+            @click="emit('dispute', props.purchase.id)"
           >
             Signaler un problème
           </button>
-          
+
           <button
             v-if="props.purchase.status === 'SHIPPED'"
-            @click="emit('confirm-reception', props.purchase.id)"
             class="inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-3 text-xs font-semibold transition-colors"
+            @click="emit('confirm-reception', props.purchase.id)"
           >
             Confirmer la réception
           </button>
 
           <button
             v-if="props.purchase.status === 'COMPLETED' || props.purchase.status === 'CANCELLED'"
-            @click="showDetails = !showDetails"
             class="inline-flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 py-1.5 px-3 text-xs font-semibold transition-colors"
+            @click="showDetails = !showDetails"
           >
             Détails
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3 ml-1 transition-transform" :class="showDetails ? 'rotate-180' : ''">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-3 h-3 ml-1 transition-transform"
+              :class="showDetails ? 'rotate-180' : ''"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+              />
             </svg>
           </button>
-          
+
           <NuxtLink
             v-else
             :to="localePath(`/adverts/${props.purchase.advertId}`)"
@@ -144,22 +156,43 @@ const showDetails = ref(false)
           </NuxtLink>
         </div>
       </div>
-      
+
       <!-- Expanded Details Section -->
-      <div v-if="showDetails" class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/80 animate-in fade-in slide-in-from-top-2 duration-300">
-        <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-2">Détails de la commande</h4>
+      <div
+        v-if="showDetails"
+        class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/80 animate-in fade-in slide-in-from-top-2 duration-300"
+      >
+        <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-2">
+          Détails de la commande
+        </h4>
         <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-          <div class="text-slate-500 dark:text-slate-400">Article</div>
-          <div class="font-medium text-slate-900 dark:text-white text-right">{{ props.purchase.advertTitle }}</div>
-          
-          <div class="text-slate-500 dark:text-slate-400">Prix</div>
-          <div class="font-medium text-slate-900 dark:text-white text-right">{{ props.purchase.price }} CHF</div>
-          
-          <div class="text-slate-500 dark:text-slate-400">Date d'achat</div>
-          <div class="font-medium text-slate-900 dark:text-white text-right">{{ formatDate(props.purchase.purchaseDate) }}</div>
-          
-          <div class="text-slate-500 dark:text-slate-400">Statut</div>
-          <div class="font-medium text-slate-900 dark:text-white text-right">{{ props.purchase.status }}</div>
+          <div class="text-slate-500 dark:text-slate-400">
+            Article
+          </div>
+          <div class="font-medium text-slate-900 dark:text-white text-right">
+            {{ props.purchase.advertTitle }}
+          </div>
+
+          <div class="text-slate-500 dark:text-slate-400">
+            Prix
+          </div>
+          <div class="font-medium text-slate-900 dark:text-white text-right">
+            {{ props.purchase.price }} CHF
+          </div>
+
+          <div class="text-slate-500 dark:text-slate-400">
+            Date d'achat
+          </div>
+          <div class="font-medium text-slate-900 dark:text-white text-right">
+            {{ formatDate(props.purchase.purchaseDate) }}
+          </div>
+
+          <div class="text-slate-500 dark:text-slate-400">
+            Statut
+          </div>
+          <div class="font-medium text-slate-900 dark:text-white text-right">
+            {{ props.purchase.status }}
+          </div>
         </div>
       </div>
     </div>
