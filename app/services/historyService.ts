@@ -32,6 +32,8 @@ export interface MySaleAdvert {
   sellerPseudo: string
   primaryImage?: string | null
   buyerName: string
+  transactionId?: number
+  transactionStatus?: string
   review?: ReviewDto | null
 }
 
@@ -42,6 +44,10 @@ export interface HistoryServiceDependencies {
 export interface HistoryService {
   getPurchaseHistory: () => Promise<Purchase[]>
   getSalesHistory: () => Promise<MySaleAdvert[]>
+  confirmShipping: (transactionId: string) => Promise<void>
+  confirmReception: (transactionId: string) => Promise<void>
+  cancelPurchase: (transactionId: string) => Promise<void>
+  disputePurchase: (transactionId: string) => Promise<void>
   createReview: (transactionId: string, rating: number, comment?: string) => Promise<void>
 }
 
@@ -61,6 +67,22 @@ export function createHistoryService({ apiClient }: HistoryServiceDependencies):
     async getSalesHistory(): Promise<MySaleAdvert[]> {
       const data = await apiClient<MySaleAdvert[]>('/me/sales')
       return data || []
+    },
+
+    async confirmShipping(transactionId: string): Promise<void> {
+      await apiClient(`/me/sales/${transactionId}/confirm-shipping`, { method: 'POST' })
+    },
+
+    async confirmReception(transactionId: string): Promise<void> {
+      await apiClient(`/me/purchases/${transactionId}/confirm-reception`, { method: 'POST' })
+    },
+
+    async cancelPurchase(transactionId: string): Promise<void> {
+      await apiClient(`/me/purchases/${transactionId}/cancel`, { method: 'POST' })
+    },
+
+    async disputePurchase(transactionId: string): Promise<void> {
+      await apiClient(`/me/purchases/${transactionId}/dispute`, { method: 'POST' })
     },
 
     /**

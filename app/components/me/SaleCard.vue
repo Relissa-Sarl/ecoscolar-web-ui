@@ -13,6 +13,10 @@ const props = defineProps<{
 const { locale, t } = useI18n()
 const localePath = useLocalePath()
 
+const emit = defineEmits<{
+  (e: 'confirm-shipping', id: number): void
+}>()
+
 const isOpen = ref(false)
 const localReview = ref(props.sale.review)
 
@@ -55,11 +59,6 @@ const getStatusBadgeClass = (status: AdvertStatus) => {
   }
   return 'bg-slate-50 text-slate-700 dark:bg-slate-900 dark:text-slate-400 border-slate-200 dark:border-slate-800'
 }
-
-const canModify = (status: AdvertStatus) => {
-  return status === AdvertStatus.ACTIVE || status === AdvertStatus.PAUSED
-}
-
 const handleReviewSuccess = (review: { rating: number, comment: string | null }) => {
   localReview.value = review
   refreshNuxtData('user-sales')
@@ -154,13 +153,13 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
           >
             {{ t('me.sales.view') }}
           </NuxtLink>
-          <NuxtLink
-            v-if="canModify(props.sale.status)"
-            :to="localePath(`/adverts/modify-advert-${props.sale.id}`)"
-            class="inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-700 py-1.5 px-3 text-xs font-semibold transition-colors"
+          <button
+            v-if="props.sale.transactionStatus === 'PAID_WAITING_SHIPPING'"
+            class="inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-3 text-xs font-semibold transition-colors"
+            @click="emit('confirm-shipping', props.sale.transactionId!)"
           >
-            {{ t('me.sales.edit') }}
-          </NuxtLink>
+            {{ t('me.sales.actions.confirm_shipping') }}
+          </button>
         </div>
       </div>
     </div>

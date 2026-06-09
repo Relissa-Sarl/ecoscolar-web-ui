@@ -30,6 +30,8 @@ interface CartItem {
   author?: string
   seller: string
   imageUrl?: string
+  reservedUntil?: string | null
+  shippingCost?: number
 }
 
 const cartStore = useCartStore()
@@ -47,7 +49,9 @@ const cartItems = computed<CartItem[]>(() => {
     price: item.listing.price,
     quantity: item.quantity,
     seller: item.listing.seller || 'Vendeur',
-    imageUrl: item.listing.imageUrl
+    imageUrl: item.listing.imageUrl,
+    reservedUntil: item.reservedUntil,
+    shippingCost: item.shippingCost
   }))
 })
 
@@ -114,7 +118,7 @@ const handleCheckout = async () => {
     } else {
       throw new Error('Url de session Stripe manquante dans la réponse de l\'API')
     }
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('Checkout error:', err)
     checkoutError.value = err instanceof Error ? err.message : 'Une erreur est survenue lors de l\'initialisation du paiement.'
   } finally {

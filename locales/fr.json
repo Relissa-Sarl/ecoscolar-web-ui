@@ -57,6 +57,10 @@
       "quantity": "Quantité",
       "vendor": "Vendeur"
     },
+    "timer": {
+      "expired": "Réservation expirée",
+      "reserved": "Réservé ({time})"
+    },
     "checkout": {
       "title": "Résume de la commande",
       "subtotal": "Sous-total",
@@ -186,7 +190,33 @@
       "submit_review": "Envoyer l'avis",
       "cancel_review": "Annuler",
       "review_success": "Votre avis a été enregistré avec succès.",
-      "review_error": "Une erreur est survenue lors de l'enregistrement de l'avis."
+      "review_error": "Une erreur est survenue lors de l'enregistrement de l'avis.",
+      "tabs": {
+        "ongoing": "En cours",
+        "past": "Passées"
+      },
+      "actions": {
+        "cancel": "Annuler la commande",
+        "dispute": "Signaler un problème",
+        "confirm_reception": "Confirmer la réception",
+        "details": "Détails"
+      },
+      "details": {
+        "title": "Détails de la commande",
+        "item": "Article",
+        "price": "Prix",
+        "date": "Date d'achat",
+        "status": "Statut"
+      },
+      "alerts": {
+        "confirm_reception_prompt": "Voulez-vous vraiment confirmer la réception ? L'argent sera transféré au vendeur.",
+        "reception_success": "Réception confirmée avec succès !",
+        "dispute_prompt": "Voulez-vous vraiment signaler un problème ? La transaction sera bloquée.",
+        "dispute_success": "Un litige a été ouvert pour cette commande.",
+        "cancel_prompt": "Voulez-vous vraiment annuler cette commande ? Vous serez remboursé.",
+        "cancel_success": "Commande annulée avec succès.",
+        "error": "Erreur : {message}"
+      }
     },
     "sales": {
       "title": "Historique de mes ventes",
@@ -198,6 +228,18 @@
       "empty_placeholder": "Votre historique de ventes apparaîtra ici.",
       "sell_cta": "Créer une annonce",
       "buyer_label": "Acheté par",
+      "tabs": {
+        "ongoing": "En cours",
+        "past": "Passées"
+      },
+      "actions": {
+        "confirm_shipping": "J'ai expédié l'article"
+      },
+      "alerts": {
+        "confirm_shipping_prompt": "Avez-vous vraiment expédié l'article ?",
+        "shipping_success": "Le statut a été mis à jour : Expédié.",
+        "error": "Erreur : {message}"
+      },
       "view": "Voir",
       "edit": "Modifier",
       "status": {
@@ -413,6 +455,7 @@
   },
   "common": {
     "back": "Retour",
+    "back_previous": "Retour à la page précédente",
     "back_to_home": "Retour à l'accueil",
     "back_to_catalog": "Retour au catalogue",
     "skip_to_content": "Passer au contenu principal",
@@ -692,6 +735,18 @@
       "filter_seller": "En tant que vendeur",
       "average": "Moyenne",
       "star_distribution": "Répartition des notes"
+    }
+  },
+  "checkout": {
+    "title": "Validation de la commande",
+    "instruction": "Veuillez indiquer votre adresse d'expédition pour continuer vers le paiement sécurisé.",
+    "address_label": "Adresse d'expédition complète",
+    "address_placeholder": "Nom, Prénom\nRue, Numéro\nNPA, Localité",
+    "submit": "Procéder au paiement (Stripe)",
+    "errors": {
+      "address_required": "L'adresse d'expédition est requise.",
+      "init_failed": "Erreur lors de l'initialisation du paiement.",
+      "general": "Une erreur est survenue lors de la validation."
     }
   }
 }
