@@ -3,7 +3,6 @@ import { onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n, useSeoMeta } from '#imports'
 import { useCartStore } from '~/stores/cartStore'
-import { getAdvertService } from '~/services/advertService'
 import SuccessIcon from '~/components/paimentState/SuccessIcon.vue'
 import SuccessMainMessage from '~/components/paimentState/SuccessMainMessage.vue'
 import SuccessInfos from '~/components/paimentState/SuccessInfos.vue'
@@ -19,33 +18,11 @@ useSeoMeta({
 
 const totalAmount = ref<number | null>(null)
 
-const productId = computed(() => {
-  const pParam = route.query.productId
-  if (!pParam) return null
-  const val = Array.isArray(pParam) ? pParam[0] : pParam
-  return val ? Number(val) : null
-})
-
-const productIds = computed<number[]>(() => {
-  const pParam = route.query.productIds
-  if (!pParam) return []
-  const val = Array.isArray(pParam) ? pParam[0] : pParam
-  if (!val) return []
-  return val.split(',').map(Number).filter(n => !isNaN(n))
-})
-
 const orderId = computed(() => {
   const oParam = route.query.orderId
   if (!oParam) return null
   const val = Array.isArray(oParam) ? oParam[0] : oParam
   return val || null
-})
-
-const productId = computed(() => {
-  const pParam = route.query.productId
-  if (!pParam) return null
-  const val = Array.isArray(pParam) ? pParam[0] : pParam
-  return val ? Number(val) : null
 })
 
 // Clear the cart when the user lands on the success page and retrive the price information
