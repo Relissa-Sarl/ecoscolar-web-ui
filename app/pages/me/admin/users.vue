@@ -309,7 +309,7 @@ onMounted(async () => {
                     />
                   </svg>
                 </button>
-                <button class="ml-2 text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer">
+                <!-- <button class="ml-2 text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -322,7 +322,7 @@ onMounted(async () => {
                       clip-rule="evenodd"
                     />
                   </svg>
-                </button>
+                </button> -->
                 <button
                   class="ml-2 text-gray-400 hover:text-red-600 transition-colors font-medium text-sm cursor-pointer"
                   @click="toggleUserStatus(user.id)"

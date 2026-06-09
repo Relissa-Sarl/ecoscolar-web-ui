@@ -114,7 +114,7 @@ const handleSendMessage = async (payload: string) => {
 
 onMounted(async () => {
   await store.fetchProfile()
-  await store.getAllSupportTickets()
+  await store.fetchAllSupportTickets()
 })
 </script>
 
@@ -278,7 +278,7 @@ onMounted(async () => {
                     />
                   </svg>
                 </button>
-                <button
+                <!-- <button
                   class="ml-2 text-gray-400 hover:text-red-600 transition-colors font-medium text-sm cursor-pointer"
                 >
                   <svg
@@ -293,7 +293,7 @@ onMounted(async () => {
                       clip-rule="evenodd"
                     />
                   </svg>
-                </button>
+                </button> -->
               </td>
             </tr>
           </tbody>

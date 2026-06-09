@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Sidebar from '@/components/admin/Sidebar.vue'
 import PopUp from '~/components/admin/PopUp.vue'
-import StatCard from '~/components/admin/StatCard.vue'
+// import StatCard from '~/components/admin/StatCard.vue'
 import { useAdminsStore } from '~/stores/adminsStore'
 
 const store = useAdminsStore()
@@ -44,7 +44,7 @@ onMounted(async () => {
         Rapports d'Activité
       </h1>
 
-      <div class="grid grid-cols-4 gap-6 mb-8">
+      <!-- <div class="grid grid-cols-4 gap-6 mb-8">
         <StatCard
           title="TOTAL REPORTS"
           value="1,284"
@@ -61,7 +61,7 @@ onMounted(async () => {
           title="AVG. RESOLUTION TIME"
           value="4.2h"
         />
-      </div>
+      </div> -->
 
       <div class="flex gap-4 mb-6">
         <button class="px-4 py-2 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400 rounded-lg text-sm font-medium">

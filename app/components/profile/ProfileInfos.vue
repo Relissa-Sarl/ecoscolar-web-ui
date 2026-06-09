@@ -177,7 +177,7 @@ const displayName = computed(() => {
 
       <NuxtLink
         v-if="props.isOwnProfile && (props.user as User)?.roles.includes('Admin')"
-        :to="localePath('/me/admin/users')"
+        :to="localePath('/me/admin')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
       >
         <svg
