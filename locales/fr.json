@@ -595,7 +595,32 @@
   "forgot_password": {
     "instruction": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
     "submit_button": "Envoyer le lien",
-    "back_to_login": "Retour à la connexion"
+    "back_to_login": "Retour à la connexion",
+    "status": {
+      "loading": "Envoi du lien de réinitialisation..."
+    },
+    "instruction_success": "Si un compte avec cette adresse e-mail existe, vous recevrez bientôt un lien pour réinitialiser votre mot de passe."
+  },
+  "reset_password": {
+    "return_to_login": "Retour à la connexion",
+    "title": "Réinitialiser le mot de passe",
+    "subtitle": "Saisissez votre nouveau mot de passe pour sécuriser votre compte EcoScolar.",
+    "email_label": "Adresse e-mail",
+    "password_label": "Nouveau mot de passe",
+    "confirm_password_label": "Confirmer le mot de passe",
+    "submit_button": "Réinitialiser le mot de passe",
+    "errors": {
+      "Default": "Une erreur est survenue lors de la réinitialisation du mot de passe. Veuillez réessayer.",
+      "passwords_do_not_match": "Les mots de passe ne correspondent pas.",
+      "PasswordTooShort": "Votre mot de passe doit faire au moins 6 caractères.",
+      "PasswordRequiresNonAlphanumeric": "Le mot de passe doit contenir un caractère spécial.",
+      "PasswordRequiresUpper": "Le mot de passe doit contenir une majuscule.",
+      "PasswordRequiresDigit": "Le mot de passe doit contenir un chiffre.",
+      "InvalidToken": "Le code de réinitialisation est invalide ou a expiré."
+    },
+    "status": {
+      "loading": "Réinitialisation en cours..."
+    }
   },
   "admin": {
     "nav_label": "Menu administration",
