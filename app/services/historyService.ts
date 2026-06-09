@@ -3,6 +3,11 @@ import type { AdvertStatus } from '../utils/enum/advertStatus'
 
 type ApiClient = typeof useApi
 
+export interface ReviewDto {
+  rating: number
+  comment?: string | null
+}
+
 export interface Purchase {
   id: string
   advertId: string
@@ -12,6 +17,7 @@ export interface Purchase {
   status: string
   imageUrl?: string | null
   sellerName: string
+  review?: ReviewDto | null
 }
 
 export interface MySaleAdvert {
@@ -26,6 +32,7 @@ export interface MySaleAdvert {
   sellerPseudo: string
   primaryImage?: string | null
   buyerName: string
+  review?: ReviewDto | null
 }
 
 export interface HistoryServiceDependencies {
@@ -35,6 +42,7 @@ export interface HistoryServiceDependencies {
 export interface HistoryService {
   getPurchaseHistory: () => Promise<Purchase[]>
   getSalesHistory: () => Promise<MySaleAdvert[]>
+  createReview: (transactionId: string, rating: number, comment?: string) => Promise<void>
 }
 
 export function createHistoryService({ apiClient }: HistoryServiceDependencies): HistoryService {
@@ -53,6 +61,16 @@ export function createHistoryService({ apiClient }: HistoryServiceDependencies):
     async getSalesHistory(): Promise<MySaleAdvert[]> {
       const data = await apiClient<MySaleAdvert[]>('/me/sales')
       return data || []
+    },
+
+    /**
+     * Creates a review for a transaction.
+     */
+    async createReview(transactionId: string, rating: number, comment?: string): Promise<void> {
+      await apiClient<unknown>(`/transactions/${transactionId}/reviews`, {
+        method: 'POST',
+        body: { rating, comment }
+      })
     }
   }
 }

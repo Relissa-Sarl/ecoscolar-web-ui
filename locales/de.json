@@ -177,7 +177,16 @@
       "empty_placeholder": "Ihre Kaufhistorie wird hier angezeigt.",
       "explore_cta": "Marktplatz erkunden",
       "seller_label": "Verkäufer",
-      "view_advert": "Inserat ansehen"
+      "view_advert": "Inserat ansehen",
+      "leave_review": "Bewertung abgeben",
+      "review_modal_title": "Bewertung für {name} abgeben",
+      "rating_label": "Bewertung",
+      "comment_label": "Kommentar",
+      "comment_placeholder": "Schreiben Sie Ihren Kommentar...",
+      "submit_review": "Bewertung senden",
+      "cancel_review": "Abbrechen",
+      "review_success": "Ihre Bewertung wurde erfolgreich registriert.",
+      "review_error": "Beim Registrieren der Bewertung ist ein Fehler aufgetreten."
     },
     "sales": {
       "title": "Meine Verkaufshistorie",

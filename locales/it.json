@@ -177,7 +177,16 @@
       "empty_placeholder": "La cronologia dei tuoi acquisti apparir\u00e0 qui.",
       "explore_cta": "Esplora il negozio",
       "seller_label": "Venditore",
-      "view_advert": "Vedi l'annuncio"
+      "view_advert": "Vedi l'annuncio",
+      "leave_review": "Lascia una recensione",
+      "review_modal_title": "Lascia una recensione per {name}",
+      "rating_label": "Valutazione",
+      "comment_label": "Commento",
+      "comment_placeholder": "Scrivi il tuo commento...",
+      "submit_review": "Invia recensione",
+      "cancel_review": "Annulla",
+      "review_success": "La tua recensione è stata registrata con successo.",
+      "review_error": "Si è verificato un errore durante la registrazione della recensione."
     },
     "sales": {
       "title": "Cronologia delle mie vendite",

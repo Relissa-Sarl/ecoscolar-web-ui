@@ -77,4 +77,30 @@ describe('historyService', () => {
       expect(result).toEqual([])
     })
   })
+
+  describe('createReview', () => {
+    it('posts review successfully', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce(undefined)
+      const service = createHistoryService({ apiClient })
+
+      await service.createReview('txn-123', 5, 'Great seller!')
+
+      expect(apiClient).toHaveBeenCalledWith('/transactions/txn-123/reviews', {
+        method: 'POST',
+        body: { rating: 5, comment: 'Great seller!' }
+      })
+    })
+
+    it('posts review with optional comment omitted', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce(undefined)
+      const service = createHistoryService({ apiClient })
+
+      await service.createReview('txn-123', 4)
+
+      expect(apiClient).toHaveBeenCalledWith('/transactions/txn-123/reviews', {
+        method: 'POST',
+        body: { rating: 4, comment: undefined }
+      })
+    })
+  })
 })
