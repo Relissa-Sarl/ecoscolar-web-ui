@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import FormErrors from '../common/FormErrors.vue'
+
 const email = ref('')
 
-const handleResetRequest = () => {
-  // TODO: call password reset API with the email
+const usersStore = useUsersStore()
+
+const handleResetRequest = async () => {
+  await usersStore.forgotPassword(email.value)
 }
+
+const { globalErrors, hasErrors } = useFormErrors(() => usersStore.errors, 'reset_password.errors')
 </script>
 
 <template>
@@ -37,9 +43,28 @@ const handleResetRequest = () => {
       >
     </div>
 
+    <p
+      v-if="usersStore.isLoading"
+      class="text-sm text-emerald-700 dark:text-emerald-400 font-medium"
+    >
+      {{ $t('forgot_password.status.loading') }}
+    </p>
+
+    <p
+      v-if="usersStore.hasLoaded"
+      class="text-sm text-emerald-700 dark:text-emerald-400 font-medium"
+    >
+      {{ $t('forgot_password.instruction_success') }}
+    </p>
+
+    <FormErrors
+      :errors="globalErrors"
+      :has-errors="hasErrors"
+    />
+
     <button
       type="submit"
-      class="w-full bg-emerald-800 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-lg transition-colors focus:ring-4 focus:ring-emerald-500/50 outline-none"
+      class="w-full bg-emerald-800 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-lg transition-colors focus:ring-4 focus:ring-emerald-500/50 outline-none cursor-pointer"
     >
       {{ $t('forgot_password.submit_button') }}
     </button>

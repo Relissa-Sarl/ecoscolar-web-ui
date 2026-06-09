@@ -177,7 +177,16 @@
       "empty_placeholder": "La cronologia dei tuoi acquisti apparir\u00e0 qui.",
       "explore_cta": "Esplora il negozio",
       "seller_label": "Venditore",
-      "view_advert": "Vedi l'annuncio"
+      "view_advert": "Vedi l'annuncio",
+      "leave_review": "Lascia una recensione",
+      "review_modal_title": "Lascia una recensione per {name}",
+      "rating_label": "Valutazione",
+      "comment_label": "Commento",
+      "comment_placeholder": "Scrivi il tuo commento...",
+      "submit_review": "Invia recensione",
+      "cancel_review": "Annulla",
+      "review_success": "La tua recensione è stata registrata con successo.",
+      "review_error": "Si è verificato un errore durante la registrazione della recensione."
     },
     "sales": {
       "title": "Cronologia delle mie vendite",
@@ -597,7 +606,32 @@
   "forgot_password": {
     "instruction": "Inserisci il tuo indirizzo e-mail e ti invieremo un link per reimpostare la tua password.",
     "submit_button": "Invia il link",
-    "back_to_login": "Torna all'accesso"
+    "back_to_login": "Torna all'accesso",
+    "status": {
+      "loading": "Invio del link in corso..."
+    },
+    "instruction_success": "Se un account con questo indirizzo e-mail esiste, riceverai a breve un link per reimpostare la tua password."
+  },
+  "reset_password": {
+    "return_to_login": "Torna all'accesso",
+    "title": "Reimposta la password",
+    "subtitle": "Inserisci la tua nuova password per proteggere il tuo account EcoScolar.",
+    "email_label": "Indirizzo e-mail",
+    "password_label": "Nuova password",
+    "confirm_password_label": "Confirma la password",
+    "submit_button": "Reimposta la password",
+    "errors": {
+      "Default": "Si è verificato un errore durante la reimpostazione della password. Riprova.",
+      "passwords_do_not_match": "Le password inserite non corrispondono.",
+      "PasswordTooShort": "La password deve contenere almeno 6 caratteri.",
+      "PasswordRequiresNonAlphanumeric": "La password deve contenere un carattere speciale.",
+      "PasswordRequiresUpper": "La password deve contenere una lettera maiuscola.",
+      "PasswordRequiresDigit": "La password deve contenere un numero.",
+      "InvalidToken": "Il codice di reset non è valido o è scaduto."
+    },
+    "status": {
+      "loading": "Reimpostazione della password in corso..."
+    }
   },
   "admin": {
     "nav_label": "Menu amministrazione",
