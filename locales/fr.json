@@ -160,7 +160,16 @@
       "empty_placeholder": "Votre historique d'achats apparaîtra ici.",
       "explore_cta": "Explorer la boutique",
       "seller_label": "Vendeur",
-      "view_advert": "Voir l'annonce"
+      "view_advert": "Voir l'annonce",
+      "leave_review": "Laisser un avis",
+      "review_modal_title": "Laisser un avis à {name}",
+      "rating_label": "Note",
+      "comment_label": "Commentaire",
+      "comment_placeholder": "Rédigez votre commentaire...",
+      "submit_review": "Envoyer l'avis",
+      "cancel_review": "Annuler",
+      "review_success": "Votre avis a été enregistré avec succès.",
+      "review_error": "Une erreur est survenue lors de l'enregistrement de l'avis."
     },
     "sales": {
       "title": "Historique de mes ventes",
