@@ -132,7 +132,8 @@ export const useUsersStore = defineStore('users', () => {
       isLoading.value = false
 
       // Redirect to profile page after successful profile update
-      await navigateTo(localePath('/me/profile'))
+      if (!errors.value)
+        await navigateTo(localePath('/me/profile'))
     }
   }
 

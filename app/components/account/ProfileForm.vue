@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { SpokenLanguage } from '~/types/user'
+import FormError from '../common/FormError.vue'
 
 interface Props {
   traductionBasePath: string
@@ -75,7 +76,9 @@ const handleSubmit = () => {
   usersStore.updateProfile(formData)
 }
 
-const { globalErrors } = useFormErrors(() => usersStore.errors, `${props.traductionBasePath}.errors`)
+type FormErrorKeys = 'InvalidPostalCode' | 'Default'
+
+const { errors } = useFormErrors<FormErrorKeys>(() => usersStore.errors, `${props.traductionBasePath}.errors`)
 </script>
 
 <template>
@@ -83,7 +86,6 @@ const { globalErrors } = useFormErrors(() => usersStore.errors, `${props.traduct
     class="space-y-6 bg-white dark:bg-gray-900 p-8 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm"
     @submit.prevent="handleSubmit"
   >
-    {{ globalErrors }}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="flex flex-col gap-2">
         <label
@@ -149,6 +151,10 @@ const { globalErrors } = useFormErrors(() => usersStore.errors, `${props.traduct
           required
           class="form-input"
         >
+
+        <FormError
+          :error="errors.InvalidPostalCode"
+        />
       </div>
 
       <div class="flex flex-col gap-2 md:col-span-2">
