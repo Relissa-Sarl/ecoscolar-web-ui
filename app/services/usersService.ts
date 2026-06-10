@@ -61,7 +61,8 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
   const login = async (email: string, password: string) =>
     apiClient<undefined>(`${AUTH_PATH}/login?useCookies=true`, {
       method: 'POST',
-      body: { email, password }
+      body: { email, password },
+      skipAuth: true
     })
 
   /**
