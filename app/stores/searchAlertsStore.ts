@@ -30,9 +30,15 @@ export const useSearchAlertsStore = defineStore('searchAlerts', () => {
   const createAlert = async (input: CreateSearchAlertInput) => {
     error.value = null
     const created = await service.createAlert(input)
-    alerts.value = [created, ...alerts.value.filter(a => a.id !== created.id)]
+    const alert = {
+      ...created,
+      ...input,
+      id: created.id,
+      createdAt: created.createdAt
+    }
+    alerts.value = [alert, ...alerts.value.filter(a => a.id !== created.id)]
     hasLoaded.value = true
-    return created
+    return alert
   }
 
   const deleteAlert = async (id: number) => {
