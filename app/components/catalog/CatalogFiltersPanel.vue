@@ -8,11 +8,13 @@ interface Props {
   bookCategories: BookCategory[]
   schoolGrades: SchoolGrade[]
   subjects: Subject[]
+  canResetFilters?: boolean
   referencesLoading?: boolean
   referencesError?: boolean
 }
 
 withDefaults(defineProps<Props>(), {
+  canResetFilters: false,
   referencesLoading: false,
   referencesError: false
 })
@@ -128,11 +130,12 @@ const showSuppliesHint = computed(() => activeCategory.value === 'supplies')
         {{ $t('catalog.filters.category_tutoring') }}
       </button>
       <button
+        v-if="canResetFilters"
         type="button"
         class="mt-2 w-full rounded-xl border border-dashed border-emerald-300 py-2 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-50 dark:border-emerald-900 dark:text-emerald-300 dark:hover:bg-emerald-950"
         @click="$emit('reset')"
       >
-        {{ $t('catalog.filters.show_all') }}
+        {{ $t('catalog.filters.reset') }}
       </button>
     </fieldset>
 

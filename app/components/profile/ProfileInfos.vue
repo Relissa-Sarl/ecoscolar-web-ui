@@ -30,6 +30,11 @@ const displayName = computed(() => {
   }
   return props.user.nickname || ''
 })
+
+const profileMenuLink = (path: string) => localePath({
+  path,
+  query: { from: 'profile' }
+})
 </script>
 
 <template>
@@ -70,7 +75,7 @@ const displayName = computed(() => {
       class="w-full flex flex-col gap-5"
     >
       <NuxtLink
-        :to="localePath('/favorites')"
+        :to="profileMenuLink('/favorites')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
       >
         <svg
@@ -91,7 +96,7 @@ const displayName = computed(() => {
       </NuxtLink>
 
       <NuxtLink
-        :to="localePath('/me/adverts')"
+        :to="profileMenuLink('/me/adverts')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
       >
         <svg
@@ -112,7 +117,7 @@ const displayName = computed(() => {
       </NuxtLink>
 
       <NuxtLink
-        :to="localePath('/me/purchases')"
+        :to="profileMenuLink('/me/purchases')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
       >
         <svg
@@ -133,7 +138,7 @@ const displayName = computed(() => {
       </NuxtLink>
 
       <NuxtLink
-        :to="localePath('/me/sales')"
+        :to="profileMenuLink('/me/sales')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
       >
         <svg
@@ -155,7 +160,7 @@ const displayName = computed(() => {
 
       <NuxtLink
         v-if="props.isOwnProfile"
-        :to="localePath('/me/support-requests')"
+        :to="profileMenuLink('/me/support-requests')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
       >
         <svg
@@ -177,7 +182,7 @@ const displayName = computed(() => {
 
       <NuxtLink
         v-if="props.isOwnProfile && (props.user as User)?.roles.includes('Admin')"
-        :to="localePath('/me/admin/users')"
+        :to="profileMenuLink('/me/admin/users')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
       >
         <svg
@@ -196,7 +201,7 @@ const displayName = computed(() => {
         <span class="font-bold text-sm">Dashboard</span>
       </NuxtLink>
       <NuxtLink
-        :to="localePath('/me/settings')"
+        :to="profileMenuLink('/me/settings')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors ml-auto"
       >
         <svg

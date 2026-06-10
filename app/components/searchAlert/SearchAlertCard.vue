@@ -22,7 +22,7 @@ const createdLabel = computed(() =>
 
 <template>
   <article
-    class="flex flex-col gap-4 rounded-3xl border bg-white p-5 shadow-sm dark:bg-slate-950"
+    class="flex h-full flex-col gap-4 rounded-3xl border bg-white p-5 shadow-sm dark:bg-slate-950"
     :class="hasMatches
       ? 'border-emerald-300 ring-2 ring-emerald-100 dark:border-emerald-700 dark:ring-emerald-950'
       : 'border-slate-200 dark:border-slate-800'"
@@ -56,13 +56,14 @@ const createdLabel = computed(() =>
           : $t('searchAlerts.matches.none') }}
       </p>
     </div>
-    <div class="flex flex-wrap gap-3">
+    <div class="mt-auto flex flex-wrap gap-3 pt-1">
       <button
+        v-if="hasMatches"
         type="button"
         class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700 dark:bg-emerald-600 dark:hover:bg-emerald-500"
         @click="emit('runSearch', alert)"
       >
-        {{ hasMatches ? $t('searchAlerts.actions.view_matches') : $t('searchAlerts.actions.run_search') }}
+        {{ $t('searchAlerts.actions.view_matches') }}
       </button>
       <button
         type="button"

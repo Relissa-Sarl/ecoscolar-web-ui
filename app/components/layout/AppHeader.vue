@@ -113,6 +113,18 @@ watch(
 const successfulAlertsCount = computed(() =>
   searchAlertsStore.alerts.filter(alert => (alert.matchedCount ?? 0) > 0).length
 )
+
+const navBadgeCount = (slug: string) => {
+  if (slug === 'cart')
+    return cartStore.totalItems
+
+  if (slug === 'search-alerts')
+    return successfulAlertsCount.value
+
+  return 0
+}
+
+const formatNavBadgeCount = (count: number) => count > 9 ? '9+' : String(count)
 </script>
 
 <template>
@@ -148,19 +160,14 @@ const successfulAlertsCount = computed(() =>
             :name="link.icon"
             class="w-4 h-4 shrink-0"
           />
-          <span
-            v-if="link.slug === 'cart' && cartStore.totalItems > 0"
-            class="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-800 text-[9px] font-bold text-white ring-2 ring-white dark:ring-slate-900"
-          >
-            {{ cartStore.totalItems }}
-          </span>
         </span>
         <span>{{ $t(link.labelKey) }}</span>
         <span
-          v-if="link.slug === 'search-alerts' && successfulAlertsCount > 0"
-          class="absolute -right-1 -top-1 flex min-h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1 text-[11px] font-bold leading-none text-white ring-2 ring-white dark:ring-slate-900"
+          v-if="navBadgeCount(link.slug) > 0"
+          class="absolute -right-1 -top-1 flex min-h-5 min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-bold leading-none text-white ring-2 ring-white dark:ring-slate-900"
+          :class="link.slug === 'cart' ? 'bg-emerald-800' : 'bg-red-600'"
         >
-          {{ successfulAlertsCount > 9 ? '9+' : successfulAlertsCount }}
+          {{ formatNavBadgeCount(navBadgeCount(link.slug)) }}
         </span>
       </NuxtLink>
     </nav>

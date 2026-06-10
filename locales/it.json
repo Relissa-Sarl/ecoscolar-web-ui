@@ -492,11 +492,13 @@
     "back": "Indietro",
     "back_previous": "Torna alla pagina precedente",
     "back_to_home": "Torna alla home",
+    "back_to_profile": "Torna al profilo",
     "back_to_catalog": "Torna al catalogo",
     "skip_to_content": "Vai al contenuto principale",
     "last_updated": "Ultimo aggiornamento:",
     "contact_support": "Contatta il supporto",
     "home": "Home",
+    "footer_tagline": "© 2026 EcoScolar. Pensato per lo studente moderno.",
     "favorites": "Preferiti",
     "breadcrumb_label": "Percorso di navigazione",
     "messages": {

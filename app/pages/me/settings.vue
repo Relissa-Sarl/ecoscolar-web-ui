@@ -6,6 +6,8 @@ definePageMeta({
 
 <template>
   <div class="max-w-2xl mx-auto py-12 px-4">
+    <ProfileBackLink />
+
     <header class="mb-8 text-center">
       <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white">
         {{ $t('profile.settings.title') }}
