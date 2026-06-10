@@ -23,8 +23,8 @@ const handleConfirmShipping = async (transactionId: number) => {
     await getHistoryService().confirmShipping(transactionId.toString())
     alert('Le statut a été mis à jour : Expédié.')
     refresh()
-  } catch (e: any) {
-    alert('Erreur: ' + e.message)
+  } catch (e: unknown) {
+    alert('Erreur: ' + (e instanceof Error ? e.message : String(e)))
   }
 }
 </script>

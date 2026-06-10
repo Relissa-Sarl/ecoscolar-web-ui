@@ -10,9 +10,7 @@ const { locale, t } = useI18n()
 const localePath = useLocalePath()
 
 const emit = defineEmits<{
-  (e: 'confirm-reception', id: string): void
-  (e: 'dispute', id: string): void
-  (e: 'cancel', id: string): void
+  (e: 'confirm-reception' | 'dispute' | 'cancel', id: string): void
 }>()
 
 const formatDate = (dateStr: string) => {

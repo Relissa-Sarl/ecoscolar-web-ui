@@ -23,8 +23,8 @@ const handleConfirmReception = async (id: string) => {
     await getHistoryService().confirmReception(id)
     alert('Réception confirmée avec succès !')
     refresh()
-  } catch (e: any) {
-    alert('Erreur: ' + e.message)
+  } catch (e: unknown) {
+    alert('Erreur: ' + (e instanceof Error ? e.message : String(e)))
   }
 }
 
@@ -35,8 +35,8 @@ const handleDispute = async (id: string) => {
     await getHistoryService().disputePurchase(id)
     alert('Un litige a été ouvert pour cette commande.')
     refresh()
-  } catch (e: any) {
-    alert('Erreur: ' + e.message)
+  } catch (e: unknown) {
+    alert('Erreur: ' + (e instanceof Error ? e.message : String(e)))
   }
 }
 
@@ -47,8 +47,8 @@ const handleCancel = async (id: string) => {
     await getHistoryService().cancelPurchase(id)
     alert('Commande annulée avec succès.')
     refresh()
-  } catch (e: any) {
-    alert('Erreur: ' + e.message)
+  } catch (e: unknown) {
+    alert('Erreur: ' + (e instanceof Error ? e.message : String(e)))
   }
 }
 </script>
