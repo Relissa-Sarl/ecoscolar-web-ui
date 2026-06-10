@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { useI18n, useLocalePath } from '#imports'
+import { ref, watch } from 'vue'
+import { useI18n, useLocalePath, refreshNuxtData } from '#imports'
 import type { MySaleAdvert } from '~/services/historyService'
 import { AdvertStatus } from '~/utils/enum/advertStatus'
+import Stars from '~/components/profile/Stars.vue'
+import ReviewModal from '~/components/me/ReviewModal.vue'
 
 const props = defineProps<{
   sale: MySaleAdvert
@@ -13,6 +16,13 @@ const localePath = useLocalePath()
 const emit = defineEmits<{
   (e: 'confirm-shipping', id: number): void
 }>()
+
+const isOpen = ref(false)
+const localReview = ref(props.sale.review)
+
+watch(() => props.sale.review, (newReview) => {
+  localReview.value = newReview
+})
 
 const formatDate = (dateStr: string) => {
   try {
@@ -49,9 +59,9 @@ const getStatusBadgeClass = (status: AdvertStatus) => {
   }
   return 'bg-slate-50 text-slate-700 dark:bg-slate-900 dark:text-slate-400 border-slate-200 dark:border-slate-800'
 }
-
-const canModify = (status: AdvertStatus) => {
-  return status === AdvertStatus.ACTIVE || status === AdvertStatus.PAUSED
+const handleReviewSuccess = (review: { rating: number, comment: string | null }) => {
+  localReview.value = review
+  refreshNuxtData('user-sales')
 }
 </script>
 
@@ -69,20 +79,10 @@ const canModify = (status: AdvertStatus) => {
         v-else
         class="h-full w-full flex items-center justify-center text-slate-400 dark:text-slate-600 bg-slate-100 dark:bg-slate-800"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.2"
-          stroke="currentColor"
-          class="w-8 h-8"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
-          />
-        </svg>
+        <UIcon
+          name="i-heroicons-book-open"
+          class="w-8 h-8 text-slate-400 dark:text-slate-600"
+        />
       </div>
     </div>
 
@@ -106,27 +106,27 @@ const canModify = (status: AdvertStatus) => {
         </h3>
 
         <!-- Buyer details if SOLD -->
-        <p
+        <div
           v-if="props.sale.status === AdvertStatus.SOLD && props.sale.buyerName"
-          class="text-xs mt-1 flex items-center gap-1 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/20 px-2 py-1 rounded-lg w-max"
+          class="flex items-center gap-2 mt-1 flex-wrap"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            class="w-3.5 h-3.5"
+          <p
+            class="text-xs flex items-center gap-1 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/20 px-2 py-1 rounded-lg w-max"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+            <UIcon
+              name="i-heroicons-user"
+              class="w-3.5 h-3.5"
             />
-          </svg>
-          <span>{{ t('me.sales.buyer_label') }} :</span>
-          <span class="font-bold">{{ props.sale.buyerName }}</span>
-        </p>
+            <span>{{ t('me.sales.buyer_label') }} :</span>
+            <span class="font-bold">{{ props.sale.buyerName }}</span>
+          </p>
+          <Stars
+            v-if="localReview"
+            :rating="localReview.rating"
+            :show-text="true"
+            class="scale-90 origin-left"
+          />
+        </div>
       </div>
 
       <div class="mt-4 flex items-center justify-between gap-4">
@@ -137,8 +137,16 @@ const canModify = (status: AdvertStatus) => {
           >/H</span>
         </span>
 
-        <div class="flex gap-2">
+        <div class="flex items-center gap-2">
           <!-- Actions -->
+          <button
+            v-if="props.sale.status === AdvertStatus.SOLD && !localReview"
+            type="button"
+            class="inline-flex items-center justify-center rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 py-1.5 px-3 text-xs font-semibold transition-colors cursor-pointer"
+            @click="isOpen = true"
+          >
+            {{ t('me.purchases.leave_review') }}
+          </button>
           <NuxtLink
             :to="localePath(`/adverts/${props.sale.id}`)"
             class="inline-flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 py-1.5 px-3 text-xs font-semibold transition-colors"
@@ -150,18 +158,18 @@ const canModify = (status: AdvertStatus) => {
             class="inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-3 text-xs font-semibold transition-colors"
             @click="emit('confirm-shipping', props.sale.transactionId!)"
           >
-            J'ai expédié l'article
+            {{ t('me.sales.actions.confirm_shipping') }}
           </button>
-
-          <NuxtLink
-            v-if="canModify(props.sale.status)"
-            :to="localePath(`/adverts/modify-advert-${props.sale.id}`)"
-            class="inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-700 py-1.5 px-3 text-xs font-semibold transition-colors"
-          >
-            {{ t('me.sales.edit') }}
-          </NuxtLink>
         </div>
       </div>
     </div>
+
+    <!-- Review Modal -->
+    <ReviewModal
+      v-model:open="isOpen"
+      :transaction-id="props.sale.id.toString()"
+      :name="props.sale.buyerName"
+      @success="handleReviewSuccess"
+    />
   </article>
 </template>

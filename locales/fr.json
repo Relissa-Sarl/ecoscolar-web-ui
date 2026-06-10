@@ -47,7 +47,7 @@
     "remove_from_cart": "Supprimer du panier",
     "clear": "Vider le panier",
     "added_success": "Article ajouté au panier !",
-    "tva": "TVA et frais inclus",
+    "tva": "TVA 8.1% et frais inclus",
     "one_advert": "article",
     "many_adverts": "articles",
     "items": {
@@ -57,15 +57,22 @@
       "quantity": "Quantité",
       "vendor": "Vendeur"
     },
+    "timer": {
+      "expired": "Réservation expirée",
+      "reserved": "Réservé ({time})"
+    },
     "checkout": {
       "title": "Résume de la commande",
       "subtotal": "Sous-total",
       "shipping": "Mode de livraison",
       "shipping_fee": "Frais de livraison",
-      "service_fee": "Frais de service",
+      "service_fee": "Frais de service 10%",
+      "hand-to-hand": "Main propre",
+      "post": "Poste",
       "free": "Gratuit",
       "total": "Total",
-      "confirm": "Passer au paiement"
+      "confirm": "Passer au paiement",
+      "loading": "Redirection vers Stripe..."
     },
     "text_under_resume": {
       "circular_trade": " Économie Circulaire : ",
@@ -78,6 +85,20 @@
       "subtitle": "Parcourez les annonces et trouvez le livre, la fourniture ou le cours qui vous convient.",
       "go_to_shop": "Explorer la boutique",
       "back_to_home": "Retour à l'accueil"
+    },
+    "success": {
+      "title": "Paiement Réussi !",
+      "subtitle": "Merci pour votre commande. Votre transaction a été validée avec succès.",
+      "order_number": "Numéro de commande",
+      "amount_paid": "Montant payé",
+      "status": "Statut du paiement",
+      "confirmed": "Confirmé",
+      "back_home": "Retourner à l'accueil",
+      "continue_shopping": "Continuer mes achats"
+    },
+    "denied": {
+      "title": "Paiement Refusé !",
+      "subtitle": "Votre transaction n'a pas pu être complétée. Veuillez réessayer ou contacter le support si le problème persiste."
     }
   },
   "catalog": {
@@ -94,7 +115,7 @@
       "mobile_toggle": "Afficher / masquer les filtres",
       "book_category_heading": "Catégorie du livre",
       "category_legend": "Type d’annonce",
-      "category_supplies": "Tout le matériel",
+      "category_supplies": "Fournitures",
       "category_textbooks": "Manuels scolaires",
       "category_tutoring": "Cours & soutien",
       "show_all": "Tout afficher",
@@ -160,7 +181,42 @@
       "empty_placeholder": "Votre historique d'achats apparaîtra ici.",
       "explore_cta": "Explorer la boutique",
       "seller_label": "Vendeur",
-      "view_advert": "Voir l'annonce"
+      "view_advert": "Voir l'annonce",
+      "leave_review": "Laisser un avis",
+      "review_modal_title": "Laisser un avis à {name}",
+      "rating_label": "Note",
+      "comment_label": "Commentaire",
+      "comment_placeholder": "Rédigez votre commentaire...",
+      "submit_review": "Envoyer l'avis",
+      "cancel_review": "Annuler",
+      "review_success": "Votre avis a été enregistré avec succès.",
+      "review_error": "Une erreur est survenue lors de l'enregistrement de l'avis.",
+      "tabs": {
+        "ongoing": "En cours",
+        "past": "Passées"
+      },
+      "actions": {
+        "cancel": "Annuler la commande",
+        "dispute": "Signaler un problème",
+        "confirm_reception": "Confirmer la réception",
+        "details": "Détails"
+      },
+      "details": {
+        "title": "Détails de la commande",
+        "item": "Article",
+        "price": "Prix",
+        "date": "Date d'achat",
+        "status": "Statut"
+      },
+      "alerts": {
+        "confirm_reception_prompt": "Voulez-vous vraiment confirmer la réception ? L'argent sera transféré au vendeur.",
+        "reception_success": "Réception confirmée avec succès !",
+        "dispute_prompt": "Voulez-vous vraiment signaler un problème ? La transaction sera bloquée.",
+        "dispute_success": "Un litige a été ouvert pour cette commande.",
+        "cancel_prompt": "Voulez-vous vraiment annuler cette commande ? Vous serez remboursé.",
+        "cancel_success": "Commande annulée avec succès.",
+        "error": "Erreur : {message}"
+      }
     },
     "sales": {
       "title": "Historique de mes ventes",
@@ -172,6 +228,18 @@
       "empty_placeholder": "Votre historique de ventes apparaîtra ici.",
       "sell_cta": "Créer une annonce",
       "buyer_label": "Acheté par",
+      "tabs": {
+        "ongoing": "En cours",
+        "past": "Passées"
+      },
+      "actions": {
+        "confirm_shipping": "J'ai expédié l'article"
+      },
+      "alerts": {
+        "confirm_shipping_prompt": "Avez-vous vraiment expédié l'article ?",
+        "shipping_success": "Le statut a été mis à jour : Expédié.",
+        "error": "Erreur : {message}"
+      },
       "view": "Voir",
       "edit": "Modifier",
       "status": {
@@ -356,9 +424,36 @@
     "saving": "Enregistrement…",
     "saved": "Recherche enregistrée",
     "save_error": "Impossible d'enregistrer la recherche",
+    "form": {
+      "title": "Créer une alerte",
+      "description": "Définissez les critères à surveiller pour être prêt quand le back déclenchera les notifications.",
+      "advert_type": "Type d’annonce",
+      "keyword": "Mot-clé",
+      "keyword_placeholder": "Ex. calculatrice, math, français…",
+      "max_price": "Prix maximum",
+      "max_price_placeholder": "Ex. 50",
+      "product_category": "Catégorie de fourniture",
+      "any_product_category": "Toutes les fournitures",
+      "book_category": "Catégorie du manuel",
+      "any_book_category": "Tous les manuels",
+      "isbn": "ISBN",
+      "isbn_placeholder": "Ex. 978-2-09-172887-6",
+      "subject": "Matière",
+      "any_subject": "Toutes les matières",
+      "grade": "Niveau scolaire",
+      "any_grade": "Tous les niveaux",
+      "helper": "Ajoutez au moins un critère en plus du type d’annonce.",
+      "submit": "Créer l’alerte",
+      "references_error": "Impossible de charger certaines listes de filtres.",
+      "types": {
+        "product": "Fournitures",
+        "book": "Manuels scolaires",
+        "service": "Cours & soutien"
+      }
+    },
     "empty": {
       "title": "Aucune alerte pour le moment",
-      "message": "Sauvegardez une recherche depuis la boutique pour la retrouver ici."
+      "message": "Créez une alerte ci-dessus ou sauvegardez une recherche depuis la boutique."
     },
     "status": {
       "loading": "Chargement des alertes…",
@@ -369,7 +464,13 @@
       "browse_shop": "Explorer la boutique",
       "delete": "Supprimer",
       "deleting": "Suppression…",
-      "run_search": "Relancer la recherche"
+      "run_search": "Relancer la recherche",
+      "view_matches": "Voir les articles"
+    },
+    "matches": {
+      "badge": "{count} trouvé(s)",
+      "found": "{count} article(s) correspondent à cette alerte.",
+      "none": "Aucun article correspondant pour le moment."
     }
   },
   "header": {
@@ -386,6 +487,8 @@
     "support_requests": "Mes demandes"
   },
   "common": {
+    "back": "Retour",
+    "back_previous": "Retour à la page précédente",
     "back_to_home": "Retour à l'accueil",
     "back_to_catalog": "Retour au catalogue",
     "skip_to_content": "Passer au contenu principal",
@@ -403,7 +506,6 @@
       "cancel": "Annuler",
       "confirm": "Supprimer"
     }
-
   },
   "error": {
     "not_found": {
@@ -578,7 +680,32 @@
   "forgot_password": {
     "instruction": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
     "submit_button": "Envoyer le lien",
-    "back_to_login": "Retour à la connexion"
+    "back_to_login": "Retour à la connexion",
+    "status": {
+      "loading": "Envoi du lien de réinitialisation..."
+    },
+    "instruction_success": "Si un compte avec cette adresse e-mail existe, vous recevrez bientôt un lien pour réinitialiser votre mot de passe."
+  },
+  "reset_password": {
+    "return_to_login": "Retour à la connexion",
+    "title": "Réinitialiser le mot de passe",
+    "subtitle": "Saisissez votre nouveau mot de passe pour sécuriser votre compte EcoScolar.",
+    "email_label": "Adresse e-mail",
+    "password_label": "Nouveau mot de passe",
+    "confirm_password_label": "Confirmer le mot de passe",
+    "submit_button": "Réinitialiser le mot de passe",
+    "errors": {
+      "Default": "Une erreur est survenue lors de la réinitialisation du mot de passe. Veuillez réessayer.",
+      "passwords_do_not_match": "Les mots de passe ne correspondent pas.",
+      "PasswordTooShort": "Votre mot de passe doit faire au moins 6 caractères.",
+      "PasswordRequiresNonAlphanumeric": "Le mot de passe doit contenir un caractère spécial.",
+      "PasswordRequiresUpper": "Le mot de passe doit contenir une majuscule.",
+      "PasswordRequiresDigit": "Le mot de passe doit contenir un chiffre.",
+      "InvalidToken": "Le code de réinitialisation est invalide ou a expiré."
+    },
+    "status": {
+      "loading": "Réinitialisation en cours..."
+    }
   },
   "admin": {
     "nav_label": "Menu administration",
@@ -607,24 +734,24 @@
       "message": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et entraînera la perte de toutes vos données.",
       "confirm": "Supprimer mon compte"
     },
-    "settings" : {
+    "settings": {
       "title": "Modifier mon profil",
       "subtitle": "Mettez à jour vos informations personnelles pour une expérience personnalisée.",
-        "nickname_label": "Pseudo",
-        "firstName_label": "Prénom",
-        "lastName_label": "Nom",
-        "pc_label": "Code Postal",
-        "dob_label": "Date de naissance",
-        "languages_title": "Langues parlées",
-        "languages_empty": "Aucune langue ajoutée.",
-        "language_label": "Langue",
-        "level_label": "Niveau",
-        "level_native": "Langue maternelle",
-        "add_language": "Ajouter une langue",
-        "submit_button": "Enregistrer les modifications",
-        "language_placeholder": "Choisir une langue",
-        "level_placeholder": "Choisir un niveau",
-        "pc_placeholder": "Ex: 1000"
+      "nickname_label": "Pseudo",
+      "firstName_label": "Prénom",
+      "lastName_label": "Nom",
+      "pc_label": "Code Postal",
+      "dob_label": "Date de naissance",
+      "languages_title": "Langues parlées",
+      "languages_empty": "Aucune langue ajoutée.",
+      "language_label": "Langue",
+      "level_label": "Niveau",
+      "level_native": "Langue maternelle",
+      "add_language": "Ajouter une langue",
+      "submit_button": "Enregistrer les modifications",
+      "language_placeholder": "Choisir une langue",
+      "level_placeholder": "Choisir un niveau",
+      "pc_placeholder": "Ex: 1000"
     },
     "public": {
       "error": "Il est actuellement impossible de charger le profil utilisateur. Il se peut que l'utilisateur ne soit pas en public ou que le profil ait été supprimé."
@@ -641,6 +768,18 @@
       "filter_seller": "En tant que vendeur",
       "average": "Moyenne",
       "star_distribution": "Répartition des notes"
+    }
+  },
+  "checkout": {
+    "title": "Validation de la commande",
+    "instruction": "Veuillez indiquer votre adresse d'expédition pour continuer vers le paiement sécurisé.",
+    "address_label": "Adresse d'expédition complète",
+    "address_placeholder": "Nom, Prénom\nRue, Numéro\nNPA, Localité",
+    "submit": "Procéder au paiement (Stripe)",
+    "errors": {
+      "address_required": "L'adresse d'expédition est requise.",
+      "init_failed": "Erreur lors de l'initialisation du paiement.",
+      "general": "Une erreur est survenue lors de la validation."
     }
   }
 }

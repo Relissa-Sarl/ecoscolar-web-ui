@@ -699,7 +699,6 @@ vueOnMounted(async () => {
                 label-key="studyLevel"
                 type="text"
               />
-              />
               <FormTextArea
                 v-model="form.description"
                 :error="errors.description"

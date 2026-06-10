@@ -2,6 +2,7 @@
 import type { SupportContactRequest } from '~/types/support'
 import { getSupportService } from '~/services/supportService'
 import { useSupportTicketsStore } from '~/stores/supportTicketsStore'
+import { SupportReason } from '~/utils/enum/supportReason'
 import {
   resolveSupportSubject,
   SUPPORT_MESSAGE_MIN_LENGTH,
@@ -15,6 +16,11 @@ const toast = useToast()
 const usersStore = useUsersStore()
 const supportTicketsStore = useSupportTicketsStore()
 const supportService = getSupportService()
+
+const reasonOptions = Object.entries(SupportReason).map(([key, value]) => ({
+  key,
+  value
+}))
 
 const form = ref({
   email: '',
@@ -87,7 +93,7 @@ const handleSubmit = async () => {
   try {
     const body: SupportContactRequest = {
       email: form.value.email.trim(),
-      subject,
+      subject: form.value.reason.toString(),
       message: form.value.message.trim()
     }
     await supportService.submitContact(body)
@@ -173,22 +179,12 @@ const handleSubmit = async () => {
         @change="setFieldError('reason')"
       >
         <option
-          value=""
-          disabled
+          v-for="reason in reasonOptions"
+          :key="reason.key"
+          :value="reason.value"
+          :disabled="reason.value === SupportReason.REASON_PLACEHOLDER"
         >
-          {{ $t('support.fields.reason_placeholder') }}
-        </option>
-        <option value="account">
-          {{ $t('support.reasons.account') }}
-        </option>
-        <option value="order">
-          {{ $t('support.reasons.order') }}
-        </option>
-        <option value="bug">
-          {{ $t('support.reasons.bug') }}
-        </option>
-        <option value="other">
-          {{ $t('support.reasons.other') }}
+          {{ reason.value === SupportReason.REASON_PLACEHOLDER ? $t(`support.fields.${reason.key.toLocaleLowerCase()}`) : $t(`support.reasons.${reason.key.toLocaleLowerCase()}`) }}
         </option>
       </select>
       <p

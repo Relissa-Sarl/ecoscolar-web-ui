@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
+const cartStore = useCartStore()
 </script>
 
 <template>
@@ -29,12 +30,18 @@ const localePath = useLocalePath()
       </button>
     </div>
 
-    <div class="flex gap-4 text-sm font-medium">
+    <div class="flex gap-4 text-sm font-medium items-center">
       <NuxtLink
         :to="localePath('/cart')"
-        class="text-gray-700 hover:text-indigo-600 dark:text-gray-300"
+        class="relative text-gray-700 hover:text-indigo-600 dark:text-gray-300 flex items-center gap-1"
       >
-        {{ $t('header.cart') }}
+        <span>{{ $t('header.cart') }}</span>
+        <span
+          v-if="cartStore.totalItems > 0"
+          class="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white ring-1 ring-white"
+        >
+          {{ cartStore.totalItems }}
+        </span>
       </NuxtLink>
       <NuxtLink
         :to="localePath('/login')"
