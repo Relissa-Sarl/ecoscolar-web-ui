@@ -24,6 +24,16 @@ export const useUsersStore = defineStore('users', () => {
 
   const localePath = useLocalePath()
 
+  // Cookie used as a non-HttpOnly indicator to know if a session is active in the browser
+  const loggedInCookie = typeof useCookie !== 'undefined'
+    ? useCookie('ecoscolar_logged_in')
+    : ref<string | null>(null)
+
+  // The actual HttpOnly session cookie name from the backend
+  const authSessionCookie = typeof useCookie !== 'undefined'
+    ? useCookie('Ecoscolar.Auth.Session')
+    : ref<string | null>(null)
+
   /**
    * Fetch the profile of the currently authenticated user by calling the UserService's getMyProfile method.
    * @param force If true, forces a reload of the user's profile from the API even if it has already been loaded.
@@ -35,16 +45,26 @@ export const useUsersStore = defineStore('users', () => {
     if (hasLoaded.value && !force)
       return user.value
 
+    // Skip API call if we know there is no active session.
+    // On server, we can check the real auth cookie. On client, we rely on the indicator.
+    const hasSession = import.meta.server ? !!authSessionCookie.value : !!loggedInCookie.value
+    if (!hasSession && !force) {
+      return null
+    }
+
     isLoading.value = true
 
     try {
       // Call the getMyProfile method of the user service to fetch the user's profile from the API
       user.value = await service.getMyProfile()
       hasLoaded.value = true
+      // Sync indicator if successful
+      loggedInCookie.value = 'true'
     } catch {
       // ignore error details here; reset user state
       user.value = null
       hasLoaded.value = false
+      loggedInCookie.value = null
     } finally {
       isLoading.value = false
     }
@@ -81,6 +101,8 @@ export const useUsersStore = defineStore('users', () => {
 
     try {
       await service.login(email, password)
+      // Set the indicator cookie so we know we can fetch the profile on next reload
+      loggedInCookie.value = 'true'
       // Fetch the user's profile after successful login to populate the user state
       user.value = await service.getMyProfile()
       hasLoaded.value = true
@@ -89,6 +111,7 @@ export const useUsersStore = defineStore('users', () => {
       await navigateTo(localePath('/me/profile'))
     } catch (e) {
       errors.value = formatErrors(e as ApiError)
+      loggedInCookie.value = null
     } finally {
       isLoading.value = false
     }
@@ -110,6 +133,7 @@ export const useUsersStore = defineStore('users', () => {
       user.value = null
       hasLoaded.value = false
       isLoading.value = false
+      loggedInCookie.value = null
 
       // Redirect to home page after logout
       await navigateTo(localePath('/login'))
