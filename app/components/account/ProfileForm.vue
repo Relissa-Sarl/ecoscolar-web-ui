@@ -8,8 +8,6 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { t } = useI18n()
-
 const usersStore = useUsersStore()
 
 const spokenLanguages = ref<SpokenLanguage[]>([])
@@ -54,20 +52,6 @@ const removeLanguage = (index: number) => {
 }
 
 /**
- * Manage language selection
- * @param lang selected language
- */
-const onLanguageChange = (index: number) => {
-  // If the same language is selected more than once, remove the duplicate and alert the user
-  const selectedLang = spokenLanguages.value[index]?.label
-  const duplicateIndex = spokenLanguages.value.findIndex((l, i) => l.label === selectedLang && i !== index)
-  if (duplicateIndex !== -1 && selectedLang) {
-    spokenLanguages.value.splice(duplicateIndex, 1)
-    alert(t(`${props.traductionBasePath}.language_duplicate`, { language: t(selectedLang) }))
-  }
-}
-
-/**
  * Get available language options for a specific dropdown
  * @param currentIndex index of the current dropdown
  */
@@ -90,6 +74,8 @@ const handleSubmit = () => {
 
   usersStore.updateProfile(formData)
 }
+
+const { globalErrors } = useFormErrors(() => usersStore.errors, `${props.traductionBasePath}.errors`)
 </script>
 
 <template>
@@ -97,6 +83,7 @@ const handleSubmit = () => {
     class="space-y-6 bg-white dark:bg-gray-900 p-8 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm"
     @submit.prevent="handleSubmit"
   >
+    {{ globalErrors }}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="flex flex-col gap-2">
         <label
@@ -210,7 +197,6 @@ const handleSubmit = () => {
             v-model="lang.label"
             required
             class="form-input"
-            @change="onLanguageChange(index)"
           >
             <option
               value=""
