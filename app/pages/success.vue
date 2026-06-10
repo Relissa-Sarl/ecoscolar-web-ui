@@ -3,6 +3,7 @@ import { onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n, useSeoMeta } from '#imports'
 import { useCartStore } from '~/stores/cartStore'
+import { getAdvertService } from '~/services/advertService'
 import SuccessIcon from '~/components/paimentState/SuccessIcon.vue'
 import SuccessMainMessage from '~/components/paimentState/SuccessMainMessage.vue'
 import SuccessInfos from '~/components/paimentState/SuccessInfos.vue'
@@ -25,12 +26,46 @@ const orderId = computed(() => {
   return val || null
 })
 
+const productIds = computed<number[]>(() => {
+  const pParam = route.query.productIds
+  if (!pParam) return []
+  const val = Array.isArray(pParam) ? pParam[0] : pParam
+  if (!val) return []
+  return val.split(',').map(Number).filter(n => !isNaN(n))
+})
+
 // Clear the cart when the user lands on the success page and retrive the price information
 onMounted(async () => {
   const storedTotal = sessionStorage.getItem('last_payment_total')
   if (storedTotal) {
     totalAmount.value = parseFloat(storedTotal)
     sessionStorage.removeItem('last_payment_total')
+  }
+
+  // Update status to SOLD
+  const ids = productIds.value
+  if (ids.length > 0) {
+    const advertService = getAdvertService()
+    for (const id of ids) {
+      try {
+        await advertService.updateAdvertStatus(id, 'SOLD')
+      } catch (err) {
+        console.error(`Failed to update status to SOLD for advert ${id}:`, err)
+      }
+    }
+  } else {
+    // Fallback to single productId
+    const pParam = route.query.productId
+    const val = Array.isArray(pParam) ? pParam[0] : pParam
+    const singleId = val ? Number(val) : null
+    if (singleId) {
+      try {
+        const advertService = getAdvertService()
+        await advertService.updateAdvertStatus(singleId, 'SOLD')
+      } catch (err) {
+        console.error(`Failed to update status to SOLD for advert ${singleId}:`, err)
+      }
+    }
   }
 
   try {

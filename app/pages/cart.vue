@@ -37,7 +37,7 @@ interface CartItem {
 const cartStore = useCartStore()
 
 onBeforeMount(async () => {
-  await cartStore.loadCart()
+  await cartStore.loadCart(true)
 })
 
 const cartItems = computed<CartItem[]>(() => {
@@ -119,9 +119,14 @@ const handleCheckout = async () => {
     } else {
       throw new Error('Url de session Stripe manquante dans la réponse de l\'API')
     }
-  } catch (err: unknown) {
+  } catch (err) {
     console.error('Checkout error:', err)
-    checkoutError.value = err instanceof Error ? err.message : 'Une erreur est survenue lors de l\'initialisation du paiement.'
+    const errorObj = err as { data?: { error?: unknown } }
+    if (errorObj && typeof errorObj === 'object' && errorObj.data && typeof errorObj.data === 'object' && errorObj.data.error) {
+      checkoutError.value = String(errorObj.data.error)
+    } else {
+      checkoutError.value = err instanceof Error ? err.message : 'Une erreur est survenue lors de l\'initialisation du paiement.'
+    }
   } finally {
     isCheckingOut.value = false
   }

@@ -2,8 +2,10 @@ import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import type { CatalogListing } from '../types/catalog'
 import { getCartService } from '../services/cartService'
+import { getAdvertService } from '../services/advertService'
 import { useUsersStore } from './usersStore'
 import { AdvertType } from '../utils/enum/advertType'
+import { AdvertStatus } from '../utils/enum/advertStatus'
 import type { CartItemDto } from '../types/cart'
 
 export interface CartStoreItem {
@@ -56,7 +58,8 @@ export const useCartStore = defineStore('cart', () => {
       location: '', // not returned by API
       imageUrl: dto.primaryImage || '',
       hourly: isHourly,
-      seller: dto.sellerPseudo
+      seller: dto.sellerPseudo,
+      status: dto.status as AdvertStatus
     }
   }
 
@@ -106,7 +109,20 @@ export const useCartStore = defineStore('cart', () => {
 
           // 2. Fetch the cart items from backend
           const apiItems = await cartService.getCartItems()
-          items.value = apiItems.map(dto => ({
+          const validApiItems: typeof apiItems = []
+          // REmove the items in the cart if the status is SOLD
+          for (const dto of apiItems) {
+            if (dto.status === 'SOLD' || dto.status === AdvertStatus.SOLD) {
+              try {
+                await cartService.removeFromCart(dto.advertId)
+              } catch (e) {
+                console.error('Failed to clean up sold item from database cart:', e)
+              }
+            } else {
+              validApiItems.push(dto)
+            }
+          }
+          items.value = validApiItems.map(dto => ({
             listing: mapCartItemToCatalogListing(dto),
             quantity: 1,
             reservedUntil: dto.reservedUntil || null,
@@ -119,7 +135,7 @@ export const useCartStore = defineStore('cart', () => {
             if (data) {
               try {
                 const parsed = JSON.parse(data)
-                items.value = Array.isArray(parsed)
+                const tempItems = Array.isArray(parsed)
                   ? parsed.map((item: CartStoreItem) => ({
                       ...item,
                       quantity: 1,
@@ -127,6 +143,34 @@ export const useCartStore = defineStore('cart', () => {
                       shippingCost: item.shippingCost || 0
                     }))
                   : []
+
+                if (tempItems.length > 0) {
+                  const advertService = getAdvertService()
+                  const checked = await Promise.all(
+                    tempItems.map(async (item) => {
+                      try {
+                        const advert = await advertService.getAdvert(Number(item.listing.id))
+                        if (advert) {
+                          item.listing.status = advert.status
+                          if (advert.status === AdvertStatus.SOLD) {
+                            return null
+                          }
+                        }
+                        return item
+                      } catch (e) {
+                        const err = e as { status?: number }
+                        if (err && err.status === 404) {
+                          return null
+                        }
+                        return item
+                      }
+                    })
+                  )
+                  items.value = checked.filter((item): item is CartStoreItem => item !== null)
+                  saveCart()
+                } else {
+                  items.value = []
+                }
               } catch {
                 items.value = []
               }
