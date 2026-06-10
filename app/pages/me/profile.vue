@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DeleteConfirmationPopup from '~/components/common/DeleteConfirmationPopup.vue'
+import StripeConnectCard from '~/components/profile/private/StripeConnectCard.vue'
 
 const usersStore = useUsersStore()
 
@@ -26,6 +27,7 @@ const cancelDelete = () => {
       :is-own-profile="true"
       @delete-account="showDeleteConfirm = true"
     />
+    <StripeConnectCard />
     <DeleteConfirmationPopup
       :show="showDeleteConfirm"
       :title="$t('profile.deletePopup.title')"
