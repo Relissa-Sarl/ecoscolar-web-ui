@@ -1,4 +1,4 @@
-import type { User, UpdateProfileInput, PublicUser, UserReview, ResetPasswordInput } from '~/types/user'
+import type { User, UpdateProfileInput, PublicUser, UserReview, ResetPasswordInput, StripeStatus, StripeOnboardingLink } from '~/types/user'
 import { useApi } from '../composables/useApi'
 import type { MyAdvert } from '~/types/advert'
 
@@ -23,6 +23,8 @@ export interface UserService {
   getPublicProfile: (id: string) => Promise<PublicUser>
   getReviews: (userId: string) => Promise<UserReview[]>
   getMeAdvert: () => Promise<MyAdvert[]>
+  createStripeOnboardingLink: () => Promise<StripeOnboardingLink>
+  getStripeStatus: () => Promise<StripeStatus>
 }
 
 /**
@@ -150,6 +152,23 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
 
   const getMeAdvert = async () => apiClient<MyAdvert[]>(`${USER_PATH}/me/adverts`)
 
+  /**
+   * Create (if needed) the Stripe Connect account of the current user and generate
+   * a Stripe-hosted onboarding link. The caller is expected to redirect the user to the returned URL.
+   * @returns A promise that resolves to an object containing the Stripe onboarding URL.
+   */
+  const createStripeOnboardingLink = async () =>
+    apiClient<StripeOnboardingLink>(`${USER_PATH}/me/stripe/onboarding`, {
+      method: 'POST'
+    })
+
+  /**
+   * Retrieve the Stripe Connect status of the current user (account ID and whether
+   * the onboarding is complete, i.e. the seller can receive payouts).
+   * @returns A promise that resolves to the StripeStatus of the current user.
+   */
+  const getStripeStatus = async () => apiClient<StripeStatus>(`${USER_PATH}/me/stripe/status`)
+
   return {
     register,
     login,
@@ -161,7 +180,9 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
     resetPassword,
     getPublicProfile,
     getMeAdvert,
-    getReviews
+    getReviews,
+    createStripeOnboardingLink,
+    getStripeStatus
   }
 }
 
