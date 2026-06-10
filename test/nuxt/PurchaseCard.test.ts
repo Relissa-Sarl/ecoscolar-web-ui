@@ -54,7 +54,9 @@ describe('PurchaseCard', () => {
     expect(wrapper.text()).toContain('JaneDoe')
     expect(wrapper.text()).toContain('55 CHF')
     expect(wrapper.text()).toContain('me.purchases.seller_label')
-    expect(wrapper.text()).toContain('me.purchases.view_advert')
+    // COMPLETED purchases show the details toggle instead of the view advert link
+    expect(wrapper.text()).toContain('me.purchases.actions.details')
+    expect(wrapper.text()).not.toContain('me.purchases.view_advert')
 
     // Check image
     const img = wrapper.find('img')
@@ -64,6 +66,16 @@ describe('PurchaseCard', () => {
     // Check fallback UIcon is absent
     const fallbackIcon = wrapper.find('.icon-mock')
     expect(fallbackIcon.exists()).toBe(false)
+  })
+
+  it('shows view advert link instead of details for an ongoing purchase', () => {
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, status: 'PAID_WAITING_SHIPPING' } },
+      global: { stubs }
+    })
+
+    expect(wrapper.text()).toContain('me.purchases.view_advert')
+    expect(wrapper.text()).not.toContain('me.purchases.actions.details')
   })
 
   it('renders fallback icon when imageUrl is empty', () => {
