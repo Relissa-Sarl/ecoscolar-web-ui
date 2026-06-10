@@ -9,7 +9,6 @@ import type { CartItemDto } from '../types/cart'
 export interface CartStoreItem {
   listing: CatalogListing
   quantity: number
-  reservedUntil: string | null
   shippingCost: number
 }
 
@@ -101,7 +100,6 @@ export const useCartStore = defineStore('cart', () => {
         items.value = apiItems.map(dto => ({
           listing: mapCartItemToCatalogListing(dto),
           quantity: 1,
-          reservedUntil: dto.reservedUntil || null,
           shippingCost: dto.shippingCost || 0
         }))
       } else {
@@ -112,11 +110,10 @@ export const useCartStore = defineStore('cart', () => {
             try {
               const parsed = JSON.parse(data)
               items.value = Array.isArray(parsed)
-                ? parsed.map((item: CartStoreItem) => ({ 
-                    ...item, 
+                ? parsed.map((item: CartStoreItem) => ({
+                    ...item,
                     quantity: 1,
-                    reservedUntil: item.reservedUntil || null,
-                    shippingCost: item.shippingCost || 0 
+                    shippingCost: item.shippingCost || 0
                   }))
                 : []
             } catch {
@@ -163,7 +160,7 @@ export const useCartStore = defineStore('cart', () => {
       error.value = null
       try {
         await cartService.addToCart({ advertId: Number(listing.id) })
-        items.value.push({ listing, quantity: 1, reservedUntil: new Date(Date.now() + 15 * 60000).toISOString(), shippingCost: 0 })
+        items.value.push({ listing, quantity: 1, shippingCost: 0 })
       } catch (cause) {
         error.value = cause instanceof Error ? cause.message : 'Unable to add to cart'
         throw cause
@@ -171,7 +168,7 @@ export const useCartStore = defineStore('cart', () => {
         isLoading.value = false
       }
     } else {
-      items.value.push({ listing, quantity: 1, reservedUntil: null, shippingCost: 0 })
+      items.value.push({ listing, quantity: 1, shippingCost: 0 })
       saveCart()
     }
   }

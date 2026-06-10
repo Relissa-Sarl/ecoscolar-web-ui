@@ -17,14 +17,14 @@ const { data: sales, pending, error, refresh } = await useAsyncData(
 )
 
 const handleConfirmShipping = async (transactionId: number) => {
-  if (!confirm("Avez-vous vraiment expédié l'article ?")) return
+  if (!confirm('Avez-vous vraiment expédié l\'article ?')) return
   try {
     const { getHistoryService } = await import('~/services/historyService')
     await getHistoryService().confirmShipping(transactionId.toString())
-    alert("Le statut a été mis à jour : Expédié.")
+    alert('Le statut a été mis à jour : Expédié.')
     refresh()
   } catch (e: any) {
-    alert("Erreur: " + e.message)
+    alert('Erreur: ' + e.message)
   }
 }
 </script>

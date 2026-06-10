@@ -100,24 +100,24 @@ const getStatusBadgeClass = (status: string) => {
         <div class="flex gap-2">
           <button
             v-if="props.purchase.status === 'PAID_WAITING_SHIPPING'"
-            @click="emit('cancel', props.purchase.id)"
             class="inline-flex items-center justify-center rounded-xl border border-red-200 text-red-600 hover:bg-red-50 py-1.5 px-3 text-xs font-semibold transition-colors"
+            @click="emit('cancel', props.purchase.id)"
           >
             Annuler la commande
           </button>
-          
+
           <button
             v-if="props.purchase.status === 'SHIPPED'"
-            @click="emit('dispute', props.purchase.id)"
             class="inline-flex items-center justify-center rounded-xl border border-orange-200 text-orange-600 hover:bg-orange-50 py-1.5 px-3 text-xs font-semibold transition-colors"
+            @click="emit('dispute', props.purchase.id)"
           >
             Signaler un problème
           </button>
-          
+
           <button
             v-if="props.purchase.status === 'SHIPPED'"
-            @click="emit('confirm-reception', props.purchase.id)"
             class="inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-3 text-xs font-semibold transition-colors"
+            @click="emit('confirm-reception', props.purchase.id)"
           >
             Confirmer la réception
           </button>
