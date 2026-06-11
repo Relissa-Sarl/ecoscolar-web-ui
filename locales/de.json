@@ -268,7 +268,8 @@
         "edit": "Bearbeiten",
         "resume": "Wiederaufnehmen",
         "expired": "Abgelaufen",
-        "sold": "Verkauft"
+        "sold": "Verkauft",
+        "blocked": "Gesperrt"
       },
       "deleteConfirmTitle": "Sind Sie sicher, dass Sie diese Anzeige löschen möchten?",
       "deleteConfirmMessage": "Diese Aktion ist unwiderruflich. Die Anzeige wird dauerhaft von der Plattform entfernt.",

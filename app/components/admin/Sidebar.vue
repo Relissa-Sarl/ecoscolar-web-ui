@@ -5,9 +5,9 @@ defineProps<{
   user: User | null
 }>()
 const menu = [
-  { name: 'Dashboard', path: '/me/admin/dashboard', icon: 'heroicons:squares-2x2' },
+  { name: 'Dashboard', path: '/me/admin', icon: 'heroicons:squares-2x2' },
   { name: 'Support', path: '/me/admin/supports', icon: 'heroicons:shield-check' },
-  { name: 'Reports', path: '/me/admin/reports', icon: 'heroicons:chart-bar' },
+  { name: 'Adverts', path: '/me/admin/adverts', icon: 'heroicons:megaphone' },
   { name: 'Users', path: '/me/admin/users', icon: 'heroicons:user-group' }
 ]
 </script>

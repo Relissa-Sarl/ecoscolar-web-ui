@@ -50,7 +50,6 @@ const filteredUsers = computed(() => {
       if (statusFilter.value === 'Banned') return u.isBanned
       if (statusFilter.value === 'Active') return !u.isBanned && u.isOnboarded
       if (statusFilter.value === 'Pending') return !u.isBanned && !u.isOnboarded
-      return true
     })
   }
 
@@ -104,12 +103,15 @@ const confirmBan = async () => {
         store.users![index] = updatedUser
         triggerPopUp('success', updatedUser.isBanned ? 'User Banned' : 'User Unbanned', `The user has been ${updatedUser.isBanned ? 'banned' : 'unbanned'} successfully.`)
       }
-      showBanConfirm.value = false
-      userToBan.value = null
+
+      if (paginatedUsers.value.length === 0 && currentPage.value > 1) {
+        currentPage.value -= 1
+      }
     } catch (error) {
       console.error('Error toggling user status:', error)
       showPopUp.value = true
       triggerPopUp('error', 'User Status Update Failed', `An error occurred while updating the user status or the user cannot be banned. Please try again later.`)
+    } finally {
       showBanConfirm.value = false
       userToBan.value = null
     }
@@ -189,7 +191,7 @@ onMounted(async () => {
       <DeleteConfirmationPopup
         :show="showBanConfirm"
         title="Ban User"
-        message="Are you sure you want to ban this user? This action cannot be undone."
+        :message="userToBan && userToBan.isBanned ? 'Are you sure you want to unban this user?' : 'Are you sure you want to ban this user?'"
         cancel-text="Cancel"
         confirm-text="Confirm"
         @confirm-delete="confirmBan"
@@ -238,7 +240,7 @@ onMounted(async () => {
               </th> <th class="p-4 font-medium w-1/6">
                 Status
               </th>
-              <th class="p-4 font-medium text-right w-1/12">
+              <th class="p-4 font-medium w-1/12">
                 Actions
               </th>
             </tr>
@@ -311,7 +313,7 @@ onMounted(async () => {
                     />
                   </svg>
                 </button>
-                <button class="ml-2 text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer">
+                <!-- <button class="ml-2 text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -324,7 +326,7 @@ onMounted(async () => {
                       clip-rule="evenodd"
                     />
                   </svg>
-                </button>
+                </button> -->
                 <button
                   class="ml-2 text-gray-400 hover:text-red-600 transition-colors font-medium text-sm cursor-pointer"
                   @click="toggleUserStatus(user.id)"
@@ -389,7 +391,7 @@ onMounted(async () => {
         </div>
 
         <div
-          v-if="store.users.length === 0 && !store.isLoading"
+          v-if="(store.users.length === 0 && !store.isLoading) || paginatedUsers.length === 0"
           class="p-8 text-center text-gray-500"
         >
           No users found.

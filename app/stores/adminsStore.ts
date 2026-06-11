@@ -4,8 +4,8 @@ import { defineStore } from 'pinia'
 import type { User } from '~/types/user'
 
 import { getAdminService } from '~/services/adminsService'
-import { getUserService } from '~/services/usersService'
 import type { SupportTicketAdminDetail } from '~/types/support'
+import type { MySaleAdvert } from '~/composables/useHistory'
 
 /**
  * Pinia store for managing user authentication and profile state.
@@ -15,14 +15,13 @@ export const useAdminsStore = defineStore('admins', () => {
   const user = ref<User | null>(null)
   const users = ref<User[]>([])
   const supports = ref<SupportTicketAdminDetail[]>([])
+  const adverts = ref<(MySaleAdvert)[]>([])
   const isLoading = ref(false)
   const hasLoaded = ref(false)
   const isSending = ref(false)
   const errors = ref<string[] | null>(null)
 
   const service = getAdminService()
-
-  const userService = getUserService()
 
   const isAuthenticated = computed(() => !!user.value)
 
@@ -41,7 +40,8 @@ export const useAdminsStore = defineStore('admins', () => {
 
     try {
       // Call the getMyProfile method of the admin service to fetch the admin's profile from the API
-      user.value = await userService.getMyProfile()
+      user.value = await service.getMyProfile()
+      hasLoaded.value = true
     } catch {
       // ignore error details here; reset admin state
       user.value = null
@@ -53,9 +53,6 @@ export const useAdminsStore = defineStore('admins', () => {
    * @returns A promise that resolves to an array of User objects representing all users in the system. If the users have already been loaded, returns the cached array of users.
    */
   const fetchAllUsers = async () => {
-    if (hasLoaded.value)
-      return user.value
-
     isLoading.value = true
 
     try {
@@ -83,10 +80,7 @@ export const useAdminsStore = defineStore('admins', () => {
    * Fetch all support tickets by calling the AdminService's getAllSupportTickets method.
    * @returns A promise that resolves to an array of SupportTicketSummary objects representing all support tickets in the system. If the support tickets have already been loaded, returns the cached array of support tickets.
    */
-  const getAllSupportTickets = async () => {
-    if (hasLoaded.value)
-      return user.value
-
+  const fetchAllSupportTickets = async () => {
     isLoading.value = true
 
     try {
@@ -112,9 +106,40 @@ export const useAdminsStore = defineStore('admins', () => {
     }
   }
 
+  const fetchAllAdverts = async () => {
+    isLoading.value = true
+
+    try {
+      adverts.value = await service.getAllAdverts()
+    } catch {
+      // ignore error details here; reset admin state
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  const blockAdvert = async (advertToBlock: MySaleAdvert) => {
+    const updatedAdvert = await service.blockAdvert(advertToBlock.id)
+    return updatedAdvert
+  }
+
+  const deleteAdvert = async (advertToDelete: MySaleAdvert) => {
+    isLoading.value = true
+
+    try {
+      await service.deleteAdvert(advertToDelete.id)
+      adverts.value = await service.getAllAdverts()
+    } catch {
+      // ignore error details here; reset admin state
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   return {
     user,
     users,
+    adverts,
     supports,
     isLoading,
     hasLoaded,
@@ -124,7 +149,10 @@ export const useAdminsStore = defineStore('admins', () => {
     fetchProfile,
     fetchAllUsers,
     banUserToggle,
-    getAllSupportTickets,
-    sendMessage
+    fetchAllSupportTickets,
+    sendMessage,
+    fetchAllAdverts,
+    blockAdvert,
+    deleteAdvert
   }
 })

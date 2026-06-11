@@ -268,7 +268,8 @@
         "edit": "Modifier",
         "resume": "Reprendre",
         "expired": "Expiré",
-        "sold": "Vendu"
+        "sold": "Vendu",
+        "blocked": "Bloqué"
       },
       "deleteConfirmTitle": "Etes-vous sûr de vouloir supprimer cette annonce ?",
       "deleteConfirmMessage": "Cette action est irréversible. L'annonce sera définitivement supprimée de la plateforme."

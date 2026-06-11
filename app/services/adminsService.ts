@@ -5,16 +5,22 @@ import type { SupportTicketAdminDetail, SupportTicketMessage } from '~/types/sup
 type ApiClient = typeof useApi
 
 const ADMIN_PATH = '/admins'
+const USER_PATH = '/users'
+const ADVERT_PATH = '/adverts'
 
 /**
 * Interface defining the contract of the AdminService,
 * which will be used by components to interact with admin-related API endpoints.
 */
 export interface AdminService {
+  getMyProfile: () => Promise<User>
   getAllUsers: () => Promise<User[]>
   banUserToggle: (id: string) => Promise<User>
   getAllSupportTickets: () => Promise<SupportTicketAdminDetail[]>
   sendTicketMessage: (id: number, body: string) => Promise<SupportTicketMessage>
+  getAllAdverts: () => Promise<MySaleAdvert[]>
+  blockAdvert: (id: number) => Promise<MySaleAdvert>
+  deleteAdvert: (id: number) => Promise<MySaleAdvert[]>
 }
 
 /**
@@ -30,6 +36,7 @@ export interface AdminServiceDependencies {
 * @returns An instance of AdminService with methods to interact with admin-related API endpoints.
 */
 export function createadminService({ apiClient }: AdminServiceDependencies): AdminService {
+  const getMyProfile = async () => apiClient<User>(`${USER_PATH}/me`)
   const getAllUsers = async () => apiClient<User[]>(`${ADMIN_PATH}/users`)
 
   const banUserToggle = async (id: string) => apiClient<User>(`${ADMIN_PATH}/${id}/ban`, {
@@ -43,11 +50,25 @@ export function createadminService({ apiClient }: AdminServiceDependencies): Adm
     body: { message }
   })
 
+  const getAllAdverts = async () => apiClient<MySaleAdvert[]>(`${ADVERT_PATH}`)
+
+  const blockAdvert = async (id: number) => apiClient<MySaleAdvert>(`${ADMIN_PATH}/${id}/block`, {
+    method: 'PATCH'
+  })
+
+  const deleteAdvert = async (id: number) => apiClient<MySaleAdvert[]>(`${ADVERT_PATH}/${id}`, {
+    method: 'DELETE'
+  })
+
   return {
+    getMyProfile,
     getAllUsers,
     banUserToggle,
     getAllSupportTickets,
-    sendTicketMessage
+    sendTicketMessage,
+    getAllAdverts,
+    blockAdvert,
+    deleteAdvert
   }
 }
 
