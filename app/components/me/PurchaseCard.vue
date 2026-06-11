@@ -10,8 +10,13 @@ const props = defineProps<{
   purchase: Purchase
 }>()
 
-const { locale, t } = useI18n()
+const { locale, t, te } = useI18n()
 const localePath = useLocalePath()
+
+const statusLabel = (status: string) => {
+  const key = `profile.history.status.${status.toLowerCase()}`
+  return te(key) ? t(key) : status
+}
 
 const emit = defineEmits<{
   'confirm-reception': [id: string]
@@ -92,7 +97,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
             class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border"
             :class="getStatusBadgeClass(props.purchase.status)"
           >
-            {{ t(`profile.history.status.${props.purchase.status.toLowerCase()}`) }}
+            {{ statusLabel(props.purchase.status) }}
           </span>
           <span class="text-[10px] text-slate-400 dark:text-slate-500 font-medium whitespace-nowrap">
             {{ formatDate(props.purchase.purchaseDate) }}
