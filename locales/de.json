@@ -655,6 +655,7 @@
       "lastName_label": "Nachname",
       "pc_label": "Postleitzahl",
       "pc_placeholder": "z.B. 1000",
+      "pc_no_results": "Keine Ortschaft gefunden.",
       "dob_label": "Geburtsdatum",
       "languages_title": "Gesprochene Sprachen",
       "languages_empty": "Keine Sprache hinzugefügt.",
@@ -755,6 +756,7 @@
       "language_placeholder": "Sprache auswählen",
       "level_placeholder": "Niveau auswählen",
       "pc_placeholder": "z.B. 1000",
+      "pc_no_results": "Keine Ortschaft gefunden.",
       "errors": {
         "Default": "Ein Fehler ist aufgetreten beim Abschluss Ihres Profils. Bitte versuchen Sie es erneut.",
         "InvalidPostalCode": "Die Postleitzahl ist ungültig."

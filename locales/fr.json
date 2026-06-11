@@ -653,6 +653,7 @@
       "lastName_label": "Nom",
       "pc_label": "Code Postal",
       "pc_placeholder": "Ex: 1000",
+      "pc_no_results": "Aucune localité trouvée.",
       "dob_label": "Date de naissance",
       "languages_title": "Langues parlées",
       "languages_empty": "Aucune langue ajoutée.",
@@ -758,6 +759,7 @@
       "language_placeholder": "Choisir une langue",
       "level_placeholder": "Choisir un niveau",
       "pc_placeholder": "Ex: 1000",
+      "pc_no_results": "Aucune localité trouvée.",
       "errors": {
         "Default": "Une erreur est survenue lors de la finalisation de votre profil. Veuillez réessayer.",
         "InvalidPostalCode": "Le code postal n'est pas valide."

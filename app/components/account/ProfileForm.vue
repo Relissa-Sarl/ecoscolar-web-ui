@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import type { SpokenLanguage } from '~/types/user'
 import FormError from '../common/FormError.vue'
+import LocationAutocomplete from '../common/LocationAutocomplete.vue'
 
 interface Props {
   traductionBasePath: string
@@ -142,15 +143,16 @@ const { errors } = useFormErrors<FormErrorKeys>(() => usersStore.errors, `${prop
         >
           {{ $t(`${props.traductionBasePath}.pc_label`) }}
         </label>
-        <input
+        <LocationAutocomplete
           id="profile-pc"
           v-model="profileForm.postalCode"
-          type="text"
           pattern="[1-9][0-9]{3}"
           :placeholder="$t(`${props.traductionBasePath}.pc_placeholder`)"
+          :no-results-text="$t(`${props.traductionBasePath}.pc_no_results`)"
+          :invalid-text="$t(`${props.traductionBasePath}.errors.InvalidPostalCode`)"
+          :initial-location="usersStore.user?.location"
           required
-          class="form-input"
-        >
+        />
 
         <FormError
           :error="errors.InvalidPostalCode"
