@@ -9,6 +9,7 @@ import { useCartStore } from '~/stores/cartStore'
 import { getPaymentService } from '~/services/paymentService'
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 /**
  * Define the page metadata to specify that this page should only
@@ -93,10 +94,17 @@ const itemsCount = computed(() => {
 const isCheckingOut = ref(false)
 const checkoutError = ref<string | null>(null)
 
+const usersStore = useUsersStore()
+
 // handle checkout with stripe
 const handleCheckout = async () => {
   // if cart is empty or checkout is already in progress, return
   if (cartItems.value.length === 0 || isCheckingOut.value) return
+
+  if (!usersStore.isAuthenticated) {
+    await navigateTo(localePath('/login'))
+    return
+  }
 
   // set checking out flag and clear any previous error
   isCheckingOut.value = true
