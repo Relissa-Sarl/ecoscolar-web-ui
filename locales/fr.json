@@ -490,11 +490,13 @@
     "back": "Retour",
     "back_previous": "Retour à la page précédente",
     "back_to_home": "Retour à l'accueil",
+    "back_to_profile": "Retour au profil",
     "back_to_catalog": "Retour au catalogue",
     "skip_to_content": "Passer au contenu principal",
     "last_updated": "Dernière mise à jour :",
     "contact_support": "Contactez le support",
     "home": "Accueil",
+    "footer_tagline": "© 2026 EcoScolar. Pensé pour l'étudiant moderne.",
     "favorites": "Favoris",
     "breadcrumb_label": "Fil d'Ariane",
     "messages": {

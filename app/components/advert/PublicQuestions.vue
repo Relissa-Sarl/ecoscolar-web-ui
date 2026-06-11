@@ -111,10 +111,10 @@ const formatDateTime = (value: string | null | undefined) => {
           <!-- Question header -->
           <div class="flex items-start justify-between">
             <div>
-              <p class="font-semibold text-gray-100">
+              <p class="font-semibold text-slate-900 dark:text-gray-100">
                 {{ question.author }}
               </p>
-              <p class="text-xs text-gray-400 mt-1">
+              <p class="text-xs text-slate-500 dark:text-gray-400 mt-1">
                 {{ formatDateTime(question.createdAt) }}
               </p>
             </div>
@@ -122,7 +122,7 @@ const formatDateTime = (value: string | null | undefined) => {
 
           <!-- Question content -->
           <div class="mt-4 ml-0 md:ml-2">
-            <p class="text-gray-300 leading-relaxed">
+            <p class="text-slate-800 dark:text-gray-200 leading-relaxed">
               {{ question.content }}
             </p>
           </div>
@@ -132,24 +132,24 @@ const formatDateTime = (value: string | null | undefined) => {
             v-if="question.answer?.trim()"
             class="mt-5"
           >
-            <div class="border border-emerald-700 bg-emerald-900/10 dark:bg-emerald-900/20 rounded-md p-4">
+            <div class="border border-emerald-200 bg-emerald-50 dark:border-emerald-700 dark:bg-emerald-900/20 rounded-md p-4">
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                  <p class="font-semibold text-emerald-100">
+                  <p class="font-semibold text-emerald-900 dark:text-emerald-100">
                     {{ seller.username }}
                   </p>
-                  <span class="text-xs inline-block bg-emerald-800 text-emerald-100 px-2 py-1 rounded">
+                  <span class="text-xs inline-block bg-emerald-800 text-emerald-50 px-2 py-1 rounded">
                     {{ $t('advert.detail.seller_badge') }}
                   </span>
                 </div>
                 <p
                   v-if="question.answeredAt"
-                  class="text-xs text-gray-400"
+                  class="text-xs text-slate-500 dark:text-gray-400"
                 >
                   {{ formatDateTime(question.answeredAt) }}
                 </p>
               </div>
-              <p class="mt-3 text-gray-100">
+              <p class="mt-3 text-slate-800 dark:text-gray-100">
                 {{ question.answer }}
               </p>
             </div>

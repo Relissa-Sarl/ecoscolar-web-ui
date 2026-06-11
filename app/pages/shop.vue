@@ -16,16 +16,10 @@ import type {
 import catalogFallbackJson from '@/mocks/catalogSummaries.json'
 import { getCatalogService } from '~/services/catalogService'
 import { mapCatalogApiToListings } from '~/utils/catalogMappers'
-import { useSearchAlertsStore } from '~/stores/searchAlertsStore'
-import { hasSearchCriteria } from '~/types/searchAlert'
 
 const route = useRoute()
 
 definePageMeta({ layout: 'catalog' })
-
-const toast = useToast()
-const searchAlertsStore = useSearchAlertsStore()
-const isSavingAlert = ref(false)
 
 const catalogFallback = catalogFallbackJson as AdvertCatalogApiItem[]
 const { t } = useI18n()
@@ -37,26 +31,6 @@ useSeoMeta({
 
 const catalogService = getCatalogService()
 const appliedSearch = ref('')
-
-const currentSearchCriteria = computed(() => ({
-  q: appliedSearch.value.trim() || undefined
-}))
-
-const canSaveSearchAlert = computed(() =>
-  hasSearchCriteria(currentSearchCriteria.value))
-
-async function saveSearchAlert() {
-  if (!canSaveSearchAlert.value || isSavingAlert.value) return
-  isSavingAlert.value = true
-  try {
-    await searchAlertsStore.createAlert(currentSearchCriteria.value)
-    toast.add({ title: t('searchAlerts.saved'), color: 'success' })
-  } catch {
-    toast.add({ title: t('searchAlerts.save_error'), color: 'error' })
-  } finally {
-    isSavingAlert.value = false
-  }
-}
 
 const { data: rawItems, pending } = await useAsyncData(
   'catalog-adverts',
@@ -110,6 +84,15 @@ function resetSidebar() {
 
 const pageSize = ref(9)
 const currentPage = ref(1)
+
+const canResetFilters = computed(() =>
+  activeCategory.value !== 'all'
+  || draftSearch.value.trim() !== ''
+  || appliedSearch.value.trim() !== ''
+  || bookCategoryIds.value.length > 0
+  || schoolGradeIds.value.length > 0
+  || subjectIds.value.length > 0
+  || sortKey.value !== 'recent')
 
 function applySearchFromRouteQuery() {
   const q = route.query.q
@@ -219,6 +202,7 @@ watch(
           :book-categories="bookCategoriesRef"
           :school-grades="schoolGradesRef"
           :subjects="subjectsRef"
+          :can-reset-filters="canResetFilters"
           :references-loading="referencesLoading"
           :references-error="referencesError"
           class="hidden lg:block"
@@ -240,6 +224,7 @@ watch(
                   :book-categories="bookCategoriesRef"
                   :school-grades="schoolGradesRef"
                   :subjects="subjectsRef"
+                  :can-reset-filters="canResetFilters"
                   :references-loading="referencesLoading"
                   :references-error="referencesError"
                   @reset="resetSidebar()"
@@ -255,20 +240,9 @@ watch(
           />
 
           <div
-            v-if="canSaveSearchAlert"
-            class="flex justify-end"
+            v-if="hadApiError || pending || fromFallbackOnly"
+            class="rounded-3xl border border-emerald-200/60 bg-emerald-50 px-5 py-3 text-sm dark:border-emerald-900 dark:bg-emerald-950/30"
           >
-            <button
-              type="button"
-              class="rounded-xl border border-emerald-200 bg-white px-4 py-2 text-sm font-medium text-emerald-800 transition hover:bg-emerald-50 disabled:opacity-60 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200"
-              :disabled="isSavingAlert"
-              @click="saveSearchAlert"
-            >
-              {{ isSavingAlert ? $t('searchAlerts.saving') : $t('searchAlerts.save') }}
-            </button>
-          </div>
-
-          <div class="rounded-3xl border border-emerald-200/60 bg-emerald-50 px-5 py-3 text-sm dark:border-emerald-900 dark:bg-emerald-950/30">
             <p
               v-if="hadApiError"
               class="font-medium text-amber-900 dark:text-amber-200"
@@ -287,9 +261,6 @@ watch(
             >
               {{ $t('catalog.banner.fallback_demo') }}
             </p>
-            <template v-else>
-              {{ $t('catalog.banner.online') }}
-            </template>
           </div>
 
           <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
