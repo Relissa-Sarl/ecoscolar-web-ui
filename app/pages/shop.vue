@@ -269,7 +269,7 @@ watch(
                 {{ $t('catalog.list.title') }}
               </h1>
               <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                {{ $t('catalog.list.subtitle_near', { count: filtered.length, zip: '1001' }) }}
+                {{ $t('catalog.list.subtitle_near', { count: filtered.length }) }}
               </p>
             </div>
             <div class="flex items-center gap-2">
