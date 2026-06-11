@@ -103,4 +103,18 @@ describe('historyService', () => {
       })
     })
   })
+
+  describe('createTransactions', () => {
+    it('posts transactions creation request successfully', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce(undefined)
+      const service = createHistoryService({ apiClient })
+
+      await service.createTransactions([1, 2], 'session-123')
+
+      expect(apiClient).toHaveBeenCalledWith('/transactions', {
+        method: 'POST',
+        body: { advertIds: [1, 2], stripeSessionId: 'session-123' }
+      })
+    })
+  })
 })

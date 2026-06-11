@@ -51,6 +51,7 @@ export default defineConfig({
         'app/assets/**',
         'app/pages/**',
         'app/mocks/**',
+        'app/**/**.vue',
         'locales/**'
       ]
     }
