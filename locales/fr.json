@@ -268,7 +268,8 @@
         "edit": "Modifier",
         "resume": "Reprendre",
         "expired": "Expiré",
-        "sold": "Vendu"
+        "sold": "Vendu",
+        "blocked": "Bloqué"
       },
       "deleteConfirmTitle": "Etes-vous sûr de vouloir supprimer cette annonce ?",
       "deleteConfirmMessage": "Cette action est irréversible. L'annonce sera définitivement supprimée de la plateforme."
@@ -345,7 +346,7 @@
         "studyLevelLength": "Le niveau d'étude ne doit pas dépasser 50 caractères",
         "bookCategoryId": "La catégorie de livre sélectionnée n'est pas valide",
         "writtenLanguage": "La langue sélectionnée n'est pas valide",
-        "isbnFormat": "Le format de l'ISBN est invalide",
+        "isbnFormat": "Le format de l'ISBN est invalide (ex: 978-3-16-148410-0)",
         "weightNegative": "Le poids doit être supérieur ou égal à zéro",
         "authorLength": "Le nom de l'auteur ne doit pas dépasser 150 caractères",
         "publisherLength": "Le nom de l'éditeur ne doit pas dépasser 150 caractères",
@@ -816,6 +817,7 @@
     "errors": {
       "address_required": "L'adresse d'expédition est requise.",
       "init_failed": "Erreur lors de l'initialisation du paiement.",
+      "item_pending_or_sold": "Un des articles dans votre panier est en cours de paiement ou déjà vendu.",
       "general": "Une erreur est survenue lors de la validation."
     }
   }

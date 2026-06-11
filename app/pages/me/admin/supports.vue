@@ -34,15 +34,16 @@ const reasonOptions = Object.entries(SupportReason).map(([key, value]) => ({
 }))
 const statusFilter = ref(SupportReason.REASON_PLACEHOLDER)
 
-const filteredUsers = computed(() => {
+const filteredTickets = computed(() => {
   let result = store.supports
 
   if (searchQuery.value) {
     const q = searchQuery.value.toLowerCase()
     result = result.filter(t =>
       t.email?.toLowerCase().includes(q)
-      || t.user.firstName?.toLowerCase().includes(q)
-      || t.user.nickname?.toLowerCase().includes(q)
+      || t.user?.firstName?.toLowerCase().includes(q)
+      || t.user?.nickname?.toLowerCase().includes(q)
+      || t.user?.lastName?.toLowerCase().includes(q)
     )
   }
 
@@ -52,7 +53,6 @@ const filteredUsers = computed(() => {
       if (statusFilter.value === SupportReason.ORDER) return t.subject === SupportReason.ORDER
       if (statusFilter.value === SupportReason.BUG) return t.subject === SupportReason.BUG
       if (statusFilter.value === SupportReason.OTHER) return t.subject === SupportReason.OTHER
-      return true
     })
   }
 
@@ -63,11 +63,11 @@ const filteredUsers = computed(() => {
 const currentPage = ref(1)
 const pageSize = 10
 
-const totalPages = computed(() => Math.ceil(filteredUsers.value.length / pageSize))
+const totalPages = computed(() => Math.ceil(filteredTickets.value.length / pageSize))
 
-const paginatedUsers = computed(() => {
+const paginatedTickets = computed(() => {
   const start = (currentPage.value - 1) * pageSize
-  return filteredUsers.value.slice(start, start + pageSize)
+  return filteredTickets.value.slice(start, start + pageSize)
 })
 
 const changePage = (page: number) => {
@@ -114,13 +114,12 @@ const handleSendMessage = async (payload: string) => {
 
 onMounted(async () => {
   await store.fetchProfile()
-  await store.getAllSupportTickets()
+  await store.fetchAllSupportTickets()
 })
 </script>
 
 <template>
   <section class="min-h-screen px-4 text-gray-900 dark:bg-gray-950 dark:text-gray-100 flex">
-    <!-- <pre>{{ store.supports }}</pre> -->
     <PopUp
       :show="showPopUp"
       :pop-up-type="popUpData.type"
@@ -197,7 +196,7 @@ onMounted(async () => {
             :key="option.key"
             :value="option.value"
           >
-            {{ option.value || 'All Categories' }}
+            {{ option.value.toLocaleLowerCase().replace(/^\w/, c => c.toUpperCase()) || 'All Categories' }}
           </option>
         </select>
       </div>
@@ -225,75 +224,58 @@ onMounted(async () => {
             class="divide-y"
           >
             <tr
-              v-for="support in paginatedUsers"
-              :key="support.id"
+              v-for="ticket in paginatedTickets"
+              :key="ticket.id"
               class="hover:bg-gray-50 border-gray-300 dark:border-gray-800 dark:hover:bg-gray-900 transition-colors"
             >
               <td class="p-4">
                 <p class="font-bold">
-                  Ticket #{{ support.id }}
+                  Ticket #{{ ticket.id }}
                 </p>
               </td>
               <td class="p-4">
                 <p
-                  v-if="support.user"
+                  v-if="ticket.user"
                   class="font-medium"
                 >
-                  {{ support.user.firstName }} {{ support.user.lastName }}
+                  {{ ticket.user.firstName }} {{ ticket.user.lastName }}
                 </p>
                 <p
                   v-else
                   class="font-medium"
                 >
-                  {{ support.email }}
+                  {{ ticket.email }}
                 </p>
                 <p class="font-medium">
-                  {{ support.email }}
+                  {{ ticket.email }}
                 </p>
               </td>
               <td class="p-4">
                 <p class="font-medium">
-                  {{ support.subject }}
+                  {{ ticket.subject.toLocaleLowerCase().replace(/^\w/, c => c.toUpperCase()) }}
                 </p>
                 <p class="text-xs text-gray-500 truncate w-64">
-                  {{ support.message }}
+                  {{ ticket.message }}
                 </p>
               </td>
               <td class="p-4 text-right flex">
                 <button
-                  class="text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer"
-                  @click="openTicket(support)"
+                  class="ml-2 text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer"
+                  @click="openTicket(ticket)"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
+                  <Icon
+                    name="material-symbols:visibility-rounded"
                     class="size-6"
-                  >
-                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                    <path
-                      fill-rule="evenodd"
-                      d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
+                  />
                 </button>
-                <button
+                <!-- <button
                   class="ml-2 text-gray-400 hover:text-red-600 transition-colors font-medium text-sm cursor-pointer"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
+                  <Icon
+                    name="material-symbols:delete-rounded"
                     class="size-6"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </button>
+                  />
+                </button> -->
               </td>
             </tr>
           </tbody>
@@ -341,7 +323,7 @@ onMounted(async () => {
         </div>
 
         <div
-          v-if="store.supports.length === 0 && !store.isLoading"
+          v-if="(store.supports.length === 0 && !store.isLoading) || paginatedTickets.length === 0"
           class="p-8 text-center text-gray-500"
         >
           No support tickets found.

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import CartTimer from './CartTimer.vue'
 
 // Types
 interface CartItem {
@@ -185,9 +184,7 @@ const groupedItems = computed(() => {
                 <div
                   v-if="item.reservedUntil"
                   class="mt-2 inline-block"
-                >
-                  <CartTimer :target-date="item.reservedUntil" />
-                </div>
+                />
               </div>
             </div>
 

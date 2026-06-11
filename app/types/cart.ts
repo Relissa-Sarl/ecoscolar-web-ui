@@ -7,6 +7,7 @@ export interface CartItemDto {
   primaryImage: string | null
   reservedUntil: string | null
   shippingCost: number
+  status: string
 }
 
 export interface AddToCartDto {

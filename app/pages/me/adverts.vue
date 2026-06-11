@@ -32,10 +32,11 @@ const getActionText = (status: AdvertStatus) => {
   if (status === AdvertStatus.PAUSED) return $t('me.adverts.actions.resume')
   if (status === AdvertStatus.EXPIRED) return $t('me.adverts.actions.expired')
   if (status === AdvertStatus.SOLD) return $t('me.adverts.actions.sold')
+  if (status === AdvertStatus.BLOCKED) return $t('me.adverts.actions.blocked')
   return ''
 }
 const isActionDisabled = (status: AdvertStatus) => {
-  return status === AdvertStatus.EXPIRED || status === AdvertStatus.SOLD
+  return status === AdvertStatus.EXPIRED || status === AdvertStatus.SOLD || status === AdvertStatus.BLOCKED
 }
 const deleteAdvert = (id: number) => {
   showDeleteConfirm.value = true

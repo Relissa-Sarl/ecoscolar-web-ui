@@ -1,4 +1,5 @@
 import type { AdvertType } from '@/utils/enum/advertType'
+import type { AdvertStatus } from '@/utils/enum/advertStatus'
 
 /** Réponse brute GET /api/v1/adverts/summary (id = AdvertId). */
 export interface AdvertCatalogApiItem {
@@ -59,6 +60,7 @@ export interface CatalogListing {
   subjectName?: string
   seller?: string
   sellerId?: string
+  status?: AdvertStatus
 }
 
 export interface CatalogFetchResult {

@@ -1,5 +1,6 @@
 export interface CheckoutRequest {
   productId: number
+  productIds?: number[]
   productPrice: string
 }
 

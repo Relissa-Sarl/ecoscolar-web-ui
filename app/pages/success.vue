@@ -26,11 +26,12 @@ const orderId = computed(() => {
   return val || null
 })
 
-const productId = computed(() => {
-  const pParam = route.query.productId
-  if (!pParam) return null
+const productIds = computed<number[]>(() => {
+  const pParam = route.query.productIds
+  if (!pParam) return []
   const val = Array.isArray(pParam) ? pParam[0] : pParam
-  return val ? Number(val) : null
+  if (!val) return []
+  return val.split(',').map(Number).filter(n => !isNaN(n))
 })
 
 // Clear the cart when the user lands on the success page and retrive the price information
@@ -41,38 +42,28 @@ onMounted(async () => {
     sessionStorage.removeItem('last_payment_total')
   }
 
-  try {
-    // Force reload the cart to get the items from the correct source (API or localStorage)
-    await cartStore.loadCart(true)
+  // Update status to SOLD
+  const ids = productIds.value
+  if (ids.length > 0) {
     const advertService = getAdvertService()
-
-    if (cartStore.items.length > 0) {
-      // Update status to SOLD for all items in the cart
-      for (const item of cartStore.items) {
-        const advertId = Number(item.listing.id)
-        try {
-          await advertService.updateAdvertStatus(advertId, 'SOLD')
-        } catch (err) {
-          console.error(`Failed to update status for advert ${advertId}:`, err)
-        }
-      }
-    } else if (productId.value) {
-      // Fallback if cart is already empty (e.g. page refreshed)
+    for (const id of ids) {
       try {
-        await advertService.updateAdvertStatus(productId.value, 'SOLD')
+        await advertService.updateAdvertStatus(id, 'SOLD')
       } catch (err) {
-        console.error(`Failed to update status for advert ${productId.value}:`, err)
+        console.error(`Failed to update status to SOLD for advert ${id}:`, err)
       }
     }
-  } catch (err) {
-    console.error('Failed to load cart for status updates:', err)
-    // Fallback to query param if loading cart fails
-    if (productId.value) {
+  } else {
+    // Fallback to single productId
+    const pParam = route.query.productId
+    const val = Array.isArray(pParam) ? pParam[0] : pParam
+    const singleId = val ? Number(val) : null
+    if (singleId) {
       try {
         const advertService = getAdvertService()
-        await advertService.updateAdvertStatus(productId.value, 'SOLD')
-      } catch (err2) {
-        console.error(`Failed to update status for advert ${productId.value}:`, err2)
+        await advertService.updateAdvertStatus(singleId, 'SOLD')
+      } catch (err) {
+        console.error(`Failed to update status to SOLD for advert ${singleId}:`, err)
       }
     }
   }

@@ -50,7 +50,6 @@ const filteredUsers = computed(() => {
       if (statusFilter.value === 'Banned') return u.isBanned
       if (statusFilter.value === 'Active') return !u.isBanned && u.isOnboarded
       if (statusFilter.value === 'Pending') return !u.isBanned && !u.isOnboarded
-      return true
     })
   }
 
@@ -104,12 +103,15 @@ const confirmBan = async () => {
         store.users![index] = updatedUser
         triggerPopUp('success', updatedUser.isBanned ? 'User Banned' : 'User Unbanned', `The user has been ${updatedUser.isBanned ? 'banned' : 'unbanned'} successfully.`)
       }
-      showBanConfirm.value = false
-      userToBan.value = null
+
+      if (paginatedUsers.value.length === 0 && currentPage.value > 1) {
+        currentPage.value -= 1
+      }
     } catch (error) {
       console.error('Error toggling user status:', error)
       showPopUp.value = true
       triggerPopUp('error', 'User Status Update Failed', `An error occurred while updating the user status or the user cannot be banned. Please try again later.`)
+    } finally {
       showBanConfirm.value = false
       userToBan.value = null
     }
@@ -189,7 +191,7 @@ onMounted(async () => {
       <DeleteConfirmationPopup
         :show="showBanConfirm"
         title="Ban User"
-        message="Are you sure you want to ban this user? This action cannot be undone."
+        :message="userToBan && userToBan.isBanned ? 'Are you sure you want to unban this user?' : 'Are you sure you want to ban this user?'"
         cancel-text="Cancel"
         confirm-text="Confirm"
         @confirm-delete="confirmBan"
@@ -238,7 +240,7 @@ onMounted(async () => {
               </th> <th class="p-4 font-medium w-1/6">
                 Status
               </th>
-              <th class="p-4 font-medium text-right w-1/12">
+              <th class="p-4 font-medium w-1/12">
                 Actions
               </th>
             </tr>
@@ -297,50 +299,25 @@ onMounted(async () => {
                   class="text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer"
                   @click="openUserModal(user)"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
+                  <Icon
+                    name="material-symbols:visibility-rounded"
                     class="size-6"
-                  >
-                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                    <path
-                      fill-rule="evenodd"
-                      d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
+                  />
                 </button>
-                <button class="ml-2 text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
+                <!-- <button class="ml-2 text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer">
+                  <Icon
+                    name="material-symbols:flag-rounded"
                     class="size-6"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M3 2.25a.75.75 0 0 1 .75.75v.54l1.838-.46a9.75 9.75 0 0 1 6.725.738l.108.054A8.25 8.25 0 0 0 18 4.524l3.11-.732a.75.75 0 0 1 .917.81 47.784 47.784 0 0 0 .005 10.337.75.75 0 0 1-.574.812l-3.114.733a9.75 9.75 0 0 1-6.594-.77l-.108-.054a8.25 8.25 0 0 0-5.69-.625l-2.202.55V21a.75.75 0 0 1-1.5 0V3A.75.75 0 0 1 3 2.25Z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </button>
+                  />
+                </button> -->
                 <button
                   class="ml-2 text-gray-400 hover:text-red-600 transition-colors font-medium text-sm cursor-pointer"
                   @click="toggleUserStatus(user.id)"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
+                  <Icon
+                    name="material-symbols:block-outline"
                     class="size-6"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="m6.72 5.66 11.62 11.62A8.25 8.25 0 0 0 6.72 5.66Zm10.56 12.68L5.66 6.72a8.25 8.25 0 0 0 11.62 11.62ZM5.105 5.106c3.807-3.808 9.98-3.808 13.788 0 3.808 3.807 3.808 9.98 0 13.788-3.807 3.808-9.98 3.808-13.788 0-3.808-3.807-3.808-9.98 0-13.788Z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
+                  />
                 </button>
               </td>
             </tr>
@@ -389,7 +366,7 @@ onMounted(async () => {
         </div>
 
         <div
-          v-if="store.users.length === 0 && !store.isLoading"
+          v-if="(store.users.length === 0 && !store.isLoading) || paginatedUsers.length === 0"
           class="p-8 text-center text-gray-500"
         >
           No users found.

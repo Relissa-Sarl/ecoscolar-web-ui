@@ -5,10 +5,10 @@ defineProps<{
   user: User | null
 }>()
 const menu = [
-  { name: 'Dashboard', path: '/me/admin/dashboard', icon: 'heroicons:squares-2x2' },
-  { name: 'Support', path: '/me/admin/supports', icon: 'heroicons:shield-check' },
-  { name: 'Reports', path: '/me/admin/reports', icon: 'heroicons:chart-bar' },
-  { name: 'Users', path: '/me/admin/users', icon: 'heroicons:user-group' }
+  { name: 'Dashboard', path: '/me/admin', icon: 'material-symbols:space-dashboard-rounded' },
+  { name: 'Support', path: '/me/admin/supports', icon: 'material-symbols:shield' },
+  { name: 'Adverts', path: '/me/admin/adverts', icon: 'material-symbols:cards-stack' },
+  { name: 'Users', path: '/me/admin/users', icon: 'material-symbols:groups-2-rounded' }
 ]
 </script>
 
@@ -26,7 +26,10 @@ const menu = [
           class="flex items-center gap-3 p-2 rounded-lg"
           active-class="bg-emerald-50 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-100"
         >
-          <Icon :name="item.icon" />
+          <Icon
+            :name="item.icon"
+            class="w-6 h-6"
+          />
           {{ item.name }}
         </NuxtLink>
       </nav>

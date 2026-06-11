@@ -74,7 +74,7 @@ export function createHistoryService({ apiClient }: HistoryServiceDependencies):
     },
 
     async confirmReception(transactionId: string): Promise<void> {
-      await apiClient(`/orders/${transactionId}/confirm-receipt`, { method: 'PUT' })
+      await apiClient(`/transactions/${transactionId}/confirm-receipt`, { method: 'PUT' })
     },
 
     async cancelPurchase(transactionId: string): Promise<void> {
@@ -82,7 +82,7 @@ export function createHistoryService({ apiClient }: HistoryServiceDependencies):
     },
 
     async disputePurchase(transactionId: string, reason: string): Promise<void> {
-      await apiClient(`/orders/${transactionId}/dispute`, {
+      await apiClient(`/transactions/${transactionId}/dispute`, {
         method: 'POST',
         body: { reason }
       })

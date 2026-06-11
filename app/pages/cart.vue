@@ -9,6 +9,7 @@ import { useCartStore } from '~/stores/cartStore'
 import { getPaymentService } from '~/services/paymentService'
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 /**
  * Define the page metadata to specify that this page should only
@@ -37,7 +38,7 @@ interface CartItem {
 const cartStore = useCartStore()
 
 onBeforeMount(async () => {
-  await cartStore.loadCart()
+  await cartStore.loadCart(true)
 })
 
 const cartItems = computed<CartItem[]>(() => {
@@ -93,10 +94,17 @@ const itemsCount = computed(() => {
 const isCheckingOut = ref(false)
 const checkoutError = ref<string | null>(null)
 
+const usersStore = useUsersStore()
+
 // handle checkout with stripe
 const handleCheckout = async () => {
   // if cart is empty or checkout is already in progress, return
   if (cartItems.value.length === 0 || isCheckingOut.value) return
+
+  if (!usersStore.isAuthenticated) {
+    await navigateTo(localePath('/login'))
+    return
+  }
 
   // set checking out flag and clear any previous error
   isCheckingOut.value = true
@@ -108,6 +116,7 @@ const handleCheckout = async () => {
     const firstItem = cartItems.value[0]
     const response = await paymentService.createCheckoutSession({
       productId: firstItem ? Number(firstItem.id) : 0,
+      productIds: cartItems.value.map(item => Number(item.id)),
       productPrice: total.value.toFixed(2)
     })
 
@@ -118,9 +127,20 @@ const handleCheckout = async () => {
     } else {
       throw new Error('Url de session Stripe manquante dans la réponse de l\'API')
     }
-  } catch (err: unknown) {
+  } catch (err) {
     console.error('Checkout error:', err)
-    checkoutError.value = err instanceof Error ? err.message : 'Une erreur est survenue lors de l\'initialisation du paiement.'
+    const errorObj = err as { data?: { code?: string, error?: unknown } }
+    if (errorObj && typeof errorObj === 'object' && errorObj.data && typeof errorObj.data === 'object') {
+      if (errorObj.data.code === 'ITEM_UNAVAILABLE') {
+        checkoutError.value = t('checkout.errors.item_pending_or_sold')
+      } else if (errorObj.data.error) {
+        checkoutError.value = String(errorObj.data.error)
+      } else {
+        checkoutError.value = err instanceof Error ? err.message : t('checkout.errors.init_failed')
+      }
+    } else {
+      checkoutError.value = err instanceof Error ? err.message : t('checkout.errors.init_failed')
+    }
   } finally {
     isCheckingOut.value = false
   }
