@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DeleteConfirmationPopup from '~/components/common/DeleteConfirmationPopup.vue'
+import History from '~/components/profile/private/History.vue'
 import StripeConnectCard from '~/components/profile/private/StripeConnectCard.vue'
 
 const usersStore = useUsersStore()
@@ -28,7 +29,7 @@ const cancelDelete = () => {
       @delete-account="showDeleteConfirm = true"
     />
 
-    <!-- TODO: Payments history -->
+    <History />
 
     <StripeConnectCard />
 

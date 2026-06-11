@@ -806,6 +806,13 @@
       "filter_seller": "En tant que vendeur",
       "average": "Moyenne",
       "star_distribution": "Répartition des notes"
+    },
+    "history": {
+      "title": "Mon historique",
+      "purchases": "Mes derniers achats",
+      "sales": "Mes dernières ventes",
+      "no_purchases": "Vous n'avez pas encore effectué d'achats.",
+      "no_sales": "Vous n'avez pas encore effectué de ventes."
     }
   },
   "checkout": {
