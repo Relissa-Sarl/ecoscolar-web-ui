@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
 import ReviewModal from '~/components/me/ReviewModal.vue'
 
-const mockT = vi.fn((key: string, args?: any) => key + (args ? JSON.stringify(args) : ''))
+const mockT = vi.fn((key: string, args?: Record<string, unknown>) => key + (args ? JSON.stringify(args) : ''))
 mockNuxtImport('useI18n', () => () => ({
   t: mockT
 }))

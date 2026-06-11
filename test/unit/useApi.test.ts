@@ -46,7 +46,7 @@ describe('useApi composable', () => {
     mockUseRuntimeConfig.mockImplementationOnce(() => {
       throw new Error('No Nuxt context')
     })
-    
+
     const originalEnv = process.env.NUXT_PUBLIC_API_BASE
     process.env.NUXT_PUBLIC_API_BASE = 'https://env-api.com/api'
 
@@ -108,10 +108,10 @@ describe('useApi composable', () => {
   it('onResponseError catches navigateTo redirection errors safely', async () => {
     mockNavigateTo.mockRejectedValueOnce(new Error('Navigation cancelled'))
     mockFetch.mockResolvedValueOnce({ success: true })
-    
+
     await useApi('/test', { skipAuth: false })
     const fetchOptions = mockFetch.mock.calls[0][1]
-    
+
     const mockResponse = { status: 401 }
     await expect(fetchOptions.onResponseError({ response: mockResponse })).resolves.not.toThrow()
   })

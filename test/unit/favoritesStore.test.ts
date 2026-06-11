@@ -128,9 +128,9 @@ describe('favorites store', () => {
     serviceMocks.toggleFavorite
       .mockResolvedValueOnce({ advertId: '5', isFavorite: true })
       .mockResolvedValueOnce({ advertId: '5', isFavorite: true })
-      
+
     const store = useFavoritesStore()
-    
+
     // First toggle: adds the favorite
     await store.toggleFavorite({
       advertId: favorite.id,
@@ -144,7 +144,7 @@ describe('favorites store', () => {
       }
     })
     expect(store.favorites[0].title).toBe('Original Title')
-    
+
     // Second toggle: updates it
     await store.toggleFavorite({
       advertId: favorite.id,
@@ -157,7 +157,7 @@ describe('favorites store', () => {
         image: favorite.primaryImage
       }
     })
-    
+
     expect(store.favorites).toHaveLength(1)
     expect(store.favorites[0].title).toBe('Updated Title')
   })
@@ -165,7 +165,7 @@ describe('favorites store', () => {
   it('creates local favorite with empty/undefined summary details when toggled to true', async () => {
     serviceMocks.toggleFavorite.mockResolvedValueOnce({ advertId: '6', isFavorite: true })
     const store = useFavoritesStore()
-    
+
     await store.toggleFavorite({
       advertId: '6'
     })

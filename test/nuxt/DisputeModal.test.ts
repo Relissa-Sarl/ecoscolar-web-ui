@@ -1,10 +1,10 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
 import DisputeModal from '~/components/me/DisputeModal.vue'
 
 mockNuxtImport('useI18n', () => () => ({
-  t: (key: string, args?: any) => key + (args ? JSON.stringify(args) : '')
+  t: (key: string, args?: Record<string, unknown>) => key + (args ? JSON.stringify(args) : '')
 }))
 
 const stubs = {

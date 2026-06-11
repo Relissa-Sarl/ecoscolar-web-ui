@@ -2,14 +2,14 @@ import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
 
+import PurchaseCard from '~/components/me/PurchaseCard.vue'
+import ReviewModal from '~/components/me/ReviewModal.vue'
+import type { Purchase } from '~/services/historyService'
+
 const { mockRefreshNuxtData } = vi.hoisted(() => ({
   mockRefreshNuxtData: vi.fn()
 }))
 mockNuxtImport('refreshNuxtData', () => mockRefreshNuxtData)
-
-import PurchaseCard from '~/components/me/PurchaseCard.vue'
-import ReviewModal from '~/components/me/ReviewModal.vue'
-import type { Purchase } from '~/services/historyService'
 
 mockNuxtImport('useI18n', () => () => ({
   t: (key: string) => key,
@@ -209,7 +209,7 @@ describe('PurchaseCard', () => {
       props: { purchase: { ...mockPurchase, status: 'COMPLETED' } },
       global: { stubs }
     })
-    
+
     // Details element should not exist
     expect(wrapper.text()).not.toContain('me.purchases.details.title')
 

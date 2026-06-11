@@ -53,7 +53,7 @@ describe('catalogMappers', () => {
     })
 
     it('throws error for unknown type', () => {
-      expect(() => enrichCatalogItem({ type: 'UNKNOWN_TYPE' } as any, 0)).toThrow()
+      expect(() => enrichCatalogItem({ type: 'UNKNOWN_TYPE' } as unknown as AdvertCatalogApiItem, 0)).toThrow()
     })
   })
 

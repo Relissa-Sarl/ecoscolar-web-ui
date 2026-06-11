@@ -2,15 +2,15 @@ import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
 
-const { mockRefreshNuxtData } = vi.hoisted(() => ({
-  mockRefreshNuxtData: vi.fn()
-}))
-mockNuxtImport('refreshNuxtData', () => mockRefreshNuxtData)
-
 import SaleCard from '~/components/me/SaleCard.vue'
 import ReviewModal from '~/components/me/ReviewModal.vue'
 import type { MySaleAdvert } from '~/services/historyService'
 import { AdvertStatus } from '~/utils/enum/advertStatus'
+
+const { mockRefreshNuxtData } = vi.hoisted(() => ({
+  mockRefreshNuxtData: vi.fn()
+}))
+mockNuxtImport('refreshNuxtData', () => mockRefreshNuxtData)
 
 mockNuxtImport('useI18n', () => () => ({
   t: (key: string) => key,
@@ -177,7 +177,7 @@ describe('SaleCard', () => {
 
   it('renders raw status name for unknown status badge', () => {
     const wrapper = mount(SaleCard, {
-      props: { sale: { ...mockSale, status: 'UNKNOWN' as any } },
+      props: { sale: { ...mockSale, status: 'UNKNOWN' as unknown as AdvertStatus } },
       global: { stubs }
     })
     expect(wrapper.text()).toContain('UNKNOWN')

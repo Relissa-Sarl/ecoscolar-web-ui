@@ -25,7 +25,7 @@ const cookieMock = ref<string | null>(null)
 
 vi.stubGlobal('navigateTo', navigateToMock)
 vi.stubGlobal('useLocalePath', () => (path: string) => path)
-vi.stubGlobal('useCookie', (name: string) => {
+vi.stubGlobal('useCookie', (_name: string) => {
   return cookieMock
 })
 vi.stubGlobal('formatErrors', formatErrors)
