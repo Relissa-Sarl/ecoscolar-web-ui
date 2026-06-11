@@ -27,7 +27,7 @@ onMounted(() => {
     >
       <NuxtLink
         :to="localePath('/')"
-        class="group inline-flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-medium no-underline focus:ring-2 focus:ring-emerald-500 outline-none rounded"
+        class="group inline-flex items-center gap-2 text-emerald-700 dark:text-emerald-400 text-sm font-medium no-underline focus:ring-2 focus:ring-emerald-500 outline-none rounded"
       >
         <span aria-hidden="true">←</span>
         <span class="border-b border-transparent pb-px group-hover:border-current">{{ $t('common.back_to_home') }}</span>

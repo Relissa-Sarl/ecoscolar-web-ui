@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import CartTimer from './CartTimer.vue'
 
 // Types
 interface CartItem {
@@ -12,6 +13,7 @@ interface CartItem {
   author?: string
   seller: string
   imageUrl?: string
+  reservedUntil?: string | null
 }
 
 const props = defineProps<{
@@ -179,6 +181,13 @@ const groupedItems = computed(() => {
                     {{ item.title }}
                   </NuxtLink>
                 </h3>
+
+                <div
+                  v-if="item.reservedUntil"
+                  class="mt-2 inline-block"
+                >
+                  <CartTimer :target-date="item.reservedUntil" />
+                </div>
               </div>
             </div>
 

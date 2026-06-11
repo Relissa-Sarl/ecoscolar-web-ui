@@ -63,6 +63,8 @@ const onSend = async (message: string) => {
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-950">
     <section class="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+      <ProfileBackLink />
+
       <Breadcrumb
         class="mb-8"
         :items="breadcrumbItems"

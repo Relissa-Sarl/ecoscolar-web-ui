@@ -21,7 +21,7 @@ const localePath = useLocalePath()
           <span class="text-xl font-bold text-emerald-900 dark:text-emerald-100">EcoScolar</span>
         </div>
         <p class="text-sm text-slate-700 dark:text-slate-300">
-          © 2026 EcoScolar. Built for the modern student.
+          {{ $t('common.footer_tagline') }}
         </p>
       </div>
 

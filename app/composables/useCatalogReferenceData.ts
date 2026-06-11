@@ -1,8 +1,9 @@
 import { ref } from 'vue'
-import type { BookCategory, SchoolGrade, Subject } from '@/types/advertDetail'
+import type { BookCategory, ProductCategory, SchoolGrade, Subject } from '@/types/advertDetail'
 import { getAdvertDetailsService } from '~/services/advertDetailsService'
 
 const bookCategories = ref<BookCategory[]>([])
+const productCategories = ref<ProductCategory[]>([])
 const schoolGrades = ref<SchoolGrade[]>([])
 const subjects = ref<Subject[]>([])
 const isLoading = ref(false)
@@ -12,7 +13,7 @@ let inflight: Promise<void> | null = null
 
 export function useCatalogReferenceData() {
   async function load(): Promise<void> {
-    if (bookCategories.value.length > 0)
+    if (bookCategories.value.length > 0 && productCategories.value.length > 0)
       return
 
     if (inflight)
@@ -24,12 +25,14 @@ export function useCatalogReferenceData() {
 
     inflight = (async () => {
       try {
-        const [books, grades, subs] = await Promise.all([
+        const [books, products, grades, subs] = await Promise.all([
           detailsService.getBookCategories(),
+          detailsService.getProductCategories(),
           detailsService.getSchoolGrades(),
           detailsService.getSubjects()
         ])
         bookCategories.value = books
+        productCategories.value = products
         schoolGrades.value = grades
         subjects.value = subs
       } catch {
@@ -45,6 +48,7 @@ export function useCatalogReferenceData() {
 
   return {
     bookCategories,
+    productCategories,
     schoolGrades,
     subjects,
     isLoading,

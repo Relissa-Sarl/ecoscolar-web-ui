@@ -46,3 +46,5 @@ jobs:
             ghcr.io/relissa-sarl/ecoscolar-frontend:latest
             ghcr.io/relissa-sarl/ecoscolar-frontend:${{ github.sha }}
           platforms: linux/amd64,linux/arm64
+          build-args: |
+            NUXT_PUBLIC_API_BASE=/api/v1

@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { SpokenLanguage } from '~/types/user'
+import FormError from '../common/FormError.vue'
+import LocationAutocomplete from '../common/LocationAutocomplete.vue'
 
 interface Props {
   traductionBasePath: string
 }
 
 const props = defineProps<Props>()
-
-const { t } = useI18n()
 
 const usersStore = useUsersStore()
 
@@ -54,20 +54,6 @@ const removeLanguage = (index: number) => {
 }
 
 /**
- * Manage language selection
- * @param lang selected language
- */
-const onLanguageChange = (index: number) => {
-  // If the same language is selected more than once, remove the duplicate and alert the user
-  const selectedLang = spokenLanguages.value[index]?.label
-  const duplicateIndex = spokenLanguages.value.findIndex((l, i) => l.label === selectedLang && i !== index)
-  if (duplicateIndex !== -1 && selectedLang) {
-    spokenLanguages.value.splice(duplicateIndex, 1)
-    alert(t(`${props.traductionBasePath}.language_duplicate`, { language: t(selectedLang) }))
-  }
-}
-
-/**
  * Get available language options for a specific dropdown
  * @param currentIndex index of the current dropdown
  */
@@ -90,6 +76,10 @@ const handleSubmit = () => {
 
   usersStore.updateProfile(formData)
 }
+
+type FormErrorKeys = 'InvalidPostalCode' | 'Default'
+
+const { errors } = useFormErrors<FormErrorKeys>(() => usersStore.errors, `${props.traductionBasePath}.errors`)
 </script>
 
 <template>
@@ -153,15 +143,20 @@ const handleSubmit = () => {
         >
           {{ $t(`${props.traductionBasePath}.pc_label`) }}
         </label>
-        <input
+        <LocationAutocomplete
           id="profile-pc"
           v-model="profileForm.postalCode"
-          type="text"
           pattern="[1-9][0-9]{3}"
           :placeholder="$t(`${props.traductionBasePath}.pc_placeholder`)"
+          :no-results-text="$t(`${props.traductionBasePath}.pc_no_results`)"
+          :invalid-text="$t(`${props.traductionBasePath}.errors.InvalidPostalCode`)"
+          :initial-location="usersStore.user?.location"
           required
-          class="form-input"
-        >
+        />
+
+        <FormError
+          :error="errors.InvalidPostalCode"
+        />
       </div>
 
       <div class="flex flex-col gap-2 md:col-span-2">
@@ -210,7 +205,6 @@ const handleSubmit = () => {
             v-model="lang.label"
             required
             class="form-input"
-            @change="onLanguageChange(index)"
           >
             <option
               value=""

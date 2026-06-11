@@ -46,4 +46,34 @@ describe('usersService', () => {
       expect(result).toEqual(mockReviews)
     })
   })
+
+  describe('createStripeOnboardingLink', () => {
+    it('posts to the Stripe onboarding endpoint and returns the link', async () => {
+      const mockLink = { url: 'https://connect.stripe.com/setup/s/abc123' }
+      const apiClient = vi.fn().mockResolvedValueOnce(mockLink)
+      const service = createUserService({ apiClient })
+
+      const result = await service.createStripeOnboardingLink()
+
+      expect(apiClient).toHaveBeenCalledTimes(1)
+      expect(apiClient).toHaveBeenCalledWith('/users/me/stripe/onboarding', {
+        method: 'POST'
+      })
+      expect(result).toEqual(mockLink)
+    })
+  })
+
+  describe('getStripeStatus', () => {
+    it('fetches the Stripe status of the current user', async () => {
+      const mockStatus = { isStripeOnboarded: true, stripeAccountId: 'acct_123' }
+      const apiClient = vi.fn().mockResolvedValueOnce(mockStatus)
+      const service = createUserService({ apiClient })
+
+      const result = await service.getStripeStatus()
+
+      expect(apiClient).toHaveBeenCalledTimes(1)
+      expect(apiClient).toHaveBeenCalledWith('/users/me/stripe/status')
+      expect(result).toEqual(mockStatus)
+    })
+  })
 })

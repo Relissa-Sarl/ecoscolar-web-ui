@@ -1,8 +1,11 @@
 <script lang="ts" setup>
+import { useSearchAlertsStore } from '~/stores/searchAlertsStore'
+
 const route = useRoute()
 const { locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
 const usersStore = useUsersStore()
+const searchAlertsStore = useSearchAlertsStore()
 const cartStore = useCartStore()
 
 // Main navigation
@@ -94,6 +97,34 @@ const linkIsActive = (slug: string) => {
   const parts = route.path.split('/').filter(Boolean)
   return parts.includes(slug)
 }
+
+watch(
+  () => usersStore.isAuthenticated,
+  async (isAuthenticated) => {
+    if (isAuthenticated) {
+      await searchAlertsStore.loadAlerts().catch(() => undefined)
+    } else {
+      searchAlertsStore.clearAlerts()
+    }
+  },
+  { immediate: true }
+)
+
+const successfulAlertsCount = computed(() =>
+  searchAlertsStore.alerts.filter(alert => (alert.matchedCount ?? 0) > 0).length
+)
+
+const navBadgeCount = (slug: string) => {
+  if (slug === 'cart')
+    return cartStore.totalItems
+
+  if (slug === 'search-alerts')
+    return successfulAlertsCount.value
+
+  return 0
+}
+
+const formatNavBadgeCount = (count: number) => count > 9 ? '9+' : String(count)
 </script>
 
 <template>
@@ -119,7 +150,7 @@ const linkIsActive = (slug: string) => {
         v-for="link in visibleLinks"
         :key="link.slug"
         :class="[
-          'flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 transition-colors duration-200 hover:bg-slate-50 hover:text-emerald-800 dark:text-gray-300 dark:hover:bg-slate-800 dark:hover:text-emerald-400',
+          'relative flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 transition-colors duration-200 hover:bg-slate-50 hover:text-emerald-800 dark:text-gray-300 dark:hover:bg-slate-800 dark:hover:text-emerald-400',
           linkIsActive(link.slug) ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-300 font-bold' : ''
         ]"
         :to="link.to"
@@ -129,14 +160,15 @@ const linkIsActive = (slug: string) => {
             :name="link.icon"
             class="w-4 h-4 shrink-0"
           />
-          <span
-            v-if="link.slug === 'cart' && cartStore.totalItems > 0"
-            class="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-800 text-[9px] font-bold text-white ring-2 ring-white dark:ring-slate-900"
-          >
-            {{ cartStore.totalItems }}
-          </span>
         </span>
         <span>{{ $t(link.labelKey) }}</span>
+        <span
+          v-if="navBadgeCount(link.slug) > 0"
+          class="absolute -right-1 -top-1 flex min-h-5 min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-bold leading-none text-white ring-2 ring-white dark:ring-slate-900"
+          :class="link.slug === 'cart' ? 'bg-emerald-800' : 'bg-red-600'"
+        >
+          {{ formatNavBadgeCount(navBadgeCount(link.slug)) }}
+        </span>
       </NuxtLink>
     </nav>
 
