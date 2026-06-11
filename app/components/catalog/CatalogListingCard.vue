@@ -18,12 +18,6 @@ const props = defineProps<{
 
 const detailLink = computed(() => localePath(`/adverts/${props.listing.id}`))
 
-const emit = defineEmits<{
-  favoriteToggle: [value: boolean]
-  cartAdd: []
-  bookLesson: []
-}>()
-
 const cartStore = useCartStore()
 const favoritesStore = useFavoritesStore()
 const usersStore = useUsersStore()
@@ -62,15 +56,17 @@ const handleCartAdd = async () => {
     title: t('cart.added_success'),
     color: 'success'
   })
-  emit('cartAdd')
+}
+
+const handleReservation = async () => {
+  // TODO: Implement reservation logic
 }
 
 const toggleFavorite = async () => {
   if (isSubmittingFavorite.value) return
   isSubmittingFavorite.value = true
   try {
-    const result = await favoritesStore.toggleFavorite(favoriteInput.value)
-    emit('favoriteToggle', result.isFavorite)
+    await favoritesStore.toggleFavorite(favoriteInput.value)
   } catch {
     toast.add({
       title: t('favorites.status.error'),
@@ -173,6 +169,7 @@ onBeforeMount(() => {
             v-if="listing.hourly"
             type="button"
             class="rounded-full transition bg-emerald-800 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer"
+            @click="handleReservation"
           >
             {{ $t('catalog.card.book_lesson') }}
           </button>
