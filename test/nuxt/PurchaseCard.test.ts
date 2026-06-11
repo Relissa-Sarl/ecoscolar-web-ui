@@ -103,6 +103,7 @@ describe('PurchaseCard', () => {
       global: { stubs }
     })
     expect(wrapper.text()).toContain('PENDING')
+    expect(wrapper.text()).toContain('me.purchases.view_advert')
   })
 
   it('displays the raw status text as fallback for unknown status', () => {

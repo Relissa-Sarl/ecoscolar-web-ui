@@ -817,6 +817,7 @@
     "errors": {
       "address_required": "L'adresse d'expédition est requise.",
       "init_failed": "Erreur lors de l'initialisation du paiement.",
+      "item_pending_or_sold": "Un des articles dans votre panier est en cours de paiement ou déjà vendu.",
       "general": "Une erreur est survenue lors de la validation."
     }
   }

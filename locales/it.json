@@ -814,6 +814,7 @@
     "errors": {
       "address_required": "L'indirizzo di spedizione è obbligatorio.",
       "init_failed": "Errore durante l'inizializzazione del pagamento.",
+      "item_pending_or_sold": "Uno degli articoli nel tuo carrello è in fase di pagamento o è già stato venduto.",
       "general": "Si è verificato un errore durante la convalida."
     }
   }

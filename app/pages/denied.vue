@@ -1,13 +1,52 @@
 <script setup lang="ts">
+import { onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useI18n, useSeoMeta } from '#imports'
+import { getAdvertService } from '~/services/advertService'
 import ErrorIcon from '~/components/paimentState/ErrorIcon.vue'
 import ErrorMainMessage from '~/components/paimentState/ErrorMainMessage.vue'
 import PaimentStateButton from '~/components/paimentState/PaimentStateButton.vue'
 
 const { t } = useI18n()
+const route = useRoute()
 
 useSeoMeta({
   title: () => t('cart.denied.title')
+})
+
+const productIds = computed<number[]>(() => {
+  const pParam = route.query.productIds
+  if (!pParam) return []
+  const val = Array.isArray(pParam) ? pParam[0] : pParam
+  if (!val) return []
+  return val.split(',').map(Number).filter(n => !isNaN(n))
+})
+
+onMounted(async () => {
+  const ids = productIds.value
+  if (ids.length > 0) {
+    const advertService = getAdvertService()
+    for (const id of ids) {
+      try {
+        await advertService.updateAdvertStatus(id, 'ACTIVE')
+      } catch (err) {
+        console.error(`Failed to revert status for advert ${id}:`, err)
+      }
+    }
+  } else {
+    // Fallback to single productId
+    const pParam = route.query.productId
+    const val = Array.isArray(pParam) ? pParam[0] : pParam
+    const singleId = val ? Number(val) : null
+    if (singleId) {
+      try {
+        const advertService = getAdvertService()
+        await advertService.updateAdvertStatus(singleId, 'ACTIVE')
+      } catch (err) {
+        console.error(`Failed to revert status for advert ${singleId}:`, err)
+      }
+    }
+  }
 })
 </script>
 
