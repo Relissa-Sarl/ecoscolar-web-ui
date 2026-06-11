@@ -21,13 +21,17 @@ const cancelDelete = () => {
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col md:flex-row gap-8 items-start">
     <ProfileInfos
       :user="usersStore.user"
       :is-own-profile="true"
       @delete-account="showDeleteConfirm = true"
     />
+
+    <!-- TODO: Payments history -->
+
     <StripeConnectCard />
+
     <DeleteConfirmationPopup
       :show="showDeleteConfirm"
       :title="$t('profile.deletePopup.title')"
