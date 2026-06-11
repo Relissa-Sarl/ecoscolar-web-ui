@@ -215,7 +215,7 @@ describe('SaleCard', () => {
     await reviewModal.vm.$emit('success', { rating: 4, comment: 'Nice!' })
 
     // It should update the review UI (e.g. show the rating / hide leave review button)
-    expect(wrapper.vm.localReview).toEqual({ rating: 4, comment: 'Nice!' })
+    expect((wrapper.vm as unknown as { localReview: { rating: number, comment: string | null } | null }).localReview).toEqual({ rating: 4, comment: 'Nice!' })
     expect(mockRefreshNuxtData).toHaveBeenCalledWith('user-sales')
   })
 })

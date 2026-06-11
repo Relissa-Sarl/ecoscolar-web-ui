@@ -64,12 +64,12 @@ describe('ReviewModal', () => {
     expect(buttons.length).toBe(5)
 
     // Hover mouseenter
-    await buttons[2].trigger('mouseenter')
+    await buttons[2]!.trigger('mouseenter')
     // Hover mouseleave
-    await buttons[2].trigger('mouseleave')
+    await buttons[2]!.trigger('mouseleave')
 
     // Click rating 4 (index 3)
-    await buttons[3].trigger('click')
+    await buttons[3]!.trigger('click')
 
     mockCreateReview.mockResolvedValueOnce(undefined)
     const form = wrapper.find('form')
@@ -90,7 +90,7 @@ describe('ReviewModal', () => {
 
     // Click star 5
     const buttons = wrapper.findAll('button[type="button"]')
-    await buttons[4].trigger('click')
+    await buttons[4]!.trigger('click')
 
     // Set comment text
     const textarea = wrapper.find('textarea')
@@ -121,7 +121,7 @@ describe('ReviewModal', () => {
     })
 
     const buttons = wrapper.findAll('button[type="button"]')
-    await buttons[2].trigger('click')
+    await buttons[2]!.trigger('click')
 
     mockCreateReview.mockRejectedValueOnce(new Error('API failure'))
     const form = wrapper.find('form')
@@ -147,7 +147,7 @@ describe('ReviewModal', () => {
 
     // Click rating and enter text
     const buttons = wrapper.findAll('button[type="button"]')
-    await buttons[2].trigger('click')
+    await buttons[2]!.trigger('click')
     await wrapper.find('textarea').setValue('Wait...')
 
     // Click cancel button

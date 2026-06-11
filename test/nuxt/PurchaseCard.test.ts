@@ -237,7 +237,7 @@ describe('PurchaseCard', () => {
     await disputeModal.vm.$emit('submit', 'Item not as described')
 
     expect(wrapper.emitted('dispute')?.[0]).toEqual(['txn-1', 'Item not as described'])
-    expect(wrapper.vm.isDisputeOpen).toBe(false)
+    expect((wrapper.vm as unknown as { isDisputeOpen: boolean }).isDisputeOpen).toBe(false)
   })
 
   it('updates localReview and refreshes Nuxt data when review is successfully submitted', async () => {
@@ -251,7 +251,7 @@ describe('PurchaseCard', () => {
 
     await reviewModal.vm.$emit('success', { rating: 5, comment: 'Super!' })
 
-    expect(wrapper.vm.localReview).toEqual({ rating: 5, comment: 'Super!' })
+    expect((wrapper.vm as unknown as { localReview: { rating: number, comment: string | null } | null }).localReview).toEqual({ rating: 5, comment: 'Super!' })
     expect(mockRefreshNuxtData).toHaveBeenCalledWith('user-purchases')
   })
 
@@ -261,7 +261,7 @@ describe('PurchaseCard', () => {
       global: { stubs }
     })
 
-    expect(wrapper.vm.localReview).toBeNull()
+    expect((wrapper.vm as unknown as { localReview: { rating: number, comment: string | null } | null }).localReview).toBeNull()
 
     const updatedReview = { rating: 3, comment: 'Updated' }
     await wrapper.setProps({
@@ -271,6 +271,6 @@ describe('PurchaseCard', () => {
       }
     })
 
-    expect(wrapper.vm.localReview).toEqual(updatedReview)
+    expect((wrapper.vm as unknown as { localReview: { rating: number, comment: string | null } | null }).localReview).toEqual(updatedReview)
   })
 })
