@@ -39,11 +39,11 @@ const handleConfirmReception = async (id: string) => {
   }
 }
 
-const handleDispute = async (id: string) => {
+const handleDispute = async (id: string, reason: string) => {
   if (!confirm(t('me.purchases.alerts.dispute_prompt'))) return
   try {
     const { getHistoryService } = await import('~/services/historyService')
-    await getHistoryService().disputePurchase(id)
+    await getHistoryService().disputePurchase(id, reason)
     alert(t('me.purchases.alerts.dispute_success'))
     refresh()
   } catch (e: unknown) {

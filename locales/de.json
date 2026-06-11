@@ -190,7 +190,11 @@
       "submit_review": "Bewertung senden",
       "cancel_review": "Abbrechen",
       "review_success": "Ihre Bewertung wurde erfolgreich registriert.",
-      "review_error": "Beim Registrieren der Bewertung ist ein Fehler aufgetreten.",
+      "review_error": "Beim Speichern der Bewertung ist ein Fehler aufgetreten.",
+      "dispute_modal_title": "Ein Problem melden",
+      "dispute_reason_label": "Grund für den Konflikt",
+      "cancel_dispute": "Abbrechen",
+      "submit_dispute": "Konflikt senden",
       "tabs": {
         "ongoing": "Laufend",
         "past": "Abgeschlossen"

@@ -47,7 +47,7 @@ export interface HistoryService {
   confirmShipping: (transactionId: string) => Promise<void>
   confirmReception: (transactionId: string) => Promise<void>
   cancelPurchase: (transactionId: string) => Promise<void>
-  disputePurchase: (transactionId: string) => Promise<void>
+  disputePurchase: (transactionId: string, reason: string) => Promise<void>
   createReview: (transactionId: string, rating: number, comment?: string) => Promise<void>
 }
 
@@ -74,15 +74,18 @@ export function createHistoryService({ apiClient }: HistoryServiceDependencies):
     },
 
     async confirmReception(transactionId: string): Promise<void> {
-      await apiClient(`/me/purchases/${transactionId}/confirm-reception`, { method: 'POST' })
+      await apiClient(`/orders/${transactionId}/confirm-receipt`, { method: 'PUT' })
     },
 
     async cancelPurchase(transactionId: string): Promise<void> {
       await apiClient(`/me/purchases/${transactionId}/cancel`, { method: 'POST' })
     },
 
-    async disputePurchase(transactionId: string): Promise<void> {
-      await apiClient(`/me/purchases/${transactionId}/dispute`, { method: 'POST' })
+    async disputePurchase(transactionId: string, reason: string): Promise<void> {
+      await apiClient(`/orders/${transactionId}/dispute`, {
+        method: 'POST',
+        body: { reason }
+      })
     },
 
     /**

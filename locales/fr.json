@@ -191,6 +191,10 @@
       "cancel_review": "Annuler",
       "review_success": "Votre avis a été enregistré avec succès.",
       "review_error": "Une erreur est survenue lors de l'enregistrement de l'avis.",
+      "dispute_modal_title": "Signaler un problème",
+      "dispute_reason_label": "Raison du litige",
+      "cancel_dispute": "Annuler",
+      "submit_dispute": "Envoyer le litige",
       "tabs": {
         "ongoing": "En cours",
         "past": "Passées"
