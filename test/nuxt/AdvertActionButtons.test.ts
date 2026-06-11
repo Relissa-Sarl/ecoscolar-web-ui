@@ -146,7 +146,6 @@ describe('AdvertActionButtons', () => {
         hourly: false
       },
       quantity: 1,
-      reservedUntil: null,
       shippingCost: 0
     }]
     const wrapper = mount(ActionButtons, {
