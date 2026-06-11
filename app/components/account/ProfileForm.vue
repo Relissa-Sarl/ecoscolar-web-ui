@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { SpokenLanguage } from '~/types/user'
+import FormError from '../common/FormError.vue'
+import LocationAutocomplete from '../common/LocationAutocomplete.vue'
 
 interface Props {
   traductionBasePath: string
 }
 
 const props = defineProps<Props>()
-
-const { t } = useI18n()
 
 const usersStore = useUsersStore()
 
@@ -24,7 +24,7 @@ const profileForm = ref({
 })
 
 if (usersStore.user?.isOnboarded) {
-  spokenLanguages.value = usersStore.user?.spokenLanguages || []
+  spokenLanguages.value = usersStore.user?.languages || []
 }
 
 const languageOptions = [
@@ -40,8 +40,8 @@ const levelOptions = ['maternelle', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2']
  */
 const addLanguage = () => {
   spokenLanguages.value.push({
-    language: '',
-    level: ''
+    label: '',
+    languageLevel: ''
   })
 }
 
@@ -54,17 +54,15 @@ const removeLanguage = (index: number) => {
 }
 
 /**
- * Manage language selection
- * @param lang selected language
+ * Get available language options for a specific dropdown
+ * @param currentIndex index of the current dropdown
  */
-const onLanguageChange = (index: number) => {
-  // If the same language is selected more than once, remove the duplicate and alert the user
-  const selectedLang = spokenLanguages.value[index]?.language
-  const duplicateIndex = spokenLanguages.value.findIndex((l, i) => l.language === selectedLang && i !== index)
-  if (duplicateIndex !== -1 && selectedLang) {
-    spokenLanguages.value.splice(duplicateIndex, 1)
-    alert(t(`${props.traductionBasePath}.language_duplicate`, { language: t(selectedLang) }))
-  }
+const getAvailableLanguages = (currentIndex: number) => {
+  const selectedValues = spokenLanguages.value
+    .map((lang, i) => i !== currentIndex ? lang.label : null)
+    .filter(Boolean)
+
+  return languageOptions.filter(opt => !selectedValues.includes(opt.value))
 }
 
 /**
@@ -73,11 +71,15 @@ const onLanguageChange = (index: number) => {
 const handleSubmit = () => {
   const formData = {
     ...profileForm.value,
-    spokenLanguages: spokenLanguages.value.filter(l => l.language && l.level)
+    languages: spokenLanguages.value.filter(l => l.label && l.languageLevel)
   }
 
   usersStore.updateProfile(formData)
 }
+
+type FormErrorKeys = 'InvalidPostalCode' | 'Default'
+
+const { errors } = useFormErrors<FormErrorKeys>(() => usersStore.errors, `${props.traductionBasePath}.errors`)
 </script>
 
 <template>
@@ -141,15 +143,20 @@ const handleSubmit = () => {
         >
           {{ $t(`${props.traductionBasePath}.pc_label`) }}
         </label>
-        <input
+        <LocationAutocomplete
           id="profile-pc"
           v-model="profileForm.postalCode"
-          type="text"
           pattern="[1-9][0-9]{3}"
           :placeholder="$t(`${props.traductionBasePath}.pc_placeholder`)"
+          :no-results-text="$t(`${props.traductionBasePath}.pc_no_results`)"
+          :invalid-text="$t(`${props.traductionBasePath}.errors.InvalidPostalCode`)"
+          :initial-location="usersStore.user?.location"
           required
-          class="form-input"
-        >
+        />
+
+        <FormError
+          :error="errors.InvalidPostalCode"
+        />
       </div>
 
       <div class="flex flex-col gap-2 md:col-span-2">
@@ -183,7 +190,7 @@ const handleSubmit = () => {
 
       <div
         v-for="(lang, index) in spokenLanguages"
-        :key="'lang-' + lang.language"
+        :key="'lang-' + lang.label"
         class="flex items-end gap-4"
       >
         <div class="flex-1">
@@ -195,10 +202,9 @@ const handleSubmit = () => {
           </label>
           <select
             :id="`lang-select-${index}`"
-            v-model="lang.language"
+            v-model="lang.label"
             required
             class="form-input"
-            @change="onLanguageChange(index)"
           >
             <option
               value=""
@@ -207,7 +213,7 @@ const handleSubmit = () => {
               {{ $t(`${props.traductionBasePath}.language_placeholder`) }}
             </option>
             <option
-              v-for="opt in languageOptions"
+              v-for="opt in getAvailableLanguages(index)"
               :key="opt.value"
               :value="opt.value"
             >
@@ -225,7 +231,7 @@ const handleSubmit = () => {
           </label>
           <select
             :id="`level-select-${index}`"
-            v-model="lang.level"
+            v-model="lang.languageLevel"
             required
             class="form-input"
           >

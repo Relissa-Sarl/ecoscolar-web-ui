@@ -3,7 +3,10 @@ services:
   # Frontend microservices
   # -----------------------------
   ecoscolar-frontend:
-    build: .
+    build:
+      context: .
+      args:
+        - NUXT_PUBLIC_API_BASE=${NUXT_PUBLIC_API_BASE}
     container_name: ecoscolar-frontend
     networks:
       - frontend

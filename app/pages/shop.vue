@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import { useLocalePath } from '#imports'
+import {
+  bookCategoryMatches,
+  tutoringGradeMatches,
+  tutoringSubjectMatches
+} from '~/utils/catalogFilterUtils'
 import type {
   AdvertCatalogApiItem,
   CatalogCategoryTab,
   CatalogFetchResult,
-  CatalogGradeLevel,
-  CatalogListing,
-  CatalogSubjectCode,
-  GradeFilterState,
-  SubjectFilterState
+  CatalogListing
 } from '@/types/catalog'
 
 import catalogFallbackJson from '@/mocks/catalogSummaries.json'
 import { getCatalogService } from '~/services/catalogService'
 import { mapCatalogApiToListings } from '~/utils/catalogMappers'
 
-definePageMeta({ layout: 'catalog' })
+const route = useRoute()
 
-/** Sprint 1 HERMES : panneau filtres masqué jusqu'à livraison complète. */
-const showCatalogFiltersPanel = false
+definePageMeta({ layout: 'catalog' })
 
 const catalogFallback = catalogFallbackJson as AdvertCatalogApiItem[]
 const { t } = useI18n()
@@ -58,19 +58,6 @@ const listings = computed((): CatalogListing[] =>
 
 const activeCategory = ref<CatalogCategoryTab>('all')
 
-const grades = ref<GradeFilterState>({
-  primary: false,
-  secondary: false,
-  maturite: false,
-  superieur: false
-})
-
-const subjects = ref<SubjectFilterState>({
-  math: false,
-  french: false,
-  german: false
-})
-
 const sortKey = ref<'recent' | 'price_asc' | 'price_desc'>('recent')
 const draftSearch = ref('')
 const searchLoading = computed(() => pending.value)
@@ -88,13 +75,9 @@ function resetSidebar() {
   activeCategory.value = 'all'
   draftSearch.value = ''
   appliedSearch.value = ''
-  grades.value.primary = false
-  grades.value.secondary = false
-  grades.value.maturite = false
-  grades.value.superieur = false
-  subjects.value.math = false
-  subjects.value.french = false
-  subjects.value.german = false
+  bookCategoryIds.value = []
+  schoolGradeIds.value = []
+  subjectIds.value = []
   sortKey.value = 'recent'
   currentPage.value = 1
 }
@@ -102,34 +85,41 @@ function resetSidebar() {
 const pageSize = ref(9)
 const currentPage = ref(1)
 
-function gradeMatches(filters: GradeFilterState, listing: CatalogListing): boolean {
-  const anyGrade = filters.primary || filters.secondary || filters.maturite || filters.superieur
-  if (!anyGrade || listing.categoryTab === 'supplies')
-    return true
-  if (!listing.gradeLevel)
-    return false
-  const mapPairs: Array<[boolean, CatalogGradeLevel]> = [
-    [filters.primary, 'primary'],
-    [filters.secondary, 'secondary'],
-    [filters.maturite, 'maturity'],
-    [filters.superieur, 'university']
-  ]
-  return mapPairs.some(([on, level]) => on && listing.gradeLevel === level)
+const canResetFilters = computed(() =>
+  activeCategory.value !== 'all'
+  || draftSearch.value.trim() !== ''
+  || appliedSearch.value.trim() !== ''
+  || bookCategoryIds.value.length > 0
+  || schoolGradeIds.value.length > 0
+  || subjectIds.value.length > 0
+  || sortKey.value !== 'recent')
+
+function applySearchFromRouteQuery() {
+  const q = route.query.q
+  if (typeof q === 'string' && q.trim()) {
+    draftSearch.value = q.trim()
+    appliedSearch.value = q.trim()
+    currentPage.value = 1
+  }
 }
 
-function subjectMatches(filters: SubjectFilterState, listing: CatalogListing): boolean {
-  const anySubject = filters.math || filters.french || filters.german
-  if (!anySubject)
-    return true
-  if (listing.categoryTab !== 'tutoring' || !listing.subjectCode)
-    return true
-  const mapPairs: Array<[boolean, CatalogSubjectCode]> = [
-    [filters.math, 'math'],
-    [filters.french, 'french'],
-    [filters.german, 'german']
-  ]
-  return mapPairs.some(([on, code]) => on && listing.subjectCode === code)
-}
+const {
+  bookCategories: bookCategoriesRef,
+  schoolGrades: schoolGradesRef,
+  subjects: subjectsRef,
+  isLoading: referencesLoading,
+  loadError: referencesError,
+  load: loadCatalogReferences
+} = useCatalogReferenceData()
+
+const bookCategoryIds = ref<number[]>([])
+const schoolGradeIds = ref<number[]>([])
+const subjectIds = ref<number[]>([])
+
+onMounted(async () => {
+  applySearchFromRouteQuery()
+  await loadCatalogReferences()
+})
 
 const filtered = computed(() => {
   let rows = [...listings.value]
@@ -141,11 +131,13 @@ const filtered = computed(() => {
     rows = rows.filter(row => row.title.toLowerCase().includes(normalizedSearch))
   }
 
-  if (activeCategory.value !== 'all')
+  if (activeCategory.value !== 'all') {
     rows = rows.filter(row => row.categoryTab === activeCategory.value)
+  }
 
-  rows = rows.filter(row => gradeMatches(grades.value, row))
-  rows = rows.filter(row => subjectMatches(subjects.value, row))
+  rows = rows.filter(row => bookCategoryMatches(bookCategoryIds.value, bookCategoriesRef.value, row))
+  rows = rows.filter(row => tutoringGradeMatches(schoolGradeIds.value, schoolGradesRef.value, row))
+  rows = rows.filter(row => tutoringSubjectMatches(subjectIds.value, subjectsRef.value, row))
 
   if (sortKey.value === 'price_asc')
     rows.sort((a, b) => a.price - b.price)
@@ -168,40 +160,57 @@ watch(filtered, () => {
     currentPage.value = pageCount.value
 })
 
-watch(activeCategory, () => {
+watch(activeCategory, (tab) => {
   currentPage.value = 1
+  if (tab !== 'textbooks')
+    bookCategoryIds.value = []
+  if (tab !== 'tutoring') {
+    schoolGradeIds.value = []
+    subjectIds.value = []
+  }
 })
 
-watch(grades, () => {
+watch(bookCategoryIds, () => {
+  currentPage.value = 1
+}, { deep: true })
+watch(schoolGradeIds, () => {
+  currentPage.value = 1
+}, { deep: true })
+watch(subjectIds, () => {
   currentPage.value = 1
 }, { deep: true })
 
-watch(subjects, () => {
-  currentPage.value = 1
-}, { deep: true })
+watch(
+  () => route.query.q,
+  () => {
+    applySearchFromRouteQuery()
+  }
+)
 </script>
 
 <template>
   <div class="relative min-h-screen w-full max-w-none bg-transparent pb-28">
     <section class="w-full max-w-none py-2 md:py-4">
       <div
-        class="grid w-full gap-8"
-        :class="showCatalogFiltersPanel ? 'lg:grid-cols-[minmax(240px,18rem)_1fr] lg:gap-10 xl:gap-12' : ''"
+        class="grid w-full gap-8 lg:grid-cols-[minmax(240px,18rem)_1fr] lg:gap-10 xl:gap-12"
       >
         <CatalogFiltersPanel
-          v-if="showCatalogFiltersPanel"
           v-model:active-category="activeCategory"
-          v-model:grades="grades"
-          v-model:subjects="subjects"
+          v-model:book-category-ids="bookCategoryIds"
+          v-model:school-grade-ids="schoolGradeIds"
+          v-model:subject-ids="subjectIds"
+          :book-categories="bookCategoriesRef"
+          :school-grades="schoolGradesRef"
+          :subjects="subjectsRef"
+          :can-reset-filters="canResetFilters"
+          :references-loading="referencesLoading"
+          :references-error="referencesError"
           class="hidden lg:block"
           @reset="resetSidebar()"
         />
 
         <div class="min-w-0 space-y-8">
-          <div
-            v-if="showCatalogFiltersPanel"
-            class="lg:hidden"
-          >
+          <div class="lg:hidden">
             <details class="group rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
               <summary class="cursor-pointer text-sm font-semibold text-slate-900 dark:text-white">
                 {{ $t('catalog.filters.mobile_toggle') }}
@@ -209,8 +218,15 @@ watch(subjects, () => {
               <div class="mt-4 pt-2">
                 <CatalogFiltersPanel
                   v-model:active-category="activeCategory"
-                  v-model:grades="grades"
-                  v-model:subjects="subjects"
+                  v-model:book-category-ids="bookCategoryIds"
+                  v-model:school-grade-ids="schoolGradeIds"
+                  v-model:subject-ids="subjectIds"
+                  :book-categories="bookCategoriesRef"
+                  :school-grades="schoolGradesRef"
+                  :subjects="subjectsRef"
+                  :can-reset-filters="canResetFilters"
+                  :references-loading="referencesLoading"
+                  :references-error="referencesError"
                   @reset="resetSidebar()"
                 />
               </div>
@@ -223,7 +239,10 @@ watch(subjects, () => {
             @search="runSearchFromBanner()"
           />
 
-          <div class="rounded-3xl border border-emerald-200/60 bg-emerald-50 px-5 py-3 text-sm dark:border-emerald-900 dark:bg-emerald-950/30">
+          <div
+            v-if="hadApiError || pending || fromFallbackOnly"
+            class="rounded-3xl border border-emerald-200/60 bg-emerald-50 px-5 py-3 text-sm dark:border-emerald-900 dark:bg-emerald-950/30"
+          >
             <p
               v-if="hadApiError"
               class="font-medium text-amber-900 dark:text-amber-200"
@@ -242,9 +261,6 @@ watch(subjects, () => {
             >
               {{ $t('catalog.banner.fallback_demo') }}
             </p>
-            <template v-else>
-              {{ $t('catalog.banner.online') }}
-            </template>
           </div>
 
           <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -253,7 +269,7 @@ watch(subjects, () => {
                 {{ $t('catalog.list.title') }}
               </h1>
               <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                {{ $t('catalog.list.subtitle_near', { count: filtered.length, zip: '1001' }) }}
+                {{ $t('catalog.list.subtitle_near', { count: filtered.length }) }}
               </p>
             </div>
             <div class="flex items-center gap-2">
@@ -315,7 +331,7 @@ watch(subjects, () => {
     </section>
 
     <NuxtLink
-      :to="localePath('/sell')"
+      :to="localePath('/adverts/create-advert')"
       class="fixed bottom-8 right-6 z-40 flex size-14 items-center justify-center rounded-full bg-emerald-900 text-2xl text-white shadow-xl ring-2 ring-white/30 transition hover:scale-[1.06] hover:bg-emerald-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-400 md:right-10"
       :aria-label="$t('catalog.fab.place_advert')"
     >

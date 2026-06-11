@@ -42,8 +42,64 @@
     "impact_unit": "eingespart"
   },
   "cart": {
+    "seo_title": "Mein Warenkorb | EcoScolar",
     "title": "Mein Warenkorb",
-    "empty": "Ihr Warenkorb ist zur Zeit leer"
+    "remove_from_cart": "Aus dem Warenkorb entfernen",
+    "clear": "Warenkorb leeren",
+    "added_success": "Artikel zum Warenkorb hinzugefügt!",
+    "tva": "MwSt. 8.1% und Gebühren inbegriffen",
+    "one_advert": "Artikel",
+    "many_adverts": "Artikel",
+    "items": {
+      "books": "Bücher",
+      "supplies": "Schulmaterial",
+      "tutoring": "Kurse",
+      "quantity": "Menge",
+      "vendor": "Verkäufer"
+    },
+    "timer": {
+      "expired": "Reservierung abgelaufen",
+      "reserved": "Reserviert ({time})"
+    },
+    "checkout": {
+      "title": "Bestellübersicht",
+      "subtotal": "Zwischensumme",
+      "shipping": "Versandart",
+      "shipping_fee": "Versandkosten",
+      "hand-to-hand": "Abholung",
+      "post": "Postversand",
+      "service_fee": "Servicegebühr 10%",
+      "free": "Kostenlos",
+      "total": "Gesamtsumme",
+      "confirm": "Zur Kasse gehen",
+      "loading": "Weiterleitung zu Stripe..."
+    },
+    "text_under_resume": {
+      "circular_trade": " Kreislaufwirtschaft: ",
+      "circular_text": " Bevorzugen Sie lokales Second-Hand-Material und reduzieren Sie Ihren CO2-Fußabdruck.",
+      "payment_note": "Sichere Transaktionen:",
+      "payment_text": "Vollständiger Schutz der Zahlungsdaten über Stripe"
+    },
+    "empty": {
+      "title": "Ihr Warenkorb ist zurzeit leer",
+      "subtitle": "Stöbern Sie in den Anzeigen und finden Sie das passende Buch, Schulmaterial oder den passenden Kurs.",
+      "go_to_shop": "Shop durchsuchen",
+      "back_to_home": "Zurück zur Startseite"
+    },
+    "success": {
+      "title": "Zahlung erfolgreich!",
+      "subtitle": "Vielen Dank für Ihre Bestellung. Ihre Transaktion wurde erfolgreich abgeschlossen.",
+      "order_number": "Bestellnummer",
+      "amount_paid": "Bezahlter Betrag",
+      "status": "Zahlungsstatus",
+      "confirmed": "Bestätigt",
+      "back_home": "Zurück zur Startseite",
+      "continue_shopping": "Weiter einkaufen"
+    },
+    "denied": {
+      "title": "Zahlung abgelehnt!",
+      "subtitle": "Ihre Transaktion konnte nicht abgeschlossen werden. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support, falls das Problem weiterhin besteht."
+    }
   },
   "catalog": {
     "seo_title": "Katalog | EcoScolar",
@@ -62,16 +118,13 @@
       "category_textbooks": "Schulbücher",
       "category_tutoring": "Nachhilfe",
       "show_all": "Alles anzeigen",
+      "book_category_heading": "Buchkategorie",
+      "supplies_no_subfilters": "Für Material gibt es derzeit keine weiteren Filter.",
       "grade_heading": "Schulstufe",
-      "grade_primary": "Primar",
-      "grade_secondary": "Sekundar",
-      "grade_maturity": "Maturität",
-      "grade_university": "Höhere Schule/FH",
       "subject_heading": "Fach",
-      "subject_math": "Mathematik",
-      "subject_french": "Französisch",
-      "subject_german": "Deutsch",
-      "reset": "Filter zurücksetzen"
+      "reset": "Filter zurücksetzen",
+      "references_loading": "Filter werden geladen…",
+      "references_load_error": "Filter konnten nicht geladen werden."
     },
     "banner": {
       "api_error_retry": "Der Katalog konnte nicht geladen werden. API prüfen und Seite neu laden.",
@@ -81,13 +134,13 @@
     },
     "list": {
       "title": "Inserate durchsuchen",
-      "subtitle_near": "{count} Treffer · PLZ Hinweis {zip}"
+      "subtitle_near": "{count} Treffer"
     },
     "sort": {
       "label": "Sortieren",
       "recent": "Neueste",
-      "price_asc": "Preis ↑",
-      "price_desc": "Preis ↓"
+      "price_asc": "Aufsteigend",
+      "price_desc": "Absteigend"
     },
     "empty": {
       "title": "Keine passenden Einträge.",
@@ -99,9 +152,6 @@
     },
     "card": {
       "alt_image": "Artikelbild",
-      "meta_supplies": "Kat. Material",
-      "meta_textbooks": "ISBN — nach Scan verfügbar",
-      "meta_tutoring": "Nachhilfe • mind. 4 Lektionen",
       "hourly": "Preis",
       "demo_rating": "4,9/5 Demo",
       "book_lesson": "Buchen"
@@ -121,6 +171,88 @@
     }
   },
   "me": {
+    "purchases": {
+      "title": "Meine Kaufhistorie",
+      "subtitle": "Finden Sie die vollständige Historie der Bücher und Schulmaterialien, die Sie auf EcoScolar gekauft haben.",
+      "loading": "Ihre Kaufhistorie wird geladen...",
+      "error": "Beim Abrufen Ihrer Käufe ist ein Fehler aufgetreten.",
+      "error_detail": "Bitte aktualisieren Sie die Seite oder versuchen Sie es später erneut.",
+      "empty_title": "Keine Käufe erfasst",
+      "empty_placeholder": "Ihre Kaufhistorie wird hier angezeigt.",
+      "explore_cta": "Marktplatz erkunden",
+      "seller_label": "Verkäufer",
+      "view_advert": "Inserat ansehen",
+      "leave_review": "Bewertung abgeben",
+      "review_modal_title": "Bewertung für {name} abgeben",
+      "rating_label": "Bewertung",
+      "comment_label": "Kommentar",
+      "comment_placeholder": "Schreiben Sie Ihren Kommentar...",
+      "submit_review": "Bewertung senden",
+      "cancel_review": "Abbrechen",
+      "review_success": "Ihre Bewertung wurde erfolgreich registriert.",
+      "review_error": "Beim Speichern der Bewertung ist ein Fehler aufgetreten.",
+      "dispute_modal_title": "Ein Problem melden",
+      "dispute_reason_label": "Grund für den Konflikt",
+      "cancel_dispute": "Abbrechen",
+      "submit_dispute": "Konflikt senden",
+      "tabs": {
+        "ongoing": "Laufend",
+        "past": "Abgeschlossen"
+      },
+      "actions": {
+        "cancel": "Bestellung stornieren",
+        "dispute": "Problem melden",
+        "confirm_reception": "Empfang bestätigen",
+        "details": "Details"
+      },
+      "details": {
+        "title": "Bestelldetails",
+        "item": "Artikel",
+        "price": "Preis",
+        "date": "Kaufdatum",
+        "status": "Status"
+      },
+      "alerts": {
+        "confirm_reception_prompt": "Möchten Sie den Empfang wirklich bestätigen? Das Geld wird an den Verkäufer überwiesen.",
+        "reception_success": "Empfang erfolgreich bestätigt!",
+        "dispute_prompt": "Möchten Sie wirklich ein Problem melden? Die Transaktion wird blockiert.",
+        "dispute_success": "Für diese Bestellung wurde ein Streitfall eröffnet.",
+        "cancel_prompt": "Möchten Sie diese Bestellung wirklich stornieren? Sie erhalten eine Rückerstattung.",
+        "cancel_success": "Bestellung erfolgreich storniert.",
+        "error": "Fehler: {message}"
+      }
+    },
+    "sales": {
+      "title": "Meine Verkaufshistorie",
+      "subtitle": "Verfolgen Sie Ihre Verkäufe, aktiven Anzeigen und die Geschichte der Artikel, die Sie mit der EcoScolar-Gemeinschaft geteilt haben.",
+      "loading": "Ihre Verkaufshistorie wird geladen...",
+      "error": "Beim Abrufen Ihrer Verkäufe ist ein Fehler aufgetreten.",
+      "error_detail": "Bitte aktualisieren Sie die Seite oder versuchen Sie es später erneut.",
+      "empty_title": "Keine Verkäufe erfasst",
+      "empty_placeholder": "Ihre Verkaufshistorie wird hier angezeigt.",
+      "sell_cta": "Inserat erstellen",
+      "buyer_label": "Gekauft von",
+      "tabs": {
+        "ongoing": "Laufend",
+        "past": "Abgeschlossen"
+      },
+      "actions": {
+        "confirm_shipping": "Ich habe den Artikel versendet"
+      },
+      "alerts": {
+        "confirm_shipping_prompt": "Haben Sie den Artikel wirklich versendet?",
+        "shipping_success": "Der Status wurde aktualisiert: Versendet.",
+        "error": "Fehler: {message}"
+      },
+      "view": "Ansehen",
+      "edit": "Bearbeiten",
+      "status": {
+        "active": "Zum Verkauf",
+        "sold": "Verkauft",
+        "paused": "Pausiert",
+        "expired": "Abgelaufen"
+      }
+    },
     "adverts": {
       "title": "Meine Anzeigen",
       "description": "Verwalten Sie Ihre Verkaufsanzeigen und Ihre Nachhilfeleistungen.",
@@ -136,7 +268,8 @@
         "edit": "Bearbeiten",
         "resume": "Wiederaufnehmen",
         "expired": "Abgelaufen",
-        "sold": "Verkauft"
+        "sold": "Verkauft",
+        "blocked": "Gesperrt"
       },
       "deleteConfirmTitle": "Sind Sie sicher, dass Sie diese Anzeige löschen möchten?",
       "deleteConfirmMessage": "Diese Aktion ist unwiderruflich. Die Anzeige wird dauerhaft von der Plattform entfernt.",
@@ -144,15 +277,13 @@
       "confirm": "Löschen"
     }
   },
-  "createAdvert": {
-    "newAdvert": "Neue Anzeige",
-    "createAdvert": "Anzeige erstellen",
-    "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
+  "advertForm": {
     "form": {
       "information": "Informationen zur Anzeige",
       "detailedInformation": "Detaillierte Informationen",
       "title": "Titel",
       "condition": "Zustand",
+      "productCategoryId": "Kategorie der Ausrüstung",
       "titlePlaceholder": "Beispiel: Buch der Mathematik",
       "author": "Autor",
       "authorPlaceholder": "Beispiel: Tolkiens",
@@ -161,6 +292,7 @@
       "edition": "Ausgabe",
       "editionPlaceholder": "Beispiel: 3. Ausgabe",
       "isbn": "ISBN",
+      "weight": "Gewicht (kg)",
       "bookCategoryId": "Buchkategorie",
       "writtenLanguage": "Schriftsprache",
       "isbnPlaceholder": "978-...",
@@ -178,6 +310,7 @@
       "dragDrop": "Ziehen Sie Dateien hierher oder klicken Sie zum Auswählen",
       "uploadedImages": "Hochgeladene Bilder",
       "publish": "Anzeige veröffentlichen",
+      "modify": "Änderungen speichern",
       "cancel": "Abbrechen"
     },
     "error": {
@@ -190,7 +323,8 @@
         "schoolGradeId": "Die Schulstufe ist erforderlich",
         "teachingLanguage": "Die Unterrichtssprache ist erforderlich",
         "studyLevel": "Das Bildungsniveau ist erforderlich",
-        "condition": "Der Zustand ist für Ausrüstung erforderlich",
+        "condition": "Der Zustand ist für Ausrüstung erforderlich und Bücher erforderlich",
+        "productCategoryId": "Die Kategorie der Ausrüstung ist für Ausrüstung erforderlich",
         "images": "Mindestens ein Bild ist erforderlich",
         "publisher": "Der Verlag ist für Bücher erforderlich",
         "edition": "Die Ausgabe ist für Bücher erforderlich",
@@ -214,105 +348,37 @@
         "studyLevelLength": "Das ausgewählte Bildungsniveau darf 50 Zeichen nicht überschreiten",
         "bookCategoryId": "Die ausgewählte Buchkategorie ist nicht gültig",
         "writtenLanguage": "Die ausgewählte Schriftsprache ist nicht gültig",
-        "isbnFormat": "Das ISBN-Format ist ungültig",
+        "isbnFormat": "Das ISBN-Format ist ungültig (z.B.: 978-3-16-148410-0)",
+        "weightNegative": "Das Gewicht muss größer oder gleich null sein",
         "authorLength": "Der Autorname darf 150 Zeichen nicht überschreiten",
         "publisherLength": "Der Verlagsname darf 150 Zeichen nicht überschreiten",
         "editionLength": "Die Ausgabe darf 150 Zeichen nicht überschreiten",
         "imageSize": "Jedes Bild muss kleiner als 5MB sein",
         "imageType": "Dateityp für das Bild ist nicht erlaubt",
         "imageCount": "Sie können maximal 10 Bilder hochladen"
-      },
-      "creationFailed": "Beim Erstellen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+      }
     }
+  },
+  "createAdvert": {
+    "newAdvert": "Neue Anzeige",
+    "createAdvert": "Anzeige erstellen",
+    "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
+    "creationFailed": "Beim Erstellen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
   },
   "modifyAdvert": {
     "existingAdvert": "Anzeige",
     "modifyAdvert": "Anzeige bearbeiten",
     "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
     "loading": "Laden der Anzeige...",
-    "form": {
-      "information": "Informationen zur Anzeige",
-      "detailedInformation": "Detaillierte Informationen",
-      "title": "Titel",
-      "condition": "Zustand",
-      "titlePlaceholder": "Beispiel: Buch der Mathematik",
-      "author": "Autor",
-      "authorPlaceholder": "Beispiel: Tolkiens",
-      "publisher": "Verlag",
-      "publisherPlaceholder": "Beispiel: Gallimard",
-      "edition": "Ausgabe",
-      "editionPlaceholder": "Beispiel: 3. Ausgabe",
-      "isbn": "ISBN",
-      "bookCategoryId": "Buchkategorie",
-      "writtenLanguage": "Schriftsprache",
-      "isbnPlaceholder": "978-...",
-      "subjectId": "Fach",
-      "schoolGradeId": "Schulstufe",
-      "teachingLanguage": "Unterrichtssprache",
-      "studyLevel": "Bildungsniveau",
-      "studyLevelPlaceholder": "Beispiel: Gymnasium",
-      "description": "Beschreibung",
-      "descriptionPlaceholder": "Beschreiben Sie den Zustand des Artikels, seine Funktionen oder den Inhalt Ihres Kurses...",
-      "sales": "Verkauf",
-      "price": "Preis",
-      "images": "Bilder",
-      "uploadImages": "Bilder für Ihre Anzeige hochladen",
-      "dragDrop": "Ziehen Sie Dateien hierher oder klicken Sie zum Auswählen",
-      "uploadedImages": "Hochgeladene Bilder",
-      "modify": "Anzeige bearbeiten",
-      "cancel": "Abbrechen"
-    },
-    "error": {
-      "empty": {
-        "title": "Der Titel ist erforderlich",
-        "description": "Die Beschreibung ist erforderlich",
-        "price": "Der Preis ist erforderlich",
-        "subjectId": "Das Fach ist erforderlich",
-        "schoolGradeId": "Die Schulstufe ist erforderlich",
-        "teachingLanguage": "Die Unterrichtssprache ist erforderlich",
-        "studyLevel": "Das Bildungsniveau ist erforderlich",
-        "condition": "Der Zustand ist für Ausrüstung erforderlich",
-        "images": "Mindestens ein Bild ist erforderlich",
-        "publisher": "Der Verlag ist für Bücher erforderlich",
-        "edition": "Die Ausgabe ist für Bücher erforderlich",
-        "isbn": "Die ISBN ist für Bücher erforderlich",
-        "bookCategoryId": "Die Buchkategorie ist für Bücher erforderlich",
-        "writtenLanguage": "Die Schriftsprache ist für Bücher erforderlich",
-        "author": "Der Autor ist für Bücher erforderlich"
-      },
-      "invalid": {
-        "titleLengthMin": "Der Titel muss mindestens 3 Zeichen enthalten",
-        "titleLengthMax": "Der Titel darf nicht mehr als 200 Zeichen enthalten",
-        "descriptionLengthMin": "Die Beschreibung muss mindestens 10 Zeichen enthalten",
-        "descriptionLengthMax": "Die Beschreibung darf nicht mehr als 2000 Zeichen enthalten",
-        "sqlInjection": "Das Feld darf keine verbotenen Sonderzeichen enthalten",
-        "priceNegative": "Der Preis muss größer als null sein",
-        "priceMax": "Der Preis darf 500€ nicht überschreiten",
-        "priceFormat": "Der Preis muss eine gültige Zahl mit maximal zwei Dezimalstellen sein",
-        "subjectId": "Die ausgewählte Fach ist nicht gültig",
-        "schoolGradeId": "Die ausgewählte Schulstufe ist nicht gültig",
-        "teachingLanguage": "Die ausgewählte Unterrichtssprache ist nicht gültig",
-        "studyLevelLength": "Das ausgewählte Bildungsniveau darf 50 Zeichen nicht überschreiten",
-        "bookCategoryId": "Die ausgewählte Buchkategorie ist nicht gültig",
-        "writtenLanguage": "Die ausgewählte Schriftsprache ist nicht gültig",
-        "isbnFormat": "Das ISBN-Format ist ungültig",
-        "authorLength": "Der Autorname darf 150 Zeichen nicht überschreiten",
-        "publisherLength": "Der Verlagsname darf 150 Zeichen nicht überschreiten",
-        "editionLength": "Die Ausgabe darf 150 Zeichen nicht überschreiten",
-        "imageSize": "Jedes Bild muss kleiner als 5MB sein",
-        "imageType": "Dateityp für das Bild ist nicht erlaubt",
-        "imageCount": "Sie können maximal 10 Bilder hochladen"
-      },
-      "invalidId": "Ungültige Anzeigen-ID",
-      "modificationFailed": "Beim Bearbeiten der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
-    }
+    "invalidId": "Ungültige Anzeigen-ID",
+    "modificationFailed": "Beim Bearbeiten der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
   },
   "advert": {
     "actions": {
-      "buy_now": "Jetzt kaufen",
+      "buy_now": "In den Warenkorb",
+      "already_in_cart": "Bereits im Warenkorb",
       "favorite_add": "Zu Favoriten hinzufügen",
-      "favorite_remove": "Aus Favoriten entfernen",
-      "notify": "Benachrichtige mich"
+      "favorite_remove": "Aus Favoriten entfernen"
     },
     "detail": {
       "featured": "Empfohlen",
@@ -325,8 +391,16 @@
       "condition_details": "Zustandsdetails",
       "description": "Beschreibung",
       "public_questions": "Öffentliche Fragen",
+      "ask_hint": "Stellen Sie Ihre Frage dem Verkäufer öffentlich.",
+      "no_public_questions": "Derzeit gibt es keine öffentlichen Fragen.",
       "questions_count": "{count} Frage(n) gestellt",
       "ask_placeholder": "Stellen Sie dem Verkäufer eine Frage…",
+      "ask_success": "Frage erfolgreich gesendet.",
+      "ask_error": "Die Frage konnte nicht gesendet werden.",
+      "answer_placeholder": "Schreiben Sie Ihre Antwort…",
+      "answer_submit": "Antworten",
+      "answer_success": "Antwort erfolgreich gesendet.",
+      "answer_error": "Die Antwort konnte nicht gesendet werden.",
       "view_profile": "Profil ansehen",
       "seller_badge": "Verkäufer"
     }
@@ -350,6 +424,62 @@
       "view_advert": "Anzeige ansehen"
     }
   },
+  "searchAlerts": {
+    "title": "Meine Suchalarme",
+    "subtitle": "Gespeicherte Suchen",
+    "save": "Diese Suche speichern",
+    "saving": "Wird gespeichert…",
+    "saved": "Suche gespeichert",
+    "save_error": "Suche konnte nicht gespeichert werden",
+    "form": {
+      "title": "Suchalarm erstellen",
+      "description": "Lege Kriterien fest, die später vom Backend für Benachrichtigungen verwendet werden.",
+      "advert_type": "Anzeigentyp",
+      "keyword": "Suchbegriff",
+      "keyword_placeholder": "z. B. Rechner, Mathe, Französisch…",
+      "max_price": "Maximaler Preis",
+      "max_price_placeholder": "z. B. 50",
+      "product_category": "Materialkategorie",
+      "any_product_category": "Alle Materialien",
+      "book_category": "Schulbuchkategorie",
+      "any_book_category": "Alle Schulbücher",
+      "isbn": "ISBN",
+      "isbn_placeholder": "z. B. 978-2-09-172887-6",
+      "subject": "Fach",
+      "any_subject": "Alle Fächer",
+      "grade": "Schulstufe",
+      "any_grade": "Alle Stufen",
+      "helper": "Füge mindestens ein Kriterium zusätzlich zum Anzeigentyp hinzu.",
+      "submit": "Alarm erstellen",
+      "references_error": "Einige Filterlisten konnten nicht geladen werden.",
+      "types": {
+        "product": "Material",
+        "book": "Schulbücher",
+        "service": "Nachhilfe"
+      }
+    },
+    "empty": {
+      "title": "Noch keine Alarme",
+      "message": "Erstelle oben einen Alarm oder speichere eine Suche im Shop."
+    },
+    "status": {
+      "loading": "Alarme werden geladen…",
+      "error": "Alarme konnten nicht geladen werden."
+    },
+    "actions": {
+      "back_to_shop": "Zurück zum Shop",
+      "browse_shop": "Shop durchsuchen",
+      "delete": "Löschen",
+      "deleting": "Wird gelöscht…",
+      "run_search": "Suche erneut starten",
+      "view_matches": "Artikel ansehen"
+    },
+    "matches": {
+      "badge": "{count} Treffer",
+      "found": "{count} Artikel passen zu diesem Alarm.",
+      "none": "Derzeit passt kein Artikel zu diesem Alarm."
+    }
+  },
   "header": {
     "nav_shop": "Geschäft",
     "nav_support": "Support",
@@ -359,17 +489,32 @@
     "login": "Anmelden",
     "logout": "Abmelden",
     "profile": "Profil",
-    "favorites": "Favoriten"
+    "favorites": "Favoriten",
+    "search_alerts": "Suchalarme",
+    "support_requests": "Meine Anfragen"
   },
   "common": {
+    "back": "Zurück",
+    "back_previous": "Zurück zur vorherigen Seite",
     "back_to_home": "Zurück zur Startseite",
+    "back_to_profile": "Zurück zum Profil",
     "back_to_catalog": "Zurück zum Katalog",
     "skip_to_content": "Zum Hauptinhalt springen",
     "last_updated": "Zuletzt aktualisiert:",
     "contact_support": "Support kontaktieren",
     "home": "Startseite",
+    "footer_tagline": "© 2026 EcoScolar. Entwickelt für moderne Studierende.",
     "favorites": "Favoriten",
-    "breadcrumb_label": "Brotkrümel-Navigation"
+    "breadcrumb_label": "Brotkrümel-Navigation",
+    "messages": {
+      "error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    },
+    "deletePopup": {
+      "title": "Löschung bestätigen",
+      "message": "Sind Sie sicher, dass Sie dieses Element löschen möchten? Diese Aktion ist unwiderruflich.",
+      "cancel": "Abbrechen",
+      "confirm": "Löschen"
+    }
   },
   "error": {
     "not_found": {
@@ -394,7 +539,8 @@
       "reason_placeholder": "Wählen Sie eine Option",
       "message": "Ihre Nachricht",
       "email_placeholder": "beispiel{'@'}email.com",
-      "message_placeholder": "Wie können wir Ihnen helfen?"
+      "message_placeholder": "Wie können wir Ihnen helfen?",
+      "message_hint": "Mindestens {min} Zeichen."
     },
     "reasons": {
       "account": "Kontoproblem",
@@ -404,13 +550,48 @@
     },
     "actions": {
       "submit": "Nachricht senden",
-      "cancel": "Abbrechen",
-      "confirm_cancel": "Möchten Sie wirklich abbrechen? Ihre Änderungen gehen verloren.",
-      "confirm_cancel_title": "Änderungen abbrechen",
-      "confirm_cancel_confirm": "Verlassen",
-      "confirm_cancel_stay": "Bleiben"
+      "view_requests": "Meine Anfragen"
     },
-    "success": "Vielen Dank! Ihre Nachricht wurde gesendet."
+    "success": "Vielen Dank! Ihre Nachricht wurde gesendet.",
+    "error_submit": "Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
+    "validation": {
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "reason": "Bitte wählen Sie einen Kontaktgrund aus.",
+      "subject": "Bitte geben Sie einen Betreff mit mindestens 5 Zeichen ein.",
+      "message": "Ihre Nachricht muss mindestens 10 Zeichen enthalten."
+    },
+    "list": {
+      "subtitle": "Support",
+      "title": "Meine Support-Anfragen",
+      "description": "Hier finden Sie den Verlauf Ihrer Nachrichten an das EcoScolar-Team.",
+      "ticket_label": "Anfrage #{id}",
+      "status": {
+        "loading": "Anfragen werden geladen…",
+        "error": "Anfragen können derzeit nicht geladen werden.",
+        "retry": "Erneut versuchen"
+      },
+      "empty": {
+        "title": "Noch keine Anfragen",
+        "message": "Sie haben den Support noch nicht kontaktiert. Nutzen Sie das Formular, um uns zu schreiben."
+      },
+      "actions": {
+        "new_request": "Neue Anfrage",
+        "open": "Anfrage ansehen"
+      }
+    },
+    "detail": {
+      "title": "Anfragedetails",
+      "you": "Sie",
+      "support_team": "EcoScolar Support",
+      "reply_label": "Ihre Nachricht",
+      "reply_placeholder": "Schreiben Sie Ihre Antwort an den Support…",
+      "send": "Senden",
+      "sending": "Wird gesendet…",
+      "not_found": "Diese Anfrage wurde nicht gefunden oder Sie haben keinen Zugriff.",
+      "load_error": "Diese Anfrage kann derzeit nicht geladen werden.",
+      "back_to_list": "Zurück zu meinen Anfragen",
+      "conversation_unavailable": "Bald können Sie hier direkt mit unserem Team chatten. Ihre Anfrage ist bei uns eingegangen. Ihre Nachricht finden Sie unten."
+    }
   },
   "privacy": {
     "title": "Datenschutzerklärung",
@@ -479,6 +660,7 @@
       "lastName_label": "Nachname",
       "pc_label": "Postleitzahl",
       "pc_placeholder": "z.B. 1000",
+      "pc_no_results": "Keine Ortschaft gefunden.",
       "dob_label": "Geburtsdatum",
       "languages_title": "Gesprochene Sprachen",
       "languages_empty": "Keine Sprache hinzugefügt.",
@@ -490,7 +672,11 @@
       "add_language": "Sprache hinzufügen",
       "remove_language_aria": "Sprache Nummer {index} entfernen",
       "submit_button": "Registrierung abschließen",
-      "language_duplicate": "Sie haben bereits die Sprache '{language}' zu Ihrem Profil hinzugefügt."
+      "language_duplicate": "Sie haben bereits die Sprache '{language}' zu Ihrem Profil hinzugefügt.",
+      "errors": {
+        "Default": "Beim Aktualisieren Ihres Profils ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+        "InvalidPostalCode": "Die Postleitzahl ist ungültig."
+      }
     },
     "errors": {
       "DuplicateUserName": "Diese E-Mail-Adresse ist bereits mit einem Konto verknüpft.",
@@ -508,7 +694,32 @@
   "forgot_password": {
     "instruction": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.",
     "submit_button": "Link senden",
-    "back_to_login": "Zurück zur Anmeldung"
+    "back_to_login": "Zurück zur Anmeldung",
+    "status": {
+      "loading": "Link wird gesendet..."
+    },
+    "instruction_success": "Wenn ein Konto mit dieser E-Mail-Adresse existiert, erhalten Sie in Kürze einen Link zum Zurücksetzen Ihres Passworts."
+  },
+  "reset_password": {
+    "return_to_login": "Zurück zur Anmeldung",
+    "title": "Passwort zurücksetzen",
+    "subtitle": "Geben Sie Ihr neues Passwort ein, um Ihr EcoScolar-Konto zu sichern.",
+    "email_label": "E-Mail-Adresse",
+    "password_label": "Neues Passwort",
+    "confirm_password_label": "Passwort bestätigen",
+    "submit_button": "Passwort zurücksetzen",
+    "errors": {
+      "Default": "Ein Fehler ist aufgetreten beim Zurücksetzen des Passworts. Bitte versuchen Sie es erneut.",
+      "passwords_do_not_match": "Die Passwörter stimmen nicht überein.",
+      "PasswordTooShort": "Ihr Passwort muss mindestens 6 Zeichen lang sein.",
+      "PasswordRequiresNonAlphanumeric": "Ihr Passwort muss ein Sonderzeichen enthalten.",
+      "PasswordRequiresUpper": "Ihr Passwort muss einen Großbuchstaben enthalten.",
+      "PasswordRequiresDigit": "Ihr Passwort muss eine Zahl enthalten.",
+      "InvalidToken": "Der Reset-Code ist ungültig oder abgelaufen."
+    },
+    "status": {
+      "loading": "Passwort wird zurückgesetzt..."
+    }
   },
   "admin": {
     "nav_label": "Admin-Menü",
@@ -526,9 +737,34 @@
     "language": "Sprachen",
     "location": "Standort",
     "favorites": "Favoriten",
-    "sales": "Verkäufe",
+    "sales": "Meine Anzeigen",
+    "purchases_history": "Meine Käufe",
+    "sales_history": "Meine Verkäufe",
+    "support_requests": "Meine Anfragen",
     "edit": "Profil bearbeiten",
-    "settings" : {
+    "delete": "Konto löschen",
+    "stripe": {
+      "payments": "Zahlungen",
+      "loading": "Ihre Stripe-Zahlungen werden geladen...",
+      "secured_by": "Sicher durch Stripe",
+      "configured": {
+        "tag": "Konto eingerichtet",
+        "description": "Verwalten Sie Ihr Stripe-Konto, um Zahlungen für Ihre Verkäufe auf EcoScolar zu erhalten.",
+        "manage_account": "Mein Konto verwalten",
+        "ready": "Ihr Konto ist bereit, um Zahlungen für Ihre Verkäufe zu erhalten."
+      },
+      "not_configured": {
+        "tag": "Aktion erforderlich",
+        "description": "Richten Sie Ihr Stripe-Konto ein, um mit dem Verkauf auf EcoScolar zu beginnen.",
+        "configure_account": "Zahlungen einrichten",
+        "not_ready": "Richten Sie Ihr Stripe-Konto ein, um mit dem Verkauf auf EcoScolar zu beginnen."
+      },
+      "errors": {
+        "retry": "Erneut versuchen",
+        "loading": "Fehler beim Laden"
+      }
+    },
+    "settings": {
       "title": "Mein Profil bearbeiten",
       "subtitle": "Aktualisieren Sie Ihre persönlichen Informationen für eine personalisierte Erfahrung.",
       "nickname_label": "Benutzername",
@@ -537,6 +773,7 @@
       "pc_label": "Postleitzahl",
       "dob_label": "Geburtsdatum",
       "languages_title": "Gesprochene Sprachen",
+      "languages_empty": "Keine Sprache hinzugefügt.",
       "language_label": "Sprache",
       "level_label": "Niveau",
       "level_native": "Muttersprache",
@@ -544,7 +781,56 @@
       "submit_button": "Änderungen speichern",
       "language_placeholder": "Sprache auswählen",
       "level_placeholder": "Niveau auswählen",
-      "pc_placeholder": "z.B. 1000"
+      "pc_placeholder": "z.B. 1000",
+      "pc_no_results": "Keine Ortschaft gefunden.",
+      "errors": {
+        "Default": "Ein Fehler ist aufgetreten beim Abschluss Ihres Profils. Bitte versuchen Sie es erneut.",
+        "InvalidPostalCode": "Die Postleitzahl ist ungültig."
+      }
+    },
+    "public": {
+      "error": "Es ist derzeit nicht möglich, das Benutzerprofil zu laden. Es könnte sein, dass der Benutzer sein Profil nicht öffentlich gemacht hat oder dass das Profil gelöscht wurde."
+    },
+    "reviews": {
+      "title": "Erhaltene Bewertungen",
+      "empty": "Für diesen Benutzer wurden noch keine Bewertungen abgegeben.",
+      "count": "{count} Bewertungen",
+      "one_review": "1 Bewertung",
+      "buyer": "Käufer",
+      "seller": "Verkäufer",
+      "filter_all": "Alle Bewertungen",
+      "filter_buyer": "Als Käufer",
+      "filter_seller": "Als Verkäufer",
+      "average": "Durchschnitt",
+      "star_distribution": "Verteilung der Sterne"
+    },
+    "history": {
+      "title": "Mein Verlauf",
+      "purchases": "Meine letzten Käufe",
+      "sales": "Meine letzten Verkäufe",
+      "no_purchases": "Sie haben noch keine Käufe getätigt.",
+      "no_sales": "Sie haben noch keine Verkäufe getätigt.",
+      "status": {
+        "completed": "Abgeschlossen",
+        "pending": "Ausstehend",
+        "paid_waiting_shipping": "Warten auf Versand",
+        "shipped": "Versandt",
+        "cancelled": "Storniert",
+        "disputed": "In Streit"
+      }
+    }
+  },
+  "checkout": {
+    "title": "Bestellbestätigung",
+    "instruction": "Bitte geben Sie Ihre Lieferadresse an, um zur sicheren Zahlung zu gelangen.",
+    "address_label": "Vollständige Lieferadresse",
+    "address_placeholder": "Name, Vorname\nStraße, Hausnummer\nPLZ, Ort",
+    "submit": "Zur Kasse gehen (Stripe)",
+    "errors": {
+      "address_required": "Die Lieferadresse ist erforderlich.",
+      "init_failed": "Fehler bei der Zahlungsinitialisierung.",
+      "item_pending_or_sold": "Ein Artikel in Ihrem Warenkorb wird gerade bezahlt oder ist bereits verkauft.",
+      "general": "Bei der Validierung ist ein Fehler aufgetreten."
     }
   }
 }

@@ -1,11 +1,34 @@
 <script setup lang="ts">
 import Breadcrumb from '~/components/common/Breadcrumb.vue'
 import { AdvertType } from '@/utils/enum/advertType'
+import type { QuestionResponse } from '~/types/advert'
+import { getAdvertService } from '~/services/advertService'
+import { useUsersStore } from '~/stores/usersStore'
 
 const route = useRoute()
+const router = useRouter()
 const localePath = useLocalePath()
+
+function goBack() {
+  const previous = router.options.history.state.back
+  if (previous) {
+    router.back()
+  } else {
+    navigateTo(localePath('/shop'))
+  }
+}
 const { t } = useI18n()
+const usersStore = useUsersStore()
 const { data: advert } = await useAdvert(String(route.params.id))
+const { data: advertQuestions, refresh: refreshQuestions } = await useAsyncData(
+  `advert-questions:${String(route.params.id)}`,
+  async () => {
+    if (!usersStore.isAuthenticated) {
+      return [] as QuestionResponse[]
+    }
+    return await getAdvertService().getQuestions(Number(route.params.id))
+  }
+)
 
 const breadcrumbItems = computed(() => {
   const items: Array<{ label: string, to?: string }> = [
@@ -50,11 +73,46 @@ const showMetadata = computed(() => {
 const showConditionDetails = computed(() =>
   (advert.value?.conditions?.length ?? 0) > 0)
 
-const showPublicQuestions = computed(() =>
-  (advert.value?.questions?.length ?? 0) > 0)
+const isOwnAdvert = computed(() => {
+  const sellerUsername = advert.value?.seller?.username?.trim().toLowerCase()
+  const currentNickname = usersStore.user?.nickname?.trim().toLowerCase()
 
-const handleAskQuestion = (_text: string) => {
-  // TODO: send question to API
+  return !!sellerUsername
+    && !!currentNickname
+    && sellerUsername === currentNickname
+})
+
+const toast = useToast()
+const answeringQuestionId = ref<number | null>(null)
+
+const handleAskQuestion = async (text: string) => {
+  if (isOwnAdvert.value)
+    return
+
+  try {
+    await getAdvertService().postQuestion(Number(route.params.id), text)
+    await refreshQuestions()
+    toast.add({ title: t('advert.detail.ask_success'), color: 'success' })
+  } catch {
+    toast.add({ title: t('advert.detail.ask_error'), color: 'error' })
+  }
+}
+
+const handleAnswerQuestion = async ({ questionId, text }: { questionId: number, text: string }) => {
+  if (!isOwnAdvert.value)
+    return
+
+  answeringQuestionId.value = questionId
+
+  try {
+    await getAdvertService().postAnswer(Number(route.params.id), questionId, text)
+    await refreshQuestions()
+    toast.add({ title: t('advert.detail.answer_success'), color: 'success' })
+  } catch {
+    toast.add({ title: t('advert.detail.answer_error'), color: 'error' })
+  } finally {
+    answeringQuestionId.value = null
+  }
 }
 
 const advertSummary = computed(() => {
@@ -66,7 +124,8 @@ const advertSummary = computed(() => {
     type: advert.value.type,
     condition: advert.value.condition,
     price: advert.value.price,
-    image: advert.value.image || advert.value.images?.[0] || ''
+    image: advert.value.image || advert.value.images?.[0] || '',
+    seller: advert.value.seller?.username
   }
 })
 </script>
@@ -77,12 +136,14 @@ const advertSummary = computed(() => {
 
     <div class="max-w-7xl mx-auto px-6 py-8">
       <div class="mb-8">
-        <NuxtLink
-          :to="localePath('/shop')"
-          class="inline-flex items-center gap-2 text-emerald-700 dark:text-emerald-400 hover:underline font-medium focus:ring-2 focus:ring-emerald-500 outline-none rounded"
+        <button
+          type="button"
+          class="group inline-flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-medium no-underline focus:ring-2 focus:ring-emerald-500 outline-none rounded cursor-pointer bg-transparent border-0 p-0"
+          @click="goBack"
         >
-          <span aria-hidden="true">←</span> {{ $t('common.back_to_catalog') }}
-        </NuxtLink>
+          <span aria-hidden="true">←</span>
+          <span class="border-b border-transparent pb-px group-hover:border-current">{{ $t('common.back') }}</span>
+        </button>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -93,7 +154,7 @@ const advertSummary = computed(() => {
           />
         </div>
 
-        <div class="lg:col-span-1">
+        <div class="lg:col-span-1 space-y-4">
           <AdvertInfo
             v-if="advert"
             :condition="showCondition ? advert.condition : ''"
@@ -114,9 +175,14 @@ const advertSummary = computed(() => {
           <AdvertSellerCard
             v-if="advert && advert.seller.username"
             :seller="advert.seller"
-            @view-profile="() => {}"
+            @view-profile="() => {
+              if (advert?.seller?.id) {
+                navigateTo(localePath(`/users/${advert.seller.id}`))
+              }
+            }"
           />
           <AdvertActionButtons
+            v-if="advert?.seller.id !== usersStore.user?.id"
             :advert="advertSummary"
           />
         </div>
@@ -134,15 +200,17 @@ const advertSummary = computed(() => {
       </div>
 
       <div
-        v-if="showPublicQuestions"
+        v-if="advert"
         class="mt-12"
       >
         <AdvertPublicQuestions
-          v-if="advert"
           :seller="advert.seller"
-          :questions="advert.questions || []"
-          :answers="advert.answers || []"
+          :can-ask="usersStore.isAuthenticated && !isOwnAdvert"
+          :can-answer="isOwnAdvert"
+          :answering-question-id="answeringQuestionId"
+          :questions="advertQuestions || []"
           @ask-question="handleAskQuestion"
+          @answer-question="handleAnswerQuestion"
         />
       </div>
     </div>

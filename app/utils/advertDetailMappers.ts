@@ -7,8 +7,9 @@ import type {
 import type { AdvertCatalogDetailApiItem } from '@/types/catalog'
 import { AdvertType } from '@/utils/enum/advertType'
 
-function sellerFromApi(sellerPseudo: string): Advert['seller'] {
+function sellerFromApi(sellerPseudo: string, userId?: string): Advert['seller'] {
   return {
+    id: userId,
     avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(sellerPseudo)}`,
     username: sellerPseudo,
     zip: '',
@@ -37,12 +38,13 @@ function formatConditionLabel(condition: string): string {
   return condition.replace(/_/g, ' ')
 }
 
-/** GET /v1/adverts/summary/{guid} — catalogue mock ou Guid non décodable en id DB. */
+/** GET /adverts/summary/{id} — résumé catalogue (mock ou BDD). */
 export function mapCatalogSummaryToAdvert(item: AdvertCatalogDetailApiItem): Advert {
-  const { image, images } = resolveImages(undefined, item.id, item.imageUrl)
+  const catalogId = String(item.id)
+  const { image, images } = resolveImages(undefined, catalogId, item.imageUrl)
 
   return {
-    id: item.id,
+    id: catalogId,
     type: item.type,
     title: item.title,
     authors: '',
@@ -54,7 +56,7 @@ export function mapCatalogSummaryToAdvert(item: AdvertCatalogDetailApiItem): Adv
     image,
     images,
     isbn: item.isbn ?? '',
-    subject: item.subject ?? '',
+    subject: item.subjects ?? '',
     grade: item.grade ?? '',
     school: '',
     description: item.description,
@@ -72,11 +74,11 @@ export function mapCatalogSummaryToAdvert(item: AdvertCatalogDetailApiItem): Adv
 }
 
 /** GET /v1/adverts/books/{id} */
-export function mapBookToAdvert(item: BookReadApiItem, catalogGuid: string): Advert {
-  const { image, images } = resolveImages(item.pictures, catalogGuid)
+export function mapBookToAdvert(item: BookReadApiItem, catalogId: string): Advert {
+  const { image, images } = resolveImages(item.pictures, catalogId)
 
   return {
-    id: catalogGuid,
+    id: catalogId,
     type: AdvertType.BOOK,
     title: item.title,
     authors: item.author,
@@ -93,18 +95,18 @@ export function mapBookToAdvert(item: BookReadApiItem, catalogGuid: string): Adv
     school: '',
     description: item.description,
     conditions: [],
-    seller: sellerFromApi(item.sellerPseudo),
+    seller: sellerFromApi(item.sellerPseudo, item.userId),
     questions: [],
     answers: []
   }
 }
 
 /** GET /v1/adverts/products/{id} */
-export function mapProductToAdvert(item: ProductReadApiItem, catalogGuid: string): Advert {
-  const { image, images } = resolveImages(item.pictures, catalogGuid)
+export function mapProductToAdvert(item: ProductReadApiItem, catalogId: string): Advert {
+  const { image, images } = resolveImages(item.pictures, catalogId)
 
   return {
-    id: catalogGuid,
+    id: catalogId,
     type: AdvertType.PRODUCT,
     title: item.title,
     authors: '',
@@ -121,18 +123,18 @@ export function mapProductToAdvert(item: ProductReadApiItem, catalogGuid: string
     school: '',
     description: item.description,
     conditions: [],
-    seller: sellerFromApi(item.sellerPseudo),
+    seller: sellerFromApi(item.sellerPseudo, item.userId),
     questions: [],
     answers: []
   }
 }
 
 /** GET /v1/adverts/services/{id} — pas de condition (Swagger). */
-export function mapServiceToAdvert(item: ServiceReadApiItem, catalogGuid: string): Advert {
-  const { image, images } = resolveImages(undefined, catalogGuid)
+export function mapServiceToAdvert(item: ServiceReadApiItem, catalogId: string): Advert {
+  const { image, images } = resolveImages(undefined, catalogId)
 
   return {
-    id: catalogGuid,
+    id: catalogId,
     type: AdvertType.SERVICE,
     title: item.title,
     authors: '',
@@ -149,7 +151,7 @@ export function mapServiceToAdvert(item: ServiceReadApiItem, catalogGuid: string
     school: item.studyLevel,
     description: item.description,
     conditions: [],
-    seller: sellerFromApi(item.sellerPseudo),
+    seller: sellerFromApi(item.sellerPseudo, item.userId),
     questions: [],
     answers: []
   }

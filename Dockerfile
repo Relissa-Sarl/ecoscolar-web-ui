@@ -23,6 +23,8 @@ COPY . .
 RUN pnpm nuxi prepare
 
 # Generate the static application for production
+ARG NUXT_PUBLIC_API_BASE=https://localhost:5001/api
+ENV NUXT_PUBLIC_API_BASE=$NUXT_PUBLIC_API_BASE
 RUN pnpm build
 
 # Nginx server for production ---

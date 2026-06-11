@@ -1,0 +1,5 @@
+# Lint test
+pnpm run lint
+
+# Coverage test >= 80%
+pnpm run test:coverage

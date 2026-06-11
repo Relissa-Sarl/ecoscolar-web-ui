@@ -5,8 +5,10 @@ export default defineNuxtRouteMiddleware((to) => {
   const localePath = useLocalePath()
 
   const protectedPath = '/register/step-2'
-  const allowedRoutes = ['/', '/register/step-2', '/support', '/terms', '/privacy']
+  const allowedRoutes = ['/', '/register/step-2', '/support', '/me/support-requests', '/terms', '/privacy']
   const normalizedPath = to.path.replace(/^\/(it|de)(?=\/|$)/, '') || '/'
+  const isAllowedRoute = allowedRoutes.includes(normalizedPath)
+    || normalizedPath.startsWith('/me/support-requests/')
 
   if (normalizedPath === protectedPath) {
     if (!usersStore.isAuthenticated) {
@@ -18,7 +20,7 @@ export default defineNuxtRouteMiddleware((to) => {
   }
 
   // If the user is already on an allowlisted page, we don't want to redirect them again
-  if (allowedRoutes.includes(normalizedPath)) {
+  if (isAllowedRoute) {
     return
   }
 

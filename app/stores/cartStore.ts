@@ -1,0 +1,312 @@
+import { computed, ref, watch } from 'vue'
+import { defineStore } from 'pinia'
+import type { CatalogListing } from '../types/catalog'
+import { getCartService } from '../services/cartService'
+import { getAdvertService } from '../services/advertService'
+import { useUsersStore } from './usersStore'
+import { AdvertType } from '../utils/enum/advertType'
+import { AdvertStatus } from '../utils/enum/advertStatus'
+import type { CartItemDto } from '../types/cart'
+
+export interface CartStoreItem {
+  listing: CatalogListing
+  quantity: number
+  shippingCost: number
+}
+
+export const useCartStore = defineStore('cart', () => {
+  const items = ref<CartStoreItem[]>([])
+  const isLoading = ref(false)
+  const hasLoaded = ref(false)
+  const error = ref<string | null>(null)
+
+  const cartService = getCartService()
+  const usersStore = useUsersStore()
+
+  const cartKey = computed(() => 'ecoscolar_cart')
+
+  const totalItems = computed(() => {
+    return items.value.reduce((sum, item) => sum + item.quantity, 0)
+  })
+
+  const totalPrice = computed(() => {
+    return items.value.reduce((sum, item) => sum + item.listing.price * item.quantity, 0)
+  })
+
+  const saveCart = () => {
+    if (typeof localStorage !== 'undefined' && cartKey.value) {
+      localStorage.setItem(cartKey.value, JSON.stringify(items.value))
+    }
+  }
+
+  const mapCartItemToCatalogListing = (dto: CartItemDto): CatalogListing => {
+    const isHourly = dto.type === AdvertType.SERVICE
+    const categoryTab
+      = dto.type === AdvertType.BOOK
+        ? 'textbooks'
+        : dto.type === AdvertType.PRODUCT
+          ? 'supplies'
+          : 'tutoring'
+
+    return {
+      id: String(dto.advertId),
+      title: dto.title,
+      price: dto.price,
+      type: dto.type as AdvertType,
+      categoryTab,
+      location: '', // not returned by API
+      imageUrl: dto.primaryImage || '',
+      hourly: isHourly,
+      seller: dto.sellerPseudo,
+      status: dto.status as AdvertStatus
+    }
+  }
+
+  let activeLoadPromise: Promise<void> | null = null
+
+  const loadCart = async (force = false): Promise<void> => {
+    if (import.meta.server) {
+      return
+    }
+
+    if (hasLoaded.value && !force) {
+      return
+    }
+
+    if (activeLoadPromise && !force) {
+      return activeLoadPromise
+    }
+
+    const runLoad = async () => {
+      isLoading.value = true
+      error.value = null
+
+      try {
+        if (usersStore.isAuthenticated) {
+          // 1. Sync guest cart items to backend if there are any
+          if (typeof localStorage !== 'undefined' && cartKey.value) {
+            const data = localStorage.getItem(cartKey.value)
+            if (data) {
+              try {
+                const localItems: CartStoreItem[] = JSON.parse(data)
+                if (Array.isArray(localItems) && localItems.length > 0) {
+                  for (const item of localItems) {
+                    try {
+                      await cartService.addToCart({ advertId: Number(item.listing.id) })
+                    } catch (e) {
+                      console.error('Failed to sync guest cart item to backend:', e)
+                    }
+                  }
+                }
+              } catch {
+                // Ignore parsing errors for malformed local storage data
+              }
+              // Clear the guest cart from localStorage
+              localStorage.removeItem(cartKey.value)
+            }
+          }
+
+          // 2. Fetch the cart items from backend
+          const apiItems = await cartService.getCartItems()
+          const validApiItems: typeof apiItems = []
+          // REmove the items in the cart if the status is SOLD
+          for (const dto of apiItems) {
+            if (dto.status === 'SOLD' || dto.status === AdvertStatus.SOLD) {
+              try {
+                await cartService.removeFromCart(dto.advertId)
+              } catch (e) {
+                console.error('Failed to clean up sold item from database cart:', e)
+              }
+            } else {
+              validApiItems.push(dto)
+            }
+          }
+          items.value = validApiItems.map(dto => ({
+            listing: mapCartItemToCatalogListing(dto),
+            quantity: 1,
+            shippingCost: dto.shippingCost || 0
+          }))
+        } else {
+          // Load local cart for guest
+          if (typeof localStorage !== 'undefined' && cartKey.value) {
+            const data = localStorage.getItem(cartKey.value)
+            if (data) {
+              try {
+                const parsed = JSON.parse(data)
+                const tempItems = Array.isArray(parsed)
+                  ? parsed.map((item: CartStoreItem) => ({
+                      ...item,
+                      quantity: 1,
+                      shippingCost: item.shippingCost || 0
+                    }))
+                  : []
+
+                if (tempItems.length > 0) {
+                  const advertService = getAdvertService()
+                  const checked = await Promise.all(
+                    tempItems.map(async (item) => {
+                      try {
+                        const advert = await advertService.getAdvert(Number(item.listing.id))
+                        if (advert) {
+                          item.listing.status = advert.status
+                          if (advert.status === AdvertStatus.SOLD) {
+                            return null
+                          }
+                        }
+                        return item
+                      } catch (e) {
+                        const err = e as { status?: number }
+                        if (err && err.status === 404) {
+                          return null
+                        }
+                        return item
+                      }
+                    })
+                  )
+                  items.value = checked.filter((item): item is CartStoreItem => item !== null)
+                  saveCart()
+                } else {
+                  items.value = []
+                }
+              } catch {
+                items.value = []
+              }
+            } else {
+              items.value = []
+            }
+          } else {
+            items.value = []
+          }
+        }
+        hasLoaded.value = true
+      } catch (cause) {
+        error.value = cause instanceof Error ? cause.message : 'Unable to load cart'
+      } finally {
+        isLoading.value = false
+        activeLoadPromise = null
+      }
+    }
+
+    activeLoadPromise = runLoad()
+    return activeLoadPromise
+  }
+
+  // Load the cart from localStorage/API on client side
+  if (import.meta.client) {
+    void loadCart()
+  }
+
+  // Watch for auth changes to reload/sync or clear cart
+  watch(
+    () => usersStore.isAuthenticated,
+    async () => {
+      // Force reload on auth state change
+      hasLoaded.value = false
+      await loadCart(true)
+    }
+  )
+
+  const addToCart = async (listing: CatalogListing) => {
+    const existing = items.value.find(item => item.listing.id === listing.id)
+    if (existing) {
+      return
+    }
+
+    if (usersStore.isAuthenticated) {
+      isLoading.value = true
+      error.value = null
+      try {
+        await cartService.addToCart({ advertId: Number(listing.id) })
+        items.value.push({ listing, quantity: 1, shippingCost: 0 })
+      } catch (cause) {
+        error.value = cause instanceof Error ? cause.message : 'Unable to add to cart'
+        throw cause
+      } finally {
+        isLoading.value = false
+      }
+    } else {
+      items.value.push({ listing, quantity: 1, shippingCost: 0 })
+      saveCart()
+    }
+  }
+
+  const removeFromCart = async (listingId: string) => {
+    if (usersStore.isAuthenticated) {
+      isLoading.value = true
+      error.value = null
+      try {
+        await cartService.removeFromCart(Number(listingId))
+        items.value = items.value.filter(item => item.listing.id !== listingId)
+      } catch (cause) {
+        error.value = cause instanceof Error ? cause.message : 'Unable to remove from cart'
+        throw cause
+      } finally {
+        isLoading.value = false
+      }
+    } else {
+      items.value = items.value.filter(item => item.listing.id !== listingId)
+      saveCart()
+    }
+  }
+
+  const updateQuantity = async (listingId: string, quantity: number) => {
+    // Keep it local as quantity is capped at 1 for EcoScolar marketplace items anyway
+    const existing = items.value.find(item => item.listing.id === listingId)
+    if (existing) {
+      if (quantity <= 0) {
+        await removeFromCart(listingId)
+      } else {
+        existing.quantity = quantity
+        if (!usersStore.isAuthenticated) {
+          saveCart()
+        }
+      }
+    }
+  }
+
+  const clearCart = async () => {
+    if (activeLoadPromise) {
+      await activeLoadPromise
+    } else if (!hasLoaded.value) {
+      await loadCart()
+    }
+
+    if (usersStore.isAuthenticated) {
+      isLoading.value = true
+      error.value = null
+      try {
+        // Delete items from backend sequentially
+        for (const item of items.value) {
+          try {
+            await cartService.removeFromCart(Number(item.listing.id))
+          } catch (e) {
+            console.error('Failed to remove item on clearCart:', e)
+          }
+        }
+        items.value = []
+      } catch (cause) {
+        error.value = cause instanceof Error ? cause.message : 'Unable to clear cart'
+        throw cause
+      } finally {
+        isLoading.value = false
+      }
+    } else {
+      items.value = []
+      saveCart()
+    }
+  }
+
+  return {
+    items,
+    totalItems,
+    totalPrice,
+    isLoading,
+    hasLoaded,
+    error,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
+    loadCart
+  }
+})

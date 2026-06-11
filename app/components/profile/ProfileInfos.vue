@@ -14,6 +14,10 @@ const props = defineProps<{
   isOwnProfile: boolean
 }>()
 
+const emits = defineEmits<{
+  'delete-account': []
+}>()
+
 /**
  * Computed property to generate a display name for the user.
  * If the profile belongs to the logged-in user and has first and last name, it combines them.
@@ -25,6 +29,11 @@ const displayName = computed(() => {
     return `${props.user.firstName} ${props.user.lastName}`
   }
   return props.user.nickname || ''
+})
+
+const profileMenuLink = (path: string) => localePath({
+  path,
+  query: { from: 'profile' }
 })
 </script>
 
@@ -52,7 +61,7 @@ const displayName = computed(() => {
       class="w-full flex flex-col gap-3 mb-5 text-sm"
     >
       <LanguagesComponent
-        :spoken-languages="(props.user as User)?.spokenLanguages ?? []"
+        :spoken-languages="(props.user as User)?.languages ?? []"
       />
       <LocationComponent
         :location="(props.user as User)?.location ?? null"
@@ -61,9 +70,12 @@ const displayName = computed(() => {
 
     <hr class="w-full border-slate-100 dark:border-slate-800 mb-5">
 
-    <nav class="w-full flex flex-col gap-5">
+    <nav
+      v-if="props.isOwnProfile"
+      class="w-full flex flex-col gap-5"
+    >
       <NuxtLink
-        :to="localePath('/favorites')"
+        :to="profileMenuLink('/favorites')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
       >
         <svg
@@ -84,7 +96,7 @@ const displayName = computed(() => {
       </NuxtLink>
 
       <NuxtLink
-        :to="localePath('/me/adverts')"
+        :to="profileMenuLink('/me/adverts')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
       >
         <svg
@@ -103,8 +115,93 @@ const displayName = computed(() => {
         </svg>
         <span class="font-bold text-sm">{{ $t('profile.sales') }}</span>
       </NuxtLink>
+
       <NuxtLink
-        :to="localePath('/me/settings')"
+        :to="profileMenuLink('/me/purchases')"
+        class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+          />
+        </svg>
+        <span class="font-bold text-sm">{{ $t('profile.purchases_history') }}</span>
+      </NuxtLink>
+
+      <NuxtLink
+        :to="profileMenuLink('/me/sales')"
+        class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <span class="font-bold text-sm">{{ $t('profile.sales_history') }}</span>
+      </NuxtLink>
+
+      <NuxtLink
+        v-if="props.isOwnProfile"
+        :to="profileMenuLink('/me/support-requests')"
+        class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.625m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12.75m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"
+          />
+        </svg>
+        <span class="font-bold text-sm">{{ $t('profile.support_requests') }}</span>
+      </NuxtLink>
+
+      <NuxtLink
+        v-if="props.isOwnProfile && (props.user as User)?.roles.includes('Admin')"
+        :to="localePath('/me/admin')"
+        class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="size-6"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M11.484 2.17a.75.75 0 0 1 1.032 0 11.209 11.209 0 0 0 7.877 3.08.75.75 0 0 1 .722.515 12.74 12.74 0 0 1 .635 3.985c0 5.942-4.064 10.933-9.563 12.348a.749.749 0 0 1-.374 0C6.314 20.683 2.25 15.692 2.25 9.75c0-1.39.223-2.73.635-3.985a.75.75 0 0 1 .722-.516l.143.001c2.996 0 5.718-1.17 7.734-3.08ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75ZM12 15a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75H12Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        <span class="font-bold text-sm">Dashboard</span>
+      </NuxtLink>
+      <NuxtLink
+        :to="profileMenuLink('/me/settings')"
         class="flex items-center gap-3 text-emerald-950 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors ml-auto"
       >
         <svg
@@ -123,6 +220,27 @@ const displayName = computed(() => {
         </svg>
         <span class="font-bold text-sm">{{ $t('profile.edit') }}</span>
       </NuxtLink>
+      <button
+        v-if="props.isOwnProfile"
+        class="flex items-center gap-3 text-red-500 hover:text-red-700 transition-colors ml-auto cursor-pointer"
+        @click="() => emits('delete-account')"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+          />
+        </svg>
+        <span class="font-bold text-sm">{{ $t('profile.delete') }}</span>
+      </button>
     </nav>
   </div>
 </template>

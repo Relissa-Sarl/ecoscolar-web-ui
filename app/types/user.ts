@@ -10,13 +10,15 @@ export interface User extends PublicUser {
   postalCode: string
   birthdayDate: string
   isOnboarded: boolean
+  isBanned: boolean
   location: UserLocation
-  spokenLanguages: SpokenLanguage[]
+  languages: SpokenLanguage[]
+  roles: string[]
 }
 
 export interface SpokenLanguage {
-  language: string
-  level: string
+  label: string
+  languageLevel: string
 }
 
 export interface UserLocation {
@@ -31,5 +33,33 @@ export interface UpdateProfileInput {
   lastName: string
   postalCode: string
   birthdayDate: string
-  spokenLanguages: SpokenLanguage[]
+  languages: SpokenLanguage[]
+}
+
+export interface UserReview {
+  reviewId: number
+  comment: string
+  rating: number
+  date: string
+  reviewerId: string
+  reviewerNickname: string
+  reviewedId: string
+  reviewedNickname: string
+  transactionId: number
+  reviewedRole: 'BUYER' | 'SELLER'
+}
+
+export interface ResetPasswordInput {
+  email: string
+  newPassword: string
+  resetCode: string
+}
+
+export interface StripeStatus {
+  isStripeOnboarded: boolean
+  stripeAccountId: string | null
+}
+
+export interface StripeOnboardingLink {
+  url: string
 }

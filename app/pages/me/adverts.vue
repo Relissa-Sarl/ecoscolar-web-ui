@@ -5,6 +5,7 @@ import { AdvertType } from '@/utils/enum/advertType'
 import { AdvertStatus } from '@/utils/enum/advertStatus'
 import { getAdvertService } from '~/services/advertService'
 import { getUserService } from '~/services/usersService'
+import DeleteConfirmationPopup from '~/components/common/DeleteConfirmationPopup.vue'
 
 const localePath = useLocalePath()
 
@@ -12,6 +13,7 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const adverts = ref<MyAdvert[]>([])
 const filters = ref<string[]>([$t('me.adverts.filters.all'), $t('me.adverts.filters.book'), $t('me.adverts.filters.supplies'), $t('me.adverts.filters.tutoring')])
 
 const filterBy = ref<string>($t('me.adverts.filters.all'))
@@ -30,10 +32,11 @@ const getActionText = (status: AdvertStatus) => {
   if (status === AdvertStatus.PAUSED) return $t('me.adverts.actions.resume')
   if (status === AdvertStatus.EXPIRED) return $t('me.adverts.actions.expired')
   if (status === AdvertStatus.SOLD) return $t('me.adverts.actions.sold')
+  if (status === AdvertStatus.BLOCKED) return $t('me.adverts.actions.blocked')
   return ''
 }
 const isActionDisabled = (status: AdvertStatus) => {
-  return status === AdvertStatus.EXPIRED || status === AdvertStatus.SOLD
+  return status === AdvertStatus.EXPIRED || status === AdvertStatus.SOLD || status === AdvertStatus.BLOCKED
 }
 const deleteAdvert = (id: number) => {
   showDeleteConfirm.value = true
@@ -45,6 +48,7 @@ const confirmDelete = async () => {
       const service = getAdvertService()
       await service.deleteAdvert(advertToDelete.value.id)
       adverts.value = adverts.value.filter(advert => advert.id !== advertToDelete.value?.id)
+      advertToDelete.value = null
     } catch (error) {
       console.error('Error deleting advert:', error)
     } finally {
@@ -53,7 +57,11 @@ const confirmDelete = async () => {
     }
   }
 }
-const adverts = ref<MyAdvert[]>([])
+
+const cancelDelete = () => {
+  showDeleteConfirm.value = false
+  advertToDelete.value = null
+}
 
 onMounted(async () => {
   try {
@@ -67,8 +75,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="min-h-screen px-4 py-10 text-gray-900 dark:bg-gray-950 dark:text-gray-100">
+  <section class="min-h-screen bg-white px-4 py-10 text-gray-900 dark:bg-gray-950 dark:text-gray-100">
     <div class="mx-auto rounded-3xl p-8 text-left dark:bg-gray-950 dark:text-gray-100">
+      <ProfileBackLink />
+
       <h1 class="text-3xl font-bold tracking-tight md:text-4xl">
         {{ $t('me.adverts.title') }}
       </h1>
@@ -96,7 +106,7 @@ onMounted(async () => {
           </div>
           <NuxtLink
             :to="localePath('/adverts/create-advert')"
-            class="ml-auto rounded-xl bg-[#105B53] px-4 py-2 text-sm font-medium text-white hover:bg-[#0c4540] dark:text-gray-300"
+            class="ml-auto rounded-xl text-sm font-medium px-4 py-2 bg-emerald-800 text-white hover:bg-emerald-700 transition-colors"
           >
             {{ $t('me.adverts.add') }}
           </NuxtLink>
@@ -174,33 +184,13 @@ onMounted(async () => {
             </div>
           </div>
           <!-- Delete Confirmation Modal -->
-          <div
-            v-show="showDeleteConfirm"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-          >
-            <div class="rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800">
-              <h3 class="mb-4 text-lg font-semibold">
-                {{ $t('me.adverts.deleteConfirmTitle') }}
-              </h3>
-              <p class="mb-6 text-sm text-gray-600 dark:text-gray-400">
-                {{ $t('me.adverts.deleteConfirmMessage') }}
-              </p>
-              <div class="flex justify-end gap-4">
-                <button
-                  class="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
-                  @click="showDeleteConfirm = false; advertToDelete = null"
-                >
-                  {{ $t('me.adverts.cancel') }}
-                </button>
-                <button
-                  class="rounded-lg bg-red-500 px-4 py-2 text-sm text-white hover:bg-red-600"
-                  @click="confirmDelete"
-                >
-                  {{ $t('me.adverts.confirm') }}
-                </button>
-              </div>
-            </div>
-          </div>
+          <DeleteConfirmationPopup
+            :show="showDeleteConfirm"
+            :title="$t('me.adverts.deleteConfirmTitle')"
+            :message="$t('me.adverts.deleteConfirmMessage')"
+            @confirm-delete="confirmDelete"
+            @cancel-delete="cancelDelete"
+          />
         </div>
       </div>
     </div>

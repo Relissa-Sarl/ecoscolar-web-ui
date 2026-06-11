@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import type { UpdateProfileInput, User } from '~/types/user'
+import type { UpdateProfileInput, User, ResetPasswordInput } from '~/types/user'
 
 import { getUserService } from '~/services/usersService'
 import type ApiError from '~/types/apiError'
@@ -20,7 +20,19 @@ export const useUsersStore = defineStore('users', () => {
 
   const isAuthenticated = computed(() => !!user.value)
 
+  const isAdmin = computed(() => !!user.value?.roles.some(role => role === 'Admin'))
+
   const localePath = useLocalePath()
+
+  // Cookie used as a non-HttpOnly indicator to know if a session is active in the browser
+  const loggedInCookie = typeof useCookie !== 'undefined'
+    ? useCookie('ecoscolar_logged_in')
+    : ref<string | null>(null)
+
+  // The actual HttpOnly session cookie name from the backend
+  const authSessionCookie = typeof useCookie !== 'undefined'
+    ? useCookie('Ecoscolar.Auth.Session')
+    : ref<string | null>(null)
 
   /**
    * Fetch the profile of the currently authenticated user by calling the UserService's getMyProfile method.
@@ -33,16 +45,26 @@ export const useUsersStore = defineStore('users', () => {
     if (hasLoaded.value && !force)
       return user.value
 
+    // Skip API call if we know there is no active session.
+    // On server, we can check the real auth cookie. On client, we rely on the indicator.
+    const hasSession = import.meta.server ? !!authSessionCookie.value : !!loggedInCookie.value
+    if (!hasSession && !force) {
+      return null
+    }
+
     isLoading.value = true
 
     try {
       // Call the getMyProfile method of the user service to fetch the user's profile from the API
       user.value = await service.getMyProfile()
       hasLoaded.value = true
+      // Sync indicator if successful
+      loggedInCookie.value = 'true'
     } catch {
       // ignore error details here; reset user state
       user.value = null
       hasLoaded.value = false
+      loggedInCookie.value = null
     } finally {
       isLoading.value = false
     }
@@ -79,6 +101,8 @@ export const useUsersStore = defineStore('users', () => {
 
     try {
       await service.login(email, password)
+      // Set the indicator cookie so we know we can fetch the profile on next reload
+      loggedInCookie.value = 'true'
       // Fetch the user's profile after successful login to populate the user state
       user.value = await service.getMyProfile()
       hasLoaded.value = true
@@ -87,6 +111,7 @@ export const useUsersStore = defineStore('users', () => {
       await navigateTo(localePath('/me/profile'))
     } catch (e) {
       errors.value = formatErrors(e as ApiError)
+      loggedInCookie.value = null
     } finally {
       isLoading.value = false
     }
@@ -108,6 +133,7 @@ export const useUsersStore = defineStore('users', () => {
       user.value = null
       hasLoaded.value = false
       isLoading.value = false
+      loggedInCookie.value = null
 
       // Redirect to home page after logout
       await navigateTo(localePath('/login'))
@@ -130,7 +156,74 @@ export const useUsersStore = defineStore('users', () => {
       isLoading.value = false
 
       // Redirect to profile page after successful profile update
-      await navigateTo(localePath('/me/profile'))
+      if (!errors.value)
+        await navigateTo(localePath('/me/profile'))
+    }
+  }
+
+  /**
+   * Delete the current user's account by calling the UserService's deleteAccount method, and log out the user upon successful account deletion.
+   */
+  const deleteAccount = async () => {
+    isLoading.value = true
+    errors.value = null
+
+    try {
+      await service.deleteAccount()
+      await logout()
+    } catch (e) {
+      errors.value = formatErrors(e as ApiError)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  /**
+   * Initiate a password reset request for the user with the provided email.
+   * @param email The email address of the user who wants to reset their password.
+   */
+  const forgotPassword = async (email: string) => {
+    isLoading.value = true
+    errors.value = null
+
+    try {
+      await service.forgotPassword(email)
+      hasLoaded.value = true
+    } catch (e) {
+      errors.value = formatErrors(e as ApiError)
+      hasLoaded.value = false
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  /**
+   * Reset the password for the user with the provided email, new password, and reset code by calling the UserService's resetPassword method.
+   * @param email The email address of the user whose password is to be reset.
+   * @param newPassword The new password to set for the user's account.
+   * @param code The password reset code that was sent to the user's email address, which is required to authorize the password reset operation.
+   * @returns A promise that resolves when the password reset operation is complete. If the operation is successful,
+   * the user's password will be updated to the new password provided. If there is an error during the operation,
+   * the promise will reject with an appropriate error message.
+   */
+  const resetPassword = async (input: ResetPasswordInput, confirmPassword: string) => {
+    isLoading.value = true
+    errors.value = null
+
+    try {
+      // Validate that the new password and confirm password fields match before attempting to reset the password
+      if (input.newPassword !== confirmPassword)
+        errors.value = ['passwords_do_not_match']
+      else
+        await service.resetPassword(input)
+    } catch (e) {
+      errors.value = formatErrors(e as ApiError)
+    } finally {
+      isLoading.value = false
+
+      // Redirect to login page after successful password reset
+      if (!errors.value)
+        await navigateTo(localePath('/login'))
     }
   }
 
@@ -147,11 +240,15 @@ export const useUsersStore = defineStore('users', () => {
     hasLoaded,
     errors,
     isAuthenticated,
+    isAdmin,
     fetchProfile,
     register,
     login,
     logout,
     updateProfile,
+    deleteAccount,
+    forgotPassword,
+    resetPassword,
     clearErrors
   }
 })

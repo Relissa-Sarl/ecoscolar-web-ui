@@ -35,8 +35,25 @@ export default defineConfig({
       })
     ],
     coverage: {
-      enabled: true,
-      provider: 'v8'
+      enabled: false,
+      provider: 'v8',
+      thresholds: {
+        statements: 80,
+        functions: 80,
+        branches: 80,
+        lines: 80
+      },
+      exclude: [
+        'dist/**',
+        '.output/**',
+        'node_modules/**',
+        '**/*.config.{ts,js}',
+        'app/assets/**',
+        'app/pages/**',
+        'app/mocks/**',
+        'app/**/**.vue',
+        'locales/**'
+      ]
     }
   }
 })

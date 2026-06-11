@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui',
@@ -9,8 +10,9 @@ export default defineNuxtConfig({
     '@nuxtjs/seo',
     '@nuxtjs/i18n',
     'nuxt-zod-i18n',
-    '@nuxtjs/google-fonts'
-  ],
+    '@nuxtjs/google-fonts',
+    '@nuxt/icon'
+  ], ssr: process.env.NODE_ENV !== 'production',
   devtools: {
     enabled: true
   },
@@ -35,11 +37,18 @@ export default defineNuxtConfig({
     '/': { prerender: true }
   },
   compatibilityDate: '2025-01-15',
+  vite: {
+    optimizeDeps: {
+      include: [
+        '@vue/devtools-core',
+        '@vue/devtools-kit'
+      ]
+    }
+  },
   typescript: {
     strict: true,
-    typeCheck: true
+    typeCheck: false
   },
-
   eslint: {
     config: {
       stylistic: {

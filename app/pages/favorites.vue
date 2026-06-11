@@ -20,8 +20,10 @@ const handleToggleFavorite = async (advertId: string) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-50 dark:bg-slate-950">
+  <div class="min-h-screen bg-white dark:bg-gray-950">
     <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <ProfileBackLink />
+
       <div class="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-300">
@@ -31,12 +33,6 @@ const handleToggleFavorite = async (advertId: string) => {
             {{ $t('favorites.title') }}
           </h1>
         </div>
-        <NuxtLink
-          :to="localePath('/shop')"
-          class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
-        >
-          {{ $t('favorites.actions.back_to_shop') }}
-        </NuxtLink>
       </div>
       <div
         v-if="favoritesStore.isLoading"
