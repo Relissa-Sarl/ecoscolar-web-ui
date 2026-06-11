@@ -32,8 +32,8 @@ const submitCheckout = async () => {
 
   try {
     const response = await paymentService.createCheckoutSession({
-      advertId: advertId.value,
-      shippingAddress: shippingAddress.value.trim()
+      productId: advertId.value,
+      productPrice: '0' // Note: le vrai prix devrait être récupéré depuis l'annonce
     })
 
     if (response && response.url) {
