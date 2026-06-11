@@ -41,7 +41,8 @@ export function createadminService({ apiClient }: AdminServiceDependencies): Adm
   const getAllUsers = async () => apiClient<User[]>(`${ADMIN_PATH}/users`)
 
   const banUserToggle = async (id: string) => apiClient<User>(`${ADMIN_PATH}/${id}/ban`, {
-    method: 'PATCH'
+    method: 'PATCH',
+    skipAuth: true
   })
 
   const getAllSupportTickets = async () => apiClient<SupportTicketAdminDetail[]>(`${ADMIN_PATH}/supports`)

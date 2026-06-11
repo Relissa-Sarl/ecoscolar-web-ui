@@ -31,7 +31,8 @@ describe('adminsService', () => {
     await service.banUserToggle('user-1')
 
     expect(apiClient).toHaveBeenCalledWith('/admins/user-1/ban', {
-      method: 'PATCH'
+      method: 'PATCH',
+      skipAuth: true
     })
   })
 
