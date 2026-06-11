@@ -54,3 +54,12 @@ export interface ResetPasswordInput {
   newPassword: string
   resetCode: string
 }
+
+export interface StripeStatus {
+  isStripeOnboarded: boolean
+  stripeAccountId: string | null
+}
+
+export interface StripeOnboardingLink {
+  url: string
+}

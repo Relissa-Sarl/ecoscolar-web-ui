@@ -664,7 +664,11 @@
       "add_language": "Aggiungi una lingua",
       "remove_language_aria": "Rimuovi la lingua numero {index}",
       "submit_button": "Completa la registrazione",
-      "language_duplicate": "Hai già aggiunto la lingua '{language}' al tuo profilo."
+      "language_duplicate": "Hai già aggiunto la lingua '{language}' al tuo profilo.",
+      "errors": {
+        "Default": "Si è verificato un errore durante la finalizzazione del tuo profilo. Riprova.",
+        "InvalidPostalCode": "Il codice postale non è valido."
+      }
     },
     "errors": {
       "DuplicateUserName": "Questo indirizzo e-mail è già associato a un account.",
@@ -748,7 +752,11 @@
       "submit_button": "Salva le modifiche",
       "language_placeholder": "Scegli una lingua",
       "level_placeholder": "Scegli un livello",
-      "pc_placeholder": "Es: 1000"
+      "pc_placeholder": "Es: 1000",
+      "errors": {
+        "Default": "Si è verificato un errore durante la finalizzazione del tuo profilo. Riprova.",
+        "InvalidPostalCode": "Il codice postale non è valido."
+      }
     },
     "public": {
       "error": "Attualmente non è possibile caricare il profilo utente. L'utente potrebbe non aver impostato il profilo come pubblico o il profilo potrebbe essere stato rimosso."

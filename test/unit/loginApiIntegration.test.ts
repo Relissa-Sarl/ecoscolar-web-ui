@@ -14,7 +14,8 @@ describe('T8-1 · intégration login API (usersService → API)', () => {
 
     expect(apiClient).toHaveBeenCalledWith('/auth/login?useCookies=true', {
       method: 'POST',
-      body: { email: 'test@example.com', password: 'Password123!' }
+      body: { email: 'test@example.com', password: 'Password123!' },
+      skipAuth: true
     })
   })
 

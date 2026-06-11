@@ -664,7 +664,11 @@
       "add_language": "Sprache hinzufügen",
       "remove_language_aria": "Sprache Nummer {index} entfernen",
       "submit_button": "Registrierung abschließen",
-      "language_duplicate": "Sie haben bereits die Sprache '{language}' zu Ihrem Profil hinzugefügt."
+      "language_duplicate": "Sie haben bereits die Sprache '{language}' zu Ihrem Profil hinzugefügt.",
+      "errors": {
+        "Default": "Beim Aktualisieren Ihres Profils ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+        "InvalidPostalCode": "Die Postleitzahl ist ungültig."
+      }
     },
     "errors": {
       "DuplicateUserName": "Diese E-Mail-Adresse ist bereits mit einem Konto verknüpft.",
@@ -748,7 +752,11 @@
       "submit_button": "Änderungen speichern",
       "language_placeholder": "Sprache auswählen",
       "level_placeholder": "Niveau auswählen",
-      "pc_placeholder": "z.B. 1000"
+      "pc_placeholder": "z.B. 1000",
+      "errors": {
+        "Default": "Ein Fehler ist aufgetreten beim Abschluss Ihres Profils. Bitte versuchen Sie es erneut.",
+        "InvalidPostalCode": "Die Postleitzahl ist ungültig."
+      }
     },
     "public": {
       "error": "Es ist derzeit nicht möglich, das Benutzerprofil zu laden. Es könnte sein, dass der Benutzer sein Profil nicht öffentlich gemacht hat oder dass das Profil gelöscht wurde."

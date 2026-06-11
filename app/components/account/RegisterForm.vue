@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import FormErrors from '../common/FormErrors.vue'
+
 const usersStore = useUsersStore()
 
 // Initialize the registration form with empty email and password fields
@@ -11,6 +13,8 @@ const registerForm = ref({ email: '', password: '' })
 const handleRegister = async () => {
   await usersStore.register(registerForm.value.email, registerForm.value.password)
 }
+
+const { globalErrors, hasErrors } = useFormErrors(() => usersStore.errors, 'register.errors')
 </script>
 
 <template>
@@ -68,14 +72,14 @@ const handleRegister = async () => {
     >
       {{ $t('register.submit_button') }}
     </button>
+
+    <FormErrors
+      :errors="globalErrors"
+      :has-errors="hasErrors"
+    />
+
     <p
-      v-if="usersStore.errors && usersStore.errors.length > 0"
-      class="mt-4 text-sm text-red-600 dark:text-red-400"
-    >
-      {{ $t('register.errors.' + usersStore.errors[0]) }}
-    </p>
-    <p
-      v-else-if="usersStore.isLoading"
+      v-if="usersStore.isLoading"
       class="mt-4 text-sm text-green-600 dark:text-green-400"
     >
       {{ $t('register.status.loading') }}
