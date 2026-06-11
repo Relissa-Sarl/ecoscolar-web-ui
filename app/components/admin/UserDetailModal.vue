@@ -9,6 +9,9 @@ defineEmits(['close'])
   <div
     v-if="isOpen"
     class="fixed inset-0 z-50 flex justify-end"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="user-modal-title"
   >
     <div
       class="absolute inset-0 bg-black/50"
@@ -17,11 +20,15 @@ defineEmits(['close'])
 
     <div class="relative w-full max-w-md bg-white dark:bg-gray-950 h-full p-8 shadow-xl overflow-y-auto border-l dark:border-gray-800">
       <div class="flex justify-between items-center mb-8">
-        <h2 class="text-xl font-bold">
+        <h2
+          id="user-modal-title"
+          class="text-xl font-bold"
+        >
           User Details
         </h2>
         <button
           class="text-gray-400 hover:text-gray-600"
+          aria-label="Fermer"
           @click="$emit('close')"
         >
           ✕
