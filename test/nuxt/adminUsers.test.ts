@@ -101,7 +101,7 @@ describe('Admin Users Page', () => {
     await flushPromises()
 
     const banButtons = wrapper.findAll('button').filter(b => b.html().includes('block-outline'))
-    await banButtons[0].trigger('click')
+    await banButtons[0]?.trigger('click')
 
     expect(wrapper.find('#confirm-popup').exists()).toBe(true)
     expect(wrapper.find('#confirm-popup').text()).toContain('Ban User')
