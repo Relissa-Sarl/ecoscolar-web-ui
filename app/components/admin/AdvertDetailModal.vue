@@ -38,7 +38,10 @@ const formatDate = (dateStr: string) => {
             class="text-gray-500 hover:text-black dark:hover:text-white"
             @click="$emit('close')"
           >
-            ✕
+            <Icon
+              name="material-symbols:close"
+              class="w-6 h-6"
+            />
           </button>
         </div>
 
