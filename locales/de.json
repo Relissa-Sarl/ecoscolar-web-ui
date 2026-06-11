@@ -786,6 +786,7 @@
     "errors": {
       "address_required": "Die Lieferadresse ist erforderlich.",
       "init_failed": "Fehler bei der Zahlungsinitialisierung.",
+      "item_pending_or_sold": "Ein Artikel in Ihrem Warenkorb wird gerade bezahlt oder ist bereits verkauft.",
       "general": "Bei der Validierung ist ein Fehler aufgetreten."
     }
   }
