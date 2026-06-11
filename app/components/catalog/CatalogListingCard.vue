@@ -136,9 +136,8 @@ onBeforeMount(() => {
       <div class="mt-auto flex flex-wrap items-end justify-between gap-3 border-t border-slate-100 pt-4 dark:border-slate-800">
         <div class="leading-tight">
           <template v-if="listing.hourly">
-            <span class="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">{{ $t('catalog.card.hourly') }}</span>
+            <span class="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">{{ $t('catalog.card.hourly') }} &nbsp;</span>
             <span class="text-xl font-black text-emerald-800 dark:text-emerald-400">CHF {{ listing.price.toFixed(2) }}/h</span>
-            <span class="ml-2 text-sm font-semibold text-amber-600 dark:text-amber-400">{{ $t('catalog.card.demo_rating') }}</span>
           </template>
           <template v-else>
             <span class="block text-xl font-black text-emerald-800 dark:text-emerald-400">CHF {{ listing.price.toFixed(2) }}</span>
