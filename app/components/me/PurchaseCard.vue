@@ -92,7 +92,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
             class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border"
             :class="getStatusBadgeClass(props.purchase.status)"
           >
-            {{ props.purchase.status }}
+            {{ t(`profile.history.status.${props.purchase.status.toLowerCase()}`) }}
           </span>
           <span class="text-[10px] text-slate-400 dark:text-slate-500 font-medium whitespace-nowrap">
             {{ formatDate(props.purchase.purchaseDate) }}

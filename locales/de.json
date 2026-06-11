@@ -809,7 +809,15 @@
       "purchases": "Meine letzten Käufe",
       "sales": "Meine letzten Verkäufe",
       "no_purchases": "Sie haben noch keine Käufe getätigt.",
-      "no_sales": "Sie haben noch keine Verkäufe getätigt."
+      "no_sales": "Sie haben noch keine Verkäufe getätigt.",
+      "status": {
+        "completed": "Abgeschlossen",
+        "pending": "Ausstehend",
+        "paid_waiting_shipping": "Warten auf Versand",
+        "shipped": "Versandt",
+        "cancelled": "Storniert",
+        "disputed": "In Streit"
+      }
     }
   },
   "checkout": {
