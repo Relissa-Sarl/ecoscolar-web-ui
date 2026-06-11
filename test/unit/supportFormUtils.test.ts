@@ -19,6 +19,11 @@ describe('supportFormUtils', () => {
       expect(subject).toBe('Signaler un bug')
       expect(subject.length).toBeGreaterThanOrEqual(5)
     })
+
+    it('returns the trimmed reason as fallback when it is not a default reason and has no translation', () => {
+      const subject = resolveSupportSubject('unknown-reason', () => '')
+      expect(subject).toBe('unknown-reason')
+    })
   })
 
   describe('validateSupportForm', () => {

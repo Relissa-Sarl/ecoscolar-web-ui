@@ -35,20 +35,23 @@ export default defineConfig({
       })
     ],
     coverage: {
-      // Activé via `vitest run --coverage` ou `npm run test:coverage` (évite l'échec de seuil sur un sous-ensemble de tests).
       enabled: false,
       provider: 'v8',
       thresholds: {
-        statements: 50,
-        functions: 50,
-        branches: 50
+        statements: 80,
+        functions: 80,
+        branches: 80,
+        lines: 80
       },
       exclude: [
         'dist/**',
         '.output/**',
         'node_modules/**',
         '**/*.config.{ts,js}',
-        'app/assets/**'
+        'app/assets/**',
+        'app/pages/**',
+        'app/mocks/**',
+        'locales/**'
       ]
     }
   }
