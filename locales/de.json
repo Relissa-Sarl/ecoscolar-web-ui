@@ -738,18 +738,24 @@
     "edit": "Profil bearbeiten",
     "delete": "Konto löschen",
     "stripe": {
-      "payments": "Zahlungen verwalten",
-      "loading": "Laden der Zahlungsinformationen...",
-      "retry": "Erneut versuchen",
-      "manage": "Konto verwalten",
-      "configure": "Zahlungen konfigurieren",
-      "configured": "Konto konfiguriert",
-      "not_configured": "Aktion erforderlich",
-      "ready": "Ihr Konto ist bereit, um Zahlungen für Ihre Verkäufe zu erhalten.",
-      "not_ready": "Konfigurieren Sie Ihr Stripe-Konto, um mit dem Verkauf auf EcoScolar zu beginnen",
-      "secured_by": "Sichere Zahlungsabwicklung über Stripe",
+      "payments": "Zahlungen",
+      "loading": "Ihre Stripe-Zahlungen werden geladen...",
+      "secured_by": "Sicher durch Stripe",
+      "configured": {
+        "tag": "Konto eingerichtet",
+        "description": "Verwalten Sie Ihr Stripe-Konto, um Zahlungen für Ihre Verkäufe auf EcoScolar zu erhalten.",
+        "manage_account": "Mein Konto verwalten",
+        "ready": "Ihr Konto ist bereit, um Zahlungen für Ihre Verkäufe zu erhalten."
+      },
+      "not_configured": {
+        "tag": "Aktion erforderlich",
+        "description": "Richten Sie Ihr Stripe-Konto ein, um mit dem Verkauf auf EcoScolar zu beginnen.",
+        "configure_account": "Zahlungen einrichten",
+        "not_ready": "Richten Sie Ihr Stripe-Konto ein, um mit dem Verkauf auf EcoScolar zu beginnen."
+      },
       "errors": {
-        "loading": "Zahlungsinformationen können derzeit nicht geladen werden."
+        "retry": "Erneut versuchen",
+        "loading": "Fehler beim Laden"
       }
     },
     "settings": {
