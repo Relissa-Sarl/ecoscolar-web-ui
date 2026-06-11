@@ -13,6 +13,7 @@ mockNuxtImport('refreshNuxtData', () => mockRefreshNuxtData)
 
 mockNuxtImport('useI18n', () => () => ({
   t: (key: string) => key,
+  te: (key: string) => !key.endsWith('.unknown'),
   locale: { value: 'fr' }
 }))
 
@@ -118,7 +119,7 @@ describe('PurchaseCard', () => {
       props: { purchase: { ...mockPurchase, status: 'UNKNOWN' } },
       global: { stubs }
     })
-    expect(wrapper.text()).toContain('profile.history.status.unknown')
+    expect(wrapper.text()).toContain('UNKNOWN')
   })
 
   it('renders leave review button for completed purchase', () => {

@@ -54,7 +54,7 @@ onMounted(async () => {
         break
     }
 
-    advert.value = detailedAdvert
+    advert.value = { ...detailedAdvert, type: fetchedAdvert.type } as DetailedAdvert
   } catch (error) {
     console.error('Error fetching advert:', error)
     advertIsGet.value = false
