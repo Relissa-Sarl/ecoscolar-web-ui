@@ -186,7 +186,7 @@ onMounted(async () => {
       <DeleteConfirmationPopup
         :show="showBanConfirm"
         title="Ban User"
-        message="Are you sure you want to ban this user? This action cannot be undone."
+        :message="userToBan && userToBan.isBanned ? 'Are you sure you want to unban this user?' : 'Are you sure you want to ban this user?'"
         cancel-text="Cancel"
         confirm-text="Confirm"
         @confirm-delete="confirmBan"

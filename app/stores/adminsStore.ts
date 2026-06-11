@@ -126,6 +126,11 @@ export const useAdminsStore = defineStore('admins', () => {
     }
   }
 
+  const blockAdvertToggle = async (advertToBlock: MySaleAdvert) => {
+    const updatedAdvert = await service.blockAdvertToggle(advertToBlock.id)
+    return updatedAdvert
+  }
+
   return {
     user,
     users,
@@ -141,6 +146,7 @@ export const useAdminsStore = defineStore('admins', () => {
     banUserToggle,
     fetchAllSupportTickets,
     sendMessage,
-    fetchAllAdverts
+    fetchAllAdverts,
+    blockAdvertToggle
   }
 })
