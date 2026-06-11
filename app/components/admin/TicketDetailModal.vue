@@ -16,6 +16,9 @@ defineEmits(['close', 'send'])
   <div
     v-if="isOpen"
     class="fixed inset-0 z-50 flex items-center justify-center"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="ticket-modal-title"
   >
     <div
       class="absolute inset-0 bg-black/50"
@@ -27,11 +30,15 @@ defineEmits(['close', 'send'])
     >
       <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div class="p-6 border-b dark:border-gray-800 flex justify-between items-center">
-          <h2 class="text-xl font-bold">
+          <h2
+            id="ticket-modal-title"
+            class="text-xl font-bold"
+          >
             Ticket Details
           </h2>
           <button
             class="text-gray-500 hover:text-black dark:hover:text-white"
+            aria-label="Fermer"
             @click="$emit('close')"
           >
             <Icon

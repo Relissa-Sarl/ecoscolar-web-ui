@@ -156,6 +156,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
           <button
             v-if="props.purchase.status === 'COMPLETED' || props.purchase.status === 'CANCELLED'"
             class="inline-flex items-center justify-center rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-300 py-1 px-2 text-[10px] font-bold transition-colors"
+            :aria-expanded="showDetails"
             @click="showDetails = !showDetails"
           >
             {{ t('me.purchases.actions.details') }}

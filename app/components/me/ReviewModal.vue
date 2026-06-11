@@ -86,6 +86,7 @@ const handleSubmit = async () => {
               v-for="star in 5"
               :key="star"
               type="button"
+              :aria-label="`${star} étoile${star > 1 ? 's' : ''}`"
               class="text-amber-500 focus:outline-none transition-transform duration-100 hover:scale-110 cursor-pointer"
               @mouseenter="hoverRating = star"
               @mouseleave="hoverRating = 0"
