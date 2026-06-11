@@ -29,9 +29,10 @@ const cancelDelete = () => {
       @delete-account="showDeleteConfirm = true"
     />
 
-    <History />
-
-    <StripeConnectCard />
+    <div class="flex-1 flex flex-col gap-8 w-full">
+      <History />
+      <StripeConnectCard />
+    </div>
 
     <DeleteConfirmationPopup
       :show="showDeleteConfirm"

@@ -809,8 +809,8 @@
     },
     "history": {
       "title": "Mon historique",
-      "purchases": "Mes derniers achats",
-      "sales": "Mes dernières ventes",
+      "purchases": "Mes achats",
+      "sales": "Mes ventes",
       "no_purchases": "Vous n'avez pas encore effectué d'achats.",
       "no_sales": "Vous n'avez pas encore effectué de ventes."
     }

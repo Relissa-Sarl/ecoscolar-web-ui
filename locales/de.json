@@ -803,6 +803,13 @@
       "filter_seller": "Als Verkäufer",
       "average": "Durchschnitt",
       "star_distribution": "Verteilung der Sterne"
+    },
+    "history": {
+      "title": "Mein Verlauf",
+      "purchases": "Meine letzten Käufe",
+      "sales": "Meine letzten Verkäufe",
+      "no_purchases": "Sie haben noch keine Käufe getätigt.",
+      "no_sales": "Sie haben noch keine Verkäufe getätigt."
     }
   },
   "checkout": {

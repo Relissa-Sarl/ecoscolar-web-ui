@@ -40,31 +40,31 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="space-y-6">
-    <div class="flex items-center justify-between">
-      <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
+  <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm h-fit">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-bold text-slate-900 dark:text-white">
         {{ $t('profile.history.title') }}
       </h2>
     </div>
 
     <!-- Tabs -->
-    <div class="flex border-b border-slate-200 dark:border-slate-800">
+    <div class="flex border-b border-slate-200 dark:border-slate-800 mb-4">
       <button
         type="button"
-        class="px-6 py-3 text-sm font-semibold transition-colors duration-200 border-b-2"
+        class="px-4 py-2 text-xs font-bold transition-colors duration-200 border-b-2 -mb-px uppercase tracking-wider"
         :class="activeTab === 'purchases'
           ? 'border-emerald-600 text-emerald-600 dark:border-emerald-500 dark:text-emerald-500'
-          : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'"
+          : 'border-transparent text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300'"
         @click="activeTab = 'purchases'"
       >
         {{ $t('profile.history.purchases') }}
       </button>
       <button
         type="button"
-        class="px-6 py-3 text-sm font-semibold transition-colors duration-200 border-b-2"
+        class="px-4 py-2 text-xs font-bold transition-colors duration-200 border-b-2 -mb-px uppercase tracking-wider"
         :class="activeTab === 'sales'
           ? 'border-emerald-600 text-emerald-600 dark:border-emerald-500 dark:text-emerald-500'
-          : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'"
+          : 'border-transparent text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300'"
         @click="activeTab = 'sales'"
       >
         {{ $t('profile.history.sales') }}
@@ -74,19 +74,19 @@ onMounted(async () => {
     <!-- Content -->
     <div
       v-if="isLoading"
-      class="flex justify-center py-12"
+      class="flex justify-center py-8"
     >
-      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600" />
+      <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-600" />
     </div>
 
     <div
       v-else
-      class="space-y-4"
+      class="space-y-3"
     >
       <div v-if="activeTab === 'purchases'">
         <div
           v-if="lastPurchases.length > 0"
-          class="grid gap-4"
+          class="grid gap-3"
         >
           <PurchaseCard
             v-for="purchase in lastPurchases"
@@ -96,9 +96,9 @@ onMounted(async () => {
         </div>
         <div
           v-else
-          class="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800"
+          class="text-center py-10 bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-800"
         >
-          <p class="text-slate-500 dark:text-slate-400">
+          <p class="text-sm text-slate-500 dark:text-slate-400">
             {{ $t('profile.history.no_purchases') }}
           </p>
         </div>
@@ -107,7 +107,7 @@ onMounted(async () => {
       <div v-else-if="activeTab === 'sales'">
         <div
           v-if="lastSales.length > 0"
-          class="grid gap-4"
+          class="grid gap-3"
         >
           <SaleCard
             v-for="sale in lastSales"
@@ -117,9 +117,9 @@ onMounted(async () => {
         </div>
         <div
           v-else
-          class="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800"
+          class="text-center py-10 bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-800"
         >
-          <p class="text-slate-500 dark:text-slate-400">
+          <p class="text-sm text-slate-500 dark:text-slate-400">
             {{ $t('profile.history.no_sales') }}
           </p>
         </div>
