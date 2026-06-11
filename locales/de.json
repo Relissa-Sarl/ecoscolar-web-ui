@@ -737,6 +737,21 @@
     "support_requests": "Meine Anfragen",
     "edit": "Profil bearbeiten",
     "delete": "Konto löschen",
+    "stripe": {
+      "payments": "Zahlungen verwalten",
+      "loading": "Laden der Zahlungsinformationen...",
+      "retry": "Erneut versuchen",
+      "manage": "Konto verwalten",
+      "configure": "Zahlungen konfigurieren",
+      "configured": "Konto konfiguriert",
+      "not_configured": "Aktion erforderlich",
+      "ready": "Ihr Konto ist bereit, um Zahlungen für Ihre Verkäufe zu erhalten.",
+      "not_ready": "Konfigurieren Sie Ihr Stripe-Konto, um mit dem Verkauf auf EcoScolar zu beginnen",
+      "secured_by": "Sichere Zahlungsabwicklung über Stripe",
+      "errors": {
+        "loading": "Zahlungsinformationen können derzeit nicht geladen werden."
+      }
+    },
     "settings": {
       "title": "Mein Profil bearbeiten",
       "subtitle": "Aktualisieren Sie Ihre persönlichen Informationen für eine personalisierte Erfahrung.",

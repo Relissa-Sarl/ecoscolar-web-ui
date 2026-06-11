@@ -737,6 +737,21 @@
     "support_requests": "Le mie richieste",
     "edit": "Modifica profilo",
     "delete": "Elimina account",
+    "stripe": {
+      "payments": "Pagamenti",
+      "loading": "Caricamento dei pagamenti Stripe...",
+      "retry": "Riprova",
+      "manage": "Gestisci il mio account",
+      "configure": "Configura i pagamenti",
+      "configured": "Account configurato",
+      "not_configured": "Azione richiesta",
+      "ready": "Il tuo account è pronto per ricevere i pagamenti delle tue vendite.",
+      "not_ready": "Configura il tuo account Stripe per iniziare a vendere su EcoScolar",
+      "secured_by": "Sicurezza garantita da Stripe",
+      "errors": {
+        "loading": "Impossibile caricare lo stato dei pagamenti Stripe al momento."
+      }
+    },
     "settings": {
       "title": "Modifica il mio profilo",
       "subtitle": "Aggiorna le tue informazioni personali per un'esperienza personalizzata.",
