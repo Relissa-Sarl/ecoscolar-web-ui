@@ -11,7 +11,10 @@ mockNuxtImport('useLocalePath', () => () => (path: string) => path)
 
 // Mock Nuxt components
 const stubs = {
-  NuxtLink: { template: '<a><slot /></a>' },
+  NuxtLink: {
+    props: ['to'],
+    template: '<a :href="to"><slot /></a>'
+  },
   SaleCard: {
     template: '<div class="mock-sale-card">Sale Card</div>'
   }
@@ -35,6 +38,7 @@ describe('Sales Page', () => {
     expect(wrapper.text()).toContain('me.sales.empty_title')
     expect(wrapper.text()).toContain('me.sales.empty_placeholder')
     expect(wrapper.text()).toContain('me.sales.sell_cta')
+    expect(wrapper.get('a').attributes('href')).toBe('/adverts/create-advert')
     expect(wrapper.find('.mock-sale-card').exists()).toBe(false)
   }, 15000)
 
