@@ -182,6 +182,7 @@ const advertSummary = computed(() => {
             }"
           />
           <AdvertActionButtons
+            v-if="advert?.seller.id !== usersStore.user?.id"
             :advert="advertSummary"
           />
         </div>
