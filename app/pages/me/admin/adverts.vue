@@ -442,10 +442,10 @@ onMounted(async () => {
         </div>
 
         <div
-          v-if="(store.supports.length === 0 && !store.isLoading) || paginatedAdverts.length === 0"
+          v-if="(store.adverts.length === 0 && !store.isLoading) || paginatedAdverts.length === 0"
           class="p-8 text-center text-gray-500"
         >
-          No support tickets found.
+          No adverts found.
         </div>
       </div>
 
