@@ -134,7 +134,7 @@
     },
     "list": {
       "title": "Sfoglia gli annunci",
-      "subtitle_near": "{count} risultati · CAP indicativo {zip}"
+      "subtitle_near": "{count} risultati"
     },
     "sort": {
       "label": "Ordina",

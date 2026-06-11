@@ -148,7 +148,7 @@ const handleCheckout = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+  <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
     <div class="max-w-6xl mx-auto">
       <!-- Header -->
       <CartHeader

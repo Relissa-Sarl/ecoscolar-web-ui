@@ -134,7 +134,7 @@
     },
     "list": {
       "title": "Explorer les annonces",
-      "subtitle_near": "{count} résultats · périmètre indicatif postal {zip}"
+      "subtitle_near": "{count} résultats"
     },
     "sort": {
       "label": "Trier",

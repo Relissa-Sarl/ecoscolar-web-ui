@@ -134,7 +134,7 @@
     },
     "list": {
       "title": "Inserate durchsuchen",
-      "subtitle_near": "{count} Treffer · PLZ Hinweis {zip}"
+      "subtitle_near": "{count} Treffer"
     },
     "sort": {
       "label": "Sortieren",
