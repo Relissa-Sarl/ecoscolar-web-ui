@@ -41,9 +41,9 @@ const filteredTickets = computed(() => {
     const q = searchQuery.value.toLowerCase()
     result = result.filter(t =>
       t.email?.toLowerCase().includes(q)
-      || t.user.firstName?.toLowerCase().includes(q)
-      || t.user.nickname?.toLowerCase().includes(q)
-      || t.user.lastName?.toLowerCase().includes(q)
+      || t.user?.firstName?.toLowerCase().includes(q)
+      || t.user?.nickname?.toLowerCase().includes(q)
+      || t.user?.lastName?.toLowerCase().includes(q)
     )
   }
 
