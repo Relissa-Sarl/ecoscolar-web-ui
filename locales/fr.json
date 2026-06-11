@@ -816,7 +816,7 @@
       "status": {
         "completed": "Terminé",
         "pending": "En attente",
-        "paid_waiting_shipping": "Impossible de charger vos achats pour le moment.",
+        "paid_waiting_shipping": "En attente d'expédition",
         "shipped": "Expédié",
         "cancelled": "Annulé",
         "disputed": "En litige"
