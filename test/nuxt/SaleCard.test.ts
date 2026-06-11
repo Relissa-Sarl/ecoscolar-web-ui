@@ -57,7 +57,6 @@ describe('SaleCard', () => {
     expect(wrapper.text()).toContain('Calculatrice scientifique')
     expect(wrapper.text()).toContain('45 CHF')
     expect(wrapper.text()).toContain('me.sales.view')
-    expect(wrapper.text()).toContain('me.sales.edit')
 
     // buyerName should not be shown
     expect(wrapper.text()).not.toContain('me.sales.buyer_label')
@@ -94,7 +93,7 @@ describe('SaleCard', () => {
     expect(wrapper.text()).not.toContain('me.sales.edit')
   })
 
-  it('shows edit button when status is PAUSED', () => {
+  it('does not show edit button when status is PAUSED (edit was removed from SaleCard)', () => {
     const pausedSale = { ...mockSale, status: AdvertStatus.PAUSED }
     const wrapper = mount(SaleCard, {
       props: { sale: pausedSale },
@@ -102,7 +101,7 @@ describe('SaleCard', () => {
     })
 
     expect(wrapper.text()).toContain('me.sales.status.paused')
-    expect(wrapper.text()).toContain('me.sales.edit')
+    expect(wrapper.text()).not.toContain('me.sales.edit')
   })
 
   it('renders fallback icon when primaryImage is empty', () => {

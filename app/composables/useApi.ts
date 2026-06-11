@@ -51,6 +51,12 @@ export const useApi = <T>(
     async onResponseError({ response }) {
       // Redirect to login/home page if unauthorized on authenticated routes
       if (response.status === 401 && !skipAuth) {
+        // Clear session indicator cookie if it exists
+        if (typeof useCookie !== 'undefined') {
+          const loggedInCookie = useCookie('ecoscolar_logged_in')
+          loggedInCookie.value = null
+        }
+
         try {
           await navigateTo('/')
         } catch {

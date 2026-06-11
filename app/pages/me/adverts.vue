@@ -76,6 +76,8 @@ onMounted(async () => {
 <template>
   <section class="min-h-screen bg-white px-4 py-10 text-gray-900 dark:bg-gray-950 dark:text-gray-100">
     <div class="mx-auto rounded-3xl p-8 text-left dark:bg-gray-950 dark:text-gray-100">
+      <ProfileBackLink />
+
       <h1 class="text-3xl font-bold tracking-tight md:text-4xl">
         {{ $t('me.adverts.title') }}
       </h1>

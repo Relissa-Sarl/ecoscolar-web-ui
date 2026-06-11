@@ -9,12 +9,12 @@ defineProps<Props>()
 
 <template>
   <div v-if="hasErrors">
-    <ul class="list-disc list-inside space-y-1 text-sm text-red-700 dark:text-red-400">
+    <ul class="list-inside space-y-1 text-sm text-red-700 dark:text-red-400 list-none">
       <li
         v-for="(error, index) in errors"
         :key="index"
       >
-        {{ error }}
+        * {{ error }}
       </li>
     </ul>
   </div>

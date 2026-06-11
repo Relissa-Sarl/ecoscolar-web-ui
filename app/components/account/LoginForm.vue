@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import FormErrors from '../common/FormErrors.vue'
+
 const localePath = useLocalePath()
-const userStore = useUsersStore()
+const usersStore = useUsersStore()
 
 // Initialize the login form with empty email and password fields
 const loginForm = ref({ email: '', password: '' })
@@ -9,8 +11,10 @@ const loginForm = ref({ email: '', password: '' })
  * Handle the login form submission by calling the login method of the users store with the email and password from the form.
  */
 const handleLogin = async () => {
-  await userStore.login(loginForm.value.email, loginForm.value.password)
+  await usersStore.login(loginForm.value.email, loginForm.value.password)
 }
+
+const { globalErrors, hasErrors } = useFormErrors(() => usersStore.errors, 'login.errors')
 </script>
 
 <template>
@@ -76,17 +80,17 @@ const handleLogin = async () => {
     >
       {{ $t('login.submit_button') }}
     </button>
+
     <p
-      v-if="userStore.isLoading"
+      v-if="usersStore.isLoading"
       class="mt-4 text-sm text-center text-slate-600 dark:text-slate-300"
     >
       {{ $t('login.status.loading') }}
     </p>
-    <p
-      v-else-if="userStore.errors && userStore.errors.length > 0"
-      class="mt-4 text-sm text-red-600 dark:text-red-400"
-    >
-      {{ $t('login.errors.' + userStore.errors[0]) }}
-    </p>
+
+    <FormErrors
+      :errors="globalErrors"
+      :has-errors="hasErrors"
+    />
   </form>
 </template>

@@ -4,10 +4,10 @@ import { useRoute } from 'vue-router'
 import { useI18n, useSeoMeta } from '#imports'
 import { useCartStore } from '~/stores/cartStore'
 import { getAdvertService } from '~/services/advertService'
-import SuccessIcon from '~/components/paimentState/SuccessIcon.vue'
-import SuccessMainMessage from '~/components/paimentState/SuccessMainMessage.vue'
-import SuccessInfos from '~/components/paimentState/SuccessInfos.vue'
-import SuccessButton from '~/components/paimentState/PaimentStateButton.vue'
+import SuccessIcon from '../components/paymentState/SuccessIcon.vue'
+import SuccessMainMessage from '../components/paymentState/SuccessMainMessage.vue'
+import SuccessInfos from '../components/paymentState/SuccessInfos.vue'
+import SuccessButton from '../components/paymentState/PaimentStateButton.vue'
 
 const { t } = useI18n()
 const route = useRoute()
