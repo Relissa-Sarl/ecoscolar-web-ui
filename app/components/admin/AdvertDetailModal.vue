@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { MySaleAdvert } from '~/services/historyService'
+import Stars from '../profile/Stars.vue'
 
 defineProps<{
   isOpen: boolean
@@ -37,7 +38,10 @@ const formatDate = (dateStr: string) => {
             class="text-gray-500 hover:text-black dark:hover:text-white"
             @click="$emit('close')"
           >
-            ✕
+            <Icon
+              name="material-symbols:close"
+              class="w-6 h-6"
+            />
           </button>
         </div>
 
@@ -151,9 +155,18 @@ const formatDate = (dateStr: string) => {
               <div
                 class="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl grid gap-2 grid-cols-2"
               >
-                <p class="font-bold col-span-2">
-                  Rating: <span class="text-sm text-gray-500">{{ advert?.review.rating }}</span>
-                </p>
+                <div class="flex items-center gap-2">
+                  <p class="font-bold col-span-2">
+                    Rating:
+                  </p>
+                  <Stars
+                    :rating="advert.review.rating"
+                    :max-rating="5"
+                    size="20"
+                    active-color="#10B981"
+                    inactive-color="#D1D5DB"
+                  />
+                </div>
                 <p class="font-bold col-span-2">
                   Comment: <span class="text-sm text-gray-500">{{ advert?.review.comment || "No comment" }}</span>
                 </p>

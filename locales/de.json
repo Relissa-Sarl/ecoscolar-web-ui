@@ -348,7 +348,7 @@
         "studyLevelLength": "Das ausgewählte Bildungsniveau darf 50 Zeichen nicht überschreiten",
         "bookCategoryId": "Die ausgewählte Buchkategorie ist nicht gültig",
         "writtenLanguage": "Die ausgewählte Schriftsprache ist nicht gültig",
-        "isbnFormat": "Das ISBN-Format ist ungültig",
+        "isbnFormat": "Das ISBN-Format ist ungültig (z.B.: 978-3-16-148410-0)",
         "weightNegative": "Das Gewicht muss größer oder gleich null sein",
         "authorLength": "Der Autorname darf 150 Zeichen nicht überschreiten",
         "publisherLength": "Der Verlagsname darf 150 Zeichen nicht überschreiten",

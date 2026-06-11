@@ -179,6 +179,11 @@ const groupedItems = computed(() => {
                     {{ item.title }}
                   </NuxtLink>
                 </h3>
+
+                <div
+                  v-if="item.reservedUntil"
+                  class="mt-2 inline-block"
+                />
               </div>
             </div>
 

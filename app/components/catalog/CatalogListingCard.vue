@@ -18,12 +18,6 @@ const props = defineProps<{
 
 const detailLink = computed(() => localePath(`/adverts/${props.listing.id}`))
 
-const emit = defineEmits<{
-  favoriteToggle: [value: boolean]
-  cartAdd: []
-  bookLesson: []
-}>()
-
 const cartStore = useCartStore()
 const favoritesStore = useFavoritesStore()
 const usersStore = useUsersStore()
@@ -62,15 +56,17 @@ const handleCartAdd = async () => {
     title: t('cart.added_success'),
     color: 'success'
   })
-  emit('cartAdd')
+}
+
+const handleReservation = async () => {
+  // TODO: Implement reservation logic
 }
 
 const toggleFavorite = async () => {
   if (isSubmittingFavorite.value) return
   isSubmittingFavorite.value = true
   try {
-    const result = await favoritesStore.toggleFavorite(favoriteInput.value)
-    emit('favoriteToggle', result.isFavorite)
+    await favoritesStore.toggleFavorite(favoriteInput.value)
   } catch {
     toast.add({
       title: t('favorites.status.error'),
@@ -140,9 +136,8 @@ onBeforeMount(() => {
       <div class="mt-auto flex flex-wrap items-end justify-between gap-3 border-t border-slate-100 pt-4 dark:border-slate-800">
         <div class="leading-tight">
           <template v-if="listing.hourly">
-            <span class="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">{{ $t('catalog.card.hourly') }}</span>
+            <span class="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">{{ $t('catalog.card.hourly') }} &nbsp;</span>
             <span class="text-xl font-black text-emerald-800 dark:text-emerald-400">CHF {{ listing.price.toFixed(2) }}/h</span>
-            <span class="ml-2 text-sm font-semibold text-amber-600 dark:text-amber-400">{{ $t('catalog.card.demo_rating') }}</span>
           </template>
           <template v-else>
             <span class="block text-xl font-black text-emerald-800 dark:text-emerald-400">CHF {{ listing.price.toFixed(2) }}</span>
@@ -173,6 +168,7 @@ onBeforeMount(() => {
             v-if="listing.hourly"
             type="button"
             class="rounded-full transition bg-emerald-800 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer"
+            @click="handleReservation"
           >
             {{ $t('catalog.card.book_lesson') }}
           </button>
