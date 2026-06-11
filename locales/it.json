@@ -348,7 +348,7 @@
         "studyLevelLength": "Il livello di studio non deve superare 50 caratteri",
         "bookCategoryId": "La categoria del libro selezionata non è valida",
         "writtenLanguage": "La lingua selezionata non è valida",
-        "isbnFormat": "Il formato dell'ISBN non è valido",
+        "isbnFormat": "Il formato dell'ISBN non è valido (es: 978-3-16-148410-0)",
         "weightNegative": "Il peso deve essere maggiore o uguale a zero",
         "authorLength": "Il nome dell'autore non deve superare 150 caratteri",
         "publisherLength": "Il nome dell'editore non deve superare 150 caratteri",
