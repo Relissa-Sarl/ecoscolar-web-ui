@@ -7,6 +7,7 @@ export interface AdvertCatalogApiItem {
   title: string
   price: number
   type: AdvertType
+  sellerId?: number | string
   isbn?: string | null
   category?: string | null
   subjects?: string | null
@@ -58,6 +59,7 @@ export interface CatalogListing {
   schoolGradeName?: string
   subjectName?: string
   seller?: string
+  sellerId?: string
   status?: AdvertStatus
 }
 

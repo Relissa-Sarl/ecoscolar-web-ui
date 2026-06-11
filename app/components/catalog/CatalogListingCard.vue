@@ -143,7 +143,10 @@ onBeforeMount(() => {
             <span class="block text-xl font-black text-emerald-800 dark:text-emerald-400">CHF {{ listing.price.toFixed(2) }}</span>
           </template>
         </div>
-        <div class="flex items-center gap-2">
+        <div
+          v-if="listing.sellerId !== usersStore.user?.id"
+          class="flex items-center gap-2"
+        >
           <button
             v-if="usersStore.isAuthenticated"
             type="button"

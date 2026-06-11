@@ -37,6 +37,7 @@ export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): Ca
     title: item.title,
     price: item.price,
     type: item.type,
+    sellerId: item.sellerId != null ? String(item.sellerId) : undefined,
     categoryTab,
     metaLine,
     location: `${1005 + index} Lausanne`,
