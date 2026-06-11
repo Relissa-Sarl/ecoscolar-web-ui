@@ -190,7 +190,11 @@
       "submit_review": "Invia recensione",
       "cancel_review": "Annulla",
       "review_success": "La tua recensione è stata registrata con successo.",
-      "review_error": "Si è verificato un errore durante la registrazione della recensione.",
+      "review_error": "Si è verificato un errore durante il salvataggio della recensione.",
+      "dispute_modal_title": "Segnala un problema",
+      "dispute_reason_label": "Motivo della controversia",
+      "cancel_dispute": "Annulla",
+      "submit_dispute": "Invia controversia",
       "tabs": {
         "ongoing": "In corso",
         "past": "Passate"
