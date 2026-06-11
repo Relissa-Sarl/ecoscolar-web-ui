@@ -64,9 +64,9 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
 </script>
 
 <template>
-  <article class="flex gap-4 p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+  <article class="flex gap-3 p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 shadow-sm transition-all duration-200 hover:shadow-md">
     <!-- Thumbnail -->
-    <div class="h-28 w-24 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 shrink-0 border border-slate-200/50 dark:border-slate-800/50">
+    <div class="h-20 w-16 rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-900 shrink-0 border border-slate-100 dark:border-slate-800">
       <img
         v-if="props.purchase.imageUrl"
         :src="props.purchase.imageUrl"
@@ -75,11 +75,11 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
       >
       <div
         v-else
-        class="h-full w-full flex items-center justify-center text-slate-400 dark:text-slate-600 bg-slate-100 dark:bg-slate-800"
+        class="h-full w-full flex items-center justify-center text-slate-300 dark:text-slate-700 bg-slate-50 dark:bg-slate-900"
       >
         <UIcon
           name="i-heroicons-book-open"
-          class="w-8 h-8 text-slate-400 dark:text-slate-600"
+          class="w-6 h-6"
         />
       </div>
     </div>
@@ -89,40 +89,40 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
       <div>
         <div class="flex items-start justify-between gap-2">
           <span
-            class="px-2 py-0.5 rounded-full text-xs font-semibold border"
+            class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border"
             :class="getStatusBadgeClass(props.purchase.status)"
           >
-            {{ props.purchase.status }}
+            {{ t(`profile.history.status.${props.purchase.status.toLowerCase()}`) }}
           </span>
-          <span class="text-xs text-slate-400 dark:text-slate-500 font-medium whitespace-nowrap">
+          <span class="text-[10px] text-slate-400 dark:text-slate-500 font-medium whitespace-nowrap">
             {{ formatDate(props.purchase.purchaseDate) }}
           </span>
         </div>
-        <h3 class="mt-2 text-base font-bold text-slate-950 dark:text-white leading-snug truncate">
+        <h3 class="mt-1 text-sm font-bold text-slate-900 dark:text-white leading-snug truncate">
           {{ props.purchase.advertTitle }}
         </h3>
-        <div class="flex items-center gap-2 mt-1 flex-wrap">
-          <p class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
+        <div class="flex items-center gap-2 mt-0.5 flex-wrap">
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
             <span>{{ t('me.purchases.seller_label') }} :</span>
             <span class="font-semibold text-slate-700 dark:text-slate-300">{{ props.purchase.sellerName }}</span>
           </p>
           <Stars
             v-if="localReview"
             :rating="localReview.rating"
-            :show-text="true"
-            class="scale-90 origin-left"
+            :show-text="false"
+            class="scale-75 origin-left"
           />
         </div>
       </div>
 
-      <div class="mt-4 flex items-center justify-between gap-4">
-        <span class="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
+      <div class="mt-2 flex items-center justify-between gap-4">
+        <span class="text-base font-black text-emerald-700 dark:text-emerald-400 whitespace-nowrap">
           {{ props.purchase.price }} CHF
         </span>
-        <div class="flex flex-wrap items-center gap-2">
+        <div class="flex flex-wrap items-center gap-1.5">
           <button
             v-if="props.purchase.status === 'PAID_WAITING_SHIPPING'"
-            class="inline-flex items-center justify-center rounded-xl border border-red-200 text-red-600 hover:bg-red-50 py-1.5 px-3 text-xs font-semibold transition-colors"
+            class="inline-flex items-center justify-center rounded-lg border border-red-100 text-red-600 hover:bg-red-50 py-1 px-2 text-[10px] font-bold transition-colors"
             @click="emit('cancel', props.purchase.id)"
           >
             {{ t('me.purchases.actions.cancel') }}
@@ -130,7 +130,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
 
           <button
             v-if="props.purchase.status === 'SHIPPED'"
-            class="inline-flex items-center justify-center rounded-xl border border-orange-200 text-orange-600 hover:bg-orange-50 py-1.5 px-3 text-xs font-semibold transition-colors"
+            class="inline-flex items-center justify-center rounded-lg border border-orange-100 text-orange-600 hover:bg-orange-50 py-1 px-2 text-[10px] font-bold transition-colors"
             @click="isDisputeOpen = true"
           >
             {{ t('me.purchases.actions.dispute') }}
@@ -138,7 +138,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
 
           <button
             v-if="props.purchase.status === 'SHIPPED'"
-            class="inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-3 text-xs font-semibold transition-colors"
+            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors"
             @click="emit('confirm-reception', props.purchase.id)"
           >
             {{ t('me.purchases.actions.confirm_reception') }}
@@ -147,7 +147,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
           <button
             v-if="isCompleted && !localReview"
             type="button"
-            class="inline-flex items-center justify-center rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 py-1.5 px-3 text-xs font-semibold transition-colors cursor-pointer"
+            class="inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-600 dark:text-slate-400 py-1 px-2 text-[10px] font-bold transition-colors cursor-pointer"
             @click="isOpen = true"
           >
             {{ t('me.purchases.leave_review') }}
@@ -155,7 +155,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
 
           <button
             v-if="props.purchase.status === 'COMPLETED' || props.purchase.status === 'CANCELLED'"
-            class="inline-flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 py-1.5 px-3 text-xs font-semibold transition-colors"
+            class="inline-flex items-center justify-center rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-300 py-1 px-2 text-[10px] font-bold transition-colors"
             :aria-expanded="showDetails"
             @click="showDetails = !showDetails"
           >
@@ -164,9 +164,9 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="2"
+              stroke-width="2.5"
               stroke="currentColor"
-              class="w-3 h-3 ml-1 transition-transform"
+              class="w-2.5 h-2.5 ml-1 transition-transform"
               :class="showDetails ? 'rotate-180' : ''"
             >
               <path
@@ -180,7 +180,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
           <NuxtLink
             v-else
             :to="localePath(`/adverts/${props.purchase.advertId}`)"
-            class="inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-700 py-1.5 px-3 text-xs font-semibold transition-colors"
+            class="inline-flex items-center justify-center rounded-lg bg-slate-900 hover:bg-slate-800 text-white dark:bg-emerald-600 dark:hover:bg-emerald-500 py-1 px-2 text-[10px] font-bold transition-colors"
           >
             {{ t('me.purchases.view_advert') }}
           </NuxtLink>

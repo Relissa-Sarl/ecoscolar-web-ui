@@ -803,6 +803,21 @@
       "filter_seller": "Come venditore",
       "average": "Media",
       "star_distribution": "Distribuzione delle stelle"
+    },
+    "history": {
+      "title": "La mia cronologia",
+      "purchases": "I miei ultimi acquisti",
+      "sales": "Le mie ultime vendite",
+      "no_purchases": "Non hai ancora effettuato acquisti.",
+      "no_sales": "Non hai ancora effettuato vendite.",
+      "status": {
+        "completed": "Completato",
+        "pending": "In attesa",
+        "paid_waiting_shipping": "In attesa di spedizione",
+        "shipped": "Spedito",
+        "cancelled": "Annullato",
+        "disputed": "In contenzioso"
+      }
     }
   },
   "checkout": {
