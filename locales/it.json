@@ -222,7 +222,8 @@
         "edit": "Modifica",
         "resume": "Riprendi",
         "expired": "Scaduto",
-        "sold": "Venduto"
+        "sold": "Venduto",
+        "blocked": "Bloccato"
       },
       "deleteConfirmTitle": "Sei sicuro di voler eliminare questo annuncio?",
       "deleteConfirmMessage": "Questa azione è irreversibile. L'annuncio verrà eliminato definitivamente dalla piattaforma.",
