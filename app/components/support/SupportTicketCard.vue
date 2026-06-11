@@ -7,14 +7,26 @@ const props = defineProps<{
 }>()
 
 const localePath = useLocalePath()
+const route = useRoute()
 
 const createdLabel = computed(() =>
   new Date(props.ticket.createdAt).toLocaleString())
+
+const ticketLink = computed(() => {
+  if (route.query.from === 'profile') {
+    return localePath({
+      path: `/me/support-requests/${props.ticket.id}`,
+      query: { from: 'profile' }
+    })
+  }
+
+  return localePath(`/me/support-requests/${props.ticket.id}`)
+})
 </script>
 
 <template>
   <NuxtLink
-    :to="localePath(`/me/support-requests/${ticket.id}`)"
+    :to="ticketLink"
     class="group flex w-full items-center justify-between gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-emerald-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-950 dark:hover:border-emerald-700"
   >
     <div class="min-w-0 flex-1">

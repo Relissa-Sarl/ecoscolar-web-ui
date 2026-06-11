@@ -139,6 +139,8 @@ onMounted(async () => {
     />
     <Sidebar :user="store.user" />
     <div class="flex-1 p-8">
+      <ProfileBackLink />
+
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
         <div>

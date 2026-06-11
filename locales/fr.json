@@ -490,11 +490,13 @@
     "back": "Retour",
     "back_previous": "Retour à la page précédente",
     "back_to_home": "Retour à l'accueil",
+    "back_to_profile": "Retour au profil",
     "back_to_catalog": "Retour au catalogue",
     "skip_to_content": "Passer au contenu principal",
     "last_updated": "Dernière mise à jour :",
     "contact_support": "Contactez le support",
     "home": "Accueil",
+    "footer_tagline": "© 2026 EcoScolar. Pensé pour l'étudiant moderne.",
     "favorites": "Favoris",
     "breadcrumb_label": "Fil d'Ariane",
     "messages": {
@@ -662,7 +664,11 @@
       "add_language": "Ajouter une langue",
       "remove_language_aria": "Supprimer la langue numéro {index}",
       "submit_button": "Terminer l'inscription",
-      "language_duplicate": "Vous avez déjà ajouté la langue '{language}' à votre profil."
+      "language_duplicate": "Vous avez déjà ajouté la langue '{language}' à votre profil.",
+      "errors": {
+        "Default": "Une erreur est survenue lors de la finalisation de votre profil. Veuillez réessayer.",
+        "InvalidPostalCode": "Le code postal n'est pas valide."
+      }
     },
     "errors": {
       "DuplicateUserName": "Cette adresse e-mail est déjà associée à un compte.",
@@ -751,7 +757,11 @@
       "submit_button": "Enregistrer les modifications",
       "language_placeholder": "Choisir une langue",
       "level_placeholder": "Choisir un niveau",
-      "pc_placeholder": "Ex: 1000"
+      "pc_placeholder": "Ex: 1000",
+      "errors": {
+        "Default": "Une erreur est survenue lors de la finalisation de votre profil. Veuillez réessayer.",
+        "InvalidPostalCode": "Le code postal n'est pas valide."
+      }
     },
     "public": {
       "error": "Il est actuellement impossible de charger le profil utilisateur. Il se peut que l'utilisateur ne soit pas en public ou que le profil ait été supprimé."
