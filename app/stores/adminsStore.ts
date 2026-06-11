@@ -41,6 +41,7 @@ export const useAdminsStore = defineStore('admins', () => {
     try {
       // Call the getMyProfile method of the admin service to fetch the admin's profile from the API
       user.value = await service.getMyProfile()
+      hasLoaded.value = true
     } catch {
       // ignore error details here; reset admin state
       user.value = null
@@ -52,9 +53,6 @@ export const useAdminsStore = defineStore('admins', () => {
    * @returns A promise that resolves to an array of User objects representing all users in the system. If the users have already been loaded, returns the cached array of users.
    */
   const fetchAllUsers = async () => {
-    if (hasLoaded.value)
-      return user.value
-
     isLoading.value = true
 
     try {
@@ -83,9 +81,6 @@ export const useAdminsStore = defineStore('admins', () => {
    * @returns A promise that resolves to an array of SupportTicketSummary objects representing all support tickets in the system. If the support tickets have already been loaded, returns the cached array of support tickets.
    */
   const fetchAllSupportTickets = async () => {
-    if (hasLoaded.value)
-      return user.value
-
     isLoading.value = true
 
     try {
@@ -112,9 +107,6 @@ export const useAdminsStore = defineStore('admins', () => {
   }
 
   const fetchAllAdverts = async () => {
-    if (hasLoaded.value)
-      return user.value
-
     isLoading.value = true
 
     try {
@@ -126,9 +118,22 @@ export const useAdminsStore = defineStore('admins', () => {
     }
   }
 
-  const blockAdvertToggle = async (advertToBlock: MySaleAdvert) => {
-    const updatedAdvert = await service.blockAdvertToggle(advertToBlock.id)
+  const blockAdvert = async (advertToBlock: MySaleAdvert) => {
+    const updatedAdvert = await service.blockAdvert(advertToBlock.id)
     return updatedAdvert
+  }
+
+  const deleteAdvert = async (advertToDelete: MySaleAdvert) => {
+    isLoading.value = true
+
+    try {
+      await service.deleteAdvert(advertToDelete.id)
+      adverts.value = await service.getAllAdverts()
+    } catch {
+      // ignore error details here; reset admin state
+    } finally {
+      isLoading.value = false
+    }
   }
 
   return {
@@ -147,6 +152,7 @@ export const useAdminsStore = defineStore('admins', () => {
     fetchAllSupportTickets,
     sendMessage,
     fetchAllAdverts,
-    blockAdvertToggle
+    blockAdvert,
+    deleteAdvert
   }
 })

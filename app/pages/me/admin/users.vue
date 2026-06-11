@@ -103,12 +103,15 @@ const confirmBan = async () => {
         store.users![index] = updatedUser
         triggerPopUp('success', updatedUser.isBanned ? 'User Banned' : 'User Unbanned', `The user has been ${updatedUser.isBanned ? 'banned' : 'unbanned'} successfully.`)
       }
-      showBanConfirm.value = false
-      userToBan.value = null
+
+      if (paginatedUsers.value.length === 0 && currentPage.value > 1) {
+        currentPage.value -= 1
+      }
     } catch (error) {
       console.error('Error toggling user status:', error)
       showPopUp.value = true
       triggerPopUp('error', 'User Status Update Failed', `An error occurred while updating the user status or the user cannot be banned. Please try again later.`)
+    } finally {
       showBanConfirm.value = false
       userToBan.value = null
     }
@@ -386,7 +389,7 @@ onMounted(async () => {
         </div>
 
         <div
-          v-if="store.users.length === 0 && !store.isLoading"
+          v-if="(store.users.length === 0 && !store.isLoading) || paginatedUsers.length === 0"
           class="p-8 text-center text-gray-500"
         >
           No users found.

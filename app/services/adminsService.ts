@@ -19,7 +19,8 @@ export interface AdminService {
   getAllSupportTickets: () => Promise<SupportTicketAdminDetail[]>
   sendTicketMessage: (id: number, body: string) => Promise<SupportTicketMessage>
   getAllAdverts: () => Promise<MySaleAdvert[]>
-  blockAdvertToggle: (id: number) => Promise<MySaleAdvert>
+  blockAdvert: (id: number) => Promise<MySaleAdvert>
+  deleteAdvert: (id: number) => Promise<MySaleAdvert[]>
 }
 
 /**
@@ -51,8 +52,12 @@ export function createadminService({ apiClient }: AdminServiceDependencies): Adm
 
   const getAllAdverts = async () => apiClient<MySaleAdvert[]>(`${ADVERT_PATH}`)
 
-  const blockAdvertToggle = async (id: number) => apiClient<MySaleAdvert>(`${ADMIN_PATH}/${id}/block`, {
+  const blockAdvert = async (id: number) => apiClient<MySaleAdvert>(`${ADMIN_PATH}/${id}/block`, {
     method: 'PATCH'
+  })
+
+  const deleteAdvert = async (id: number) => apiClient<MySaleAdvert[]>(`${ADVERT_PATH}/${id}`, {
+    method: 'DELETE'
   })
 
   return {
@@ -62,7 +67,8 @@ export function createadminService({ apiClient }: AdminServiceDependencies): Adm
     getAllSupportTickets,
     sendTicketMessage,
     getAllAdverts,
-    blockAdvertToggle
+    blockAdvert,
+    deleteAdvert
   }
 }
 

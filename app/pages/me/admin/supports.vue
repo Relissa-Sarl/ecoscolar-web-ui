@@ -340,7 +340,7 @@ onMounted(async () => {
         </div>
 
         <div
-          v-if="store.supports.length === 0 && !store.isLoading"
+          v-if="(store.supports.length === 0 && !store.isLoading) || paginatedTickets.length === 0"
           class="p-8 text-center text-gray-500"
         >
           No support tickets found.

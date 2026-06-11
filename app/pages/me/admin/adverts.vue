@@ -73,56 +73,6 @@ const filteredAdverts = computed(() => {
   return result
 })
 
-// advert Modal
-const isModalOpen = ref(false)
-const selectedAdvert = ref<MySaleAdvert | null>(null)
-
-const openAdvert = (advert: MySaleAdvert) => {
-  selectedAdvert.value = advert
-  isModalOpen.value = true
-}
-
-const closeAdvert = () => {
-  selectedAdvert.value = null
-  isModalOpen.value = false
-}
-
-// block/ unblock advert
-const showBlockConfirm = ref<boolean>(false)
-const advertToBlock = ref<MySaleAdvert | null>(null)
-
-const blockAdvert = (id: number) => {
-  showBlockConfirm.value = true
-  advertToBlock.value = store.adverts?.find(advert => advert.id === id) || null
-}
-const confirmBlock = async () => {
-  if (advertToBlock.value) {
-    try {
-      const updatedAdvert = await store.blockAdvertToggle(advertToBlock.value)
-
-      const index = store.adverts?.findIndex(a => a.id === advertToBlock.value?.id)
-
-      if (index !== -1) {
-        store.adverts![index] = updatedAdvert
-        triggerPopUp('success', 'Advert Blocked', `blocked successfully.`)
-      }
-      showBlockConfirm.value = false
-      advertToBlock.value = null
-    } catch (error) {
-      console.error('Error toggling advert status:', error)
-      showPopUp.value = true
-      triggerPopUp('error', 'Advert Status Update Failed', `An error occurred while updating the advert status or the advert is already blocked. Please try again later.`)
-      showBlockConfirm.value = false
-      advertToBlock.value = null
-    }
-  }
-}
-
-const cancelBlock = () => {
-  showBlockConfirm.value = false
-  advertToBlock.value = null
-}
-
 // Pagination
 const currentPage = ref(1)
 const pageSize = 10
@@ -141,6 +91,97 @@ const changePage = (page: number) => {
 watch([searchQuery, statusFilterStatus], () => {
   currentPage.value = 1
 })
+
+// advert Modal
+const isModalOpen = ref(false)
+const selectedAdvert = ref<MySaleAdvert | null>(null)
+
+const openAdvert = (advert: MySaleAdvert) => {
+  selectedAdvert.value = advert
+  isModalOpen.value = true
+}
+
+const closeAdvert = () => {
+  selectedAdvert.value = null
+  isModalOpen.value = false
+}
+
+// block advert
+const showBlockConfirm = ref<boolean>(false)
+const advertToBlock = ref<MySaleAdvert | null>(null)
+
+const blockAdvert = (id: number) => {
+  showBlockConfirm.value = true
+  advertToBlock.value = store.adverts?.find(advert => advert.id === id) || null
+}
+const confirmBlock = async () => {
+  if (advertToBlock.value) {
+    try {
+      const updatedAdvert = await store.blockAdvert(advertToBlock.value)
+
+      const index = store.adverts?.findIndex(a => a.id === advertToBlock.value?.id)
+
+      if (index !== -1) {
+        store.adverts![index] = updatedAdvert
+        triggerPopUp('success', 'Advert Blocked', `blocked successfully.`)
+      }
+      if (paginatedAdverts.value.length === 0 && currentPage.value > 1) {
+        currentPage.value -= 1
+      }
+    } catch (error) {
+      console.error('Error toggling advert status:', error)
+      showPopUp.value = true
+      triggerPopUp('error', 'Advert Status Update Failed', `An error occurred while updating the advert status or the advert is already blocked. Please try again later.`)
+    } finally {
+      showBlockConfirm.value = false
+      advertToBlock.value = null
+    }
+  }
+}
+
+const cancelBlock = () => {
+  showBlockConfirm.value = false
+  advertToBlock.value = null
+}
+
+// delete advert
+const showDeleteConfirm = ref<boolean>(false)
+const advertToDelete = ref<MySaleAdvert | null>(null)
+
+const deleteAdvert = (id: number) => {
+  showDeleteConfirm.value = true
+  advertToDelete.value = store.adverts?.find(advert => advert.id === id) || null
+}
+const confirmDelete = async () => {
+  if (advertToDelete.value) {
+    try {
+      await store.deleteAdvert(advertToDelete.value)
+
+      const isStillPresent = store.adverts.some(a => a.id === advertToDelete.value?.id)
+
+      if (isStillPresent) {
+        triggerPopUp('error', 'Advert Status Update Failed', `An error occurred while deleting the advert. Please try again later.`)
+      } else {
+        triggerPopUp('success', 'Advert Deleted', `deleted successfully.`)
+      }
+      if (paginatedAdverts.value.length === 0 && currentPage.value > 1) {
+        currentPage.value -= 1
+      }
+    } catch (error) {
+      console.error('Error toggling advert status:', error)
+      showPopUp.value = true
+      triggerPopUp('error', 'Advert Status Update Failed', `An error occurred while deleting the advert. Please try again later.`)
+    } finally {
+      showDeleteConfirm.value = false
+      advertToDelete.value = null
+    }
+  }
+}
+
+const cancelDelete = () => {
+  showDeleteConfirm.value = false
+  advertToDelete.value = null
+}
 
 onMounted(async () => {
   await store.fetchProfile()
@@ -205,6 +246,15 @@ onMounted(async () => {
         confirm-text="Confirm"
         @confirm-delete="confirmBlock"
         @cancel-delete="cancelBlock"
+      />
+      <DeleteConfirmationPopup
+        :show="showDeleteConfirm"
+        title="Delete Advert"
+        message="Are you sure you want to delete this advert? This action cannot be undone."
+        cancel-text="Cancel"
+        confirm-text="Confirm"
+        @confirm-delete="confirmDelete"
+        @cancel-delete="cancelDelete"
       />
       <div class="flex gap-4 mb-6">
         <input
@@ -334,8 +384,8 @@ onMounted(async () => {
                 </button>
                 <button
                   class="ml-2 text-gray-400 transition-colors font-medium text-sm"
-                  :disabled="advert.status === AdvertStatus.BLOCKED"
-                  :class="advert.status === AdvertStatus.BLOCKED ? 'disabled:opacity-50 hover:text-gray-400' : 'hover:text-red-600 cursor-pointer'"
+                  :disabled="advert.status === AdvertStatus.BLOCKED || advert.status === AdvertStatus.SOLD"
+                  :class="advert.status === AdvertStatus.BLOCKED || advert.status === AdvertStatus.SOLD ? 'disabled:opacity-50 hover:text-gray-400' : 'hover:text-red-600 cursor-pointer'"
                   @click="blockAdvert(advert.id)"
                 >
                   <svg
@@ -352,7 +402,10 @@ onMounted(async () => {
                   </svg>
                 </button>
                 <button
-                  class="ml-2 text-gray-400 hover:text-red-600 transition-colors font-medium text-sm cursor-pointer"
+                  class="ml-2 text-gray-400 transition-colors font-medium text-sm"
+                  :disabled="advert.status === AdvertStatus.SOLD"
+                  :class="advert.status === AdvertStatus.SOLD ? 'disabled:opacity-50 hover:text-gray-400' : 'hover:text-red-600 cursor-pointer'"
+                  @click="deleteAdvert(advert.id)"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -414,7 +467,7 @@ onMounted(async () => {
         </div>
 
         <div
-          v-if="store.supports.length === 0 && !store.isLoading"
+          v-if="(store.supports.length === 0 && !store.isLoading) || paginatedAdverts.length === 0"
           class="p-8 text-center text-gray-500"
         >
           No support tickets found.
