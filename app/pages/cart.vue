@@ -9,6 +9,7 @@ import { useCartStore } from '~/stores/cartStore'
 import { getPaymentService } from '~/services/paymentService'
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 /**
  * Define the page metadata to specify that this page should only
@@ -30,7 +31,6 @@ interface CartItem {
   author?: string
   seller: string
   imageUrl?: string
-  reservedUntil?: string | null
   shippingCost?: number
 }
 
@@ -50,7 +50,6 @@ const cartItems = computed<CartItem[]>(() => {
     quantity: item.quantity,
     seller: item.listing.seller || 'Vendeur',
     imageUrl: item.listing.imageUrl,
-    reservedUntil: item.reservedUntil,
     shippingCost: item.shippingCost
   }))
 })
@@ -93,10 +92,17 @@ const itemsCount = computed(() => {
 const isCheckingOut = ref(false)
 const checkoutError = ref<string | null>(null)
 
+const usersStore = useUsersStore()
+
 // handle checkout with stripe
 const handleCheckout = async () => {
   // if cart is empty or checkout is already in progress, return
   if (cartItems.value.length === 0 || isCheckingOut.value) return
+
+  if (!usersStore.isAuthenticated) {
+    await navigateTo(localePath('/login'))
+    return
+  }
 
   // set checking out flag and clear any previous error
   isCheckingOut.value = true
@@ -140,7 +146,7 @@ const handleCheckout = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+  <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
     <div class="max-w-6xl mx-auto">
       <!-- Header -->
       <CartHeader

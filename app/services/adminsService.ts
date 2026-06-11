@@ -1,6 +1,7 @@
 import type { User } from '~/types/user'
 import { useApi } from '../composables/useApi'
 import type { SupportTicketAdminDetail, SupportTicketMessage } from '~/types/support'
+import type { MySaleAdvert } from './historyService'
 
 type ApiClient = typeof useApi
 
@@ -40,7 +41,8 @@ export function createadminService({ apiClient }: AdminServiceDependencies): Adm
   const getAllUsers = async () => apiClient<User[]>(`${ADMIN_PATH}/users`)
 
   const banUserToggle = async (id: string) => apiClient<User>(`${ADMIN_PATH}/${id}/ban`, {
-    method: 'PATCH'
+    method: 'PATCH',
+    skipAuth: true
   })
 
   const getAllSupportTickets = async () => apiClient<SupportTicketAdminDetail[]>(`${ADMIN_PATH}/supports`)

@@ -43,6 +43,11 @@ defineEmits(['close'])
             <p class="text-gray-500 text-sm">
               @{{ user.nickname }}
             </p>
+            <p
+              class="text-xs mt-1 inline-block rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200 px-2 py-0.5"
+            >
+              {{ user?.id }}
+            </p>
           </div>
         </div>
 

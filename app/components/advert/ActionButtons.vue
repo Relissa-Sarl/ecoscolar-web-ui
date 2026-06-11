@@ -14,12 +14,6 @@ const props = defineProps<Props>()
 const { t } = useI18n()
 const toast = useToast()
 
-const emit = defineEmits<{
-  cartAdd: []
-  favorite: [value: boolean]
-  notify: []
-}>()
-
 const favoritesStore = useFavoritesStore()
 const usersStore = useUsersStore()
 const isSubmittingFavorite = ref(false)
@@ -58,26 +52,40 @@ const isInCart = computed(() => {
   return cartStore.items.some(item => item.listing.id === String(resolvedAdvertId.value))
 })
 
-const handleBuy = async () => {
-  if (props.advert) {
-    const listing: CatalogListing = {
-      id: String(props.advert.id),
-      title: props.advert.title,
-      price: props.advert.price,
-      type: props.advert.type,
-      categoryTab: props.advert.type === AdvertType.BOOK ? 'textbooks' : (props.advert.type === AdvertType.PRODUCT ? 'supplies' : 'tutoring'),
-      imageUrl: props.advert.image || '',
-      location: '',
-      hourly: props.advert.type === AdvertType.SERVICE,
-      seller: props.advert.seller
-    }
-    await cartStore.addToCart(listing)
-    toast.add({
-      title: t('cart.added_success'),
-      color: 'success'
-    })
-  }
-  emit('cartAdd')
+/**
+ * Converts an Advert into a CatalogListing format for easier handling in the cart and favorites.
+ */
+const listing = computed(() => {
+  if (!props.advert)
+    return null
+
+  const advert = props.advert
+
+  return {
+    id: String(advert.id),
+    title: advert.title,
+    price: advert.price,
+    type: advert.type,
+    categoryTab: advert.type === AdvertType.BOOK ? 'textbooks' : (advert.type === AdvertType.PRODUCT ? 'supplies' : 'tutoring'),
+    imageUrl: advert.image || '',
+    location: '',
+    hourly: advert.type === AdvertType.SERVICE,
+    seller: advert.seller
+  } as CatalogListing
+})
+
+const handleCardAdd = async () => {
+  if (!listing.value || isInCart.value) return
+
+  await cartStore.addToCart(listing.value)
+  toast.add({
+    title: t('cart.added_success'),
+    color: 'success'
+  })
+}
+
+const handleReservation = async () => {
+  // TODO: Implement reservation logic
 }
 
 const toggleFavorite = async () => {
@@ -87,8 +95,7 @@ const toggleFavorite = async () => {
   isSubmittingFavorite.value = true
 
   try {
-    const result = await favoritesStore.toggleFavorite(favoriteInput.value)
-    emit('favorite', result.isFavorite)
+    await favoritesStore.toggleFavorite(favoriteInput.value)
   } finally {
     isSubmittingFavorite.value = false
   }
@@ -110,12 +117,20 @@ onBeforeMount(() => {
   <div class="space-y-3">
     <div class="flex gap-3">
       <button
+        v-if="advert?.type === AdvertType.SERVICE"
+        class="flex-1 px-4 py-3 font-medium rounded-lg transition-colors flex items-center justify-center bg-green-700 hover:bg-green-800 text-white cursor-pointer"
+        @click="handleReservation"
+      >
+        {{ $t('catalog.card.book_lesson') }}
+      </button>
+      <button
+        v-else
         class="flex-1 px-4 py-3 font-medium rounded-lg transition-colors flex items-center justify-center"
         :class="isInCart
           ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed border border-slate-200 dark:border-slate-700'
           : 'bg-green-700 hover:bg-green-800 text-white cursor-pointer'"
         :disabled="isInCart"
-        @click="handleBuy"
+        @click="handleCardAdd"
       >
         {{ isInCart ? $t('advert.actions.already_in_cart') : $t('advert.actions.buy_now') }}
       </button>

@@ -137,7 +137,7 @@ const handleConfirmShipping = async (id: number) => {
           {{ t('me.sales.empty_placeholder') }}
         </p>
         <NuxtLink
-          :to="localePath('/sell')"
+          :to="localePath('/adverts/create-advert')"
           class="mt-6 inline-flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors"
         >
           {{ t('me.sales.sell_cta') }}

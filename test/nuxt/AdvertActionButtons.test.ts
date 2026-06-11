@@ -97,7 +97,6 @@ describe('AdvertActionButtons', () => {
         image: 'https://example.com/image.jpg'
       }
     })
-    expect(wrapper.emitted('favorite')?.[0]).toEqual([true])
     expect(wrapper.get('button[aria-label="advert.actions.favorite_remove"]').attributes('aria-pressed')).toBe('true')
   })
 
@@ -130,7 +129,6 @@ describe('AdvertActionButtons', () => {
       categoryTab: 'textbooks',
       imageUrl: 'https://example.com/chem.jpg'
     }))
-    expect(wrapper.emitted('cartAdd')?.[0]).toEqual([])
   })
 
   it('disables the add-to-cart button and changes text when item is in cart', async () => {
@@ -146,7 +144,6 @@ describe('AdvertActionButtons', () => {
         hourly: false
       },
       quantity: 1,
-      reservedUntil: null,
       shippingCost: 0
     }]
     const wrapper = mount(ActionButtons, {
