@@ -49,6 +49,7 @@ export interface HistoryService {
   cancelPurchase: (transactionId: string) => Promise<void>
   disputePurchase: (transactionId: string, reason: string) => Promise<void>
   createReview: (transactionId: string, rating: number, comment?: string) => Promise<void>
+  createTransactions: (advertIds: number[], stripeSessionId: string | null) => Promise<void>
 }
 
 export function createHistoryService({ apiClient }: HistoryServiceDependencies): HistoryService {
@@ -95,6 +96,13 @@ export function createHistoryService({ apiClient }: HistoryServiceDependencies):
       await apiClient<unknown>(`/transactions/${transactionId}/reviews`, {
         method: 'POST',
         body: { rating, comment }
+      })
+    },
+
+    async createTransactions(advertIds: number[], stripeSessionId: string | null): Promise<void> {
+      await apiClient('/transactions', {
+        method: 'POST',
+        body: { advertIds, stripeSessionId }
       })
     }
   }

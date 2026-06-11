@@ -1,9 +1,16 @@
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
+
 import SaleCard from '~/components/me/SaleCard.vue'
+import ReviewModal from '~/components/me/ReviewModal.vue'
 import type { MySaleAdvert } from '~/services/historyService'
 import { AdvertStatus } from '~/utils/enum/advertStatus'
+
+const { mockRefreshNuxtData } = vi.hoisted(() => ({
+  mockRefreshNuxtData: vi.fn()
+}))
+mockNuxtImport('refreshNuxtData', () => mockRefreshNuxtData)
 
 mockNuxtImport('useI18n', () => () => ({
   t: (key: string) => key,
@@ -154,5 +161,61 @@ describe('SaleCard', () => {
     expect(btns.length).toBe(0)
     expect(wrapper.find('.stars-mock').exists()).toBe(true)
     expect(wrapper.find('.stars-mock').text()).toContain('5 stars')
+  })
+
+  it('falls back to raw date string on formatting error', () => {
+    const spy = vi.spyOn(Date.prototype, 'toLocaleDateString').mockImplementationOnce(() => {
+      throw new Error('Locale formatting error')
+    })
+    const wrapper = mount(SaleCard, {
+      props: { sale: { ...mockSale, publicationDate: 'invalid-date' } },
+      global: { stubs }
+    })
+    expect(wrapper.text()).toContain('invalid-date')
+    spy.mockRestore()
+  })
+
+  it('renders raw status name for unknown status badge', () => {
+    const wrapper = mount(SaleCard, {
+      props: { sale: { ...mockSale, status: 'UNKNOWN' as unknown as AdvertStatus } },
+      global: { stubs }
+    })
+    expect(wrapper.text()).toContain('UNKNOWN')
+  })
+
+  it('emits confirm-shipping when confirm button is clicked', async () => {
+    const wrapper = mount(SaleCard, {
+      props: {
+        sale: {
+          ...mockSale,
+          transactionStatus: 'PAID_WAITING_SHIPPING',
+          transactionId: 456
+        }
+      },
+      global: { stubs }
+    })
+    const btn = wrapper.find('button')
+    expect(btn.text()).toContain('me.sales.actions.confirm_shipping')
+    await btn.trigger('click')
+
+    expect(wrapper.emitted('confirm-shipping')?.[0]).toEqual([456])
+  })
+
+  it('updates localReview and refreshes Nuxt data when review is successfully submitted', async () => {
+    const soldSale = { ...mockSale, status: AdvertStatus.SOLD, buyerName: 'JohnDoe', review: null }
+    const wrapper = mount(SaleCard, {
+      props: { sale: soldSale },
+      global: { stubs }
+    })
+
+    const reviewModal = wrapper.findComponent(ReviewModal)
+    expect(reviewModal.exists()).toBe(true)
+
+    // Trigger the success event from the ReviewModal stub
+    await reviewModal.vm.$emit('success', { rating: 4, comment: 'Nice!' })
+
+    // It should update the review UI (e.g. show the rating / hide leave review button)
+    expect((wrapper.vm as unknown as { localReview: { rating: number, comment: string | null } | null }).localReview).toEqual({ rating: 4, comment: 'Nice!' })
+    expect(mockRefreshNuxtData).toHaveBeenCalledWith('user-sales')
   })
 })

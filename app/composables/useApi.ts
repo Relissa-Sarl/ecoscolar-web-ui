@@ -22,7 +22,8 @@ export const useApi = <T>(
     apiBase = config.public.apiBase || apiBase
 
     // Capture cookies during Server-Side Rendering (SSR) to maintain session
-    if (import.meta.server) {
+    const isServer = import.meta.server || (typeof globalThis !== 'undefined' && (globalThis as typeof globalThis & { __mock_server?: boolean }).__mock_server)
+    if (isServer) {
       reqCookies = useRequestHeaders(['cookie']).cookie
     }
   } catch {
@@ -42,7 +43,8 @@ export const useApi = <T>(
       const headers = new Headers(options.headers)
 
       // Inject captured cookies safely if we are performing SSR
-      if (import.meta.server && reqCookies) {
+      const isServer = import.meta.server || (typeof globalThis !== 'undefined' && (globalThis as typeof globalThis & { __mock_server?: boolean }).__mock_server)
+      if (isServer && reqCookies) {
         headers.set('cookie', reqCookies)
       }
       options.headers = headers

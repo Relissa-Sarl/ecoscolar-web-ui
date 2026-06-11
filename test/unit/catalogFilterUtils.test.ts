@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+
 import type { CatalogListing } from '../../app/types/catalog'
 import { AdvertType } from '../../app/utils/enum/advertType'
 import {

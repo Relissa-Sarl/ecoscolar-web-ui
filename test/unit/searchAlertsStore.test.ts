@@ -68,4 +68,59 @@ describe('searchAlerts store', () => {
     expect(serviceMocks.deleteAlert).toHaveBeenCalledWith(3)
     expect(store.alerts).toHaveLength(0)
   })
+
+  it('handles standard Error when loading alerts fails', async () => {
+    const testError = new Error('Database connection failed')
+    serviceMocks.listAlerts.mockRejectedValueOnce(testError)
+    const store = useSearchAlertsStore()
+
+    await expect(store.loadAlerts()).rejects.toThrow(testError)
+    expect(store.error).toBe('Database connection failed')
+    expect(store.isLoading).toBe(false)
+  })
+
+  it('handles non-Error objects when loading alerts fails', async () => {
+    serviceMocks.listAlerts.mockRejectedValueOnce('Some string error')
+    const store = useSearchAlertsStore()
+
+    await expect(store.loadAlerts()).rejects.toBe('Some string error')
+    expect(store.error).toBe('Unable to load search alerts')
+    expect(store.isLoading).toBe(false)
+  })
+
+  it('does not call the service if already loaded and force is false', async () => {
+    serviceMocks.listAlerts.mockResolvedValueOnce([buildAlert(1)])
+    const store = useSearchAlertsStore()
+
+    await store.loadAlerts()
+    expect(serviceMocks.listAlerts).toHaveBeenCalledTimes(1)
+
+    const result = await store.loadAlerts()
+    expect(serviceMocks.listAlerts).toHaveBeenCalledTimes(1)
+    expect(result).toHaveLength(1)
+  })
+
+  it('calls the service if already loaded and force is true', async () => {
+    serviceMocks.listAlerts.mockResolvedValue([buildAlert(1)])
+    const store = useSearchAlertsStore()
+
+    await store.loadAlerts()
+    expect(serviceMocks.listAlerts).toHaveBeenCalledTimes(1)
+
+    await store.loadAlerts(true)
+    expect(serviceMocks.listAlerts).toHaveBeenCalledTimes(2)
+  })
+
+  it('clears alerts successfully', async () => {
+    serviceMocks.listAlerts.mockResolvedValueOnce([buildAlert(1)])
+    const store = useSearchAlertsStore()
+    await store.loadAlerts()
+    expect(store.hasLoaded).toBe(true)
+    expect(store.alerts).toHaveLength(1)
+
+    store.clearAlerts()
+    expect(store.alerts).toHaveLength(0)
+    expect(store.hasLoaded).toBe(false)
+    expect(store.error).toBeNull()
+  })
 })

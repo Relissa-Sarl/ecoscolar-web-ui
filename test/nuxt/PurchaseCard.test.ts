@@ -1,8 +1,15 @@
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
+
 import PurchaseCard from '~/components/me/PurchaseCard.vue'
+import ReviewModal from '~/components/me/ReviewModal.vue'
 import type { Purchase } from '~/services/historyService'
+
+const { mockRefreshNuxtData } = vi.hoisted(() => ({
+  mockRefreshNuxtData: vi.fn()
+}))
+mockNuxtImport('refreshNuxtData', () => mockRefreshNuxtData)
 
 mockNuxtImport('useI18n', () => () => ({
   t: (key: string) => key,
@@ -151,5 +158,119 @@ describe('PurchaseCard', () => {
     expect(btns.length).toBe(0)
     expect(wrapper.find('.stars-mock').exists()).toBe(true)
     expect(wrapper.find('.stars-mock').text()).toContain('4 stars')
+  })
+
+  it('falls back to raw date string on formatting error', () => {
+    const spy = vi.spyOn(Date.prototype, 'toLocaleDateString').mockImplementationOnce(() => {
+      throw new Error('Locale formatting error')
+    })
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, purchaseDate: 'invalid-date' } },
+      global: { stubs }
+    })
+    expect(wrapper.text()).toContain('invalid-date')
+    spy.mockRestore()
+  })
+
+  it('renders raw status name for unknown status badge', () => {
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, status: 'UNKNOWN' } },
+      global: { stubs }
+    })
+    expect(wrapper.text()).toContain('UNKNOWN')
+  })
+
+  it('emits cancel when cancel button is clicked', async () => {
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, status: 'PAID_WAITING_SHIPPING' } },
+      global: { stubs }
+    })
+    const btn = wrapper.find('button')
+    expect(btn.text()).toContain('me.purchases.actions.cancel')
+    await btn.trigger('click')
+
+    expect(wrapper.emitted('cancel')?.[0]).toEqual(['txn-1'])
+  })
+
+  it('emits confirm-reception when confirm reception button is clicked', async () => {
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, status: 'SHIPPED' } },
+      global: { stubs }
+    })
+    const btn = wrapper.findAll('button').find(b => b.text().includes('me.purchases.actions.confirm_reception'))
+    expect(btn).toBeDefined()
+    await btn?.trigger('click')
+
+    expect(wrapper.emitted('confirm-reception')?.[0]).toEqual(['txn-1'])
+  })
+
+  it('toggles showDetails when details button is clicked', async () => {
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, status: 'COMPLETED' } },
+      global: { stubs }
+    })
+
+    // Details element should not exist
+    expect(wrapper.text()).not.toContain('me.purchases.details.title')
+
+    const btn = wrapper.findAll('button').find(b => b.text().includes('me.purchases.actions.details'))
+    expect(btn).toBeDefined()
+    await btn?.trigger('click')
+
+    expect(wrapper.text()).toContain('me.purchases.details.title')
+
+    await btn?.trigger('click')
+    expect(wrapper.text()).not.toContain('me.purchases.details.title')
+  })
+
+  it('emits dispute when dispute is submitted via DisputeModal', async () => {
+    // We import DisputeModal here to query it
+    const DisputeModalComp = (await import('~/components/me/DisputeModal.vue')).default
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, status: 'SHIPPED' } },
+      global: { stubs }
+    })
+
+    const disputeModal = wrapper.findComponent(DisputeModalComp)
+    expect(disputeModal.exists()).toBe(true)
+
+    await disputeModal.vm.$emit('submit', 'Item not as described')
+
+    expect(wrapper.emitted('dispute')?.[0]).toEqual(['txn-1', 'Item not as described'])
+    expect((wrapper.vm as unknown as { isDisputeOpen: boolean }).isDisputeOpen).toBe(false)
+  })
+
+  it('updates localReview and refreshes Nuxt data when review is successfully submitted', async () => {
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, status: 'COMPLETED', review: null } },
+      global: { stubs }
+    })
+
+    const reviewModal = wrapper.findComponent(ReviewModal)
+    expect(reviewModal.exists()).toBe(true)
+
+    await reviewModal.vm.$emit('success', { rating: 5, comment: 'Super!' })
+
+    expect((wrapper.vm as unknown as { localReview: { rating: number, comment: string | null } | null }).localReview).toEqual({ rating: 5, comment: 'Super!' })
+    expect(mockRefreshNuxtData).toHaveBeenCalledWith('user-purchases')
+  })
+
+  it('reacts to props.purchase.review watch', async () => {
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, review: null } },
+      global: { stubs }
+    })
+
+    expect((wrapper.vm as unknown as { localReview: { rating: number, comment: string | null } | null }).localReview).toBeNull()
+
+    const updatedReview = { rating: 3, comment: 'Updated' }
+    await wrapper.setProps({
+      purchase: {
+        ...mockPurchase,
+        review: updatedReview
+      }
+    })
+
+    expect((wrapper.vm as unknown as { localReview: { rating: number, comment: string | null } | null }).localReview).toEqual(updatedReview)
   })
 })
