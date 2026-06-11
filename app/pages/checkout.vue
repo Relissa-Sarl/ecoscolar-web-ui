@@ -2,21 +2,32 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from '#imports'
-import { getPaymentsService } from '~/services/paymentsService'
+import { getPaymentService } from '~/services/paymentService'
+import { getAdvertService } from '~/services/advertService'
 
 const { t } = useI18n()
 const route = useRoute()
-const paymentsService = getPaymentsService()
+const paymentService = getPaymentService()
+const advertService = getAdvertService()
 
 const advertId = ref<number | null>(null)
+const productPrice = ref<string>('0')
 const shippingAddress = ref('')
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 
-onMounted(() => {
+onMounted(async () => {
   const id = route.query.advertId
   if (id && !Array.isArray(id)) {
     advertId.value = parseInt(id, 10)
+    try {
+      const advert = await advertService.getAdvert(advertId.value)
+      if (advert && advert.price) {
+        productPrice.value = advert.price.toFixed(2)
+      }
+    } catch (e) {
+      console.error('Failed to load advert details', e)
+    }
   }
 })
 
@@ -31,9 +42,9 @@ const submitCheckout = async () => {
   error.value = null
 
   try {
-    const response = await paymentsService.checkout({
-      advertId: advertId.value,
-      shippingAddress: shippingAddress.value.trim()
+    const response = await paymentService.createCheckoutSession({
+      productId: advertId.value,
+      productPrice: productPrice.value
     })
 
     if (response && response.url) {
