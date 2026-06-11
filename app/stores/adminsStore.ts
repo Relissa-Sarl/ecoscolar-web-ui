@@ -142,6 +142,7 @@ export const useAdminsStore = defineStore('admins', () => {
     adverts,
     supports,
     isLoading,
+    isSending,
     hasLoaded,
     errors,
     isAuthenticated,

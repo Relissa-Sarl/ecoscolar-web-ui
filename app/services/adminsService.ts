@@ -1,6 +1,7 @@
 import type { User } from '~/types/user'
 import { useApi } from '../composables/useApi'
 import type { SupportTicketAdminDetail, SupportTicketMessage } from '~/types/support'
+import type { MySaleAdvert } from './historyService'
 
 type ApiClient = typeof useApi
 
