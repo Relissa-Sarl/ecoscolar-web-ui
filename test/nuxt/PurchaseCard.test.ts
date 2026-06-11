@@ -49,7 +49,7 @@ describe('PurchaseCard', () => {
     })
 
     // Check texts
-    expect(wrapper.text()).toContain('COMPLETED')
+    expect(wrapper.text()).toContain('profile.history.status.completed')
     expect(wrapper.text()).toContain('Calculatrice Graphique')
     expect(wrapper.text()).toContain('JaneDoe')
     expect(wrapper.text()).toContain('55 CHF')
@@ -94,7 +94,7 @@ describe('PurchaseCard', () => {
       props: { purchase: { ...mockPurchase, status: 'COMPLETED' } },
       global: { stubs }
     })
-    expect(wrapper.text()).toContain('COMPLETED')
+    expect(wrapper.text()).toContain('profile.history.status.completed')
   })
 
   it('displays the correct status text for PENDING status', () => {
@@ -102,7 +102,7 @@ describe('PurchaseCard', () => {
       props: { purchase: { ...mockPurchase, status: 'PENDING' } },
       global: { stubs }
     })
-    expect(wrapper.text()).toContain('PENDING')
+    expect(wrapper.text()).toContain('profile.history.status.pending')
     expect(wrapper.text()).toContain('me.purchases.view_advert')
   })
 
@@ -111,7 +111,7 @@ describe('PurchaseCard', () => {
       props: { purchase: { ...mockPurchase, status: 'UNKNOWN' } },
       global: { stubs }
     })
-    expect(wrapper.text()).toContain('UNKNOWN')
+    expect(wrapper.text()).toContain('profile.history.status.unknown')
   })
 
   it('renders leave review button for completed purchase', () => {
