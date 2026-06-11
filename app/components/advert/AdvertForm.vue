@@ -284,21 +284,6 @@ const validateForm = (): boolean => {
     errors.value.description = $t('advertForm.error.invalid.descriptionLengthMax')
   }
 
-  // SQL injection prevention - check for suspicious patterns
-  const sqlInjectionPattern = /('|(--)|;|\/\*|\*\/|xp_|sp_|exec|execute|select|insert|update|delete|drop|create|alter|union)/i
-  if (
-    (title || description || author || publisher || edition || isbn || studyLevel)
-    && (sqlInjectionPattern.test(title)
-      || sqlInjectionPattern.test(description)
-      || sqlInjectionPattern.test(author)
-      || sqlInjectionPattern.test(publisher)
-      || sqlInjectionPattern.test(edition)
-      || sqlInjectionPattern.test(isbn)
-      || sqlInjectionPattern.test(studyLevel))
-  ) {
-    errors.value.content = $t('advertForm.error.invalid.sqlInjection')
-  }
-
   // Price validation
   if (form.value.price < 0) {
     errors.value.price = $t('advertForm.error.invalid.priceNegative')
