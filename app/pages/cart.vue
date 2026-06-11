@@ -121,13 +121,14 @@ const handleCheckout = async () => {
     }
   } catch (err) {
     console.error('Checkout error:', err)
-    const errorObj = err as { data?: { error?: unknown } }
-    if (errorObj && typeof errorObj === 'object' && errorObj.data && typeof errorObj.data === 'object' && errorObj.data.error) {
-      const apiError = String(errorObj.data.error)
-      if (apiError === 'Un des articles dans votre panier est en cours de paiement ou déjà vendu.') {
+    const errorObj = err as { data?: { code?: string, error?: unknown } }
+    if (errorObj && typeof errorObj === 'object' && errorObj.data && typeof errorObj.data === 'object') {
+      if (errorObj.data.code === 'ITEM_UNAVAILABLE') {
         checkoutError.value = t('checkout.errors.item_pending_or_sold')
+      } else if (errorObj.data.error) {
+        checkoutError.value = String(errorObj.data.error)
       } else {
-        checkoutError.value = apiError
+        checkoutError.value = err instanceof Error ? err.message : t('checkout.errors.init_failed')
       }
     } else {
       checkoutError.value = err instanceof Error ? err.message : t('checkout.errors.init_failed')
