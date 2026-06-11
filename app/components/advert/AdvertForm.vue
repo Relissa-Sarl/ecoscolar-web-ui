@@ -15,7 +15,7 @@ type DetailedAdvert = ModifyAdvertForm | ProductReadApiItem | BookReadApiItem | 
 
 interface Props {
   mode: 'create' | 'modify'
-  initialData?: DetailedAdvert
+  initialData?: DetailedAdvert | null
   isSubmitting?: boolean
   errorMessage?: string
 }
