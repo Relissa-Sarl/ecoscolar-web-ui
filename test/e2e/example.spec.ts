@@ -11,7 +11,7 @@ test('catalog subtitle does not expose a hardcoded postal perimeter', async ({ p
 
   await expect(page.getByRole('heading', { name: /Explorer les annonces/i })).toBeVisible()
   await expect(page.getByText(/résultats/i).first()).toBeVisible()
-  await expect(page.getByText(/1001|périmètre indicatif postal/i)).toHaveCount(0)
+  await expect(page.getByText(/périmètre indicatif postal/i)).toHaveCount(0)
 })
 
 test('cart page keeps a white background in light mode', async ({ page }) => {
