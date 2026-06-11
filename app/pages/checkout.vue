@@ -2,11 +2,11 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from '#imports'
-import { getPaymentsService } from '~/services/paymentsService'
+import { getPaymentService } from '~/services/paymentService'
 
 const { t } = useI18n()
 const route = useRoute()
-const paymentsService = getPaymentsService()
+const paymentService = getPaymentService()
 
 const advertId = ref<number | null>(null)
 const shippingAddress = ref('')
@@ -31,7 +31,7 @@ const submitCheckout = async () => {
   error.value = null
 
   try {
-    const response = await paymentsService.checkout({
+    const response = await paymentService.createCheckoutSession({
       advertId: advertId.value,
       shippingAddress: shippingAddress.value.trim()
     })
