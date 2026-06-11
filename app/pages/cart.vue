@@ -30,7 +30,6 @@ interface CartItem {
   author?: string
   seller: string
   imageUrl?: string
-  reservedUntil?: string | null
   shippingCost?: number
 }
 
@@ -50,7 +49,6 @@ const cartItems = computed<CartItem[]>(() => {
     quantity: item.quantity,
     seller: item.listing.seller || 'Vendeur',
     imageUrl: item.listing.imageUrl,
-    reservedUntil: item.reservedUntil,
     shippingCost: item.shippingCost
   }))
 })
