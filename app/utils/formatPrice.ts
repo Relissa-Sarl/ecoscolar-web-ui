@@ -1,6 +1,6 @@
 export function formatPrice(value: number | string | undefined | null): string {
   if (value == null) return '0.00'
-  
+
   const numValue = typeof value === 'string' ? parseFloat(value) : value
   if (isNaN(numValue)) return '0.00'
 
