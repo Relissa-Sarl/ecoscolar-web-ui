@@ -262,6 +262,7 @@ const { errors } = useFormErrors<FormErrorKeys>(() => usersStore.errors, `${prop
       </div>
 
       <button
+        v-if="spokenLanguages.length < languageOptions.length"
         type="button"
         class="text-sm font-bold text-emerald-800 dark:text-emerald-400 hover:underline"
         @click="addLanguage"
