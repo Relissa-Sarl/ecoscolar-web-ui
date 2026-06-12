@@ -32,6 +32,16 @@ function filterCatalog(q?: string) {
   )
 }
 
+function toPage(items: typeof CATALOG_FIXTURE[number][]) {
+  return {
+    items,
+    page: 1,
+    pageSize: 9,
+    totalItems: items.length,
+    totalPages: 1
+  }
+}
+
 describe('T8-4 · intégration recherche livre (catalogService → API → mappers)', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -40,11 +50,11 @@ describe('T8-4 · intégration recherche livre (catalogService → API → mappe
   it('envoie q= à l’API et mappe un seul livre pour une recherche ISBN', async () => {
     const isbn = '978-3-16-148410-0'
     const apiClient = vi.fn(async (_path: string, opts?: { query?: { q?: string } }) =>
-      filterCatalog(opts?.query?.q))
+      toPage(filterCatalog(opts?.query?.q)))
     const service = createCatalogService({ apiClient })
 
-    const rows = await service.listSummaries({ q: isbn })
-    const listings = mapCatalogApiToListings(rows)
+    const page = await service.listSummaries({ q: isbn })
+    const listings = mapCatalogApiToListings(page.items)
 
     expect(apiClient).toHaveBeenCalledWith('/adverts/summary', { query: { q: isbn } })
     expect(listings).toHaveLength(1)
@@ -55,11 +65,11 @@ describe('T8-4 · intégration recherche livre (catalogService → API → mappe
 
   it('filtre par mot-clé livre sans inclure les produits', async () => {
     const apiClient = vi.fn(async (_path: string, opts?: { query?: { q?: string } }) =>
-      filterCatalog(opts?.query?.q))
+      toPage(filterCatalog(opts?.query?.q)))
     const service = createCatalogService({ apiClient })
 
-    const rows = await service.listSummaries({ q: 'Exemple annonce 3' })
-    const listings = mapCatalogApiToListings(rows)
+    const page = await service.listSummaries({ q: 'Exemple annonce 3' })
+    const listings = mapCatalogApiToListings(page.items)
 
     expect(listings).toHaveLength(1)
     expect(listings[0].title).toBe('Exemple annonce 3')
@@ -67,21 +77,21 @@ describe('T8-4 · intégration recherche livre (catalogService → API → mappe
   })
 
   it('retourne une liste vide quand l’API ne trouve rien', async () => {
-    const apiClient = vi.fn(async () => [] as typeof CATALOG_FIXTURE)
+    const apiClient = vi.fn(async () => toPage([]))
     const service = createCatalogService({ apiClient })
 
-    const rows = await service.listSummaries({ q: 'zzzz-inexistant' })
-    const listings = mapCatalogApiToListings(rows)
+    const page = await service.listSummaries({ q: 'zzzz-inexistant' })
+    const listings = mapCatalogApiToListings(page.items)
 
     expect(listings).toHaveLength(0)
   })
 
   it('charge tout le catalogue sans filtre q', async () => {
-    const apiClient = vi.fn(async () => [...CATALOG_FIXTURE])
+    const apiClient = vi.fn(async () => toPage([...CATALOG_FIXTURE]))
     const service = createCatalogService({ apiClient })
 
-    const rows = await service.listSummaries()
-    const listings = mapCatalogApiToListings(rows)
+    const page = await service.listSummaries()
+    const listings = mapCatalogApiToListings(page.items)
 
     expect(apiClient).toHaveBeenCalledWith('/adverts/summary', { query: undefined })
     expect(listings).toHaveLength(4)
