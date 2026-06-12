@@ -2,6 +2,8 @@
 import { useI18n, useAsyncData, useLocalePath } from '#imports'
 import { useHistory } from '~/composables/useHistory'
 import SaleCard from '~/components/me/SaleCard.vue'
+import TransactionModals from '~/components/me/TransactionModals.vue'
+import { useTransactionActions } from '~/composables/useTransactionActions'
 
 definePageMeta({
   middleware: 'auth'
@@ -37,16 +39,17 @@ const filteredSales = computed(() => {
   }
 })
 
-const handleConfirmShipping = async (id: number) => {
-  if (!confirm(t('me.sales.alerts.confirm_shipping_prompt'))) return
-  try {
-    const { getHistoryService } = await import('~/services/historyService')
-    await getHistoryService().confirmShipping(id.toString())
-    alert(t('me.sales.alerts.shipping_success'))
-    refresh()
-  } catch (e: unknown) {
-    alert(t('me.sales.alerts.error', { message: e instanceof Error ? e.message : String(e) }))
-  }
+const {
+  activeModal,
+  isProcessing,
+  actionError,
+  promptAction,
+  closeModal,
+  executeAction
+} = useTransactionActions()
+
+const handleActionSuccess = () => {
+  refresh()
 }
 </script>
 
@@ -153,9 +156,17 @@ const handleConfirmShipping = async (id: number) => {
           v-for="sale in filteredSales"
           :key="sale.id"
           :sale="sale"
-          @confirm-shipping="handleConfirmShipping"
+          @confirm-shipping="promptAction('confirm_shipping', $event.toString())"
         />
       </div>
     </div>
+
+    <TransactionModals
+      :active-modal="activeModal"
+      :is-processing="isProcessing"
+      :action-error="actionError"
+      @cancel="closeModal"
+      @confirm="executeAction(handleActionSuccess)"
+    />
   </div>
 </template>
