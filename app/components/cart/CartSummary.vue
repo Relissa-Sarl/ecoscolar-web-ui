@@ -26,12 +26,12 @@ const shippingMethod = defineModel<'post' | 'handToHand'>({ default: 'post' })
       <div class="space-y-3.5 border-b border-slate-100 dark:border-slate-800 pb-5 text-sm">
         <div class="flex justify-between text-slate-500 dark:text-slate-400">
           <span>{{ $t('cart.checkout.subtotal') }}</span>
-          <span class="font-semibold text-slate-800 dark:text-slate-200">{{ subtotal.toFixed(2) }} CHF</span>
+          <span class="font-semibold text-slate-800 dark:text-slate-200">{{ formatPrice(subtotal) }} CHF</span>
         </div>
 
         <div class="flex justify-between text-slate-500 dark:text-slate-400">
           <span>{{ $t('cart.checkout.service_fee') }}</span>
-          <span class="font-semibold text-slate-800 dark:text-slate-200">{{ serviceFee.toFixed(2) }} CHF</span>
+          <span class="font-semibold text-slate-800 dark:text-slate-200">{{ formatPrice(serviceFee) }} CHF</span>
         </div>
 
         <div class="flex justify-between text-slate-500 dark:text-slate-400">
@@ -55,7 +55,7 @@ const shippingMethod = defineModel<'post' | 'handToHand'>({ default: 'post' })
             v-if="shippingCost > 0"
             class="font-semibold text-slate-800 dark:text-slate-200"
           >
-            {{ shippingCost.toFixed(2) }} CHF
+            {{ formatPrice(shippingCost) }} CHF
           </span>
           <span
             v-else
@@ -72,7 +72,7 @@ const shippingMethod = defineModel<'post' | 'handToHand'>({ default: 'post' })
           <span class="text-base font-bold text-slate-850 dark:text-slate-100">{{ $t('cart.checkout.total') }}</span>
           <div class="text-right">
             <span class="text-2xl font-black bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent dark:from-emerald-400 dark:to-teal-300">
-              {{ total.toFixed(2) }} CHF
+              {{ formatPrice(total) }} CHF
             </span>
           </div>
         </div>

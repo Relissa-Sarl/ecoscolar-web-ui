@@ -27,7 +27,7 @@ defineProps<{
   >
     <span class="flex justify-between text-slate-500 dark:text-slate-400">{{ $t('cart.success.amount_paid') }}</span>
     <span class="text-sm font-bold text-slate-800 dark:text-slate-200">
-      {{ totalAmount.toFixed(2) }} CHF
+      {{ formatPrice(totalAmount) }} CHF
     </span>
   </div>
 

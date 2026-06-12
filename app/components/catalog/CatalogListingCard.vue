@@ -137,10 +137,10 @@ onBeforeMount(() => {
         <div class="leading-tight">
           <template v-if="listing.hourly">
             <span class="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">{{ $t('catalog.card.hourly') }} &nbsp;</span>
-            <span class="text-xl font-black text-emerald-800 dark:text-emerald-400">CHF {{ listing.price.toFixed(2) }}/h</span>
+            <span class="text-xl font-black text-emerald-800 dark:text-emerald-400">{{ formatPrice(listing.price) }} CHF/h</span>
           </template>
           <template v-else>
-            <span class="block text-xl font-black text-emerald-800 dark:text-emerald-400">CHF {{ listing.price.toFixed(2) }}</span>
+            <span class="block text-xl font-black text-emerald-800 dark:text-emerald-400">{{ formatPrice(listing.price) }} CHF</span>
           </template>
         </div>
         <div
