@@ -133,7 +133,11 @@ const formatNavBadgeCount = (count: number) => count > 9 ? '9+' : String(count)
 <template>
   <div>
     <!-- Spacer pour compenser le header fixed -->
-    <div :style="{ height: `${headerHeight}px` }" class="w-full transition-all duration-200" aria-hidden="true"></div>
+    <div
+      :style="{ height: `${headerHeight}px` }"
+      class="w-full transition-all duration-200"
+      aria-hidden="true"
+    />
 
     <header
       ref="headerEl"
