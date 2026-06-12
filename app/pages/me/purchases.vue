@@ -2,6 +2,8 @@
 import { useI18n, useAsyncData, useLocalePath } from '#imports'
 import { useHistory } from '~/composables/useHistory'
 import PurchaseCard from '~/components/me/PurchaseCard.vue'
+import TransactionModals from '~/components/me/TransactionModals.vue'
+import { useTransactionActions } from '~/composables/useTransactionActions'
 
 definePageMeta({
   middleware: 'auth'
@@ -27,40 +29,18 @@ const filteredPurchases = computed(() => {
   }
 })
 
-const handleConfirmReception = async (id: string) => {
-  if (!confirm(t('me.purchases.alerts.confirm_reception_prompt'))) return
-  try {
-    const { getHistoryService } = await import('~/services/historyService')
-    await getHistoryService().confirmReception(id)
-    alert(t('me.purchases.alerts.reception_success'))
-    refresh()
-  } catch (e: unknown) {
-    alert(t('me.purchases.alerts.error', { message: e instanceof Error ? e.message : String(e) }))
-  }
-}
+const {
+  activeModal,
+  disputeReason,
+  isProcessing,
+  actionError,
+  promptAction,
+  closeModal,
+  executeAction
+} = useTransactionActions()
 
-const handleDispute = async (id: string, reason: string) => {
-  if (!confirm(t('me.purchases.alerts.dispute_prompt'))) return
-  try {
-    const { getHistoryService } = await import('~/services/historyService')
-    await getHistoryService().disputePurchase(id, reason)
-    alert(t('me.purchases.alerts.dispute_success'))
-    refresh()
-  } catch (e: unknown) {
-    alert(t('me.purchases.alerts.error', { message: e instanceof Error ? e.message : String(e) }))
-  }
-}
-
-const handleCancel = async (id: string) => {
-  if (!confirm(t('me.purchases.alerts.cancel_prompt'))) return
-  try {
-    const { getHistoryService } = await import('~/services/historyService')
-    await getHistoryService().cancelPurchase(id)
-    alert(t('me.purchases.alerts.cancel_success'))
-    refresh()
-  } catch (e: unknown) {
-    alert(t('me.purchases.alerts.error', { message: e instanceof Error ? e.message : String(e) }))
-  }
+const handleActionSuccess = () => {
+  refresh()
 }
 </script>
 
@@ -167,11 +147,20 @@ const handleCancel = async (id: string) => {
           v-for="purchase in filteredPurchases"
           :key="purchase.id"
           :purchase="purchase"
-          @confirm-reception="handleConfirmReception"
-          @dispute="handleDispute"
-          @cancel="handleCancel"
+          @confirm-reception="promptAction('confirm_reception', $event)"
+          @dispute="promptAction('dispute', $event)"
+          @cancel="promptAction('cancel', $event)"
         />
       </div>
     </div>
+
+    <TransactionModals
+      v-model:dispute-reason="disputeReason"
+      :active-modal="activeModal"
+      :is-processing="isProcessing"
+      :action-error="actionError"
+      @cancel="closeModal"
+      @confirm="executeAction(handleActionSuccess)"
+    />
   </div>
 </template>

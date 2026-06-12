@@ -4,7 +4,6 @@ import { useI18n, useLocalePath, refreshNuxtData } from '#imports'
 import type { Purchase } from '~/services/historyService'
 import Stars from '~/components/profile/Stars.vue'
 import ReviewModal from '~/components/me/ReviewModal.vue'
-import DisputeModal from '~/components/me/DisputeModal.vue'
 
 const props = defineProps<{
   purchase: Purchase
@@ -20,12 +19,11 @@ const statusLabel = (status: string) => {
 
 const emit = defineEmits<{
   'confirm-reception': [id: string]
-  'dispute': [id: string, reason: string]
+  'dispute': [id: string]
   'cancel': [id: string]
 }>()
 
 const isOpen = ref(false)
-const isDisputeOpen = ref(false)
 const localReview = ref(props.purchase.review)
 
 watch(() => props.purchase.review, (newReview) => {
@@ -136,7 +134,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
           <button
             v-if="props.purchase.status === 'SHIPPED'"
             class="inline-flex items-center justify-center rounded-lg border border-orange-100 text-orange-600 hover:bg-orange-50 py-1 px-2 text-[10px] font-bold transition-colors"
-            @click="isDisputeOpen = true"
+            @click="emit('dispute', props.purchase.id)"
           >
             {{ t('me.purchases.actions.dispute') }}
           </button>
@@ -238,13 +236,6 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
       :transaction-id="props.purchase.id"
       :name="props.purchase.sellerName"
       @success="handleReviewSuccess"
-    />
-
-    <!-- Dispute Modal -->
-    <DisputeModal
-      v-model:open="isDisputeOpen"
-      :transaction-id="props.purchase.id"
-      @submit="emit('dispute', props.purchase.id, $event); isDisputeOpen = false"
     />
   </article>
 </template>
