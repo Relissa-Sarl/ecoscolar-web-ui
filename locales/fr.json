@@ -237,11 +237,14 @@
         "past": "Passées"
       },
       "actions": {
-        "confirm_shipping": "J'ai expédié l'article"
+        "confirm_shipping": "J'ai expédié l'article",
+        "renew": "Renouveler l'annonce"
       },
       "alerts": {
         "confirm_shipping_prompt": "Avez-vous vraiment expédié l'article ?",
         "shipping_success": "Le statut a été mis à jour : Expédié.",
+        "renew_prompt": "Souhaitez-vous vraiment renouveler cette annonce pour 30 jours supplémentaires ?",
+        "renew_success": "Votre annonce a été renouvelée pour 30 jours supplémentaires.",
         "error": "Erreur : {message}"
       },
       "view": "Voir",
