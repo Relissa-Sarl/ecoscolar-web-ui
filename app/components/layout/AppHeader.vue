@@ -8,6 +8,9 @@ const usersStore = useUsersStore()
 const searchAlertsStore = useSearchAlertsStore()
 const cartStore = useCartStore()
 
+const headerEl = ref<HTMLElement | null>(null)
+const { height: headerHeight } = useElementBounding(headerEl)
+
 // Main navigation
 const navigationLinks = computed(() => [
   {
@@ -128,102 +131,112 @@ const formatNavBadgeCount = (count: number) => count > 9 ? '9+' : String(count)
 </script>
 
 <template>
-  <header
-    class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
-  >
-    <div class="flex items-center">
-      <NuxtLink
-        :to="localePath('/')"
-        aria-label="EcoScolar - Retour à l'accueil"
-        class="flex items-center gap-2 text-xl font-bold text-emerald-900 transition-opacity hover:opacity-80 dark:text-emerald-100"
-      >
-        <IconsEcoScolarLeafIcon class="w-8 h-8 text-emerald-800 dark:text-emerald-500" />
-        <span>EcoScolar</span>
-      </NuxtLink>
-    </div>
+  <div>
+    <!-- Spacer pour compenser le header fixed -->
+    <div
+      :style="{ height: `${headerHeight}px` }"
+      class="w-full transition-all duration-200"
+      aria-hidden="true"
+    />
 
-    <nav
-      aria-label="Navigation principale"
-      class="order-3 flex w-full items-center justify-center gap-1 text-sm font-semibold md:order-0 md:flex-1 md:w-auto lg:justify-start lg:pl-8"
+    <header
+      ref="headerEl"
+      class="fixed top-0 left-0 right-0 z-50 w-full flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 shadow-sm"
     >
-      <NuxtLink
-        v-for="link in visibleLinks"
-        :key="link.slug"
-        :class="[
-          'relative flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 transition-colors duration-200 hover:bg-slate-50 hover:text-emerald-800 dark:text-gray-300 dark:hover:bg-slate-800 dark:hover:text-emerald-400',
-          linkIsActive(link.slug) ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-300 font-bold' : ''
-        ]"
-        :to="link.to"
-      >
-        <span class="relative inline-flex">
-          <Icon
-            :name="link.icon"
-            class="w-4 h-4 shrink-0"
-          />
-        </span>
-        <span>{{ $t(link.labelKey) }}</span>
-        <span
-          v-if="navBadgeCount(link.slug) > 0"
-          class="absolute -right-1 -top-1 flex min-h-5 min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-bold leading-none text-white ring-2 ring-white dark:ring-slate-900"
-          :class="link.slug === 'cart' ? 'bg-emerald-800' : 'bg-red-600'"
+      <div class="flex items-center">
+        <NuxtLink
+          :to="localePath('/')"
+          aria-label="EcoScolar - Retour à l'accueil"
+          class="flex items-center gap-2 text-xl font-bold text-emerald-900 transition-opacity hover:opacity-80 dark:text-emerald-100"
         >
-          {{ formatNavBadgeCount(navBadgeCount(link.slug)) }}
-        </span>
-      </NuxtLink>
-    </nav>
+          <IconsEcoScolarLeafIcon class="w-8 h-8 text-emerald-800 dark:text-emerald-500" />
+          <span>EcoScolar</span>
+        </NuxtLink>
+      </div>
 
-    <div class="flex shrink-0 items-center gap-4 sm:gap-6">
       <nav
-        aria-label="Sélecteur de langue"
-        class="flex items-center gap-2"
+        aria-label="Navigation principale"
+        class="order-3 flex w-full items-center justify-center gap-1 text-sm font-semibold md:order-0 md:flex-1 md:w-auto lg:justify-start lg:pl-8"
       >
-        <button
-          v-for="l in locales"
-          :key="l.code"
-          :aria-current="locale === l.code ? 'page' : undefined"
-          :class="locale === l.code
-            ? 'font-bold bg-emerald-100 border-emerald-400 text-emerald-900 dark:bg-emerald-900 dark:border-emerald-500 dark:text-emerald-100'
-            : 'bg-transparent border-gray-300 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800'"
-          class="px-2 py-1 text-sm border rounded cursor-pointer transition-colors focus:ring-2 focus:ring-emerald-500 outline-none"
-          @click="setLocale(l.code)"
+        <NuxtLink
+          v-for="link in visibleLinks"
+          :key="link.slug"
+          :class="[
+            'relative flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 transition-colors duration-200 hover:bg-slate-50 hover:text-emerald-800 dark:text-gray-300 dark:hover:bg-slate-800 dark:hover:text-emerald-400',
+            linkIsActive(link.slug) ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-300 font-bold' : ''
+          ]"
+          :to="link.to"
         >
-          {{ l.code.toUpperCase() }}
-        </button>
+          <span class="relative inline-flex">
+            <Icon
+              :name="link.icon"
+              class="w-4 h-4 shrink-0"
+            />
+          </span>
+          <span>{{ $t(link.labelKey) }}</span>
+          <span
+            v-if="navBadgeCount(link.slug) > 0"
+            class="absolute -right-1 -top-1 flex min-h-5 min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-bold leading-none text-white ring-2 ring-white dark:ring-slate-900"
+            :class="link.slug === 'cart' ? 'bg-emerald-800' : 'bg-red-600'"
+          >
+            {{ formatNavBadgeCount(navBadgeCount(link.slug)) }}
+          </span>
+        </NuxtLink>
       </nav>
 
-      <!-- Dynamic lopp for the user actions -->
-      <div class="flex items-center gap-4 text-sm font-medium">
-        <template
-          v-for="item in authActions"
-          :key="item.id"
+      <div class="flex shrink-0 items-center gap-4 sm:gap-6">
+        <nav
+          aria-label="Sélecteur de langue"
+          class="flex items-center gap-2"
         >
-          <!-- Action as button (ex: Logout) -->
           <button
-            v-if="item.isAction"
-            :class="item.baseClass"
-            @click="item.onClick"
+            v-for="l in locales"
+            :key="l.code"
+            :aria-current="locale === l.code ? 'page' : undefined"
+            :class="locale === l.code
+              ? 'font-bold bg-emerald-100 border-emerald-400 text-emerald-900 dark:bg-emerald-900 dark:border-emerald-500 dark:text-emerald-100'
+              : 'bg-transparent border-gray-300 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800'"
+            class="px-2 py-1 text-sm border rounded cursor-pointer transition-colors focus:ring-2 focus:ring-emerald-500 outline-none"
+            @click="setLocale(l.code)"
           >
-            <Icon
-              :class="item.iconClass"
-              :name="item.icon"
-            />
-            <span :class="item.textClass">{{ $t(item.labelKey) }}</span>
+            {{ l.code.toUpperCase() }}
           </button>
+        </nav>
 
-          <!-- Action as NuxtLink (ex: Login, Profil) -->
-          <NuxtLink
-            v-else
-            :class="item.baseClass"
-            :to="item.to"
+        <!-- Dynamic lopp for the user actions -->
+        <div class="flex items-center gap-4 text-sm font-medium">
+          <template
+            v-for="item in authActions"
+            :key="item.id"
           >
-            <Icon
-              :class="item.iconClass"
-              :name="item.icon"
-            />
-            <span :class="item.textClass">{{ $t(item.labelKey) }}</span>
-          </NuxtLink>
-        </template>
+            <!-- Action as button (ex: Logout) -->
+            <button
+              v-if="item.isAction"
+              :class="item.baseClass"
+              @click="item.onClick"
+            >
+              <Icon
+                :class="item.iconClass"
+                :name="item.icon"
+              />
+              <span :class="item.textClass">{{ $t(item.labelKey) }}</span>
+            </button>
+
+            <!-- Action as NuxtLink (ex: Login, Profil) -->
+            <NuxtLink
+              v-else
+              :class="item.baseClass"
+              :to="item.to"
+            >
+              <Icon
+                :class="item.iconClass"
+                :name="item.icon"
+              />
+              <span :class="item.textClass">{{ $t(item.labelKey) }}</span>
+            </NuxtLink>
+          </template>
+        </div>
       </div>
-    </div>
-  </header>
+    </header>
+  </div>
 </template>
