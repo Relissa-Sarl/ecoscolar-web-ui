@@ -120,7 +120,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
 
       <div class="mt-2 flex items-center justify-between gap-4">
         <span class="text-base font-black text-emerald-700 dark:text-emerald-400 whitespace-nowrap">
-          {{ props.purchase.price }} CHF
+          {{ formatPrice(props.purchase.price) }} CHF
         </span>
         <div class="flex flex-wrap items-center gap-1.5">
           <button
@@ -210,7 +210,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
             {{ t('me.purchases.details.price') }}
           </div>
           <div class="font-medium text-slate-900 dark:text-white text-right">
-            {{ props.purchase.price }} CHF
+            {{ formatPrice(props.purchase.price) }} CHF
           </div>
 
           <div class="text-slate-500 dark:text-slate-400">

@@ -131,7 +131,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
 
       <div class="mt-2 flex items-center justify-between gap-4">
         <span class="text-base font-black text-emerald-700 dark:text-emerald-400 whitespace-nowrap">
-          {{ props.sale.price }} CHF<span
+          {{ formatPrice(props.sale.price) }} CHF<span
             v-if="props.sale.type === 'SERVICE'"
             class="text-[10px] font-semibold text-slate-400"
           >/H</span>

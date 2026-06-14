@@ -39,7 +39,7 @@ const openAdvertLink = computed(() => localePath(`/adverts/${advertId.value}`))
           {{ item.sellerPseudo }}
         </p>
         <p class="mt-2 text-base font-bold text-slate-900 dark:text-white">
-          {{ item.price }} CHF
+          {{ formatPrice(item.price) }} CHF
         </p>
       </div>
     </div>

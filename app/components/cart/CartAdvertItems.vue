@@ -187,7 +187,7 @@ const groupedItems = computed(() => {
               <div class="flex items-center gap-4">
                 <div class="text-right">
                   <span class="block text-base font-bold text-slate-800 dark:text-slate-100 min-w-[70px]">
-                    {{ (item.price * item.quantity).toFixed(2) }} CHF
+                    {{ formatPrice(item.price * item.quantity) }} CHF
                   </span>
                 </div>
 

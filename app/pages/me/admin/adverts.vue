@@ -345,7 +345,7 @@ onMounted(async () => {
               </td>
               <td class="p-4">
                 <p class="font-medium">
-                  {{ advert.price }} CHF<span v-if="advert.type === 'SERVICE'">/h</span>
+                  {{ formatPrice(advert.price) }} CHF<span v-if="advert.type === 'SERVICE'">/h</span>
                 </p>
                 <p class="text-xs text-gray-500 truncate w-64">
                   {{ advert.buyerName || 'No buyer yet' }}

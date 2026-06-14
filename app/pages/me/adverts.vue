@@ -145,7 +145,7 @@ onMounted(async () => {
                   class="text-2xl font-bold text-gray-900 dark:text-gray-100"
                   :class="advert.status === AdvertStatus.SOLD ? 'line-through' : ''"
                 >
-                  {{ advert.price }} CHF{{ advert.type === AdvertType.SERVICE ? '/H' : '' }}
+                  {{ formatPrice(advert.price) }} CHF{{ advert.type === AdvertType.SERVICE ? '/H' : '' }}
                 </p>
               </div>
 

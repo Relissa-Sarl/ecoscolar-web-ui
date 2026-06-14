@@ -142,7 +142,7 @@ const formatDate = (dateStr: string) => {
                   Buyer: <span class="text-sm text-gray-500">No buyer yet</span>
                 </p>
                 <p class="font-bold col-span-2">
-                  Price: <span class="text-sm text-gray-500">{{ advert?.price }}</span>
+                  Price: <span class="text-sm text-gray-500">{{ formatPrice(advert?.price) }}</span>
                   <span
                     v-if="advert?.type === 'SERVICE'"
                     class="text-sm font-light"
