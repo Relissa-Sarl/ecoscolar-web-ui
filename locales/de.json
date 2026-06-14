@@ -237,11 +237,14 @@
         "past": "Abgeschlossen"
       },
       "actions": {
-        "confirm_shipping": "Ich habe den Artikel versendet"
+        "confirm_shipping": "Ich habe den Artikel versendet",
+        "renew": "Inserat erneuern"
       },
       "alerts": {
         "confirm_shipping_prompt": "Haben Sie den Artikel wirklich versendet?",
         "shipping_success": "Der Status wurde aktualisiert: Versendet.",
+        "renew_prompt": "Möchten Sie dieses Inserat wirklich um weitere 30 Tage verlängern?",
+        "renew_success": "Ihr Inserat wurde um weitere 30 Tage verlängert.",
         "error": "Fehler: {message}"
       },
       "view": "Ansehen",

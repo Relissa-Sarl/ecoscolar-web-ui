@@ -237,11 +237,14 @@
         "past": "Passate"
       },
       "actions": {
-        "confirm_shipping": "Ho spedito l'articolo"
+        "confirm_shipping": "Ho spedito l'articolo",
+        "renew": "Rinnova l'annuncio"
       },
       "alerts": {
         "confirm_shipping_prompt": "Hai davvero spedito l'articolo?",
         "shipping_success": "Lo stato è stato aggiornato: Spedito.",
+        "renew_prompt": "Vuoi davvero rinnovare questo annuncio per altri 30 giorni?",
+        "renew_success": "Il tuo annuncio è stato rinnovato per altri 30 giorni.",
         "error": "Errore: {message}"
       },
       "view": "Vedi",
