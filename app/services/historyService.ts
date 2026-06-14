@@ -35,6 +35,7 @@ export interface MySaleAdvert {
   transactionId?: number
   transactionStatus?: string
   review?: ReviewDto | null
+  expiresInDays?: number
 }
 
 export interface HistoryServiceDependencies {

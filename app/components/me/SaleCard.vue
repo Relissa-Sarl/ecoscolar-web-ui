@@ -66,16 +66,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
 
 const daysLeft = computed(() => {
   if (props.sale.status !== AdvertStatus.ACTIVE) return null
-  try {
-    const pubDate = new Date(props.sale.publicationDate)
-    const now = new Date()
-    const diffTime = Math.max(0, now.getTime() - pubDate.getTime())
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
-    const remaining = 30 - diffDays
-    return remaining > 0 ? remaining : 0
-  } catch {
-    return null
-  }
+  return props.sale.expiresInDays ?? null
 })
 </script>
 
