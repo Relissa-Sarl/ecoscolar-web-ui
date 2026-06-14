@@ -10,6 +10,10 @@ import SuccessMainMessage from '~/components/paimentState/SuccessMainMessage.vue
 import SuccessInfos from '~/components/paimentState/SuccessInfos.vue'
 import SuccessButton from '~/components/paimentState/PaimentStateButton.vue'
 
+definePageMeta({
+  middleware: 'auth'
+})
+
 const { t } = useI18n()
 const route = useRoute()
 const cartStore = useCartStore()

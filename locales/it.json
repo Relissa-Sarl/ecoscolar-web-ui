@@ -99,6 +99,11 @@
     "denied": {
       "title": "Pagamento Rifiutato!",
       "subtitle": "La tua transazione non è potuta essere completata. Riprova o contatta il supporto se il problema persiste."
+    },
+    "banned": {
+      "title": "Accesso Rifiutato!",
+      "subtitle": "Il tuo account è stato limitato. Contatta il supporto per maggiori informazioni.",
+      "support_contact": "Contatta il supporto"
     }
   },
   "catalog": {

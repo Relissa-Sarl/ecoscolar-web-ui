@@ -11,7 +11,7 @@ import { AdvertType } from '~/utils/enum/advertType'
 const store = useAdminsStore()
 
 definePageMeta({
-  middleware: ['admin']
+  middleware: ['admin', 'auth']
 })
 
 // Pop-up

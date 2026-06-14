@@ -136,7 +136,7 @@ onBeforeMount(() => {
       </button>
 
       <button
-        v-if="usersStore.isAuthenticated"
+        v-if="usersStore.isAuthenticated && !usersStore.user?.isBanned"
         type="button"
         class="w-12 h-12 border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors flex items-center justify-center text-lg"
         :aria-label="$t(favoriteLabel)"

@@ -4,6 +4,10 @@ import { useLocalePath } from '#imports'
 import { useFavoritesStore } from '~/stores/favoritesStore'
 import { getFavoriteAdvertId } from '~/types/favorite'
 
+definePageMeta({
+  middleware: 'auth'
+})
+
 const localePath = useLocalePath()
 const favoritesStore = useFavoritesStore()
 const removingAdvertId = ref<string | null>(null)

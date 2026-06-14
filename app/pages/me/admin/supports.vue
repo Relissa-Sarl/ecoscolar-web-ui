@@ -10,7 +10,7 @@ import { SupportReason } from '~/utils/enum/supportReason'
 const store = useAdminsStore()
 
 definePageMeta({
-  middleware: ['admin']
+  middleware: ['admin', 'auth']
 })
 
 // Pop-up

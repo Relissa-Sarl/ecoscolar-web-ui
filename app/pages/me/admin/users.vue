@@ -10,7 +10,7 @@ import type { User } from '~/types/user'
 const store = useAdminsStore()
 
 definePageMeta({
-  middleware: ['admin']
+  middleware: ['admin', 'auth']
 })
 
 // Pop-up

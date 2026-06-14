@@ -99,6 +99,11 @@
     "denied": {
       "title": "Zahlung abgelehnt!",
       "subtitle": "Ihre Transaktion konnte nicht abgeschlossen werden. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support, falls das Problem weiterhin besteht."
+    },
+    "banned": {
+      "title": "Zahlung abgelehnt!",
+      "subtitle": "Ihre Transaktion konnte nicht abgeschlossen werden. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support, falls das Problem weiterhin besteht.",
+      "support_contact": "Support kontaktieren"
     }
   },
   "catalog": {

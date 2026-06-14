@@ -5,6 +5,10 @@ import { useI18n } from '#imports'
 import { getPaymentService } from '~/services/paymentService'
 import { getAdvertService } from '~/services/advertService'
 
+definePageMeta({
+  middleware: 'auth'
+})
+
 const { t } = useI18n()
 const route = useRoute()
 const paymentService = getPaymentService()
