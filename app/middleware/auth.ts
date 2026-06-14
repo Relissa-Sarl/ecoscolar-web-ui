@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware(() => {
     return navigateTo('/login')
 
   if (usersStore.user?.isBanned) {
-    // usersStore.logout()
+    usersStore.logout()
     return navigateTo('/banned')
   }
 })
