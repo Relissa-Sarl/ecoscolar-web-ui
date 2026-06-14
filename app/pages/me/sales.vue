@@ -4,6 +4,7 @@ import { useHistory } from '~/composables/useHistory'
 import SaleCard from '~/components/me/SaleCard.vue'
 import TransactionModals from '~/components/me/TransactionModals.vue'
 import { useTransactionActions } from '~/composables/useTransactionActions'
+import { useRoute } from 'vue-router'
 
 definePageMeta({
   middleware: 'auth'
@@ -11,6 +12,7 @@ definePageMeta({
 
 const { t } = useI18n()
 const localePath = useLocalePath()
+const route = useRoute()
 const { getSales } = useHistory()
 
 const { data: sales, pending, error, refresh } = await useAsyncData(
@@ -51,6 +53,12 @@ const {
 const handleActionSuccess = () => {
   refresh()
 }
+
+onMounted(() => {
+  if (route.query.renew) {
+    promptAction('renew', route.query.renew as string)
+  }
+})
 </script>
 
 <template>
@@ -157,6 +165,7 @@ const handleActionSuccess = () => {
           :key="sale.id"
           :sale="sale"
           @confirm-shipping="promptAction('confirm_shipping', $event.toString())"
+          @renew="promptAction('renew', $event.toString())"
         />
       </div>
     </div>

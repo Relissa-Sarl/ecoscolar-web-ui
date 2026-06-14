@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useI18n, useLocalePath, refreshNuxtData } from '#imports'
 import type { MySaleAdvert } from '~/services/historyService'
 import { AdvertStatus } from '~/utils/enum/advertStatus'
@@ -14,7 +14,7 @@ const { locale, t } = useI18n()
 const localePath = useLocalePath()
 
 const emit = defineEmits<{
-  (e: 'confirm-shipping', id: number): void
+  (e: 'confirm-shipping' | 'renew', id: number): void
 }>()
 
 const isOpen = ref(false)
@@ -63,6 +63,11 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
   localReview.value = review
   refreshNuxtData('user-sales')
 }
+
+const daysLeft = computed(() => {
+  if (props.sale.status !== AdvertStatus.ACTIVE) return null
+  return props.sale.expiresInDays ?? null
+})
 </script>
 
 <template>
@@ -104,6 +109,19 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
         <h3 class="mt-1 text-sm font-bold text-slate-900 dark:text-white leading-snug truncate">
           {{ props.sale.title }}
         </h3>
+
+        <!-- Expiration Timer -->
+        <div
+          v-if="daysLeft !== null && daysLeft <= 7"
+          class="flex items-center gap-1 mt-1 text-[10px] font-medium text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20 px-2 py-0.5 rounded-md w-max border border-orange-100 dark:border-orange-800/50"
+        >
+          <UIcon
+            name="i-heroicons-clock"
+            class="w-3 h-3"
+          />
+          <span v-if="daysLeft > 0">{{ t('me.sales.timer.expires_in', daysLeft) }}</span>
+          <span v-else>{{ t('me.sales.timer.expires_today') }}</span>
+        </div>
 
         <!-- Buyer details if SOLD -->
         <div
@@ -160,6 +178,13 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
             @click="emit('confirm-shipping', props.sale.transactionId!)"
           >
             {{ t('me.sales.actions.confirm_shipping') }}
+          </button>
+          <button
+            v-if="props.sale.status === AdvertStatus.EXPIRED || props.sale.status === AdvertStatus.ACTIVE"
+            class="inline-flex items-center justify-center rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 py-1 px-2 text-[10px] font-bold transition-colors"
+            @click="emit('renew', props.sale.id)"
+          >
+            {{ t('me.sales.actions.renew') }}
           </button>
         </div>
       </div>

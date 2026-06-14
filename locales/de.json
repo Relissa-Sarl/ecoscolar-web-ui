@@ -246,12 +246,19 @@
         "past": "Abgeschlossen"
       },
       "actions": {
-        "confirm_shipping": "Ich habe den Artikel versendet"
+        "confirm_shipping": "Ich habe den Artikel versendet",
+        "renew": "Inserat erneuern"
       },
       "alerts": {
         "confirm_shipping_prompt": "Haben Sie den Artikel wirklich versendet?",
         "shipping_success": "Der Status wurde aktualisiert: Versendet.",
+        "renew_prompt": "Möchten Sie dieses Inserat wirklich um weitere 30 Tage verlängern?",
+        "renew_success": "Ihr Inserat wurde um weitere 30 Tage verlängert.",
         "error": "Fehler: {message}"
+      },
+      "timer": {
+        "expires_in": "Läuft in 1 Tag ab | Läuft in {count} Tagen ab",
+        "expires_today": "Läuft heute ab"
       },
       "view": "Ansehen",
       "edit": "Bearbeiten",
@@ -841,5 +848,18 @@
       "item_pending_or_sold": "Ein Artikel in Ihrem Warenkorb wird gerade bezahlt oder ist bereits verkauft.",
       "general": "Bei der Validierung ist ein Fehler aufgetreten."
     }
+  },
+  "report": {
+    "action": "Melden",
+    "title_advert": "Diese Anzeige melden",
+    "title_comment": "Diesen Kommentar melden",
+    "description_advert": "Wenn Sie glauben, dass diese Anzeige nicht unseren Nutzungsbedingungen entspricht, melden Sie es uns bitte.",
+    "description_comment": "Wenn Sie glauben, dass dieser Kommentar unangemessen ist, melden Sie es uns bitte.",
+    "message_label": "Details (Pflichtfeld)",
+    "message_placeholder": "Bitte beschreiben Sie das aufgetretene Problem im Detail...",
+    "cancel": "Abbrechen",
+    "submit": "Meldung senden",
+    "success": "Ihre Meldung wurde erfolgreich gespeichert. Vielen Dank für Ihre Hilfe!",
+    "error": "Beim Senden Ihrer Meldung ist ein Fehler aufgetreten."
   }
 }

@@ -7,6 +7,7 @@ interface Props {
   questions?: QuestionResponse[]
   canAsk?: boolean
   canAnswer?: boolean
+  isAuthenticated?: boolean
   answeringQuestionId?: number | null
 }
 
@@ -14,11 +15,13 @@ const props = withDefaults(defineProps<Props>(), {
   canAsk: true,
   canAnswer: false,
   answeringQuestionId: null,
-  questions: () => []
+  questions: () => [],
+  isAuthenticated: false
 })
 const emit = defineEmits<{
   'ask-question': [text: string]
   'answer-question': [payload: { questionId: number, text: string }]
+  'report-comment': [commentId: number]
 }>()
 
 const questionInput = ref('')
@@ -110,13 +113,27 @@ const formatDateTime = (value: string | null | undefined) => {
         <div class="py-6">
           <!-- Question header -->
           <div class="flex items-start justify-between">
-            <div>
-              <p class="font-semibold text-slate-900 dark:text-gray-100">
-                {{ question.author }}
-              </p>
-              <p class="text-xs text-slate-500 dark:text-gray-400 mt-1">
-                {{ formatDateTime(question.createdAt) }}
-              </p>
+            <div class="flex items-center gap-4">
+              <div>
+                <p class="font-semibold text-slate-900 dark:text-gray-100">
+                  {{ question.author }}
+                </p>
+                <p class="text-xs text-slate-500 dark:text-gray-400 mt-1">
+                  {{ formatDateTime(question.createdAt) }}
+                </p>
+              </div>
+              <button
+                v-if="props.isAuthenticated"
+                type="button"
+                class="text-slate-400 hover:text-red-500 transition-colors p-1"
+                :title="$t('report.action')"
+                @click="emit('report-comment', question.commentId)"
+              >
+                <UIcon
+                  name="i-heroicons-flag"
+                  class="w-4 h-4"
+                />
+              </button>
             </div>
           </div>
 
@@ -142,12 +159,26 @@ const formatDateTime = (value: string | null | undefined) => {
                     {{ $t('advert.detail.seller_badge') }}
                   </span>
                 </div>
-                <p
-                  v-if="question.answeredAt"
-                  class="text-xs text-slate-500 dark:text-gray-400"
-                >
-                  {{ formatDateTime(question.answeredAt) }}
-                </p>
+                <div class="flex items-center gap-4">
+                  <p
+                    v-if="question.answeredAt"
+                    class="text-xs text-slate-500 dark:text-gray-400"
+                  >
+                    {{ formatDateTime(question.answeredAt) }}
+                  </p>
+                  <button
+                    v-if="props.isAuthenticated"
+                    type="button"
+                    class="text-slate-400 hover:text-red-500 transition-colors p-1"
+                    :title="$t('report.action')"
+                    @click="emit('report-comment', question.commentId)"
+                  >
+                    <UIcon
+                      name="i-heroicons-flag"
+                      class="w-4 h-4"
+                    />
+                  </button>
+                </div>
               </div>
               <p class="mt-3 text-slate-800 dark:text-gray-100">
                 {{ question.answer }}

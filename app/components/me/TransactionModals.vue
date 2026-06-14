@@ -56,6 +56,13 @@ const modalDetails = computed(() => {
         confirmText: t('me.purchases.submit_dispute'),
         confirmClass: 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
       }
+    case 'renew':
+      return {
+        title: t('me.sales.actions.renew'),
+        description: t('me.sales.alerts.renew_prompt'),
+        confirmText: t('me.sales.actions.renew'),
+        confirmClass: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500'
+      }
     default:
       return null
   }

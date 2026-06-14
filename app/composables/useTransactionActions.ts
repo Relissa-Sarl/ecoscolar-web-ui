@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { useI18n } from '#imports'
 import { getHistoryService } from '~/services/historyService'
 
-export type TransactionActionType = 'confirm_reception' | 'confirm_shipping' | 'dispute' | 'cancel' | null
+export type TransactionActionType = 'confirm_reception' | 'confirm_shipping' | 'dispute' | 'cancel' | 'renew' | null
 
 export const useTransactionActions = () => {
   const { t } = useI18n()
@@ -53,6 +53,9 @@ export const useTransactionActions = () => {
           break
         case 'cancel':
           await historyService.cancelPurchase(selectedTransactionId.value)
+          break
+        case 'renew':
+          await historyService.renewAdvert(selectedTransactionId.value)
           break
       }
 

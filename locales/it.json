@@ -246,12 +246,19 @@
         "past": "Passate"
       },
       "actions": {
-        "confirm_shipping": "Ho spedito l'articolo"
+        "confirm_shipping": "Ho spedito l'articolo",
+        "renew": "Rinnova l'annuncio"
       },
       "alerts": {
         "confirm_shipping_prompt": "Hai davvero spedito l'articolo?",
         "shipping_success": "Lo stato è stato aggiornato: Spedito.",
+        "renew_prompt": "Vuoi davvero rinnovare questo annuncio per altri 30 giorni?",
+        "renew_success": "Il tuo annuncio è stato rinnovato per altri 30 giorni.",
         "error": "Errore: {message}"
+      },
+      "timer": {
+        "expires_in": "Scade in 1 giorno | Scade in {count} giorni",
+        "expires_today": "Scade oggi"
       },
       "view": "Vedi",
       "edit": "Modifica",
@@ -841,5 +848,18 @@
       "item_pending_or_sold": "Uno degli articoli nel tuo carrello è in fase di pagamento o è già stato venduto.",
       "general": "Si è verificato un errore durante la convalida."
     }
+  },
+  "report": {
+    "action": "Segnala",
+    "title_advert": "Segnala questo annuncio",
+    "title_comment": "Segnala questo commento",
+    "description_advert": "Se ritieni che questo annuncio non rispetti le nostre condizioni d'uso, ti preghiamo di segnalarlo.",
+    "description_comment": "Se ritieni che questo commento sia inappropriato, ti preghiamo di segnalarlo.",
+    "message_label": "Dettagli (obbligatorio)",
+    "message_placeholder": "Descrivi dettagliatamente il problema riscontrato...",
+    "cancel": "Annulla",
+    "submit": "Invia segnalazione",
+    "success": "La tua segnalazione è stata registrata con successo. Grazie per il tuo aiuto!",
+    "error": "Si è verificato un errore durante l'invio della tua segnalazione."
   }
 }
