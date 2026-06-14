@@ -379,7 +379,8 @@
     "newAdvert": "Neue Anzeige",
     "createAdvert": "Anzeige erstellen",
     "description": "Teilen Sie Ihre Unterrichtsmaterialien mit der EcoScolar-Community.",
-    "creationFailed": "Beim Erstellen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+    "creationFailed": "Beim Erstellen der Anzeige ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "uploadFailed": "Die Anzeige wurde erstellt, aber das Hochladen der Bilder ist fehlgeschlagen. Sie können diese später in Ihrem Bereich hinzufügen."
   },
   "modifyAdvert": {
     "existingAdvert": "Anzeige",

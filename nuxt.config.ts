@@ -12,7 +12,8 @@ export default defineNuxtConfig({
     'nuxt-zod-i18n',
     '@nuxtjs/google-fonts',
     '@nuxt/icon'
-  ], ssr: process.env.NODE_ENV !== 'production',
+  ],
+  ssr: process.env.NODE_ENV !== 'production',
   devtools: {
     enabled: true
   },
@@ -71,5 +72,8 @@ export default defineNuxtConfig({
     defaultLocale: 'fr',
     langDir: '../locales/', // Chemin relatif depuis /app
     strategy: 'prefix_except_default'
+  },
+  image: {
+    domains: ['localhost']
   }
 })

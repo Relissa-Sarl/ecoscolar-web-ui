@@ -377,7 +377,8 @@
     "newAdvert": "Nouvelle Annonce",
     "createAdvert": "Créer une Annonce",
     "description": "Partagez vos ressources éducatives avec la communauté EcoScolar.",
-    "creationFailed": "Une erreur est survenue lors de la création de l'annonce. Veuillez réessayer."
+    "creationFailed": "Une erreur est survenue lors de la création de l'annonce. Veuillez réessayer.",
+    "uploadFailed": "L'annonce a été créée, mais l'envoi des images a échoué. Vous pouvez les ajouter depuis votre espace."
   },
   "modifyAdvert": {
     "existingAdvert": "Annonce",
