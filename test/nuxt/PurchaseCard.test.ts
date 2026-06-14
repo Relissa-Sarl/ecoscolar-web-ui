@@ -224,21 +224,17 @@ describe('PurchaseCard', () => {
     expect(wrapper.text()).not.toContain('me.purchases.details.title')
   })
 
-  it('emits dispute when dispute is submitted via DisputeModal', async () => {
-    // We import DisputeModal here to query it
-    const DisputeModalComp = (await import('~/components/me/DisputeModal.vue')).default
+  it('emits dispute when dispute button is clicked', async () => {
     const wrapper = mount(PurchaseCard, {
       props: { purchase: { ...mockPurchase, status: 'SHIPPED' } },
       global: { stubs }
     })
 
-    const disputeModal = wrapper.findComponent(DisputeModalComp)
-    expect(disputeModal.exists()).toBe(true)
+    const btn = wrapper.findAll('button').find(b => b.text().includes('me.purchases.actions.dispute'))
+    expect(btn).toBeDefined()
+    await btn?.trigger('click')
 
-    await disputeModal.vm.$emit('submit', 'Item not as described')
-
-    expect(wrapper.emitted('dispute')?.[0]).toEqual(['txn-1', 'Item not as described'])
-    expect((wrapper.vm as unknown as { isDisputeOpen: boolean }).isDisputeOpen).toBe(false)
+    expect(wrapper.emitted('dispute')?.[0]).toEqual(['txn-1'])
   })
 
   it('updates localReview and refreshes Nuxt data when review is successfully submitted', async () => {
