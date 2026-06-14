@@ -36,6 +36,9 @@ export default defineNuxtConfig({
   routeRules: {
     '/': { prerender: true }
   },
+  image: {
+    domains: ['localhost']
+  },
   compatibilityDate: '2025-01-15',
   vite: {
     optimizeDeps: {

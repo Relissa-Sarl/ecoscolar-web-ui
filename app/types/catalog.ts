@@ -12,6 +12,7 @@ export interface AdvertCatalogApiItem {
   category?: string | null
   subjects?: string | null
   grade?: string | null
+  imageUrl?: string | null
 }
 
 export interface AdvertCatalogDetailApiItem extends AdvertCatalogApiItem {
@@ -61,7 +62,7 @@ export interface CatalogListing {
   serviceBadge?: CatalogServiceBadge
   metaLine?: string
   location: string
-  imageUrl: string
+  imageUrl?: string
   hourly: boolean
   bookCategoryName?: string
   schoolGradeName?: string

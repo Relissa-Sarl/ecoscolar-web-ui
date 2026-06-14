@@ -40,7 +40,7 @@ const favoriteSummary = computed((): FavoriteAdvertSummary => ({
   type: props.listing.type,
   condition: props.listing.itemCondition ?? '',
   price: props.listing.price,
-  image: props.listing.imageUrl,
+  image: props.listing.imageUrl ?? '',
   seller: props.listing.seller
 }))
 
@@ -87,13 +87,11 @@ onBeforeMount(() => {
 <template>
   <article class="flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-950">
     <div class="relative aspect-[520/440] bg-slate-100 dark:bg-slate-900">
-      <NuxtImg
+      <img
         v-if="listing.imageUrl"
         :src="listing.imageUrl"
         :alt="$t('catalog.card.alt_image')"
-        format="webp"
         loading="lazy"
-        placeholder
         class="h-full w-full object-cover"
       />
       <!-- Fallback when no image is available -->

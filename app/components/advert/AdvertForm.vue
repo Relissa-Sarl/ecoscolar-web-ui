@@ -256,9 +256,9 @@ const validateForm = (): boolean => {
       if (!form.value.productCategoryId) {
         errors.value.productCategoryId = $t('advertForm.error.empty.productCategoryId')
       }
-      // if (uploadedFiles.value.length === 0) {
-      //   errors.value.images = $t('advertForm.error.empty.images')
-      // }
+      if (props.mode === 'create' && uploadedFiles.value.length === 0) {
+        errors.value.images = $t('advertForm.error.empty.images')
+      }
       break
     case AdvertType.BOOK:
       if (!form.value.condition) {
@@ -282,9 +282,9 @@ const validateForm = (): boolean => {
       if (!author.trim()) {
         errors.value.author = $t('advertForm.error.empty.author')
       }
-      // if (uploadedFiles.value.length === 0) {
-      //   errors.value.images = $t('advertForm.error.empty.images')
-      // }
+      if (props.mode === 'create' && uploadedFiles.value.length === 0) {
+        errors.value.images = $t('advertForm.error.empty.images')
+      }
       break
   }
 
