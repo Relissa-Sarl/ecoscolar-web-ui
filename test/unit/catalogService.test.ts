@@ -8,25 +8,52 @@ describe('catalogService', () => {
   })
 
   it('lists catalog summaries through the API', async () => {
-    const apiClient = vi.fn().mockResolvedValueOnce([
-      { id: 1, title: 'Book', price: 10, type: AdvertType.BOOK }
-    ])
+    const page = {
+      items: [{ id: 1, title: 'Book', price: 10, type: AdvertType.BOOK }],
+      page: 1,
+      pageSize: 9,
+      totalItems: 1,
+      totalPages: 1
+    }
+    const apiClient = vi.fn().mockResolvedValueOnce(page)
     const service = createCatalogService({ apiClient })
 
     const summaries = await service.listSummaries()
 
-    expect(summaries).toHaveLength(1)
+    expect(summaries).toEqual(page)
     expect(apiClient).toHaveBeenCalledWith('/adverts/summary', { query: undefined })
   })
 
-  it('passes q as query param', async () => {
-    const apiClient = vi.fn().mockResolvedValueOnce([])
+  it('passes filters and pagination as query params', async () => {
+    const apiClient = vi.fn().mockResolvedValueOnce({
+      items: [],
+      page: 2,
+      pageSize: 9,
+      totalItems: 0,
+      totalPages: 1
+    })
     const service = createCatalogService({ apiClient })
 
-    await service.listSummaries({ q: 'math' })
+    await service.listSummaries({
+      q: 'math',
+      type: AdvertType.BOOK,
+      bookCategoryIds: '1,2',
+      category: 'Mathematics',
+      sort: 'price_asc',
+      page: 2,
+      pageSize: 9
+    })
 
     expect(apiClient).toHaveBeenCalledWith('/adverts/summary', {
-      query: { q: 'math' }
+      query: {
+        q: 'math',
+        type: AdvertType.BOOK,
+        bookCategoryIds: '1,2',
+        category: 'Mathematics',
+        sort: 'price_asc',
+        page: 2,
+        pageSize: 9
+      }
     })
   })
 

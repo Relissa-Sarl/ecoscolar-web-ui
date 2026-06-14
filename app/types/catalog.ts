@@ -19,6 +19,14 @@ export interface AdvertCatalogDetailApiItem extends AdvertCatalogApiItem {
   imageUrl?: string | null
 }
 
+export interface CatalogSummaryPageApiResponse {
+  items: AdvertCatalogApiItem[]
+  page: number
+  pageSize: number
+  totalItems: number
+  totalPages: number
+}
+
 export type CatalogCategoryTab = 'all' | 'textbooks' | 'supplies' | 'tutoring'
 
 /** État d’un article physique (fournitures / manuels). */
@@ -65,6 +73,10 @@ export interface CatalogListing {
 
 export interface CatalogFetchResult {
   items: AdvertCatalogApiItem[]
+  page: number
+  pageSize: number
+  totalItems: number
+  totalPages: number
   fromFallback: boolean
   hadError: boolean
 }

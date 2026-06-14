@@ -153,7 +153,11 @@
       "reset_filters": "Alles zurücksetzen"
     },
     "pagination": {
-      "label": "Seiten"
+      "label": "Seiten",
+      "previous": "Vorherige Seite",
+      "previous_short": "Zurück",
+      "next": "Nächste Seite",
+      "next_short": "Weiter"
     },
     "card": {
       "alt_image": "Artikelbild",

@@ -153,7 +153,11 @@
       "reset_filters": "Réinitialiser tout"
     },
     "pagination": {
-      "label": "Pagination des résultats"
+      "label": "Pagination des résultats",
+      "previous": "Page précédente",
+      "previous_short": "Préc.",
+      "next": "Page suivante",
+      "next_short": "Suiv."
     },
     "card": {
       "alt_image": "visuel de l’annonce",
