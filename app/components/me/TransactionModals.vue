@@ -8,10 +8,12 @@ const props = defineProps<{
   isProcessing: boolean
   actionError: string | null
   disputeReason?: string
+  disputeDescription?: string
 }>()
 
 const emits = defineEmits<{
   'update:disputeReason': [value: string]
+  'update:disputeDescription': [value: string]
   'cancel': []
   'confirm': []
 }>()
@@ -22,6 +24,13 @@ const { t } = useI18n()
 const disputeReasonModel = computed({
   get: () => props.disputeReason || '',
   set: value => emits('update:disputeReason', value)
+})
+
+const disputeReasonsList = ['ItemNotReceived', 'NotAsDescribed', 'Damaged']
+
+const disputeDescriptionModel = computed({
+  get: () => props.disputeDescription || '',
+  set: value => emits('update:disputeDescription', value)
 })
 
 const isOpen = computed(() => props.activeModal !== null)
@@ -70,7 +79,10 @@ const modalDetails = computed(() => {
 
 const isConfirmDisabled = computed(() => {
   if (props.isProcessing) return true
-  if (props.activeModal === 'dispute' && !disputeReasonModel.value.trim()) return true
+  if (props.activeModal === 'dispute') {
+    if (!disputeReasonModel.value) return true
+    if (!disputeDescriptionModel.value.trim()) return true
+  }
   return false
 })
 </script>
@@ -98,12 +110,35 @@ const isConfirmDisabled = computed(() => {
             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
               {{ t('me.purchases.dispute_reason_label') }} <span class="text-red-500">*</span>
             </label>
-            <textarea
+            <select
               v-model="disputeReasonModel"
+              required
+              class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all mb-4"
+            >
+              <option
+                value=""
+                disabled
+              >
+                {{ t('me.purchases.dispute_reason_placeholder') }}
+              </option>
+              <option
+                v-for="reason in disputeReasonsList"
+                :key="reason"
+                :value="reason"
+              >
+                {{ t(`me.purchases.dispute_reasons.${reason}`) }}
+              </option>
+            </select>
+
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 mt-2">
+              {{ t('me.purchases.dispute_description_label') }} <span class="text-red-500">*</span>
+            </label>
+            <textarea
+              v-model="disputeDescriptionModel"
               rows="4"
               required
               class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm focus:border-emerald-500 focus:ring-emerald-500 outline-none transition-colors resize-none text-slate-900 dark:text-slate-100"
-              placeholder="Veuillez décrire le problème rencontré avec cet article..."
+              :placeholder="t('me.purchases.dispute_description_placeholder')"
             />
           </div>
 

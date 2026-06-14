@@ -202,6 +202,14 @@
       "review_error": "Une erreur est survenue lors de l'enregistrement de l'avis.",
       "dispute_modal_title": "Signaler un problème",
       "dispute_reason_label": "Raison du litige",
+      "dispute_reason_placeholder": "Sélectionner un motif",
+      "dispute_description_label": "Description",
+      "dispute_description_placeholder": "Veuillez décrire le problème rencontré avec cet article...",
+      "dispute_reasons": {
+        "ItemNotReceived": "Objet non reçu",
+        "NotAsDescribed": "Non conforme",
+        "Damaged": "Endommagé"
+      },
       "cancel_dispute": "Annuler",
       "submit_dispute": "Envoyer le litige",
       "tabs": {
@@ -226,6 +234,7 @@
         "reception_success": "Réception confirmée avec succès !",
         "dispute_prompt": "Voulez-vous vraiment signaler un problème ? La transaction sera bloquée.",
         "dispute_success": "Un litige a été ouvert pour cette commande.",
+        "dispute_ongoing": "Un litige est actuellement en cours pour cette commande. Notre équipe l'examine.",
         "cancel_prompt": "Voulez-vous vraiment annuler cette commande ? Vous serez remboursé.",
         "cancel_success": "Commande annulée avec succès.",
         "error": "Erreur : {message}"
@@ -254,6 +263,7 @@
         "shipping_success": "Le statut a été mis à jour : Expédié.",
         "renew_prompt": "Souhaitez-vous vraiment renouveler cette annonce pour 30 jours supplémentaires ?",
         "renew_success": "Votre annonce a été renouvelée pour 30 jours supplémentaires.",
+        "dispute_ongoing": "Un litige a été ouvert par l'acheteur. Notre équipe l'examine.",
         "error": "Erreur : {message}"
       },
       "timer": {

@@ -32,6 +32,7 @@ const filteredPurchases = computed(() => {
 const {
   activeModal,
   disputeReason,
+  disputeDescription,
   isProcessing,
   actionError,
   promptAction,
@@ -156,6 +157,7 @@ const handleActionSuccess = () => {
 
     <TransactionModals
       v-model:dispute-reason="disputeReason"
+      v-model:dispute-description="disputeDescription"
       :active-modal="activeModal"
       :is-processing="isProcessing"
       :action-error="actionError"

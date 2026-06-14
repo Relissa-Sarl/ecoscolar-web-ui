@@ -9,6 +9,7 @@ export const useTransactionActions = () => {
   const activeModal = ref<TransactionActionType>(null)
   const selectedTransactionId = ref<string | null>(null)
   const disputeReason = ref<string>('')
+  const disputeDescription = ref<string>('')
   const isProcessing = ref(false)
   const actionError = ref<string | null>(null)
 
@@ -17,6 +18,7 @@ export const useTransactionActions = () => {
     activeModal.value = action
     selectedTransactionId.value = transactionId
     disputeReason.value = ''
+    disputeDescription.value = ''
     actionError.value = null
   }
 
@@ -24,6 +26,7 @@ export const useTransactionActions = () => {
     activeModal.value = null
     selectedTransactionId.value = null
     disputeReason.value = ''
+    disputeDescription.value = ''
     actionError.value = null
     isProcessing.value = false
   }
@@ -46,10 +49,10 @@ export const useTransactionActions = () => {
           await historyService.confirmShipping(selectedTransactionId.value)
           break
         case 'dispute':
-          if (!disputeReason.value.trim()) {
+          if (!disputeReason.value || !disputeDescription.value.trim()) {
             throw new Error(t('me.purchases.alerts.error', { message: 'Raison requise' }))
           }
-          await historyService.disputePurchase(selectedTransactionId.value, disputeReason.value.trim())
+          await historyService.disputePurchase(selectedTransactionId.value, disputeReason.value, disputeDescription.value.trim())
           break
         case 'cancel':
           await historyService.cancelPurchase(selectedTransactionId.value)
@@ -76,6 +79,7 @@ export const useTransactionActions = () => {
     activeModal,
     selectedTransactionId,
     disputeReason,
+    disputeDescription,
     isProcessing,
     actionError,
     promptAction,
