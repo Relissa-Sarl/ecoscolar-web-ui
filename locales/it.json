@@ -202,6 +202,14 @@
       "review_error": "Si è verificato un errore durante il salvataggio della recensione.",
       "dispute_modal_title": "Segnala un problema",
       "dispute_reason_label": "Motivo della controversia",
+      "dispute_reason_placeholder": "Seleziona un motivo",
+      "dispute_description_label": "Descrizione",
+      "dispute_description_placeholder": "Si prega di descrivere il problema riscontrato con questo articolo...",
+      "dispute_reasons": {
+        "ItemNotReceived": "Oggetto non ricevuto",
+        "NotAsDescribed": "Non conforme",
+        "Damaged": "Danneggiato"
+      },
       "cancel_dispute": "Annulla",
       "submit_dispute": "Invia controversia",
       "tabs": {
@@ -226,6 +234,7 @@
         "reception_success": "Ricezione confermata con successo!",
         "dispute_prompt": "Vuoi davvero segnalare un problema? La transazione verrà bloccata.",
         "dispute_success": "È stata aperta una controversia per questo ordine.",
+        "dispute_ongoing": "È attualmente in corso una controversia per questo ordine. Il nostro team lo sta esaminando.",
         "cancel_prompt": "Vuoi davvero annullare questo ordine? Verrai rimborsato.",
         "cancel_success": "Ordine annullato con successo.",
         "error": "Errore: {message}"
@@ -254,6 +263,7 @@
         "shipping_success": "Lo stato è stato aggiornato: Spedito.",
         "renew_prompt": "Vuoi davvero rinnovare questo annuncio per altri 30 giorni?",
         "renew_success": "Il tuo annuncio è stato rinnovato per altri 30 giorni.",
+        "dispute_ongoing": "È stato segnalato un problema dall'acquirente. Il nostro team lo sta esaminando.",
         "error": "Errore: {message}"
       },
       "timer": {

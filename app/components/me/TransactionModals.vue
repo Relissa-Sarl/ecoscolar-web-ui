@@ -26,6 +26,8 @@ const disputeReasonModel = computed({
   set: value => emits('update:disputeReason', value)
 })
 
+const disputeReasonsList = ['ItemNotReceived', 'NotAsDescribed', 'Damaged']
+
 const disputeDescriptionModel = computed({
   get: () => props.disputeDescription || '',
   set: value => emits('update:disputeDescription', value)
@@ -106,7 +108,7 @@ const isConfirmDisabled = computed(() => {
             class="mb-6"
           >
             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-              Motif <span class="text-red-500">*</span>
+              {{ t('me.purchases.dispute_reason_label') }} <span class="text-red-500">*</span>
             </label>
             <select
               v-model="disputeReasonModel"
@@ -117,28 +119,26 @@ const isConfirmDisabled = computed(() => {
                 value=""
                 disabled
               >
-                Sélectionner un motif
+                {{ t('me.purchases.dispute_reason_placeholder') }}
               </option>
-              <option value="ItemNotReceived">
-                Objet non reçu
-              </option>
-              <option value="NotAsDescribed">
-                Non conforme
-              </option>
-              <option value="Damaged">
-                Endommagé
+              <option
+                v-for="reason in disputeReasonsList"
+                :key="reason"
+                :value="reason"
+              >
+                {{ t(`me.purchases.dispute_reasons.${reason}`) }}
               </option>
             </select>
 
             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 mt-2">
-              Description <span class="text-red-500">*</span>
+              {{ t('me.purchases.dispute_description_label') }} <span class="text-red-500">*</span>
             </label>
             <textarea
               v-model="disputeDescriptionModel"
               rows="4"
               required
               class="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm focus:border-emerald-500 focus:ring-emerald-500 outline-none transition-colors resize-none text-slate-900 dark:text-slate-100"
-              placeholder="Veuillez décrire le problème rencontré avec cet article..."
+              :placeholder="t('me.purchases.dispute_description_placeholder')"
             />
           </div>
 

@@ -147,6 +147,19 @@ const daysLeft = computed(() => {
         </div>
       </div>
 
+      <div
+        v-if="props.sale.transactionStatus === 'DISPUTED'"
+        class="mt-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50 rounded-lg p-2.5 flex items-start gap-2 text-xs text-red-700 dark:text-red-400 font-medium"
+      >
+        <UIcon
+          name="i-heroicons-exclamation-triangle"
+          class="w-4 h-4 shrink-0 mt-0.5"
+        />
+        <p class="leading-relaxed">
+          {{ t('me.sales.alerts.dispute_ongoing') }}
+        </p>
+      </div>
+
       <div class="mt-2 flex items-center justify-between gap-4">
         <span class="text-base font-black text-emerald-700 dark:text-emerald-400 whitespace-nowrap">
           {{ formatPrice(props.sale.price) }} CHF<span
