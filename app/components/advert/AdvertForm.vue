@@ -793,14 +793,7 @@ const handleSubmit = () => {
             class="absolute right-1 top-1 hidden rounded-full bg-red-500 p-0.5 text-white shadow group-hover:flex items-center justify-center"
             @click="removeImage(i)"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              class="size-4"
-            >
-              <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-            </svg>
+            <UIcon name="i-heroicons-x-mark" class="size-4" />
           </button>
         </div>
       </div>
