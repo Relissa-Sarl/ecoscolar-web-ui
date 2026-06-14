@@ -271,7 +271,7 @@
       },
       "actions": {
         "edit": "Modifier",
-        "resume": "Reprendre",
+        "paused": "En pause",
         "expired": "Expiré",
         "sold": "Vendu",
         "blocked": "Bloqué"

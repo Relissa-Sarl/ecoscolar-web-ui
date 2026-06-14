@@ -55,6 +55,10 @@ onMounted(async () => {
     }
 
     advert.value = { ...detailedAdvert, type: fetchedAdvert.type } as DetailedAdvert
+
+    if (!advert.value || advert.value.status === 'PAUSED' || advert.value.status === 'EXPIRED' || advert.value.status === 'SOLD' || advert.value.status === 'BLOCKED') {
+      return navigateTo(localePath('/me/adverts'))
+    }
   } catch (error) {
     console.error('Error fetching advert:', error)
     advertIsGet.value = false
