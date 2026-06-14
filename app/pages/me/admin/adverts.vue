@@ -375,8 +375,8 @@ onMounted(async () => {
                 </button>
                 <button
                   class="ml-2 text-gray-400 transition-colors font-medium text-sm"
-                  :disabled="advert.status === AdvertStatus.BLOCKED || advert.status === AdvertStatus.SOLD"
-                  :class="advert.status === AdvertStatus.BLOCKED || advert.status === AdvertStatus.SOLD ? 'disabled:opacity-50 hover:text-gray-400' : 'hover:text-red-600 cursor-pointer'"
+                  :disabled="advert.status === AdvertStatus.BLOCKED || advert.status === AdvertStatus.SOLD || advert.status === AdvertStatus.PAUSED"
+                  :class="advert.status === AdvertStatus.BLOCKED || advert.status === AdvertStatus.SOLD || advert.status === AdvertStatus.PAUSED ? 'disabled:opacity-50 hover:text-gray-400' : 'hover:text-red-600 cursor-pointer'"
                   @click="blockAdvert(advert.id)"
                 >
                   <Icon
@@ -386,8 +386,8 @@ onMounted(async () => {
                 </button>
                 <button
                   class="ml-2 text-gray-400 transition-colors font-medium text-sm"
-                  :disabled="advert.status === AdvertStatus.SOLD"
-                  :class="advert.status === AdvertStatus.SOLD ? 'disabled:opacity-50 hover:text-gray-400' : 'hover:text-red-600 cursor-pointer'"
+                  :disabled="advert.status === AdvertStatus.SOLD || advert.status === AdvertStatus.PAUSED"
+                  :class="advert.status === AdvertStatus.SOLD || advert.status === AdvertStatus.PAUSED ? 'disabled:opacity-50 hover:text-gray-400' : 'hover:text-red-600 cursor-pointer'"
                   @click="deleteAdvert(advert.id)"
                 >
                   <Icon
