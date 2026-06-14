@@ -6,7 +6,7 @@ import { useAdminsStore } from '~/stores/adminsStore'
 const store = useAdminsStore()
 
 definePageMeta({
-  middleware: ['admin']
+  middleware: ['admin', 'auth']
 })
 
 onMounted(async () => {

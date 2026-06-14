@@ -25,11 +25,19 @@ const mockGetCartItemsFn = vi.fn().mockResolvedValue([])
 const mockAddToCartFn = vi.fn().mockResolvedValue({})
 const mockRemoveFromCartFn = vi.fn().mockResolvedValue(undefined)
 
+const mockGetAdvertFn = vi.fn()
+
 vi.mock('../../app/services/cartService', () => ({
   getCartService: () => ({
     getCartItems: mockGetCartItemsFn,
     addToCart: mockAddToCartFn,
     removeFromCart: mockRemoveFromCartFn
+  })
+}))
+
+vi.mock('../../app/services/advertService', () => ({
+  getAdvertService: () => ({
+    getAdvert: mockGetAdvertFn
   })
 }))
 
@@ -226,5 +234,122 @@ describe('cart store', () => {
     // Verify items in store
     expect(cartStore.items).toHaveLength(1)
     expect(cartStore.items[0].listing.id).toBe('99')
+  })
+
+  describe('edge cases', () => {
+    it('cleans up SOLD items from backend on load', async () => {
+      const usersStore = useUsersStore()
+      usersStore.user = mockUser('user-1')
+
+      mockGetCartItemsFn.mockResolvedValueOnce([
+        { advertId: 1, title: 'Item 1', price: 10, status: 'SOLD' },
+        { advertId: 2, title: 'Item 2', price: 20, status: 'AVAILABLE' }
+      ])
+
+      const cartStore = useCartStore()
+      await cartStore.loadCart(true)
+
+      expect(mockRemoveFromCartFn).toHaveBeenCalledWith(1)
+      expect(cartStore.items).toHaveLength(1)
+      expect(cartStore.items[0].listing.id).toBe('2')
+    })
+
+    it('cleans up SOLD items from guest cart on load', async () => {
+      const usersStore = useUsersStore()
+      usersStore.user = null
+
+      const listingSold = buildListing('1')
+      const listingAvailable = buildListing('2')
+
+      localStorageMock.setItem('ecoscolar_cart', JSON.stringify([
+        { listing: listingSold, quantity: 1, shippingCost: 0 },
+        { listing: listingAvailable, quantity: 1, shippingCost: 0 }
+      ]))
+
+      mockGetAdvertFn.mockImplementation((id: number) => {
+        if (id === 1) return Promise.resolve({ status: 'SOLD' })
+        if (id === 2) return Promise.resolve({ status: 'AVAILABLE' })
+        return Promise.reject({ status: 404 })
+      })
+
+      const cartStore = useCartStore()
+      await cartStore.loadCart(true)
+
+      expect(cartStore.items).toHaveLength(1)
+      expect(cartStore.items[0].listing.id).toBe('2')
+    })
+
+    it('removes item from guest cart if advert is 404', async () => {
+      const usersStore = useUsersStore()
+      usersStore.user = null
+
+      const listing404 = buildListing('404')
+
+      localStorageMock.setItem('ecoscolar_cart', JSON.stringify([
+        { listing: listing404, quantity: 1, shippingCost: 0 }
+      ]))
+
+      mockGetAdvertFn.mockRejectedValueOnce({ status: 404 })
+
+      const cartStore = useCartStore()
+      await cartStore.loadCart(true)
+
+      expect(cartStore.items).toHaveLength(0)
+    })
+
+    it('handles errors during loadCart', async () => {
+      const usersStore = useUsersStore()
+      usersStore.user = mockUser('user-1')
+      mockGetCartItemsFn.mockRejectedValueOnce(new Error('Load Error'))
+
+      const cartStore = useCartStore()
+      await cartStore.loadCart(true)
+
+      expect(cartStore.error).toBe('Load Error')
+      expect(cartStore.isLoading).toBe(false)
+    })
+
+    it('handles errors during addToCart', async () => {
+      const usersStore = useUsersStore()
+      usersStore.user = mockUser('user-1')
+      mockAddToCartFn.mockRejectedValueOnce(new Error('Add Error'))
+
+      const cartStore = useCartStore()
+      const listing = buildListing('1')
+
+      await expect(cartStore.addToCart(listing)).rejects.toThrow('Add Error')
+      expect(cartStore.error).toBe('Add Error')
+    })
+
+    it('handles errors during removeFromCart', async () => {
+      const usersStore = useUsersStore()
+      usersStore.user = mockUser('user-1')
+
+      const cartStore = useCartStore()
+      const listing = buildListing('1')
+      await cartStore.addToCart(listing)
+
+      mockRemoveFromCartFn.mockRejectedValueOnce(new Error('Remove Error'))
+      await expect(cartStore.removeFromCart('1')).rejects.toThrow('Remove Error')
+      expect(cartStore.error).toBe('Remove Error')
+    })
+
+    it('handles errors during clearCart and logs them', async () => {
+      const usersStore = useUsersStore()
+      usersStore.user = mockUser('user-1')
+
+      const cartStore = useCartStore()
+      cartStore.hasLoaded = true // Avoid loadCart clearing items
+      await cartStore.addToCart(buildListing('1'))
+      await cartStore.addToCart(buildListing('2'))
+
+      mockRemoveFromCartFn.mockRejectedValueOnce(new Error('Cleanup Error'))
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      await cartStore.clearCart()
+
+      expect(consoleSpy).toHaveBeenCalledWith('Failed to remove item on clearCart:', expect.any(Error))
+      expect(cartStore.items).toHaveLength(0) // Still cleared locally
+    })
   })
 })

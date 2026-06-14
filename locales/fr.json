@@ -99,6 +99,11 @@
     "denied": {
       "title": "Paiement Refusé !",
       "subtitle": "Votre transaction n'a pas pu être complétée. Veuillez réessayer ou contacter le support si le problème persiste."
+    },
+    "banned": {
+      "title": "Accès Refusé !",
+      "subtitle": "Votre compte a été restreint. Veuillez contacter le support pour plus d'informations.",
+      "support_contact": "Contacter le support"
     }
   },
   "catalog": {
@@ -266,7 +271,7 @@
       },
       "actions": {
         "edit": "Modifier",
-        "resume": "Reprendre",
+        "paused": "En pause",
         "expired": "Expiré",
         "sold": "Vendu",
         "blocked": "Bloqué"

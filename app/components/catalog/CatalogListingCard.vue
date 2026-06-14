@@ -148,7 +148,7 @@ onBeforeMount(() => {
           class="flex items-center gap-2"
         >
           <button
-            v-if="usersStore.isAuthenticated"
+            v-if="usersStore.isAuthenticated && !usersStore.user?.isBanned"
             type="button"
             class="cursor-pointer size-10 flex items-center justify-center shrink-0 rounded-full border border-slate-200 transition hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-900"
             :aria-label="isFavorite ? $t('advert.actions.favorite_remove') : $t('advert.actions.favorite_add')"

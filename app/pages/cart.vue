@@ -104,6 +104,11 @@ const handleCheckout = async () => {
     return
   }
 
+  if (usersStore.user?.isBanned) {
+    await navigateTo(localePath('/banned'))
+    return
+  }
+
   // set checking out flag and clear any previous error
   isCheckingOut.value = true
   checkoutError.value = null

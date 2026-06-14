@@ -10,7 +10,7 @@ import type { User } from '~/types/user'
 const store = useAdminsStore()
 
 definePageMeta({
-  middleware: ['admin']
+  middleware: ['admin', 'auth']
 })
 
 // Pop-up
@@ -31,9 +31,8 @@ const searchQuery = ref('')
 const statusFilter = ref<'All' | 'Active' | 'Pending' | 'Banned'>('All')
 
 const filteredUsers = computed(() => {
-  let result = store.users
+  let result = store.users.filter(u => !u.email.includes('@deleted.ecoscolar.com'))
 
-  // 1. Filtre recherche
   if (searchQuery.value) {
     const q = searchQuery.value.toLowerCase()
     result = result.filter(u =>
@@ -44,7 +43,6 @@ const filteredUsers = computed(() => {
     )
   }
 
-  // 2. Filtre statut
   if (statusFilter.value !== 'All') {
     result = result.filter((u) => {
       if (statusFilter.value === 'Banned') return u.isBanned

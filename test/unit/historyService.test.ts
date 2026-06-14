@@ -117,4 +117,51 @@ describe('historyService', () => {
       })
     })
   })
+
+  describe('transaction actions', () => {
+    it('confirmShipping calls API correctly', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce(undefined)
+      const service = createHistoryService({ apiClient })
+
+      await service.confirmShipping('txn-123')
+
+      expect(apiClient).toHaveBeenCalledWith('/me/sales/txn-123/confirm-shipping', {
+        method: 'POST'
+      })
+    })
+
+    it('confirmReception calls API correctly', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce(undefined)
+      const service = createHistoryService({ apiClient })
+
+      await service.confirmReception('txn-123')
+
+      expect(apiClient).toHaveBeenCalledWith('/transactions/txn-123/confirm-receipt', {
+        method: 'PUT'
+      })
+    })
+
+    it('cancelPurchase calls API correctly', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce(undefined)
+      const service = createHistoryService({ apiClient })
+
+      await service.cancelPurchase('txn-123')
+
+      expect(apiClient).toHaveBeenCalledWith('/me/purchases/txn-123/cancel', {
+        method: 'POST'
+      })
+    })
+
+    it('disputePurchase calls API correctly', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce(undefined)
+      const service = createHistoryService({ apiClient })
+
+      await service.disputePurchase('txn-123', 'Item not as described')
+
+      expect(apiClient).toHaveBeenCalledWith('/transactions/txn-123/dispute', {
+        method: 'POST',
+        body: { reason: 'Item not as described' }
+      })
+    })
+  })
 })

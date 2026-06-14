@@ -12,6 +12,10 @@ import { AdvertType } from '~/utils/enum/advertType'
 import { localizedRefLabel } from '~/utils/catalogFilterUtils'
 import { useCatalogReferenceData } from '~/composables/useCatalogReferenceData'
 
+definePageMeta({
+  middleware: 'auth'
+})
+
 const localePath = useLocalePath()
 const { t, locale } = useI18n()
 const toast = useToast()
