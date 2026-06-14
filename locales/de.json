@@ -839,5 +839,18 @@
       "item_pending_or_sold": "Ein Artikel in Ihrem Warenkorb wird gerade bezahlt oder ist bereits verkauft.",
       "general": "Bei der Validierung ist ein Fehler aufgetreten."
     }
+  },
+  "report": {
+    "action": "Melden",
+    "title_advert": "Diese Anzeige melden",
+    "title_comment": "Diesen Kommentar melden",
+    "description_advert": "Wenn Sie glauben, dass diese Anzeige nicht unseren Nutzungsbedingungen entspricht, melden Sie es uns bitte.",
+    "description_comment": "Wenn Sie glauben, dass dieser Kommentar unangemessen ist, melden Sie es uns bitte.",
+    "message_label": "Details (Pflichtfeld)",
+    "message_placeholder": "Bitte beschreiben Sie das aufgetretene Problem im Detail...",
+    "cancel": "Abbrechen",
+    "submit": "Meldung senden",
+    "success": "Ihre Meldung wurde erfolgreich gespeichert. Vielen Dank für Ihre Hilfe!",
+    "error": "Beim Senden Ihrer Meldung ist ein Fehler aufgetreten."
   }
 }
