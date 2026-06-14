@@ -14,6 +14,7 @@ import { mapCatalogApiToListings } from '~/utils/catalogMappers'
 import { AdvertType } from '~/utils/enum/advertType'
 
 const route = useRoute()
+const initialSearch = routeSearchValue()
 
 definePageMeta({ layout: 'catalog' })
 
@@ -29,8 +30,8 @@ const catalogService = getCatalogService()
 
 const activeCategory = ref<CatalogCategoryTab>('all')
 const sortKey = ref<'recent' | 'price_asc' | 'price_desc'>('recent')
-const draftSearch = ref('')
-const appliedSearch = ref('')
+const draftSearch = ref(initialSearch)
+const appliedSearch = ref(initialSearch)
 
 const pageSize = ref(9)
 const currentPage = ref(1)
@@ -74,13 +75,25 @@ const catalogQueryParams = computed<CatalogSearchParams>(() => {
   if (category)
     params.category = category
 
+  const bookCategories = toCsv(bookCategoryIds.value)
+  if (bookCategories)
+    params.bookCategoryIds = bookCategories
+
   const grade = toCsv(selectedSchoolGradeNames.value)
   if (grade)
     params.grade = grade
 
+  const schoolGrades = toCsv(schoolGradeIds.value)
+  if (schoolGrades)
+    params.schoolGradeIds = schoolGrades
+
   const subjects = toCsv(selectedSubjectNames.value)
   if (subjects)
     params.subjects = subjects
+
+  const subjectIdsQuery = toCsv(subjectIds.value)
+  if (subjectIdsQuery)
+    params.subjectIds = subjectIdsQuery
 
   return params
 })
@@ -122,7 +135,6 @@ const canResetFilters = computed(() =>
   || sortKey.value !== 'recent')
 
 onMounted(async () => {
-  applySearchFromRouteQuery()
   await loadCatalogReferences()
 })
 
@@ -147,12 +159,10 @@ function resetSidebar() {
 }
 
 function applySearchFromRouteQuery() {
-  const q = route.query.q
-  if (typeof q === 'string' && q.trim()) {
-    draftSearch.value = q.trim()
-    appliedSearch.value = q.trim()
-    currentPage.value = 1
-  }
+  const q = routeSearchValue()
+  draftSearch.value = q
+  appliedSearch.value = q
+  currentPage.value = 1
 }
 
 function categoryToApiType(tab: CatalogCategoryTab): AdvertType | undefined {
@@ -178,8 +188,13 @@ function selectedNames<T extends { name: string }>(
     .filter((name): name is string => Boolean(name))
 }
 
-function toCsv(values: string[]): string | undefined {
+function toCsv(values: Array<number | string>): string | undefined {
   return values.length > 0 ? values.join(',') : undefined
+}
+
+function routeSearchValue(): string {
+  const q = route.query.q
+  return typeof q === 'string' ? q.trim() : ''
 }
 
 function splitCsv(value?: string): string[] {
@@ -402,7 +417,11 @@ watch(
             </button>
           </div>
 
-          <div class="grid w-full gap-6 [grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))]">
+          <div
+            class="grid w-full gap-6 transition-opacity [grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))]"
+            :class="pending ? 'opacity-60' : 'opacity-100'"
+            :aria-busy="pending"
+          >
             <CatalogListingCard
               v-for="row in pagedRows"
               :key="row.id"
@@ -413,6 +432,7 @@ watch(
           <CatalogPagination
             v-model:page="currentPage"
             :page-count="pageCount"
+            :disabled="pending"
           />
         </div>
       </div>

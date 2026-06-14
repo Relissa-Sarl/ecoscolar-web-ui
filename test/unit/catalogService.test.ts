@@ -37,6 +37,7 @@ describe('catalogService', () => {
     await service.listSummaries({
       q: 'math',
       type: AdvertType.BOOK,
+      bookCategoryIds: '1,2',
       category: 'Mathematics',
       sort: 'price_asc',
       page: 2,
@@ -47,6 +48,7 @@ describe('catalogService', () => {
       query: {
         q: 'math',
         type: AdvertType.BOOK,
+        bookCategoryIds: '1,2',
         category: 'Mathematics',
         sort: 'price_asc',
         page: 2,

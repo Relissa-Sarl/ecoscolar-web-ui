@@ -148,7 +148,11 @@
       "reset_filters": "Azzera tutto"
     },
     "pagination": {
-      "label": "Paginazione"
+      "label": "Paginazione",
+      "previous": "Pagina precedente",
+      "previous_short": "Prec.",
+      "next": "Pagina successiva",
+      "next_short": "Succ."
     },
     "card": {
       "alt_image": "Immagine dell’annuncio",

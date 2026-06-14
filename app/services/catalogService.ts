@@ -13,6 +13,9 @@ export interface CatalogSearchParams {
   q?: string
   isbn?: string
   type?: AdvertType
+  bookCategoryIds?: string
+  schoolGradeIds?: string
+  subjectIds?: string
   category?: string
   subjects?: string
   grade?: string
