@@ -10,23 +10,25 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:open', val: boolean): void
-  (e: 'submit', reason: string): void
+  (e: 'submit', payload: { reason: string, description: string }): void
 }>()
 
 const { t } = useI18n()
 
 const reason = ref('')
+const description = ref('')
 const isSubmitting = ref(false)
 
 const handleClose = () => {
   if (isSubmitting.value) return
   emit('update:open', false)
   reason.value = ''
+  description.value = ''
 }
 
 const handleSubmit = () => {
-  if (reason.value.trim().length < SUPPORT_MESSAGE_MIN_LENGTH) return
-  emit('submit', reason.value.trim())
+  if (reason.value === '' || description.value.trim().length < SUPPORT_MESSAGE_MIN_LENGTH) return
+  emit('submit', { reason: reason.value, description: description.value.trim() })
 }
 </script>
 
@@ -47,7 +49,41 @@ const handleSubmit = () => {
             for="dispute-reason"
             class="text-sm font-bold text-slate-700 dark:text-slate-300"
           >
-            {{ t('me.purchases.dispute_reason_label') }} <span
+            Motif <span
+              class="text-red-600"
+              aria-hidden="true"
+            >*</span>
+          </label>
+          <select
+            id="dispute-reason"
+            v-model="reason"
+            required
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
+          >
+            <option
+              value=""
+              disabled
+            >
+              Sélectionner un motif
+            </option>
+            <option value="ItemNotReceived">
+              Objet non reçu
+            </option>
+            <option value="NotAsDescribed">
+              Non conforme
+            </option>
+            <option value="Damaged">
+              Endommagé
+            </option>
+          </select>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label
+            for="dispute-description"
+            class="text-sm font-bold text-slate-700 dark:text-slate-300"
+          >
+            Description <span
               class="text-red-600"
               aria-hidden="true"
             >*</span>
@@ -56,8 +92,8 @@ const handleSubmit = () => {
             {{ t('support.fields.message_hint', { min: SUPPORT_MESSAGE_MIN_LENGTH }) }}
           </p>
           <textarea
-            id="dispute-reason"
-            v-model="reason"
+            id="dispute-description"
+            v-model="description"
             rows="5"
             required
             aria-required="true"
