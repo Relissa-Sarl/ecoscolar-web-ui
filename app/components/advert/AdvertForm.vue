@@ -139,7 +139,7 @@ const handleImageUpload = (event: Event) => {
 
   const combined = [...uploadedFiles.value, ...incoming].slice(0, MAX_IMAGES)
   uploadedFiles.value = combined
-  imagePreviews.value = combined.map((f) => URL.createObjectURL(f))
+  imagePreviews.value = combined.map(f => URL.createObjectURL(f))
   errors.value.images = ''
   input.value = ''
 }
