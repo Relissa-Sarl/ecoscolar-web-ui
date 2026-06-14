@@ -87,12 +87,25 @@ onBeforeMount(() => {
 <template>
   <article class="flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-950">
     <div class="relative aspect-[520/440] bg-slate-100 dark:bg-slate-900">
-      <img
+      <NuxtImg
+        v-if="listing.imageUrl"
         :src="listing.imageUrl"
         :alt="$t('catalog.card.alt_image')"
+        format="webp"
         loading="lazy"
+        placeholder
         class="h-full w-full object-cover"
+      />
+      <!-- Fallback when no image is available -->
+      <div
+        v-else
+        class="flex h-full w-full items-center justify-center"
       >
+        <Icon
+          name="material-symbols:image-outline"
+          class="size-16 text-slate-300 dark:text-slate-700"
+        />
+      </div>
       <span
         v-if="listing.itemCondition"
         class="absolute left-3 top-3 rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide shadow-sm sm:text-[11px]"

@@ -22,7 +22,7 @@ interface Props {
 
 const props = defineProps<Props>()
 const emit = defineEmits<{
-  submit: [formData: Partial<ModifyAdvertForm>, category: AdvertType]
+  submit: [formData: Partial<ModifyAdvertForm>, category: AdvertType, files: File[]]
   cancel: []
 }>()
 
@@ -113,16 +113,42 @@ const form = ref({
   writtenLanguage: 'FR'
 })
 
-// Commented-out files state as requested
-// const uploadedFiles = ref<File[]>([])
-// const handleImageUpload = (event: Event) => {
-//   const input = event.target as HTMLInputElement
-//   if (input.files) {
-//     uploadedFiles.value = Array.from(input.files)
-//     form.value.pictures = uploadedFiles.value
-//     errors.value.images = ''
-//   }
-// }
+const MAX_IMAGES = 5
+const MAX_IMAGE_SIZE_MB = 5
+const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+
+const uploadedFiles = ref<File[]>([])
+const imagePreviews = ref<string[]>([])
+
+const handleImageUpload = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  if (!input.files) return
+
+  const incoming = Array.from(input.files)
+
+  for (const file of incoming) {
+    if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+      errors.value.images = $t('advertForm.error.invalid.imageType')
+      return
+    }
+    if (file.size > MAX_IMAGE_SIZE_MB * 1024 * 1024) {
+      errors.value.images = $t('advertForm.error.invalid.imageSize')
+      return
+    }
+  }
+
+  const combined = [...uploadedFiles.value, ...incoming].slice(0, MAX_IMAGES)
+  uploadedFiles.value = combined
+  imagePreviews.value = combined.map((f) => URL.createObjectURL(f))
+  errors.value.images = ''
+  input.value = ''
+}
+
+const removeImage = (index: number) => {
+  URL.revokeObjectURL(imagePreviews.value[index] ?? '')
+  uploadedFiles.value.splice(index, 1)
+  imagePreviews.value.splice(index, 1)
+}
 
 interface DetailedAdvertData {
   type?: AdvertType
@@ -385,7 +411,7 @@ const handleSubmit = () => {
   if (!validateForm()) {
     return
   }
-  emit('submit', form.value, category.value)
+  emit('submit', form.value, category.value, uploadedFiles.value)
 }
 </script>
 
@@ -718,15 +744,9 @@ const handleSubmit = () => {
       </div>
     </section>
 
-    <!-- Commented out Image Upload sections to be implemented after, as requested -->
-    <!--
-    <FormImageUploader
-      v-show="category == AdvertType.PRODUCT || category == AdvertType.BOOK"
-      v-model="uploadedFiles"
-      :error="errors.images"
-    />
+    <!-- Image Upload Section (Books and Products only) -->
     <section
-      v-show="category == AdvertType.PRODUCT || category == AdvertType.BOOK"
+      v-show="category === AdvertType.PRODUCT || category === AdvertType.BOOK"
       class="rounded-2xl border border-dashed border-gray-300 bg-gray-50/60 dark:border-gray-400 dark:bg-gray-800 dark:text-gray-400 p-5"
     >
       <h2 class="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-300">
@@ -750,13 +770,51 @@ const handleSubmit = () => {
           />
         </svg>
         {{ $t('advertForm.form.images') }}
+        <span class="ml-auto text-xs font-normal text-gray-400">{{ uploadedFiles.length }}/{{ MAX_IMAGES }}</span>
       </h2>
-      <label class="mt-5 flex flex-col items-center justify-center gap-3 rounded-2xl border border-gray-200 bg-white px-6 py-10 text-center cursor-pointer dark:bg-gray-800 dark:border-gray-400">
+
+      <!-- Previews grid -->
+      <div
+        v-if="imagePreviews.length"
+        class="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-5"
+      >
+        <div
+          v-for="(src, i) in imagePreviews"
+          :key="i"
+          class="group relative aspect-square overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-600"
+        >
+          <img
+            :src="src"
+            class="h-full w-full object-cover"
+            alt=""
+          >
+          <button
+            type="button"
+            class="absolute right-1 top-1 hidden rounded-full bg-red-500 p-0.5 text-white shadow group-hover:flex items-center justify-center"
+            @click="removeImage(i)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="size-4"
+            >
+              <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Drop zone -->
+      <label
+        v-if="uploadedFiles.length < MAX_IMAGES"
+        class="mt-4 flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border border-gray-200 bg-white px-6 py-8 text-center transition hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-400 dark:hover:bg-gray-700"
+      >
         <input
           id="images"
           type="file"
           multiple
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp"
           class="hidden"
           @change="handleImageUpload"
         >
@@ -776,37 +834,26 @@ const handleSubmit = () => {
             />
           </svg>
         </div>
-        <div v-if="uploadedFiles.length == 0">
+        <div>
           <p class="text-sm font-semibold text-gray-900 dark:text-gray-300">
             {{ $t('advertForm.form.uploadImages') }}
           </p>
-          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
             {{ $t('advertForm.form.dragDrop') }}
           </p>
-        </div>
-        <div
-          v-else
-          class="space-y-2"
-        >
-          <p class="text-sm font-semibold text-gray-900 dark:text-gray-300">
-            {{ uploadedFiles.length }} {{ $t('advertForm.form.uploadedImages') }}
+          <p class="mt-1 text-xs text-gray-400">
+            JPEG · PNG · WebP — max {{ MAX_IMAGE_SIZE_MB }} Mo
           </p>
-          <ul class="text-sm text-gray-500 dark:text-gray-400 list-disc list-inside">
-            <li
-              v-for="file in uploadedFiles"
-              :key="file.name"
-            >{{ file.name }}</li>
-          </ul>
         </div>
       </label>
+
       <p
-        v-show="errors.images != null"
+        v-if="errors.images"
         class="mt-2 min-h-5 text-sm text-red-500"
       >
         {{ errors.images }}
       </p>
     </section>
-    -->
 
     <p
       v-show="errors.content != null || props.errorMessage"
