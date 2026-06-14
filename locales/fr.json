@@ -247,6 +247,10 @@
         "renew_success": "Votre annonce a été renouvelée pour 30 jours supplémentaires.",
         "error": "Erreur : {message}"
       },
+      "timer": {
+        "expires_in": "Expire dans 1 jour | Expire dans {count} jours",
+        "expires_today": "Expire aujourd'hui"
+      },
       "view": "Voir",
       "edit": "Modifier",
       "status": {

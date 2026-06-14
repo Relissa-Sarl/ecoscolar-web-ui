@@ -247,6 +247,10 @@
         "renew_success": "Il tuo annuncio è stato rinnovato per altri 30 giorni.",
         "error": "Errore: {message}"
       },
+      "timer": {
+        "expires_in": "Scade in 1 giorno | Scade in {count} giorni",
+        "expires_today": "Scade oggi"
+      },
       "view": "Vedi",
       "edit": "Modifica",
       "status": {

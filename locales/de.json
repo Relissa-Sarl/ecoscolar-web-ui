@@ -247,6 +247,10 @@
         "renew_success": "Ihr Inserat wurde um weitere 30 Tage verlängert.",
         "error": "Fehler: {message}"
       },
+      "timer": {
+        "expires_in": "Läuft in 1 Tag ab | Läuft in {count} Tagen ab",
+        "expires_today": "Läuft heute ab"
+      },
       "view": "Ansehen",
       "edit": "Bearbeiten",
       "status": {

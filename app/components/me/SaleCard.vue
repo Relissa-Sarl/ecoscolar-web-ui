@@ -124,12 +124,9 @@ const daysLeft = computed(() => {
           v-if="daysLeft !== null && daysLeft <= 7"
           class="flex items-center gap-1 mt-1 text-[10px] font-medium text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20 px-2 py-0.5 rounded-md w-max border border-orange-100 dark:border-orange-800/50"
         >
-          <UIcon
-            name="i-heroicons-clock"
-            class="w-3 h-3"
-          />
-          <span v-if="daysLeft > 0">Expire dans {{ daysLeft }} jour{{ daysLeft > 1 ? 's' : '' }}</span>
-          <span v-else>Expire aujourd'hui</span>
+          <UIcon name="i-heroicons-clock" class="w-3 h-3" />
+          <span v-if="daysLeft > 0">{{ t('me.sales.timer.expires_in', daysLeft) }}</span>
+          <span v-else>{{ t('me.sales.timer.expires_today') }}</span>
         </div>
 
         <!-- Buyer details if SOLD -->
