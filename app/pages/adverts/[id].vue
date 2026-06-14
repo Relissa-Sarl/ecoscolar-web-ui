@@ -197,7 +197,7 @@ const advertSummary = computed(() => {
             <button
               type="button"
               class="flex items-center gap-2 text-sm text-slate-500 hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400 transition-colors bg-transparent border-0 p-0 cursor-pointer outline-none focus:ring-2 focus:ring-red-500 rounded"
-              @click="openReportModal(advert.id)"
+              @click="if (advert) openReportModal(Number(advert.id))"
             >
               <UIcon
                 name="i-heroicons-flag"
@@ -234,7 +234,7 @@ const advertSummary = computed(() => {
           :questions="advertQuestions || []"
           @ask-question="handleAskQuestion"
           @answer-question="handleAnswerQuestion"
-          @report-comment="(commentId: number) => openReportModal(advert!.id, commentId)"
+          @report-comment="(commentId: number) => openReportModal(Number(advert!.id), commentId)"
         />
       </div>
     </div>
