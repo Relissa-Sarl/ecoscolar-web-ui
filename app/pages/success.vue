@@ -24,12 +24,14 @@ useSeoMeta({
 
 const totalAmount = ref<number | null>(null)
 
-const orderId = computed(() => {
-  const oParam = route.query.orderId
-  if (!oParam) return null
-  const val = Array.isArray(oParam) ? oParam[0] : oParam
-  return val || null
+const stripeSessionId = computed(() => {
+  const value = route.query.stripeSessionId ?? route.query.orderId
+  if (!value) return null
+  const sessionId = Array.isArray(value) ? value[0] : value
+  return sessionId || null
 })
+
+const displayedOrderNumber = ref<string | null>(null)
 
 const productIds = computed<number[]>(() => {
   const pParam = route.query.productIds
@@ -60,7 +62,8 @@ onMounted(async () => {
   if (ids.length > 0) {
     try {
       const historyService = getHistoryService()
-      await historyService.createTransactions(ids, orderId.value)
+      const created = await historyService.createTransactions(ids, stripeSessionId.value)
+      displayedOrderNumber.value = created?.[0]?.orderNumber ?? null
     } catch (err) {
       console.error('Failed to create transactions, falling back to manual status update:', err)
       // Fallback: update status to SOLD manually
@@ -90,13 +93,13 @@ onMounted(async () => {
       <SuccessIcon />
 
       <!-- Main Messages -->
-      <SuccessMainMessage :order-id="orderId" />
+      <SuccessMainMessage :order-number="displayedOrderNumber" />
 
       <!-- Success Paiment Informations -->
       <div class="p-6 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-white/75 dark:bg-slate-900/70 backdrop-blur-md shadow-sm space-y-4 text-left">
         <SuccessInfos
           :total-amount="totalAmount"
-          :order-id="orderId"
+          :order-number="displayedOrderNumber"
         />
       </div>
 
