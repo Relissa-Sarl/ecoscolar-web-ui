@@ -35,7 +35,7 @@ onMounted(async () => {
 
       <div
         v-if="!store.isLoading"
-        class="grid grid-cols-3 gap-6 mb-8"
+        class="grid grid-cols-4 gap-6 mb-8"
       >
         <StatCard
           title="Total tickets opened"
@@ -44,6 +44,10 @@ onMounted(async () => {
         <StatCard
           title="Total adverts opened"
           :value="store.adverts.filter(a => a.status === 'ACTIVE').length"
+        />
+        <StatCard
+          title="Total flags"
+          :value="2"
         />
         <StatCard
           title="Total users"
