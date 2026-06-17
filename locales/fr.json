@@ -190,6 +190,7 @@
       "empty_placeholder": "Votre historique d'achats apparaîtra ici.",
       "explore_cta": "Explorer la boutique",
       "seller_label": "Vendeur",
+      "order_number_label": "N° de commande",
       "view_advert": "Voir l'annonce",
       "leave_review": "Laisser un avis",
       "review_modal_title": "Laisser un avis à {name}",
