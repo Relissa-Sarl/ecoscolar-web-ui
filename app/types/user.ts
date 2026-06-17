@@ -14,6 +14,9 @@ export interface User extends PublicUser {
   location: UserLocation
   languages: SpokenLanguage[]
   roles: string[]
+  // Only returned by the admin users endpoint
+  badReviewsCount?: number
+  alerteTooBadReviews?: boolean
 }
 
 export interface SpokenLanguage {
