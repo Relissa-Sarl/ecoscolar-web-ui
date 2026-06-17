@@ -31,7 +31,10 @@ jobs:
 
       - name: Lint
         run: pnpm run lint
-      
+
+      - name: Unit & component tests
+        run: pnpm run test:coverage
+
       - name: Nuxt Build
         run: pnpm build
 
