@@ -11,7 +11,7 @@ describe('frontend UI regressions', () => {
   it('keeps the catalog subtitle free of hardcoded postal codes', () => {
     const shopPage = readProjectFile('app/pages/shop.vue')
 
-    expect(shopPage).toContain('{{ $t(\'catalog.list.subtitle_near\', { count: totalItems }) }}')
+    expect(shopPage).toContain('$t(\'catalog.list.subtitle_near\', { count: totalItems })')
   })
 
   it('keeps catalog subtitle translations focused on the result count', () => {

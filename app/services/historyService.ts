@@ -17,6 +17,7 @@ export interface Purchase {
   status: string
   imageUrl?: string | null
   sellerName: string
+  orderNumber?: string | null
   review?: ReviewDto | null
 }
 
