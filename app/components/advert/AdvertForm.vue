@@ -793,7 +793,10 @@ const handleSubmit = () => {
             class="absolute right-1 top-1 hidden rounded-full bg-red-500 p-0.5 text-white shadow group-hover:flex items-center justify-center"
             @click="removeImage(i)"
           >
-            <UIcon name="i-heroicons-x-mark" class="size-4" />
+            <UIcon
+              name="i-heroicons-x-mark"
+              class="size-4"
+            />
           </button>
         </div>
       </div>

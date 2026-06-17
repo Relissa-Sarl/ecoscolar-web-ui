@@ -60,7 +60,7 @@ describe('PurchaseCard', () => {
     expect(wrapper.text()).toContain('profile.history.status.completed')
     expect(wrapper.text()).toContain('Calculatrice Graphique')
     expect(wrapper.text()).toContain('JaneDoe')
-    expect(wrapper.text()).toContain('55 CHF')
+    expect(wrapper.text()).toContain('55.00 CHF')
     expect(wrapper.text()).toContain('me.purchases.seller_label')
     // COMPLETED purchases show the details toggle instead of the view advert link
     expect(wrapper.text()).toContain('me.purchases.actions.details')

@@ -62,7 +62,7 @@ describe('SaleCard', () => {
     // Check texts
     expect(wrapper.text()).toContain('me.sales.status.active')
     expect(wrapper.text()).toContain('Calculatrice scientifique')
-    expect(wrapper.text()).toContain('45 CHF')
+    expect(wrapper.text()).toContain('45.00 CHF')
     expect(wrapper.text()).toContain('me.sales.view')
 
     // buyerName should not be shown
