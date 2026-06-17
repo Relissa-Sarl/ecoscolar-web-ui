@@ -17,6 +17,7 @@ const emit = defineEmits<{
 const { t } = useI18n()
 const toast = useToast()
 const localePath = useLocalePath()
+const route = useRoute()
 
 const favoritesStore = useFavoritesStore()
 const usersStore = useUsersStore()
@@ -80,7 +81,7 @@ const listing = computed(() => {
 
 const handleCardAdd = async () => {
   if (!usersStore.isAuthenticated) {
-    await navigateTo(localePath('/login'))
+    await navigateTo(localePath(`/login?redirect=${encodeURIComponent(route.fullPath)}`))
     return
   }
   if (!listing.value || isInCart.value) return
@@ -93,6 +94,10 @@ const handleCardAdd = async () => {
 }
 
 const handleReservation = () => {
+  if (!usersStore.isAuthenticated) {
+    void navigateTo(localePath(`/login?redirect=${encodeURIComponent(route.fullPath)}`))
+    return
+  }
   emit('reserve')
 }
 

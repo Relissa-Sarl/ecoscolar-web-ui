@@ -11,6 +11,7 @@ import { useUsersStore } from '~/stores/usersStore'
 import type { FavoriteAdvertSummary, FavoriteAdvertInput } from '~/types/favorite'
 
 const localePath = useLocalePath()
+const route = useRoute()
 
 const props = defineProps<{
   listing: CatalogListing
@@ -51,7 +52,7 @@ const favoriteInput = computed((): FavoriteAdvertInput => ({
 
 const handleCartAdd = async () => {
   if (!usersStore.isAuthenticated) {
-    await navigateTo(localePath('/login'))
+    await navigateTo(localePath(`/login?redirect=${encodeURIComponent(route.fullPath)}`))
     return
   }
   if (isInCart.value) return

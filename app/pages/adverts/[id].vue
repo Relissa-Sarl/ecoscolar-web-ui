@@ -136,7 +136,7 @@ const advertSummary = computed(() => {
 
 const handleReserve = () => {
   if (!usersStore.isAuthenticated) {
-    navigateTo(localePath('/login'))
+    navigateTo(localePath(`/login?redirect=${encodeURIComponent(route.fullPath)}`))
     return
   }
   isBookingModalOpen.value = true
