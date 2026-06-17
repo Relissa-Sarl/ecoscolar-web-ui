@@ -11,8 +11,12 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const emit = defineEmits<{
+  reserve: []
+}>()
 const { t } = useI18n()
 const toast = useToast()
+const localePath = useLocalePath()
 
 const favoritesStore = useFavoritesStore()
 const usersStore = useUsersStore()
@@ -75,6 +79,10 @@ const listing = computed(() => {
 })
 
 const handleCardAdd = async () => {
+  if (!usersStore.isAuthenticated) {
+    await navigateTo(localePath('/login'))
+    return
+  }
   if (!listing.value || isInCart.value) return
 
   await cartStore.addToCart(listing.value)
@@ -84,8 +92,8 @@ const handleCardAdd = async () => {
   })
 }
 
-const handleReservation = async () => {
-  // TODO: Implement reservation logic
+const handleReservation = () => {
+  emit('reserve')
 }
 
 const toggleFavorite = async () => {
@@ -118,21 +126,38 @@ onBeforeMount(() => {
     <div class="flex gap-3">
       <button
         v-if="advert?.type === AdvertType.SERVICE"
-        class="flex-1 px-4 py-3 font-medium rounded-lg transition-colors flex items-center justify-center bg-green-700 hover:bg-green-800 text-white cursor-pointer"
+        class="flex-1 px-4 py-3 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+        :class="usersStore.isAuthenticated
+          ? 'bg-green-700 hover:bg-green-800 text-white cursor-pointer'
+          : 'border border-green-700 text-green-800 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20 cursor-pointer'"
+        :title="usersStore.isAuthenticated ? undefined : $t('booking.login_to_book_tooltip')"
         @click="handleReservation"
       >
-        {{ $t('catalog.card.book_lesson') }}
+        <Icon
+          v-if="!usersStore.isAuthenticated"
+          name="material-symbols:lock-outline"
+          class="size-4 shrink-0"
+        />
+        <span>{{ usersStore.isAuthenticated ? $t('catalog.card.book_lesson') : $t('booking.login_to_book') }}</span>
       </button>
       <button
         v-else
-        class="flex-1 px-4 py-3 font-medium rounded-lg transition-colors flex items-center justify-center"
+        class="flex-1 px-4 py-3 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
         :class="isInCart
           ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed border border-slate-200 dark:border-slate-700'
-          : 'bg-green-700 hover:bg-green-800 text-white cursor-pointer'"
+          : !usersStore.isAuthenticated
+            ? 'border border-green-700 text-green-800 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20 cursor-pointer'
+            : 'bg-green-700 hover:bg-green-800 text-white cursor-pointer'"
         :disabled="isInCart"
+        :title="!usersStore.isAuthenticated ? $t('booking.login_to_buy_tooltip') : undefined"
         @click="handleCardAdd"
       >
-        {{ isInCart ? $t('advert.actions.already_in_cart') : $t('advert.actions.buy_now') }}
+        <Icon
+          v-if="!usersStore.isAuthenticated && !isInCart"
+          name="material-symbols:lock-outline"
+          class="size-4 shrink-0"
+        />
+        <span>{{ isInCart ? $t('advert.actions.already_in_cart') : !usersStore.isAuthenticated ? $t('booking.login_to_buy') : $t('advert.actions.buy_now') }}</span>
       </button>
 
       <button

@@ -872,5 +872,36 @@
     "submit": "Meldung senden",
     "success": "Ihre Meldung wurde erfolgreich gespeichert. Vielen Dank für Ihre Hilfe!",
     "error": "Beim Senden Ihrer Meldung ist ein Fehler aufgetreten."
+  },
+  "booking": {
+    "title": "Unterricht buchen",
+    "subtitle": "Sichere Zahlung über Stripe",
+    "close": "Schließen",
+    "tutor_label": "Tutor:",
+    "rate_label": "Tarif",
+    "sessions_label": "Anzahl der Sitzungen",
+    "session_singular": "Sitzung",
+    "session_plural": "Sitzungen",
+    "sessions_hint": "Zwischen {min} und {max} Sitzungen pro Buchung",
+    "decrease": "Anzahl der Sitzungen verringern",
+    "increase": "Anzahl der Sitzungen erhöhen",
+    "price_summary": "Zusammenfassung",
+    "subtotal": "{rate} CHF/h × {sessions} Sitzung(en)",
+    "platform_fee": "Plattformgebühr (10%)",
+    "total": "Gesamt",
+    "protection_title": "Käuferschutz",
+    "protection_text": "Zahlung gesperrt bis zur Bestätigung der erbrachten Leistung.",
+    "login_to_book": "Anmelden zum Buchen",
+    "login_to_book_tooltip": "Sie müssen angemeldet sein, um eine Stunde zu buchen",
+    "login_to_buy": "Anmelden zum Kaufen",
+    "login_to_buy_tooltip": "Sie müssen angemeldet sein, um einen Artikel zu kaufen",
+    "confirm": "Bestätigen und bezahlen",
+    "cancel": "Abbrechen",
+    "loading": "Weiterleitung zu Stripe...",
+    "terms_note": "Durch Bestätigung akzeptieren Sie die allgemeinen Geschäftsbedingungen von EcoScolar.",
+    "errors": {
+      "init_failed": "Fehler bei der Initialisierung der Zahlung. Bitte versuchen Sie es erneut.",
+      "general": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    }
   }
 }

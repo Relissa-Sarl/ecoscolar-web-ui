@@ -50,6 +50,10 @@ const favoriteInput = computed((): FavoriteAdvertInput => ({
 }))
 
 const handleCartAdd = async () => {
+  if (!usersStore.isAuthenticated) {
+    await navigateTo(localePath('/login'))
+    return
+  }
   if (isInCart.value) return
   await cartStore.addToCart(props.listing)
   toast.add({
@@ -58,8 +62,8 @@ const handleCartAdd = async () => {
   })
 }
 
-const handleReservation = async () => {
-  // TODO: Implement reservation logic
+const handleReservation = () => {
+  navigateTo(detailLink.value)
 }
 
 const toggleFavorite = async () => {
@@ -181,26 +185,43 @@ onBeforeMount(() => {
           <button
             v-if="listing.hourly"
             type="button"
-            class="rounded-full transition bg-emerald-800 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer"
+            class="rounded-full transition px-4 py-2 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+            :class="usersStore.isAuthenticated
+              ? 'bg-emerald-800 text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500'
+              : 'border border-emerald-800 text-emerald-800 dark:border-emerald-500 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20'"
+            :title="usersStore.isAuthenticated ? undefined : $t('booking.login_to_book_tooltip')"
             @click="handleReservation"
           >
-            {{ $t('catalog.card.book_lesson') }}
+            <Icon
+              v-if="!usersStore.isAuthenticated"
+              name="material-symbols:lock-outline"
+              class="size-3.5 shrink-0"
+            />
+            {{ usersStore.isAuthenticated ? $t('catalog.card.book_lesson') : $t('booking.login_to_book') }}
           </button>
           <button
             v-else
             type="button"
-            class="rounded-full transition"
+            class="rounded-full transition size-10 flex items-center justify-center shrink-0"
             :class="isInCart
-              ? 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-600 border border-slate-200 dark:border-slate-800 cursor-not-allowed size-10 flex items-center justify-center shrink-0'
-              : 'bg-emerald-800 text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer size-10 flex items-center justify-center shrink-0'"
+              ? 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-600 border border-slate-200 dark:border-slate-800 cursor-not-allowed'
+              : !usersStore.isAuthenticated
+                ? 'border border-emerald-800 text-emerald-800 dark:border-emerald-500 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 cursor-pointer'
+                : 'bg-emerald-800 text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer'"
             :disabled="isInCart"
-            :aria-label="isInCart ? $t('advert.actions.already_in_cart') : $t('advert.actions.buy_now')"
+            :aria-label="isInCart ? $t('advert.actions.already_in_cart') : !usersStore.isAuthenticated ? $t('booking.login_to_buy_tooltip') : $t('advert.actions.buy_now')"
+            :title="!usersStore.isAuthenticated && !isInCart ? $t('booking.login_to_buy_tooltip') : undefined"
             @click="handleCartAdd"
           >
             <Icon
               v-if="isInCart"
               name="material-symbols:check"
               class="size-5 text-emerald-650 dark:text-emerald-500 font-bold"
+            />
+            <Icon
+              v-else-if="!usersStore.isAuthenticated"
+              name="material-symbols:lock-outline"
+              class="size-5"
             />
             <Icon
               v-else
