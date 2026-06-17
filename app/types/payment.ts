@@ -1,7 +1,8 @@
 export interface CheckoutRequest {
   productId: number
   productIds?: number[]
-  productPrice: string
+  productPrice?: string
+  shippingMethod: 'post' | 'handToHand'
 }
 
 export interface CheckoutResponse {
