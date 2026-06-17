@@ -80,6 +80,31 @@ describe('Admin Users Page', () => {
     expect(wrapper.text()).not.toContain('0 bad reviews')
   })
 
+  it('filters users by the At Risk status', async () => {
+    const wrapper = mount(AdminUsers, {
+      global: {
+        stubs: {
+          Sidebar: true,
+          UserDetailModal: true,
+          DeleteConfirmationPopup: true,
+          PopUp: true,
+          Icon: true,
+          ProfileBackLink: true
+        }
+      }
+    })
+
+    await flushPromises()
+
+    const select = wrapper.find('select')
+    await select.setValue('AtRisk')
+    await flushPromises()
+
+    // Only Bob is flagged (alerteTooBadReviews); Alice must be filtered out
+    expect(wrapper.text()).toContain('Bob Smith')
+    expect(wrapper.text()).not.toContain('Alice Doe')
+  })
+
   it('filters users by search query', async () => {
     const wrapper = mount(AdminUsers, {
       global: {

@@ -28,7 +28,7 @@ const triggerPopUp = (type: typeof popUpData.value.type, title: string, desc: st
 
 // Filters
 const searchQuery = ref('')
-const statusFilter = ref<'All' | 'Active' | 'Pending' | 'Banned'>('All')
+const statusFilter = ref<'All' | 'Active' | 'Pending' | 'Banned' | 'AtRisk'>('All')
 
 const filteredUsers = computed(() => {
   let result = store.users.filter(u => !u.email.includes('@deleted.ecoscolar.com'))
@@ -48,6 +48,7 @@ const filteredUsers = computed(() => {
       if (statusFilter.value === 'Banned') return u.isBanned
       if (statusFilter.value === 'Active') return !u.isBanned && u.isOnboarded
       if (statusFilter.value === 'Pending') return !u.isBanned && !u.isOnboarded
+      if (statusFilter.value === 'AtRisk') return u.alerteTooBadReviews
     })
   }
 
@@ -219,6 +220,9 @@ onMounted(async () => {
           </option>
           <option value="Banned">
             Banned
+          </option>
+          <option value="AtRisk">
+            At Risk
           </option>
         </select>
       </div>
