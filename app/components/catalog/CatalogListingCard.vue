@@ -93,7 +93,7 @@ onBeforeMount(() => {
         :alt="$t('catalog.card.alt_image')"
         loading="lazy"
         class="h-full w-full object-cover"
-      />
+      >
       <!-- Fallback when no image is available -->
       <div
         v-else

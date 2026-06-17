@@ -28,7 +28,7 @@ const triggerPopUp = (type: typeof popUpData.value.type, title: string, desc: st
 
 // Filters
 const searchQuery = ref('')
-const statusFilter = ref<'All' | 'Active' | 'Pending' | 'Banned'>('All')
+const statusFilter = ref<'All' | 'Active' | 'Pending' | 'Banned' | 'AtRisk'>('All')
 
 const filteredUsers = computed(() => {
   let result = store.users.filter(u => !u.email.includes('@deleted.ecoscolar.com'))
@@ -48,6 +48,7 @@ const filteredUsers = computed(() => {
       if (statusFilter.value === 'Banned') return u.isBanned
       if (statusFilter.value === 'Active') return !u.isBanned && u.isOnboarded
       if (statusFilter.value === 'Pending') return !u.isBanned && !u.isOnboarded
+      if (statusFilter.value === 'AtRisk') return u.alerteTooBadReviews
     })
   }
 
@@ -220,6 +221,9 @@ onMounted(async () => {
           <option value="Banned">
             Banned
           </option>
+          <option value="AtRisk">
+            At Risk
+          </option>
         </select>
       </div>
 
@@ -251,6 +255,7 @@ onMounted(async () => {
               v-for="user in paginatedUsers"
               :key="user.id"
               class="hover:bg-gray-50 border-gray-300 dark:border-gray-800 dark:hover:bg-gray-900 transition-colors"
+              :class="user.alerteTooBadReviews ? 'bg-red-50 dark:bg-red-950/30' : ''"
             >
               <td class="p-4 flex items-center gap-3 truncate">
                 <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0">
@@ -263,6 +268,17 @@ onMounted(async () => {
                   <div class="text-xs text-gray-500 truncate">
                     @{{ user.nickname }}
                   </div>
+                  <span
+                    v-if="user.alerteTooBadReviews"
+                    class="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200 text-xs font-medium"
+                    :title="`This user has received ${user.badReviewsCount} bad reviews`"
+                  >
+                    <Icon
+                      name="material-symbols:warning-rounded"
+                      class="size-3.5"
+                    />
+                    {{ user.badReviewsCount }} bad reviews
+                  </span>
                 </div>
               </td>
 
