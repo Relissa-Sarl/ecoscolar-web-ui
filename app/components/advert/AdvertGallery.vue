@@ -25,7 +25,7 @@ watch(() => props.images, (newImages) => {
         :src="selectedImage"
         :alt="title"
         class="w-full h-full object-contain"
-      />
+      >
     </div>
 
     <!-- Thumbnail Gallery -->
@@ -44,7 +44,7 @@ watch(() => props.images, (newImages) => {
           :src="img"
           alt=""
           class="w-full h-20 object-cover"
-        />
+        >
       </button>
     </div>
   </div>

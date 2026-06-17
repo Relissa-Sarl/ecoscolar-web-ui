@@ -101,10 +101,10 @@ describe('useTransactionActions', () => {
 
     promptAction('dispute', 't1')
     disputeReason.value = 'Damaged item'
-    disputeDescription.value = 'Some description'
+    disputeDescription.value = 'It is broken'
     await executeAction()
 
-    expect(mockHistoryService.disputePurchase).toHaveBeenCalledWith('t1', 'Damaged item', 'Some description')
+    expect(mockHistoryService.disputePurchase).toHaveBeenCalledWith('t1', 'Damaged item', 'It is broken')
   })
 
   it('executeAction handles service errors', async () => {

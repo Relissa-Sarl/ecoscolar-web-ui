@@ -1,4 +1,7 @@
 <script setup lang="ts">
+defineProps<{
+  orderNumber?: string | null
+}>()
 </script>
 
 <template>
