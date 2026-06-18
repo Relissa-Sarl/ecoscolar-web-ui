@@ -62,6 +62,14 @@ const handleActionSuccess = () => {
   refresh()
 }
 
+const promptTransactionAction = (
+  action: 'confirm_shipping' | 'accept_service' | 'refuse_service' | 'mark_rendered',
+  transactionId?: number
+) => {
+  if (transactionId == null) return
+  promptAction(action, String(transactionId))
+}
+
 onMounted(() => {
   if (route.query.renew) {
     promptAction('renew', route.query.renew as string)
@@ -172,11 +180,11 @@ onMounted(() => {
           v-for="sale in filteredSales"
           :key="`${sale.id}-${sale.transactionId ?? 0}`"
           :sale="sale"
-          @confirm-shipping="promptAction('confirm_shipping', $event.toString())"
-          @accept-service="promptAction('accept_service', $event.toString())"
-          @refuse-service="promptAction('refuse_service', $event.toString())"
-          @mark-rendered="promptAction('mark_rendered', $event.toString())"
-          @renew="promptAction('renew', $event.toString())"
+          @confirm-shipping="promptTransactionAction('confirm_shipping', $event)"
+          @accept-service="promptTransactionAction('accept_service', $event)"
+          @refuse-service="promptTransactionAction('refuse_service', $event)"
+          @mark-rendered="promptTransactionAction('mark_rendered', $event)"
+          @renew="promptAction('renew', String($event))"
         />
       </div>
     </div>
@@ -186,7 +194,7 @@ onMounted(() => {
       :is-processing="isProcessing"
       :action-error="actionError"
       @cancel="closeModal"
-      @confirm="executeAction(handleActionSuccess)"
+      @confirm="() => executeAction(handleActionSuccess)"
     />
   </div>
 </template>

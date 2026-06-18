@@ -49,6 +49,14 @@ const refreshData = async () => {
   }
 }
 
+const promptTransactionAction = (
+  action: 'confirm_shipping' | 'accept_service' | 'refuse_service' | 'mark_rendered',
+  transactionId?: number
+) => {
+  if (transactionId == null) return
+  promptAction(action, String(transactionId))
+}
+
 onMounted(refreshData)
 </script>
 
@@ -127,9 +135,13 @@ onMounted(refreshData)
         >
           <SaleCard
             v-for="sale in lastSales"
-            :key="sale.id"
+            :key="`${sale.id}-${sale.transactionId ?? 0}`"
             :sale="sale"
-            @confirm-shipping="promptAction('confirm_shipping', $event.toString())"
+            @confirm-shipping="promptTransactionAction('confirm_shipping', $event)"
+            @accept-service="promptTransactionAction('accept_service', $event)"
+            @refuse-service="promptTransactionAction('refuse_service', $event)"
+            @mark-rendered="promptTransactionAction('mark_rendered', $event)"
+            @renew="promptAction('renew', String($event))"
           />
         </div>
         <div
@@ -149,7 +161,7 @@ onMounted(refreshData)
       :is-processing="isProcessing"
       :action-error="actionError"
       @cancel="closeModal"
-      @confirm="executeAction(refreshData)"
+      @confirm="() => executeAction(refreshData)"
     />
   </div>
 </template>

@@ -75,4 +75,44 @@ describe('Sales Page', () => {
 
     expect(wrapper.findAll('.mock-sale-card').length).toBe(2)
   }, 15000)
+
+  it('opens accept modal when SaleCard emits accept-service', async () => {
+    asyncDataMock.mockResolvedValueOnce({
+      data: ref([
+        {
+          id: 42,
+          transactionId: 101,
+          type: 'SERVICE',
+          title: 'Tutorat maths',
+          transactionStatus: 'PAID_WAITING_ACCEPTANCE',
+          status: 'ACTIVE'
+        }
+      ]),
+      pending: ref(false),
+      error: ref(null)
+    })
+
+    const wrapper = await mountSuspended(SalesPage, {
+      global: {
+        stubs: {
+          ...stubs,
+          SaleCard: {
+            props: ['sale'],
+            template: '<button data-test="accept" @click="$emit(\'accept-service\', sale.transactionId)">accept</button>',
+            emits: ['accept-service']
+          },
+          TransactionModals: {
+            props: ['activeModal'],
+            template: '<div data-test="modal">{{ activeModal }}</div>'
+          }
+        }
+      }
+    })
+    await wrapper.vm.$nextTick()
+
+    await wrapper.get('[data-test="accept"]').trigger('click')
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.get('[data-test="modal"]').text()).toBe('accept_service')
+  }, 15000)
 })
