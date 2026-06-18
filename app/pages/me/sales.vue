@@ -22,19 +22,21 @@ const { data: sales, pending, error, refresh } = await useAsyncData(
 
 const activeTab = ref<'ongoing' | 'past'>('ongoing')
 
+const FINAL_TRANSACTION_STATUSES = ['COMPLETED', 'CANCELLED', 'SERVICE_CONFIRMED', 'SERVICE_REFUSED']
+
 const filteredSales = computed(() => {
   if (!sales.value) return []
   if (activeTab.value === 'ongoing') {
     return sales.value.filter((s) => {
       if (s.status === 'SOLD') {
-        return s.transactionStatus && s.transactionStatus !== 'COMPLETED' && s.transactionStatus !== 'CANCELLED'
+        return s.transactionStatus && !FINAL_TRANSACTION_STATUSES.includes(s.transactionStatus)
       }
       return true
     })
   } else {
     return sales.value.filter((s) => {
       if (s.status === 'SOLD') {
-        return !s.transactionStatus || s.transactionStatus === 'COMPLETED' || s.transactionStatus === 'CANCELLED'
+        return !s.transactionStatus || FINAL_TRANSACTION_STATUSES.includes(s.transactionStatus)
       }
       return false
     })
@@ -166,6 +168,8 @@ onMounted(() => {
           :sale="sale"
           @confirm-shipping="promptAction('confirm_shipping', $event.toString())"
           @renew="promptAction('renew', $event.toString())"
+          @confirm-service="promptAction('confirm_service', $event.toString())"
+          @refuse-service="promptAction('refuse_service', $event.toString())"
         />
       </div>
     </div>
