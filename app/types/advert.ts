@@ -20,7 +20,7 @@ export interface QuestionResponse {
 }
 
 export interface Seller {
-  id?: string
+  id: string
   avatar: string
   username: string
   zip: string

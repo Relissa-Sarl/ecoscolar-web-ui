@@ -2,7 +2,7 @@ import type { User } from '~/types/user'
 import { useApi } from '../composables/useApi'
 import type { SupportTicketAdminDetail, SupportTicketMessage } from '~/types/support'
 import type { MySaleAdvert } from './historyService'
-import type { AbuseReportResponse } from '~/types/report'
+import type { AbuseReportAdminResponse } from '~/types/report'
 
 type ApiClient = typeof useApi
 
@@ -23,7 +23,7 @@ export interface AdminService {
   getAllAdverts: () => Promise<MySaleAdvert[]>
   blockAdvert: (id: number) => Promise<MySaleAdvert>
   deleteAdvert: (id: number) => Promise<MySaleAdvert[]>
-  getAllFlags: () => Promise<AbuseReportResponse[]>
+  getAllAbuses: () => Promise<AbuseReportAdminResponse[]>
 }
 
 /**
@@ -64,7 +64,7 @@ export function createadminService({ apiClient }: AdminServiceDependencies): Adm
     method: 'DELETE'
   })
 
-  const getAllFlags = async () => apiClient<AbuseReportResponse[]>(`${ADMIN_PATH}/flags`)
+  const getAllAbuses = async () => apiClient<AbuseReportAdminResponse[]>(`${ADMIN_PATH}/abuses`)
 
   return {
     getMyProfile,
@@ -75,7 +75,7 @@ export function createadminService({ apiClient }: AdminServiceDependencies): Adm
     getAllAdverts,
     blockAdvert,
     deleteAdvert,
-    getAllFlags
+    getAllAbuses
   }
 }
 

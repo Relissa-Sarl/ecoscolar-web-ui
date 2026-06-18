@@ -64,7 +64,7 @@ const handleSubmit = () => {
     <Transition name="fade">
       <div
         v-if="isOpen"
-        class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 sm:p-0"
+        class="fixed inset-0 z-100 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 sm:p-0"
         role="dialog"
         aria-modal="true"
         aria-labelledby="report-modal-title"

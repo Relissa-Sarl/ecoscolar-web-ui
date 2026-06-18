@@ -9,7 +9,7 @@ import { AdvertType } from '@/utils/enum/advertType'
 
 function sellerFromApi(sellerPseudo: string, userId?: string): Advert['seller'] {
   return {
-    id: userId,
+    id: userId ?? 'unknown',
     avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(sellerPseudo)}`,
     username: sellerPseudo,
     zip: '',
@@ -62,6 +62,7 @@ export function mapCatalogSummaryToAdvert(item: AdvertCatalogDetailApiItem): Adv
     description: item.description,
     conditions: [],
     seller: {
+      id: 'unknown',
       avatar: '',
       username: '',
       zip: '',

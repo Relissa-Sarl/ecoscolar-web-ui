@@ -26,6 +26,7 @@ describe('PublicQuestions', () => {
     const wrapper = mount(PublicQuestions, {
       props: {
         seller: {
+          id: 'seller-1',
           avatar: '',
           username: 'SellerName',
           zip: '75000',
@@ -46,6 +47,7 @@ describe('PublicQuestions', () => {
     const wrapper = mount(PublicQuestions, {
       props: {
         seller: {
+          id: 'seller-1',
           avatar: '',
           username: 'SellerName',
           zip: '75000',
@@ -71,6 +73,7 @@ describe('PublicQuestions', () => {
     const wrapper = mount(PublicQuestions, {
       props: {
         seller: {
+          id: 'seller-1',
           avatar: '',
           username: 'SellerName',
           zip: '75000',
@@ -102,6 +105,7 @@ describe('PublicQuestions', () => {
     const wrapper = mount(PublicQuestions, {
       props: {
         seller: {
+          id: 'seller-1',
           avatar: '',
           username: 'SellerName',
           zip: '75000',

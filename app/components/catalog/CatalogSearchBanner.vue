@@ -18,7 +18,7 @@ const submit = () => {
 
 <template>
   <section
-    class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-950 px-6 py-10 text-white shadow-lg sm:px-10"
+    class="relative overflow-hidden rounded-3xl bg-linear-to-br from-emerald-900 via-emerald-800 to-emerald-950 px-6 py-10 text-white shadow-lg sm:px-10"
     :aria-labelledby="headingId"
   >
     <div class="relative max-w-3xl">
