@@ -175,7 +175,7 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
   const report = async (userId: string, message: string) =>
     apiClient<undefined>(`${USER_PATH}/${userId}/report`, {
       method: 'POST',
-      body: { message }
+      body: { reason: message }
     })
 
   return {

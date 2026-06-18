@@ -4,6 +4,7 @@ import { usePublicUser } from '~/composables/usePublicUser'
 import ErrorMessage from '~/components/common/messages/ErrorMessage.vue'
 import ProfileReviews from '~/components/profile/ProfileReviews.vue'
 import ProfileInfos from '~/components/profile/ProfileInfos.vue'
+import ReportUserModal from '~/components/common/ReportUserModal.vue'
 
 const route = useRoute()
 const userId = route.params.id as string
@@ -13,11 +14,20 @@ const {
   reviews,
   isLoading,
   displayError,
+  isReporting,
+  isReportModalOpen,
+  reportError,
+  openReportModal,
+  closeReportModal,
   reportUser
 } = usePublicUser(userId)
 
-const handleReport = async () => {
-  await reportUser('Signalement depuis le profil public')
+const handleOpenReport = () => {
+  openReportModal()
+}
+
+const handleSubmitReport = async (message: string) => {
+  await reportUser(message)
 }
 </script>
 
@@ -48,7 +58,7 @@ const handleReport = async () => {
           :user="user ?? null"
           :is-own-profile="false"
           class="w-full lg:w-[320px] shrink-0"
-          @report-user="handleReport"
+          @report-user="handleOpenReport"
         />
 
         <!-- Right: Reviews Feed & Statistics -->
@@ -57,5 +67,14 @@ const handleReport = async () => {
         </div>
       </div>
     </div>
+
+    <!-- Modal de signalement d'utilisateur -->
+    <ReportUserModal
+      :show="isReportModalOpen"
+      :is-submitting="isReporting"
+      :error="reportError"
+      @close="closeReportModal"
+      @submit="handleSubmitReport"
+    />
   </div>
 </template>

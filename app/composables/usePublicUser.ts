@@ -8,6 +8,7 @@ export const usePublicUser = (userId: string) => {
   const usersService = getUserService()
 
   const isReporting = ref(false)
+  const isReportModalOpen = ref(false)
   const reportError = ref<string | null>(null)
 
   const reportedUsers = useCookie<string[]>('ecoscolar_reported_users', {
@@ -43,8 +44,19 @@ export const usePublicUser = (userId: string) => {
     return null
   })
 
+  const openReportModal = () => {
+    if (hasReportedUser.value) return
+    isReportModalOpen.value = true
+    reportError.value = null
+  }
+
+  const closeReportModal = () => {
+    isReportModalOpen.value = false
+    reportError.value = null
+  }
+
   const reportUser = async (message: string) => {
-    if (hasReportedUser.value && message.trim() === '') return
+    if (hasReportedUser.value) return
 
     isReporting.value = true
     reportError.value = null
@@ -58,12 +70,14 @@ export const usePublicUser = (userId: string) => {
         title: t('report.success'),
         color: 'success'
       })
-    } catch {
-      reportError.value = t('report.error')
-      toast.add({
-        title: t('report.error'),
-        color: 'error'
-      })
+      closeReportModal()
+    } catch (e: unknown) {
+      const apiError = e as { data?: { errors?: { Message?: string[] } }, message?: string }
+      if (apiError?.data?.errors?.Message) {
+        reportError.value = t('report.error_min_length')
+      } else {
+        reportError.value = t('report.error')
+      }
     } finally {
       isReporting.value = false
     }
@@ -75,8 +89,11 @@ export const usePublicUser = (userId: string) => {
     isLoading,
     displayError,
     isReporting,
+    isReportModalOpen,
     reportError,
     hasReportedUser,
+    openReportModal,
+    closeReportModal,
     reportUser
   }
 }
