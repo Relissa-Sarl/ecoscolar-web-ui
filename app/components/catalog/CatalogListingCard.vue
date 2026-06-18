@@ -91,7 +91,7 @@ onBeforeMount(() => {
 
 <template>
   <article class="flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-950">
-    <div class="relative aspect-[520/440] bg-slate-100 dark:bg-slate-900">
+    <div class="relative aspect-520/440 bg-slate-100 dark:bg-slate-900">
       <img
         v-if="listing.imageUrl"
         :src="listing.imageUrl"
