@@ -1,11 +1,13 @@
 import type { User, UpdateProfileInput, PublicUser, UserReview, ResetPasswordInput, StripeStatus, StripeOnboardingLink } from '~/types/user'
 import { useApi } from '../composables/useApi'
 import type { MyAdvert } from '~/types/advert'
+import type { FlaggedUserAdminResponse } from '~/types/user-report'
 
 type ApiClient = typeof useApi
 
 const AUTH_PATH = '/auth'
 const USER_PATH = '/users'
+const ADMIN_PATH = '/admins'
 
 /**
 * Interface defining the contract of the UserService,
@@ -26,6 +28,7 @@ export interface UserService {
   createStripeOnboardingLink: () => Promise<StripeOnboardingLink>
   getStripeStatus: () => Promise<StripeStatus>
   report: (userId: string, message: string) => Promise<undefined>
+  getFlaggedUsers: () => Promise<FlaggedUserAdminResponse[]>
 }
 
 /**
@@ -178,6 +181,9 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
       body: { reason: message }
     })
 
+  const getFlaggedUsers = async () =>
+    apiClient<FlaggedUserAdminResponse[]>(`${ADMIN_PATH}/flagged-users`)
+
   return {
     register,
     login,
@@ -192,7 +198,8 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
     getReviews,
     createStripeOnboardingLink,
     getStripeStatus,
-    report
+    report,
+    getFlaggedUsers
   }
 }
 
