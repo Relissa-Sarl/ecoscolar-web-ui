@@ -2,7 +2,7 @@ export interface CheckoutRequest {
   productId: number
   productIds?: number[]
   productPrice?: string
-  shippingMethod: 'post' | 'handToHand'
+  shippingMethod?: 'post' | 'handToHand'
 }
 
 export interface CheckoutResponse {
