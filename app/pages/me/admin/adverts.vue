@@ -160,7 +160,7 @@ const confirmDelete = async () => {
       const isStillPresent = store.adverts.some(a => a.id === advertToDelete.value?.id)
 
       if (isStillPresent) {
-        triggerPopUp('error', 'Advert Status Update Failed', `An error occurred while deleting the advert. Please try again later.`)
+        triggerPopUp('error', 'Advert Delete Failed', `An error occurred while deleting the advert. Please try again later.`)
       } else {
         triggerPopUp('success', 'Advert Deleted', `deleted successfully.`)
       }
@@ -170,7 +170,7 @@ const confirmDelete = async () => {
     } catch (error) {
       console.error('Error toggling advert status:', error)
       showPopUp.value = true
-      triggerPopUp('error', 'Advert Status Update Failed', `An error occurred while deleting the advert. Please try again later.`)
+      triggerPopUp('error', 'Advert Delete Failed', `An error occurred while deleting the advert. Please try again later.`)
     } finally {
       showDeleteConfirm.value = false
       advertToDelete.value = null
