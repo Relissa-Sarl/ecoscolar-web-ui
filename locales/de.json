@@ -238,7 +238,11 @@
         "dispute_ongoing": "Es läuft derzeit ein Streitfall für diese Bestellung. Unser Team prüft dies.",
         "cancel_prompt": "Möchten Sie diese Bestellung wirklich stornieren? Sie erhalten eine Rückerstattung.",
         "cancel_success": "Bestellung erfolgreich storniert.",
-        "error": "Fehler: {message}"
+        "error": "Fehler: {message}",
+        "service_awaiting_tutor": "Wartet auf Bestätigung des Tutors.",
+        "service_sessions": "{n} Sitzung(en) gebucht",
+        "service_confirmed_by_tutor": "Der Tutor hat Ihren Kurs bestätigt. Sie werden in Kürze kontaktiert.",
+        "service_refused_by_tutor": "Der Tutor hat diesen Kurs abgelehnt. Sie erhalten innerhalb von 5–10 Werktagen eine Rückerstattung."
       }
     },
     "sales": {
@@ -257,7 +261,9 @@
       },
       "actions": {
         "confirm_shipping": "Ich habe den Artikel versendet",
-        "renew": "Inserat erneuern"
+        "renew": "Inserat erneuern",
+        "confirm_service": "Kurs bestätigen",
+        "refuse_service": "Kurs ablehnen"
       },
       "alerts": {
         "confirm_shipping_prompt": "Haben Sie den Artikel wirklich versendet?",
@@ -265,6 +271,8 @@
         "renew_prompt": "Möchten Sie dieses Inserat wirklich um weitere 30 Tage verlängern?",
         "renew_success": "Ihr Inserat wurde um weitere 30 Tage verlängert.",
         "dispute_ongoing": "Vom Käufer wurde ein Problem gemeldet. Unser Team prüft dies.",
+        "confirm_service_prompt": "Bestätigen Sie, dass Sie diesen Kurs gegeben haben oder verfügbar sind ihn zu geben? Der Schüler wird benachrichtigt.",
+        "refuse_service_prompt": "Sind Sie sicher, dass Sie diesen Kurs ablehnen möchten? Der Schüler wird erstattet und benachrichtigt.",
         "error": "Fehler: {message}"
       },
       "timer": {
