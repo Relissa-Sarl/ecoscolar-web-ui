@@ -86,7 +86,6 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
         />
       </div>
     </div>
-    <pre>{{ props.purchase }}</pre>
 
     <!-- Info -->
     <div class="flex flex-col min-w-0 flex-1 justify-between">

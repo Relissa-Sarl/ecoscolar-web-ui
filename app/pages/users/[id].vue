@@ -33,6 +33,10 @@ const displayError = computed(() => {
   }
   return null
 })
+
+const handleReport = () => {
+  console.log('Report user functionality triggered for user ID:', userId)
+}
 </script>
 
 <template>
@@ -62,6 +66,7 @@ const displayError = computed(() => {
           :user="user ?? null"
           :is-own-profile="false"
           class="w-full lg:w-[320px] shrink-0"
+          @report-user="handleReport"
         />
 
         <!-- Right: Reviews Feed & Statistics -->

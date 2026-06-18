@@ -16,6 +16,7 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   'delete-account': []
+  'report-user': []
 }>()
 
 /**
@@ -50,6 +51,29 @@ const profileMenuLink = (path: string) => localePath({
     <h2 class="text-lg font-semibold text-slate-800 dark:text-white mb-3">
       {{ displayName }}
     </h2>
+
+    <button
+      v-if="!props.isOwnProfile"
+      type="button"
+      class="flex items-center gap-2 text-sm text-slate-500 hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400 transition-colors bg-transparent border-0 p-0 cursor-pointer outline-none focus:ring-2 focus:ring-red-500 rounded mb-4"
+      @click="emits('report-user')"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke="currentColor"
+        class="w-4 h-4"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a4.873 4.873 0 003.713-4.748V5.09a4.873 4.873 0 00-3.713-4.748l-3.114.732a9 9 0 01-6.086-.71l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"
+        />
+      </svg>
+      <span>{{ $t('profile.public.report') }}</span>
+    </button>
 
     <hr
       v-if="props.isOwnProfile"
