@@ -237,7 +237,11 @@
         "dispute_ongoing": "È attualmente in corso una controversia per questo ordine. Il nostro team lo sta esaminando.",
         "cancel_prompt": "Vuoi davvero annullare questo ordine? Verrai rimborsato.",
         "cancel_success": "Ordine annullato con successo.",
-        "error": "Errore: {message}"
+        "error": "Errore: {message}",
+        "service_awaiting_tutor": "In attesa della conferma del tutor.",
+        "service_sessions": "{n} sessione/i prenotata/e",
+        "service_confirmed_by_tutor": "Il tutor ha confermato il tuo corso. Sarai contattato a breve.",
+        "service_refused_by_tutor": "Il tutor ha rifiutato questo corso. Riceverai un rimborso entro 5-10 giorni lavorativi."
       }
     },
     "sales": {
@@ -256,7 +260,9 @@
       },
       "actions": {
         "confirm_shipping": "Ho spedito l'articolo",
-        "renew": "Rinnova l'annuncio"
+        "renew": "Rinnova l'annuncio",
+        "confirm_service": "Conferma il corso",
+        "refuse_service": "Rifiuta il corso"
       },
       "alerts": {
         "confirm_shipping_prompt": "Hai davvero spedito l'articolo?",
@@ -264,6 +270,8 @@
         "renew_prompt": "Vuoi davvero rinnovare questo annuncio per altri 30 giorni?",
         "renew_success": "Il tuo annuncio è stato rinnovato per altri 30 giorni.",
         "dispute_ongoing": "È stato segnalato un problema dall'acquirente. Il nostro team lo sta esaminando.",
+        "confirm_service_prompt": "Confermi di aver tenuto questo corso o di essere disponibile a tenerlo? Lo studente verrà notificato.",
+        "refuse_service_prompt": "Sei sicuro di voler rifiutare questo corso? Lo studente verrà rimborsato e notificato.",
         "error": "Errore: {message}"
       },
       "timer": {

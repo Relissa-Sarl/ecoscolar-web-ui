@@ -14,7 +14,7 @@ const { locale, t } = useI18n()
 const localePath = useLocalePath()
 
 const emit = defineEmits<{
-  (e: 'confirm-shipping' | 'renew', id: number): void
+  (e: 'confirm-shipping' | 'renew' | 'confirm-service' | 'refuse-service', id: number): void
 }>()
 
 const isOpen = ref(false)
@@ -192,6 +192,22 @@ const daysLeft = computed(() => {
           >
             {{ t('me.sales.actions.confirm_shipping') }}
           </button>
+
+          <!-- Actions service : confirmer ou refuser le cours -->
+          <template v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'SERVICE_RESERVED'">
+            <button
+              class="inline-flex items-center justify-center rounded-lg border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 py-1 px-2 text-[10px] font-bold transition-colors"
+              @click="emit('refuse-service', props.sale.transactionId!)"
+            >
+              {{ t('me.sales.actions.refuse_service') }}
+            </button>
+            <button
+              class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors"
+              @click="emit('confirm-service', props.sale.transactionId!)"
+            >
+              {{ t('me.sales.actions.confirm_service') }}
+            </button>
+          </template>
           <button
             v-if="props.sale.status === AdvertStatus.EXPIRED || props.sale.status === AdvertStatus.ACTIVE"
             class="inline-flex items-center justify-center rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 py-1 px-2 text-[10px] font-bold transition-colors"
