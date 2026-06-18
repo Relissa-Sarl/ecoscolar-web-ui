@@ -3,8 +3,6 @@ import { onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n, useSeoMeta } from '#imports'
 import { useCartStore } from '~/stores/cartStore'
-import { getAdvertService } from '~/services/advertService'
-import { getHistoryService } from '~/services/historyService'
 import { getPaymentService } from '~/services/paymentService'
 import SuccessIcon from '../components/paymentState/SuccessIcon.vue'
 import SuccessMainMessage from '../components/paymentState/SuccessMainMessage.vue'
@@ -34,14 +32,6 @@ const stripeSessionId = computed(() => {
 
 const displayedOrderNumber = ref<string | null>(null)
 
-const productIds = computed<number[]>(() => {
-  const pParam = route.query.productIds
-  if (!pParam) return []
-  const val = Array.isArray(pParam) ? pParam[0] : pParam
-  if (!val) return []
-  return val.split(',').map(Number).filter(n => !isNaN(n))
-})
-
 // Clear the cart when the user lands on the success page and retrive the price information
 onMounted(async () => {
   sessionStorage.removeItem('pending_checkout_ids')
@@ -58,33 +48,9 @@ onMounted(async () => {
     }
   }
 
-  // Create transactions and update status to SOLD
-  const ids = productIds.value.length > 0
-    ? productIds.value
-    : (() => {
-        const pParam = route.query.productId
-        const val = Array.isArray(pParam) ? pParam[0] : pParam
-        const singleId = val ? Number(val) : null
-        return singleId ? [singleId] : []
-      })()
-
-  if (ids.length > 0) {
-    try {
-      const historyService = getHistoryService()
-      const created = await historyService.createTransactions(ids, stripeSessionId.value)
-      displayedOrderNumber.value = created?.[0]?.orderNumber ?? null
-    } catch (err) {
-      console.error('Failed to create transactions, falling back to manual status update:', err)
-      // Fallback: update status to SOLD manually
-      const advertService = getAdvertService()
-      for (const id of ids) {
-        try {
-          await advertService.updateAdvertStatus(id, 'SOLD')
-        } catch (updateErr) {
-          console.error(`Failed to update status to SOLD for advert ${id}:`, updateErr)
-        }
-      }
-    }
+  if (route.query.orderId) {
+    const val = route.query.orderId
+    displayedOrderNumber.value = (Array.isArray(val) ? val[0] : val) ?? null
   }
 
   try {
