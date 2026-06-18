@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import Breadcrumb from '~/components/common/Breadcrumb.vue'
 import { AdvertType } from '@/utils/enum/advertType'
-import type { QuestionResponse } from '~/types/advert'
+import type { QuestionResponse, ServiceRead } from '~/types/advert'
 import { getAdvertService } from '~/services/advertService'
 import { useUsersStore } from '~/stores/usersStore'
 import { useAbuseReport } from '~/composables/useAbuseReport'
 import ReportAbuseModal from '~/components/report/ReportAbuseModal.vue'
 import BookingModal from '~/components/booking/BookingModal.vue'
+import { AdvertStatus } from '~/utils/enum/advertStatus'
 
 const route = useRoute()
 const router = useRouter()
@@ -195,7 +196,7 @@ const handleReserve = () => {
             }"
           />
           <AdvertActionButtons
-            v-if="advert?.seller.id !== usersStore.user?.id"
+            v-if="advert?.seller.id !== usersStore.user?.id && advert?.status === AdvertStatus.ACTIVE"
             :advert="advertSummary"
             @reserve="handleReserve"
           />
@@ -262,8 +263,9 @@ const handleReserve = () => {
     />
 
     <BookingModal
+      v-if="advert?.type === AdvertType.SERVICE"
       :is-open="isBookingModalOpen"
-      :advert="advert ?? null"
+      :advert="advert as ServiceRead ?? null"
       @close="isBookingModalOpen = false"
     />
   </div>

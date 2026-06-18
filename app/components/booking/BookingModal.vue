@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type { Advert } from '~/types/advert'
+import type { ServiceRead } from '~/types/advert'
 import { getPaymentService } from '~/services/paymentService'
 
 const props = defineProps<{
   isOpen: boolean
-  advert: Advert | null
+  advert: ServiceRead | null
 }>()
 
 const emit = defineEmits<{
@@ -14,13 +14,13 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
-const sessions = ref(1)
+const MIN_SESSIONS = props.advert?.minHours ?? 1
+const MAX_SESSIONS = props.advert?.maxHours ?? 10
+const PLATFORM_FEE_RATE = 0.10
+
+const sessions = ref(MIN_SESSIONS)
 const isLoading = ref(false)
 const error = ref<string | null>(null)
-
-const MIN_SESSIONS = 1
-const MAX_SESSIONS = 10
-const PLATFORM_FEE_RATE = 0.10
 
 const hourlyRate = computed(() => props.advert?.price ?? 0)
 const subtotal = computed(() => hourlyRate.value * sessions.value)
@@ -44,7 +44,7 @@ const handleClose = () => {
   if (isLoading.value) return
   emit('close')
   setTimeout(() => {
-    sessions.value = 1
+    sessions.value = MIN_SESSIONS
     error.value = null
   }, 300)
 }
@@ -179,40 +179,63 @@ const handleConfirm = async () => {
             </div>
 
             <!-- Sessions selector -->
-            <div>
-              <label class="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                {{ t('booking.sessions_label') }}
-              </label>
-              <div class="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-2xl border-2 border-emerald-200 dark:border-emerald-800">
+            <div class="bg-white dark:bg-slate-800/50 rounded-3xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm">
+              <div class="flex items-center justify-between mb-5">
+                <label class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                  {{ t('booking.sessions_label') }}
+                </label>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
+                    MIN {{ MIN_SESSIONS }}
+                  </span>
+                  <span class="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
+                    MAX {{ MAX_SESSIONS }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-4">
                 <button
                   type="button"
-                  class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 hover:bg-emerald-100 dark:hover:bg-emerald-900 transition-colors font-bold text-xl disabled:opacity-30 disabled:cursor-not-allowed"
+                  class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-200 dark:hover:border-emerald-800 transition-all active:scale-90 disabled:opacity-20 disabled:cursor-not-allowed"
                   :disabled="sessions <= MIN_SESSIONS"
                   :aria-label="t('booking.decrease')"
                   @click="decrementSessions"
                 >
-                  −
+                  <Icon
+                    name="material-symbols:remove-rounded"
+                    class="size-6"
+                  />
                 </button>
-                <div class="text-center">
-                  <span class="text-3xl font-black text-slate-900 dark:text-white">{{ sessions }}</span>
-                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+
+                <div class="flex-1 text-center">
+                  <div class="flex items-baseline justify-center gap-1">
+                    <span class="text-5xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
+                      {{ sessions }}
+                    </span>
+                  </div>
+                  <p class="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.2em] mt-1">
                     {{ sessions === 1 ? t('booking.session_singular') : t('booking.session_plural') }}
                   </p>
                 </div>
+
                 <button
                   type="button"
-                  class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 hover:bg-emerald-100 dark:hover:bg-emerald-900 transition-colors font-bold text-xl disabled:opacity-30 disabled:cursor-not-allowed"
+                  class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-200 dark:hover:border-emerald-800 transition-all active:scale-90 disabled:opacity-20 disabled:cursor-not-allowed"
                   :disabled="sessions >= MAX_SESSIONS"
                   :aria-label="t('booking.increase')"
                   @click="incrementSessions"
                 >
-                  +
+                  <Icon
+                    name="material-symbols:add-rounded"
+                    class="size-6"
+                  />
                 </button>
               </div>
-              <p class="text-xs text-slate-400 dark:text-slate-500 mt-2 text-center">
-                {{ t('booking.sessions_hint', { min: MIN_SESSIONS, max: MAX_SESSIONS }) }}
-              </p>
             </div>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-2 text-center italic">
+              {{ t('booking.sessions_hint', { min: MIN_SESSIONS, max: MAX_SESSIONS }) }}
+            </p>
 
             <!-- Price breakdown -->
             <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl space-y-3">
