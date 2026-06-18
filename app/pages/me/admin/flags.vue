@@ -17,7 +17,7 @@ const mock: AbuseReportResponse[] = [
     reason: ReportReason.INAPPROPRIATE_ADVERT,
     message: 'This listing is a scam.',
     reporterUserId: '1fs324-abcde-12345',
-    targetSellerId: '456',
+    targetAdvertId: 456,
     createdAt: '2023-08-01T12:34:56Z'
   },
   {
@@ -25,7 +25,7 @@ const mock: AbuseReportResponse[] = [
     reason: ReportReason.INAPPROPRIATE_COMMENT,
     message: 'This listing contains inappropriate content.',
     reporterUserId: '789',
-    targetSellerId: '1011',
+    targetAdvertId: 1011,
     createdAt: '2023-08-02T09:21:43Z'
   },
   {
@@ -33,7 +33,7 @@ const mock: AbuseReportResponse[] = [
     reason: ReportReason.INAPPROPRIATE_ADVERT,
     message: 'This listing is spam.',
     reporterUserId: '1213',
-    targetSellerId: '1415',
+    targetAdvertId: 1415,
     createdAt: '2023-08-03T15:47:29Z'
   }
 ]
@@ -235,26 +235,24 @@ onMounted(async () => {
       <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 mb-8 overflow-hidden">
         <table class="w-full text-left">
           <thead class="bg-gray-50 dark:bg-gray-800 text-gray-500 text-xs uppercase">
-            <tr>
-              <th class="p-4 font-medium w-1/12">
-                ID
-              </th>
-              <th class="p-4 font-medium w-1/12">
-                Reason
-              </th>
-              <th class="p-4 font-medium w-1/4">
-                Message
-              </th>
-              <th class="p-4 font-medium w-1/4">
-                Reported By
-              </th>
-              <th class="p-4 font-medium w-1/4">
-                Reported On
-              </th>
-              <th class="p-4 font-medium w-1/12">
-                Actions
-              </th>
-            </tr>
+            <th class="p-4 font-medium w-1/12">
+              ID
+            </th>
+            <th class="p-4 font-medium w-1/12">
+              Reason
+            </th>
+            <th class="p-4 font-medium w-1/4">
+              Message
+            </th>
+            <th class="p-4 font-medium w-1/4">
+              Reported By
+            </th>
+            <th class="p-4 font-medium w-1/4">
+              Reported On
+            </th>
+            <th class="p-4 font-medium w-1/12">
+              Actions
+            </th>
           </thead>
           <tbody
             v-if="!store.isLoading"
@@ -287,7 +285,7 @@ onMounted(async () => {
               </td>
               <td class="p-4">
                 <p class="font-medium">
-                  {{ flag.targetSellerId }}
+                  {{ flag.targetAdvertId }}
                 </p>
               </td>
               <td class="p-4 text-right flex">

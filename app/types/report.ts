@@ -4,7 +4,7 @@ export enum ReportReason {
 }
 
 export interface AbuseReportRequest {
-  targetSellerId: string
+  targetAdvertId: number
   targetCommentId?: number
   reason: ReportReason
   message: string
@@ -12,7 +12,7 @@ export interface AbuseReportRequest {
 
 export interface AbuseReportResponse {
   id: number
-  targetSellerId: string
+  targetAdvertId: number
   targetCommentId?: number
   reporterUserId: string
   reason: ReportReason
