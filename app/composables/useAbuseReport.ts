@@ -12,7 +12,10 @@ export const useAbuseReport = () => {
   const reportError = ref<string | null>(null)
   const currentAdvertId = ref<number | null>(null)
   const currentCommentId = ref<number | null>(null)
-  const reportedItems = useCookie<string[]> ('ecoscolar_reported_items', { default: () => [] })
+  const reportedItems = useCookie<string[]> ('ecoscolar_reported_items', { 
+    default: () => [],
+    maxAge: 60 * 60 * 24 // 1 jour
+  })
 
   const hasReportedComment = (commentId: number) => {
     return reportedItems.value?.includes(`comment:${commentId}`) || false
