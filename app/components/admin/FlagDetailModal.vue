@@ -89,7 +89,7 @@ const formatDate = (dateStr: string) => {
                   <p
                     class="text-xs mt-1 inline-block rounded-full ml-3 bg-blue-100 text-blue-800 px-2 py-0.5 dark:bg-blue-900/50 dark:text-blue-400"
                   >
-                    Advert ID: {{ flag.targetAdvertId }}
+                    Advert ID: {{ flag.targetSellerId }}
                   </p>
                 </div>
               </div>

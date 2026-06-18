@@ -10,11 +10,11 @@ export const useAbuseReport = () => {
   const isReportModalOpen = ref(false)
   const isReporting = ref(false)
   const reportError = ref<string | null>(null)
-  const currentAdvertId = ref<number | null>(null)
+  const currentSellerId = ref<string | null>(null)
   const currentCommentId = ref<number | null>(null)
 
-  const openReportModal = (advertId: number, commentId?: number) => {
-    currentAdvertId.value = advertId
+  const openReportModal = (sellerId: string, commentId?: number) => {
+    currentSellerId.value = sellerId
     currentCommentId.value = commentId ?? null
     isReportModalOpen.value = true
     reportError.value = null
@@ -22,13 +22,13 @@ export const useAbuseReport = () => {
 
   const closeReportModal = () => {
     isReportModalOpen.value = false
-    currentAdvertId.value = null
+    currentSellerId.value = null
     currentCommentId.value = null
     reportError.value = null
   }
 
   const submitReport = async (payload: { message: string }) => {
-    if (!currentAdvertId.value) return
+    if (!currentSellerId.value) return
 
     isReporting.value = true
     reportError.value = null
@@ -37,7 +37,7 @@ export const useAbuseReport = () => {
 
     try {
       await reportService.submitReport({
-        targetAdvertId: currentAdvertId.value,
+        targetSellerId: currentSellerId.value,
         targetCommentId: currentCommentId.value ?? undefined,
         reason,
         message: payload.message
@@ -59,7 +59,7 @@ export const useAbuseReport = () => {
     isReportModalOpen,
     isReporting,
     reportError,
-    currentAdvertId,
+    currentAdvertId: currentSellerId,
     currentCommentId,
     openReportModal,
     closeReportModal,

@@ -17,7 +17,7 @@ const mock: AbuseReportResponse[] = [
     reason: ReportReason.INAPPROPRIATE_ADVERT,
     message: 'This listing is a scam.',
     reporterUserId: '1fs324-abcde-12345',
-    targetAdvertId: 456,
+    targetSellerId: '456',
     createdAt: '2023-08-01T12:34:56Z'
   },
   {
@@ -25,7 +25,7 @@ const mock: AbuseReportResponse[] = [
     reason: ReportReason.INAPPROPRIATE_COMMENT,
     message: 'This listing contains inappropriate content.',
     reporterUserId: '789',
-    targetAdvertId: 1011,
+    targetSellerId: '1011',
     createdAt: '2023-08-02T09:21:43Z'
   },
   {
@@ -33,7 +33,7 @@ const mock: AbuseReportResponse[] = [
     reason: ReportReason.INAPPROPRIATE_ADVERT,
     message: 'This listing is spam.',
     reporterUserId: '1213',
-    targetAdvertId: 1415,
+    targetSellerId: '1415',
     createdAt: '2023-08-03T15:47:29Z'
   }
 ]
@@ -285,7 +285,7 @@ onMounted(async () => {
               </td>
               <td class="p-4">
                 <p class="font-medium">
-                  {{ flag.targetAdvertId }}
+                  {{ flag.targetSellerId }}
                 </p>
               </td>
               <td class="p-4 text-right flex">
