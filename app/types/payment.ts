@@ -3,6 +3,7 @@ export interface CheckoutRequest {
   productIds?: number[]
   productPrice?: string
   shippingMethod?: 'post' | 'handToHand'
+  sessions?: number
 }
 
 export interface CheckoutResponse {
