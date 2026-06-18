@@ -79,7 +79,8 @@ const save = () => {
               Cancel
             </button>
             <button
-              class="px-4 py-2 text-sm font-semibold text-white bg-emerald-800 hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 rounded-xl transition-colors"
+              class="px-4 py-2 text-sm font-semibold text-white rounded-xl transition-colors"
+              :class="[status === flag?.status ? ['bg-gray-500 dark:bg-gray-600 cursor-not-allowed'] : ['bg-emerald-800 hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer']]"
               :disabled="status === flag?.status"
               @click="save"
             >

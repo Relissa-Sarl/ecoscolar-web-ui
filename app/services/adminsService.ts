@@ -3,6 +3,7 @@ import { useApi } from '../composables/useApi'
 import type { SupportTicketAdminDetail, SupportTicketMessage } from '~/types/support'
 import type { MySaleAdvert } from './historyService'
 import type { AbuseReportAdminResponse } from '~/types/report'
+import type { TicketStatus } from '~/utils/enum/TicketStatus'
 
 type ApiClient = typeof useApi
 
@@ -22,8 +23,10 @@ export interface AdminService {
   sendTicketMessage: (id: number, body: string) => Promise<SupportTicketMessage>
   getAllAdverts: () => Promise<MySaleAdvert[]>
   blockAdvert: (id: number) => Promise<MySaleAdvert>
-  deleteAdvert: (id: number) => Promise<MySaleAdvert[]>
+  deleteAdvert: (id: number) => Promise<undefined>
   getAllAbuses: () => Promise<AbuseReportAdminResponse[]>
+  updateFlagStatus: (id: number, status: TicketStatus) => Promise<AbuseReportAdminResponse>
+  deleteFlag: (id: number) => Promise<undefined>
 }
 
 /**
@@ -60,11 +63,23 @@ export function createadminService({ apiClient }: AdminServiceDependencies): Adm
     method: 'PATCH'
   })
 
-  const deleteAdvert = async (id: number) => apiClient<MySaleAdvert[]>(`${ADVERT_PATH}/${id}`, {
+  const deleteAdvert = async (id: number) => apiClient<undefined>(`${ADVERT_PATH}/${id}`, {
     method: 'DELETE'
   })
 
   const getAllAbuses = async () => apiClient<AbuseReportAdminResponse[]>(`${ADMIN_PATH}/abuses`)
+
+  const updateFlagStatus = async (id: number, status: TicketStatus) => apiClient<AbuseReportAdminResponse>(`${ADMIN_PATH}/abuses/${id}/status`, {
+    method: 'PATCH',
+    body: { status },
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  const deleteFlag = async (id: number) => apiClient<undefined>(`${ADMIN_PATH}/abuses/${id}`, {
+    method: 'DELETE'
+  })
 
   return {
     getMyProfile,
@@ -75,7 +90,9 @@ export function createadminService({ apiClient }: AdminServiceDependencies): Adm
     getAllAdverts,
     blockAdvert,
     deleteAdvert,
-    getAllAbuses
+    getAllAbuses,
+    updateFlagStatus,
+    deleteFlag
   }
 }
 

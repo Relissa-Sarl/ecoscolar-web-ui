@@ -120,28 +120,26 @@ const closeStatus = () => {
   isStatusModalOpen.value = false
 }
 
-const updateStatus = ({ id, status }: { id: number, status: TicketStatus }) => {
+const updateStatus = async ({ id, status }: { id: number, status: TicketStatus }) => {
   if (selectedStatusFlag.value) {
     try {
-      // await store.updateFlagStatus(id, status)
-      console.log('Updated status:', id, status)
-      const StatusChange = selectedStatusFlag.value.status !== status
+      const updatedFlag = await store.updateFlagStatus(id, status)
 
-      if (StatusChange) {
-        triggerPopUp('error', 'Flag Update Failed', `An error occurred while updating the flag status. Please try again later.`)
+      if (updatedFlag) {
+        // Update local state
+        const index = store.flags.findIndex(f => f.id === id)
+        if (index !== -1) {
+          store.flags[index] = updatedFlag
+        }
+        triggerPopUp('success', 'Flag Updated', `Status updated successfully.`)
       } else {
-        triggerPopUp('success', 'Flag Updated', `updated successfully.`)
-      }
-      if (paginatedFlags.value.length === 0 && currentPage.value > 1) {
-        currentPage.value -= 1
+        triggerPopUp('error', 'Flag Update Failed', `An error occurred while updating the flag status.`)
       }
     } catch (error) {
-      console.error('Error toggling flag status:', error)
+      console.error('Error updating flag status:', error)
       triggerPopUp('error', 'Error Updating Flag', `An error occurred while trying to update the flag.`)
-      return
     } finally {
-      showDeleteConfirm.value = false
-      flagToDelete.value = null
+      closeStatus()
     }
   }
 }
@@ -156,10 +154,10 @@ const deleteFlag = (flagId: number) => {
   flagToDelete.value = store.flags.find(f => f.id === flagId) || null
 }
 
-const confirmDelete = () => {
+const confirmDelete = async () => {
   if (flagToDelete.value) {
     try {
-      // await store.deleteFlag(flagToDelete.value)
+      await store.deleteFlag(flagToDelete.value.id)
 
       const isStillPresent = store.flags.some(f => f.id === flagToDelete.value?.id)
 
@@ -172,9 +170,8 @@ const confirmDelete = () => {
         currentPage.value -= 1
       }
     } catch (error) {
-      console.error('Error toggling flag status:', error)
+      console.error('Error deleting flag:', error)
       triggerPopUp('error', 'Error Deleting Flag', `An error occurred while trying to delete the flag.`)
-      return
     } finally {
       showDeleteConfirm.value = false
       flagToDelete.value = null

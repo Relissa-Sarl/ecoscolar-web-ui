@@ -7,6 +7,7 @@ import { getAdminService } from '~/services/adminsService'
 import type { SupportTicketAdminDetail } from '~/types/support'
 import type { MySaleAdvert } from '~/composables/useHistory'
 import type { AbuseReportAdminResponse } from '~/types/report'
+import type { TicketStatus } from '~/utils/enum/TicketStatus'
 
 /**
  * Pinia store for managing user authentication and profile state.
@@ -150,6 +151,28 @@ export const useAdminsStore = defineStore('admins', () => {
     }
   }
 
+  const updateFlagStatus = async (id: number, status: TicketStatus) => {
+    try {
+      const updatedFlag = await service.updateFlagStatus(id, status)
+      return updatedFlag
+    } catch {
+      // ignore error details here; reset admin state
+    }
+  }
+
+  const deleteFlag = async (id: number) => {
+    isLoading.value = true
+
+    try {
+      await service.deleteFlag(id)
+      flags.value = await service.getAllAbuses()
+    } catch {
+      // ignore error details here; reset admin state
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   return {
     user,
     users,
@@ -170,6 +193,8 @@ export const useAdminsStore = defineStore('admins', () => {
     fetchAllAdverts,
     blockAdvert,
     deleteAdvert,
-    fetchAbuses
+    fetchAbuses,
+    updateFlagStatus,
+    deleteFlag
   }
 })
