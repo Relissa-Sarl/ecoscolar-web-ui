@@ -875,6 +875,7 @@
     "cancel": "Annuler",
     "submit": "Envoyer le signalement",
     "success": "Votre signalement a bien été enregistré. Merci pour votre aide !",
-    "error": "Une erreur est survenue lors de l'envoi de votre signalement."
+    "error": "Une erreur est survenue lors de l'envoi de votre signalement.",
+    "error_min_length": "Ton signalement doit contenir au moins 5 caractères pour être pris en compte."
   }
 }

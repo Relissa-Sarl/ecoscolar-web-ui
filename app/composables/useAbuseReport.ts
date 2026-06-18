@@ -12,6 +12,15 @@ export const useAbuseReport = () => {
   const reportError = ref<string | null>(null)
   const currentAdvertId = ref<number | null>(null)
   const currentCommentId = ref<number | null>(null)
+  const reportedItems = useCookie<string[]> ('ecoscolar_reported_items', { default: () => [] })
+
+  const hasReportedComment = (commentId: number) => {
+    return reportedItems.value?.includes(`comment:${commentId}`) || false
+  }
+
+  const hasReportedAdvert = (advertId: number) => {
+    return reportedItems.value?.includes(`advert:${advertId}`) || false
+  }
 
   const openReportModal = (advertId: number, commentId?: number) => {
     currentAdvertId.value = advertId
@@ -42,14 +51,23 @@ export const useAbuseReport = () => {
         reason,
         message: payload.message
       })
+      const newItem = currentCommentId.value
+        ? `comment:${currentCommentId.value}`
+        : `advert:${currentAdvertId.value}`
+
+      reportedItems.value = [...(reportedItems.value || []), newItem]
 
       closeReportModal()
       toast.add({
         title: t('report.success'),
         color: 'success'
       })
-    } catch (e: unknown) {
-      reportError.value = e instanceof Error ? e.message : t('report.error')
+    } catch (e: any) {
+      if (e?.data?.errors?.Message) {
+        reportError.value = t('report.error_min_length')
+      } else {
+        reportError.value = t('report.error')
+      }
     } finally {
       isReporting.value = false
     }
@@ -63,6 +81,8 @@ export const useAbuseReport = () => {
     currentCommentId,
     openReportModal,
     closeReportModal,
-    submitReport
+    submitReport,
+    hasReportedComment,
+    hasReportedAdvert
   }
 }

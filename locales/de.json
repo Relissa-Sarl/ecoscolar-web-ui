@@ -872,6 +872,7 @@
     "cancel": "Abbrechen",
     "submit": "Meldung senden",
     "success": "Ihre Meldung wurde erfolgreich gespeichert. Vielen Dank für Ihre Hilfe!",
-    "error": "Beim Senden Ihrer Meldung ist ein Fehler aufgetreten."
+    "error": "Beim Senden Ihrer Meldung ist ein Fehler aufgetreten.",
+    "error_min_length": "Ihre Meldung muss mindestens 5 Zeichen enthalten, um berücksichtigt zu werden."
   }
 }

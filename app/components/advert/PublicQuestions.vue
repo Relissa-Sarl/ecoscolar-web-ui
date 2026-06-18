@@ -4,11 +4,13 @@ import type { Seller, QuestionResponse } from '@/types/advert'
 
 interface Props {
   seller: Seller
-  questions?: QuestionResponse[]
+  questions: QuestionResponse[]
   canAsk?: boolean
   canAnswer?: boolean
   isAuthenticated?: boolean
   answeringQuestionId?: number | null
+  currentUsername?: string
+  hasReportedComment?: (commentId: number) => boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -123,7 +125,7 @@ const formatDateTime = (value: string | null | undefined) => {
                 </p>
               </div>
               <button
-                v-if="props.isAuthenticated"
+                v-if="props.isAuthenticated && props.currentUsername !== question.author && !(props.hasReportedComment && props.hasReportedComment(question.commentId))"
                 type="button"
                 class="text-slate-400 hover:text-red-500 transition-colors p-1"
                 :title="$t('report.action')"
@@ -167,7 +169,7 @@ const formatDateTime = (value: string | null | undefined) => {
                     {{ formatDateTime(question.answeredAt) }}
                   </p>
                   <button
-                    v-if="props.isAuthenticated"
+                    v-if="props.isAuthenticated && props.currentUsername !== seller.username && !(props.hasReportedComment && props.hasReportedComment(question.commentId))"
                     type="button"
                     class="text-slate-400 hover:text-red-500 transition-colors p-1"
                     :title="$t('report.action')"
