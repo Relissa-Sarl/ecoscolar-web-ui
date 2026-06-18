@@ -270,4 +270,34 @@ describe('PurchaseCard', () => {
 
     expect((wrapper.vm as unknown as { localReview: { rating: number, comment: string | null } | null }).localReview).toEqual(updatedReview)
   })
+
+  it('shows confirm service button for PAID_WAITING_COMPLETION', () => {
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, status: 'PAID_WAITING_COMPLETION' } },
+      global: { stubs }
+    })
+
+    expect(wrapper.text()).toContain('me.purchases.actions.confirm_service')
+    expect(wrapper.text()).toContain('me.purchases.alerts.service_confirmed')
+  })
+
+  it('emits confirm-service when confirm service button is clicked', async () => {
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, status: 'PAID_WAITING_COMPLETION' } },
+      global: { stubs }
+    })
+
+    const btn = wrapper.findAll('button').find(b => b.text().includes('me.purchases.actions.confirm_service'))
+    await btn?.trigger('click')
+    expect(wrapper.emitted('confirm-service')?.[0]).toEqual(['txn-1'])
+  })
+
+  it('shows service refused banner for CANCELLED SERVICE purchase', () => {
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, status: 'CANCELLED', type: 'SERVICE' } },
+      global: { stubs }
+    })
+
+    expect(wrapper.text()).toContain('me.purchases.alerts.service_refused')
+  })
 })

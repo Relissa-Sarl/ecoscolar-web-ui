@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, watch, computed } from 'vue'
 import { useI18n, useLocalePath, refreshNuxtData } from '#imports'
 import type { MySaleAdvert } from '~/services/historyService'
@@ -14,7 +14,7 @@ const { locale, t } = useI18n()
 const localePath = useLocalePath()
 
 const emit = defineEmits<{
-  (e: 'confirm-shipping' | 'renew' | 'confirm-service' | 'refuse-service', id: number): void
+  (e: 'confirm-shipping' | 'renew' | 'accept-service' | 'refuse-service' | 'mark-rendered', id: number): void
 }>()
 
 const isOpen = ref(false)
@@ -148,6 +148,18 @@ const daysLeft = computed(() => {
       </div>
 
       <div
+        v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'PAID_WAITING_ACCEPTANCE'"
+        class="mt-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900/50 rounded-lg p-2.5 flex items-start gap-2 text-xs text-amber-700 dark:text-amber-400 font-medium"
+      >
+        <UIcon
+          name="i-heroicons-clock"
+          class="w-4 h-4 shrink-0 mt-0.5"
+        />
+        <p class="leading-relaxed">
+          {{ t('me.sales.alerts.service_waiting_acceptance') }}
+        </p>
+      </div>
+      <div
         v-if="props.sale.transactionStatus === 'DISPUTED'"
         class="mt-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50 rounded-lg p-2.5 flex items-start gap-2 text-xs text-red-700 dark:text-red-400 font-medium"
       >
@@ -186,6 +198,27 @@ const daysLeft = computed(() => {
           </NuxtLink>
 
           <button
+            v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'PAID_WAITING_ACCEPTANCE'"
+            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors"
+            @click="emit('accept-service', props.sale.transactionId!)"
+          >
+            {{ t('me.sales.actions.accept_service') }}
+          </button>
+          <button
+            v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'PAID_WAITING_ACCEPTANCE'"
+            class="inline-flex items-center justify-center rounded-lg border border-red-200 dark:border-red-800 bg-red-50 hover:bg-red-100 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 py-1 px-2 text-[10px] font-bold transition-colors"
+            @click="emit('refuse-service', props.sale.transactionId!)"
+          >
+            {{ t('me.sales.actions.refuse_service') }}
+          </button>
+          <button
+            v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'PAID_WAITING_COMPLETION'"
+            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors"
+            @click="emit('mark-rendered', props.sale.transactionId!)"
+          >
+            {{ t('me.sales.actions.mark_rendered') }}
+          </button>
+          <button
             v-if="props.sale.transactionStatus === 'PAID_WAITING_SHIPPING'"
             class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors"
             @click="emit('confirm-shipping', props.sale.transactionId!)"
@@ -193,21 +226,6 @@ const daysLeft = computed(() => {
             {{ t('me.sales.actions.confirm_shipping') }}
           </button>
 
-          <!-- Actions service : confirmer ou refuser le cours -->
-          <template v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'SERVICE_RESERVED'">
-            <button
-              class="inline-flex items-center justify-center rounded-lg border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 py-1 px-2 text-[10px] font-bold transition-colors"
-              @click="emit('refuse-service', props.sale.transactionId!)"
-            >
-              {{ t('me.sales.actions.refuse_service') }}
-            </button>
-            <button
-              class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors"
-              @click="emit('confirm-service', props.sale.transactionId!)"
-            >
-              {{ t('me.sales.actions.confirm_service') }}
-            </button>
-          </template>
           <button
             v-if="props.sale.status === AdvertStatus.EXPIRED || props.sale.status === AdvertStatus.ACTIVE"
             class="inline-flex items-center justify-center rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 py-1 px-2 text-[10px] font-bold transition-colors"

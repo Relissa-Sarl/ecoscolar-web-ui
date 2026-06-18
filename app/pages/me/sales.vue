@@ -28,6 +28,9 @@ const filteredSales = computed(() => {
   if (!sales.value) return []
   if (activeTab.value === 'ongoing') {
     return sales.value.filter((s) => {
+      if (s.transactionStatus) {
+        return !['COMPLETED', 'CANCELLED'].includes(s.transactionStatus)
+      }
       if (s.status === 'SOLD') {
         return s.transactionStatus && !FINAL_TRANSACTION_STATUSES.includes(s.transactionStatus)
       }
@@ -35,6 +38,9 @@ const filteredSales = computed(() => {
     })
   } else {
     return sales.value.filter((s) => {
+      if (s.transactionStatus) {
+        return ['COMPLETED', 'CANCELLED'].includes(s.transactionStatus)
+      }
       if (s.status === 'SOLD') {
         return !s.transactionStatus || FINAL_TRANSACTION_STATUSES.includes(s.transactionStatus)
       }
@@ -167,9 +173,10 @@ onMounted(() => {
           :key="sale.id"
           :sale="sale"
           @confirm-shipping="promptAction('confirm_shipping', $event.toString())"
-          @renew="promptAction('renew', $event.toString())"
-          @confirm-service="promptAction('confirm_service', $event.toString())"
+          @accept-service="promptAction('accept_service', $event.toString())"
           @refuse-service="promptAction('refuse_service', $event.toString())"
+          @mark-rendered="promptAction('mark_rendered', $event.toString())"
+          @renew="promptAction('renew', $event.toString())"
         />
       </div>
     </div>

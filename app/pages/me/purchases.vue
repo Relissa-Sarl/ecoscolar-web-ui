@@ -151,6 +151,7 @@ const handleActionSuccess = () => {
           :key="purchase.id"
           :purchase="purchase"
           @confirm-reception="promptAction('confirm_reception', $event)"
+          @confirm-service="promptAction('confirm_service', $event)"
           @dispute="promptAction('dispute', $event)"
           @cancel="promptAction('cancel', $event)"
         />

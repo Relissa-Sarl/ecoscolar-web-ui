@@ -65,18 +65,11 @@ const modalDetails = computed(() => {
         confirmText: t('me.purchases.submit_dispute'),
         confirmClass: 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
       }
-    case 'renew':
+    case 'accept_service':
       return {
-        title: t('me.sales.actions.renew'),
-        description: t('me.sales.alerts.renew_prompt'),
-        confirmText: t('me.sales.actions.renew'),
-        confirmClass: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500'
-      }
-    case 'confirm_service':
-      return {
-        title: t('me.sales.actions.confirm_service'),
-        description: t('me.sales.alerts.confirm_service_prompt'),
-        confirmText: t('me.sales.actions.confirm_service'),
+        title: t('me.sales.actions.accept_service'),
+        description: t('me.sales.alerts.accept_service_prompt'),
+        confirmText: t('me.sales.actions.accept_service'),
         confirmClass: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500'
       }
     case 'refuse_service':
@@ -85,6 +78,27 @@ const modalDetails = computed(() => {
         description: t('me.sales.alerts.refuse_service_prompt'),
         confirmText: t('me.sales.actions.refuse_service'),
         confirmClass: 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
+      }
+    case 'confirm_service':
+      return {
+        title: t('me.purchases.actions.confirm_service'),
+        description: t('me.purchases.alerts.confirm_service_prompt'),
+        confirmText: t('me.purchases.actions.confirm_service'),
+        confirmClass: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500'
+      }
+    case 'mark_rendered':
+      return {
+        title: t('me.sales.actions.mark_rendered'),
+        description: t('me.sales.alerts.mark_rendered_prompt'),
+        confirmText: t('me.sales.actions.mark_rendered'),
+        confirmClass: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500'
+      }
+    case 'renew':
+      return {
+        title: t('me.sales.actions.renew'),
+        description: t('me.sales.alerts.renew_prompt'),
+        confirmText: t('me.sales.actions.renew'),
+        confirmClass: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500'
       }
     default:
       return null
