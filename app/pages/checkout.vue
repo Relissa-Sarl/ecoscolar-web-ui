@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
 import { useI18n } from '#imports'
 import { getPaymentService } from '~/services/paymentService'
 
