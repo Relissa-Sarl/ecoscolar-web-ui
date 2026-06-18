@@ -5,6 +5,7 @@ type ApiClient = typeof useApi
 
 export interface PaymentService {
   createCheckoutSession: (dto: CheckoutRequest) => Promise<CheckoutResponse>
+  getSession: (sessionId: string) => Promise<{ amountTotal: number | null }>
 }
 
 export interface PaymentServiceDependencies {
@@ -20,8 +21,14 @@ export function createPaymentService({ apiClient }: PaymentServiceDependencies):
       body: dto
     })
 
+  const getSession = async (sessionId: string) =>
+    apiClient<{ amountTotal: number | null }>(`${PAYMENTS_PATH}/session/${sessionId}`, {
+      method: 'GET'
+    })
+
   return {
-    createCheckoutSession
+    createCheckoutSession,
+    getSession
   }
 }
 
