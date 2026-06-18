@@ -59,7 +59,6 @@ const handleConfirm = async () => {
     const paymentService = getPaymentService()
     const response = await paymentService.createCheckoutSession({
       productId: Number(props.advert.id),
-      productPrice: total.value.toFixed(2),
       sessions: sessions.value
     })
 
