@@ -55,7 +55,6 @@ export async function loadAdvertData(
   { catalogService, advertService }: AdvertLoaderDependencies
 ): Promise<Advert> {
   const summary = await catalogService.getDetail(advertId)
-  console.log('Advert summary from catalog service:', summary)
 
   const numericId = parseAdvertId(advertId)
   if (numericId === null)
