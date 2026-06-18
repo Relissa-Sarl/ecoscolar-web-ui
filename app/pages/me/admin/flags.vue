@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import FlagDetailModal from '~/components/admin/FlagDetailModal.vue'
+import FlagStatusModale from '~/components/admin/FlagStatusModale.vue'
 import PopUp from '~/components/admin/PopUp.vue'
 import Sidebar from '~/components/admin/Sidebar.vue'
 import DeleteConfirmationPopup from '~/components/common/DeleteConfirmationPopup.vue'
 import { ReportReason, type AbuseReportAdminResponse } from '~/types/report'
+import { TicketStatus } from '~/utils/enum/TicketStatus'
 
 const store = useAdminsStore()
 
@@ -30,7 +32,12 @@ const reasonOptions = Object.entries(ReportReason).map(([key, value]) => ({
   key,
   value
 }))
+const statusOptions = Object.entries(TicketStatus).map(([key, value]) => ({
+  key,
+  value
+}))
 const statusFilter = ref('All')
+const reasonFilter = ref('All')
 
 const filteredFlags = computed(() => {
   // let result = store.flags
@@ -45,8 +52,18 @@ const filteredFlags = computed(() => {
 
   if (statusFilter.value !== 'All') {
     result = result.filter((f) => {
-      for (const option of reasonOptions) {
+      for (const option of statusOptions) {
         if (statusFilter.value === option.value) {
+          return f.status === option.key
+        }
+      }
+    })
+  }
+
+  if (reasonFilter.value !== 'All') {
+    result = result.filter((f) => {
+      for (const option of reasonOptions) {
+        if (reasonFilter.value === option.value) {
           return f.reason === option.key
         }
       }
@@ -89,6 +106,46 @@ const closeFlag = () => {
   isModalOpen.value = false
 }
 
+// status modal
+const isStatusModalOpen = ref(false)
+const selectedStatusFlag = ref<AbuseReportAdminResponse | null>(null)
+
+const openStatus = (flag: AbuseReportAdminResponse) => {
+  selectedStatusFlag.value = flag
+  isStatusModalOpen.value = true
+}
+
+const closeStatus = () => {
+  selectedStatusFlag.value = null
+  isStatusModalOpen.value = false
+}
+
+const updateStatus = ({ id, status }: { id: number, status: TicketStatus }) => {
+  if (selectedStatusFlag.value) {
+    try {
+      // await store.updateFlagStatus(id, status)
+      console.log('Updated status:', id, status)
+      const StatusChange = selectedStatusFlag.value.status !== status
+
+      if (StatusChange) {
+        triggerPopUp('error', 'Flag Update Failed', `An error occurred while updating the flag status. Please try again later.`)
+      } else {
+        triggerPopUp('success', 'Flag Updated', `updated successfully.`)
+      }
+      if (paginatedFlags.value.length === 0 && currentPage.value > 1) {
+        currentPage.value -= 1
+      }
+    } catch (error) {
+      console.error('Error toggling flag status:', error)
+      triggerPopUp('error', 'Error Updating Flag', `An error occurred while trying to update the flag.`)
+      return
+    } finally {
+      showDeleteConfirm.value = false
+      flagToDelete.value = null
+    }
+  }
+}
+
 // Delete flag
 
 const showDeleteConfirm = ref<boolean>(false)
@@ -101,14 +158,27 @@ const deleteFlag = (flagId: number) => {
 
 const confirmDelete = () => {
   if (flagToDelete.value) {
-    const index = store.flags.findIndex(f => f.id === flagToDelete.value?.id)
-    if (index !== -1) {
-      store.flags.splice(index, 1)
-    }
-    triggerPopUp('success', 'Advert Deleted', `deleted successfully.`)
+    try {
+      // await store.deleteFlag(flagToDelete.value)
 
-    showDeleteConfirm.value = false
-    flagToDelete.value = null
+      const isStillPresent = store.flags.some(f => f.id === flagToDelete.value?.id)
+
+      if (isStillPresent) {
+        triggerPopUp('error', 'Flag Delete Failed', `An error occurred while deleting the flag. Please try again later.`)
+      } else {
+        triggerPopUp('success', 'Flag Deleted', `deleted successfully.`)
+      }
+      if (paginatedFlags.value.length === 0 && currentPage.value > 1) {
+        currentPage.value -= 1
+      }
+    } catch (error) {
+      console.error('Error toggling flag status:', error)
+      triggerPopUp('error', 'Error Deleting Flag', `An error occurred while trying to delete the flag.`)
+      return
+    } finally {
+      showDeleteConfirm.value = false
+      flagToDelete.value = null
+    }
   }
 }
 
@@ -171,6 +241,12 @@ onMounted(async () => {
         :flag="selectedFlag"
         @close="closeFlag"
       />
+      <FlagStatusModale
+        :is-open="isStatusModalOpen"
+        :flag="selectedStatusFlag"
+        @close="closeStatus"
+        @update="updateStatus"
+      />
       <DeleteConfirmationPopup
         :show="showDeleteConfirm"
         title="Delete Flag"
@@ -189,11 +265,11 @@ onMounted(async () => {
         >
 
         <select
-          v-model="statusFilter"
+          v-model="reasonFilter"
           class="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-800 dark:bg-gray-950 outline-none"
         >
           <option value="All">
-            All Reasons
+            All reasons
           </option>
           <option
             v-for="option in reasonOptions"
@@ -201,6 +277,22 @@ onMounted(async () => {
             :value="option.value"
           >
             {{ option.value.toLocaleLowerCase().replace(/^\w/, c => c.toUpperCase()).replace(/_/g, ' ') }}
+          </option>
+        </select>
+
+        <select
+          v-model="statusFilter"
+          class="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-800 dark:bg-gray-950 outline-none"
+        >
+          <option value="All">
+            All Statuses
+          </option>
+          <option
+            v-for="option in statusOptions"
+            :key="option.key"
+            :value="option.value"
+          >
+            {{ option.value.toLocaleLowerCase().replace(/^\w/, c => c.toUpperCase()) }}
           </option>
         </select>
       </div>
@@ -223,6 +315,9 @@ onMounted(async () => {
               </th>
               <th class="p-4 font-medium w-1/4">
                 Reported On
+              </th>
+              <th class="p-4 font-medium w-1/12">
+                Status
               </th>
               <th class="p-4 font-medium w-1/12">
                 Actions
@@ -266,6 +361,11 @@ onMounted(async () => {
                   {{ flag.advertTitle }}
                 </p>
               </td>
+              <td class="p-4">
+                <p class="font-medium">
+                  {{ flag.status.toLocaleLowerCase().replace(/^\w/, (c: string) => c.toUpperCase()) }}
+                </p>
+              </td>
               <td class="p-4 text-right flex">
                 <button
                   class="ml-2 text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer"
@@ -273,6 +373,15 @@ onMounted(async () => {
                 >
                   <Icon
                     name="material-symbols:visibility-rounded"
+                    class="size-6"
+                  />
+                </button>
+                <button
+                  class="ml-2 text-gray-400 hover:text-emerald-800 transition-colors font-medium text-sm cursor-pointer"
+                  @click="openStatus(flag)"
+                >
+                  <Icon
+                    name="material-symbols:settings-rounded"
                     class="size-6"
                   />
                 </button>
