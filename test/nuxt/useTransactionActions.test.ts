@@ -96,14 +96,15 @@ describe('useTransactionActions', () => {
   })
 
   it('executeAction dispute calls historyService when reason is provided', async () => {
-    const { promptAction, executeAction, disputeReason } = useTransactionActions()
+    const { promptAction, executeAction, disputeReason, disputeDescription } = useTransactionActions()
     mockHistoryService.disputePurchase.mockResolvedValueOnce(undefined)
 
     promptAction('dispute', 't1')
     disputeReason.value = 'Damaged item'
+    disputeDescription.value = 'The item arrived broken'
     await executeAction()
 
-    expect(mockHistoryService.disputePurchase).toHaveBeenCalledWith('t1', 'Damaged item')
+    expect(mockHistoryService.disputePurchase).toHaveBeenCalledWith('t1', 'Damaged item', 'The item arrived broken')
   })
 
   it('executeAction handles service errors', async () => {

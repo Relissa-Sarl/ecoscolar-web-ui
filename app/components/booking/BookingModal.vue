@@ -60,20 +60,17 @@ const handleConfirm = async () => {
     const response = await paymentService.createCheckoutSession({
       productId: Number(props.advert.id),
       productPrice: total.value.toFixed(2),
-      sessions: sessions.value,
+      sessions: sessions.value
     })
 
     if (response?.url) {
       window.location.href = response.url
-    }
-    else {
+    } else {
       error.value = t('booking.errors.init_failed')
     }
-  }
-  catch (e: unknown) {
+  } catch (e: unknown) {
     error.value = (e instanceof Error ? e.message : null) ?? t('booking.errors.general')
-  }
-  finally {
+  } finally {
     isLoading.value = false
   }
 }
@@ -119,7 +116,10 @@ const handleConfirm = async () => {
               :aria-label="t('booking.close')"
               @click="handleClose"
             >
-              <Icon name="material-symbols:close" class="size-5" />
+              <Icon
+                name="material-symbols:close"
+                class="size-5"
+              />
             </button>
           </div>
 
@@ -143,21 +143,30 @@ const handleConfirm = async () => {
                     v-if="advert?.subject"
                     class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-[10px] font-semibold uppercase tracking-wide"
                   >
-                    <Icon name="material-symbols:book-outline" class="size-3" />
+                    <Icon
+                      name="material-symbols:book-outline"
+                      class="size-3"
+                    />
                     {{ advert.subject }}
                   </span>
                   <span
                     v-if="advert?.grade"
                     class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 text-[10px] font-semibold uppercase tracking-wide"
                   >
-                    <Icon name="material-symbols:school" class="size-3" />
+                    <Icon
+                      name="material-symbols:school"
+                      class="size-3"
+                    />
                     {{ advert.grade }}
                   </span>
                   <span
                     v-if="advert?.school"
                     class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] font-semibold uppercase tracking-wide"
                   >
-                    <Icon name="material-symbols:location-on-outline" class="size-3" />
+                    <Icon
+                      name="material-symbols:location-on-outline"
+                      class="size-3"
+                    />
                     {{ advert.school }}
                   </span>
                 </div>
@@ -275,8 +284,19 @@ const handleConfirm = async () => {
                 viewBox="0 0 24 24"
                 aria-hidden="true"
               >
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                />
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                />
               </svg>
               <Icon
                 v-else
