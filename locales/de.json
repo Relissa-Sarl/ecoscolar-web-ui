@@ -827,7 +827,11 @@
       }
     },
     "public": {
-      "error": "Es ist derzeit nicht möglich, das Benutzerprofil zu laden. Es könnte sein, dass der Benutzer sein Profil nicht öffentlich gemacht hat oder dass das Profil gelöscht wurde."
+      "error": "Es ist derzeit nicht möglich, das Benutzerprofil zu laden. Es könnte sein, dass der Benutzer sein Profil nicht öffentlich gemacht hat oder dass das Profil gelöscht wurde.",
+      "report": {
+        "title": "Diesen Benutzer melden",
+        "description": "Wenn Sie glauben, dass dieser Benutzer unsere Nutzungsbedingungen nicht einhält, bitten wir Sie, es uns zu melden."
+      }
     },
     "reviews": {
       "title": "Erhaltene Bewertungen",

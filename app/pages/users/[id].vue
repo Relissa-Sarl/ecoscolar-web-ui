@@ -1,38 +1,34 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useRoute, useAsyncData } from '#imports'
+import { useRoute } from '#imports'
+import { usePublicUser } from '~/composables/usePublicUser'
 import ErrorMessage from '~/components/common/messages/ErrorMessage.vue'
 import ProfileReviews from '~/components/profile/ProfileReviews.vue'
-import { getUserService } from '~/services/usersService'
+import ProfileInfos from '~/components/profile/ProfileInfos.vue'
+import ReportUserModal from '~/components/common/ReportUserModal.vue'
 
 const route = useRoute()
-const usersService = getUserService()
-
 const userId = route.params.id as string
 
-// Fetch public profile and reviews in parallel
-const { data: user, pending: userPending, error: userError } = await useAsyncData(
-  `public-profile-${userId}`,
-  () => usersService.getPublicProfile(userId)
-)
+const {
+  user,
+  reviews,
+  isLoading,
+  displayError,
+  isReporting,
+  isReportModalOpen,
+  reportError,
+  openReportModal,
+  closeReportModal,
+  reportUser
+} = usePublicUser(userId)
 
-const { data: reviews, pending: reviewsPending } = await useAsyncData(
-  `user-reviews-${userId}`,
-  () => usersService.getReviews(userId)
-)
+const handleOpenReport = () => {
+  openReportModal()
+}
 
-const isLoading = computed(() => userPending.value || reviewsPending.value)
-
-/**
- * Computed property to determine if there is an error in fetching the user profile.
- * If the user is null or there's an error, it returns an error message.
- */
-const displayError = computed(() => {
-  if (userError.value || (!userPending.value && !user.value)) {
-    return $t('profile.public.error')
-  }
-  return null
-})
+const handleSubmitReport = async (message: string) => {
+  await reportUser(message)
+}
 </script>
 
 <template>
@@ -62,6 +58,7 @@ const displayError = computed(() => {
           :user="user ?? null"
           :is-own-profile="false"
           class="w-full lg:w-[320px] shrink-0"
+          @report-user="handleOpenReport"
         />
 
         <!-- Right: Reviews Feed & Statistics -->
@@ -70,5 +67,14 @@ const displayError = computed(() => {
         </div>
       </div>
     </div>
+
+    <!-- Modal de signalement d'utilisateur -->
+    <ReportUserModal
+      :show="isReportModalOpen"
+      :is-submitting="isReporting"
+      :error="reportError"
+      @close="closeReportModal"
+      @submit="handleSubmitReport"
+    />
   </div>
 </template>
