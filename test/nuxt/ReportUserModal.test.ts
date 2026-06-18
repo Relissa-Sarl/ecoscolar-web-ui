@@ -17,7 +17,7 @@ describe('ReportUserModal', () => {
     })
 
     const modal = wrapper.find('.fixed')
-    expect(modal.element.style.display).toBe('none')
+    expect((modal.element as HTMLElement).style.display).toBe('none')
   })
 
   it('renders correctly when show is true', () => {
@@ -27,7 +27,7 @@ describe('ReportUserModal', () => {
     })
 
     const modal = wrapper.find('.fixed')
-    expect(modal.element.style.display).not.toBe('none')
+    expect((modal.element as HTMLElement).style.display).not.toBe('none')
     // Because `$t('report.title_comment')` returns a truthy string, the ternary resolves to `$t('report.message_label')`
     expect(wrapper.text()).toContain('report.message_label')
     expect(wrapper.text()).toContain('profile.public.report.description')

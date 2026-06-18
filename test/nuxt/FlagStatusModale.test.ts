@@ -13,8 +13,8 @@ const mockFlag = {
   flaggedId: 'u2',
   status: 'PENDING',
   reason: 'SPAM',
-  createdAt: '2026-05-21T10:00:00Z'
-}
+  createdAt: '2024-01-01T00:00:00Z'
+} as any
 
 describe('FlagStatusModale', () => {
   it('does not render when isOpen is false', () => {
@@ -80,7 +80,7 @@ describe('FlagStatusModale', () => {
     const closeBtns = wrapper.findAll('button').filter(b => b.text().includes('Cancel') || b.attributes('aria-label') === 'Fermer')
     expect(closeBtns.length).toBeGreaterThan(0)
 
-    await closeBtns[0].trigger('click')
+    await closeBtns[0]?.trigger('click')
     expect(wrapper.emitted('close')).toBeTruthy()
   })
 })

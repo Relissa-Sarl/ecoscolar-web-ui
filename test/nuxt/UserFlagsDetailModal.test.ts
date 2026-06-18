@@ -10,7 +10,7 @@ const stubs = {
 const mockFlags = [
   { flagId: 101, reason: 'SPAM_CONTENT', reporterNickname: 'Reporter1', reporterEmail: 'r1@test.com' },
   { flagId: 102, reason: 'INAPPROPRIATE_BEHAVIOR', reporterNickname: 'Reporter2', reporterEmail: 'r2@test.com' }
-]
+] as any
 
 describe('UserFlagsDetailModal', () => {
   it('does not render when isOpen is false', () => {

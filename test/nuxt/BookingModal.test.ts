@@ -39,7 +39,7 @@ const mockAdvert = {
   subject: 'Math',
   grade: 'High School',
   school: 'EPFL'
-}
+} as any
 
 describe('BookingModal', () => {
   beforeEach(() => {
@@ -104,7 +104,7 @@ describe('BookingModal', () => {
 
     const originalLocation = window.location
     delete (window as unknown as Record<string, unknown>).location
-    window.location = { ...originalLocation, href: '' }
+    window.location = { ...originalLocation, href: '' } as any
 
     const buttons = wrapper.findAll('button')
     const confirmBtn = buttons.find(b => b.text().includes('booking.confirm'))
@@ -117,7 +117,7 @@ describe('BookingModal', () => {
     await new Promise(resolve => setTimeout(resolve, 0))
     expect(window.location.href).toBe(mockUrl)
 
-    window.location = originalLocation
+    window.location = originalLocation as any
   })
 
   it('displays error if checkout fails', async () => {

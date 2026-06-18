@@ -62,7 +62,7 @@ describe('Checkout Page', () => {
     // We can mock window.location.href
     const originalLocation = window.location
     delete (window as unknown as Record<string, unknown>).location
-    window.location = { ...originalLocation, href: '' }
+    window.location = { ...originalLocation, href: '' } as any
 
     const form = wrapper.find('form')
     await form.trigger('submit.prevent')
@@ -73,7 +73,7 @@ describe('Checkout Page', () => {
     expect(window.location.href).toBe(mockUrl)
 
     // Restore
-    window.location = originalLocation
+    window.location = originalLocation as any
   })
 
   it('shows error if init fails', async () => {

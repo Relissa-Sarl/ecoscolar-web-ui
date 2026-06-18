@@ -100,13 +100,13 @@ describe('UserFlagsPage', () => {
     const buttons = wrapper.findAll('button[title="View flag details"]')
     expect(buttons.length).toBe(2)
 
-    await buttons[0].trigger('click')
+    await buttons[0]?.trigger('click')
 
     const modal = wrapper.findComponent(UserFlagsDetailModal)
     expect(modal.exists()).toBe(true)
     expect(modal.props('isOpen')).toBe(true)
     expect(modal.props('userNickname')).toBe('BadUser')
-    expect(modal.props('flags')).toEqual(mockFlaggedUsers[0].flags)
+    expect(modal.props('flags')).toEqual(mockFlaggedUsers[0]?.flags)
   })
 
   it('shows error popup if fetching fails', async () => {
