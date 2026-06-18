@@ -59,4 +59,20 @@ describe('Sales Page', () => {
     expect(cards.length).toBe(2)
     expect(wrapper.text()).not.toContain('me.sales.empty_title')
   }, 15000)
+
+  it('renders one card per tutoring package on the same advert', async () => {
+    asyncDataMock.mockResolvedValueOnce({
+      data: ref([
+        { id: 42, transactionId: 101, title: 'Tutorat maths', transactionStatus: 'PAID_WAITING_ACCEPTANCE' },
+        { id: 42, transactionId: 102, title: 'Tutorat maths', transactionStatus: 'PAID_WAITING_COMPLETION' }
+      ]),
+      pending: ref(false),
+      error: ref(null)
+    })
+
+    const wrapper = await mountSuspended(SalesPage, { global: { stubs } })
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.findAll('.mock-sale-card').length).toBe(2)
+  }, 15000)
 })

@@ -170,7 +170,7 @@ onMounted(() => {
       >
         <SaleCard
           v-for="sale in filteredSales"
-          :key="sale.id"
+          :key="`${sale.id}-${sale.transactionId ?? 0}`"
           :sale="sale"
           @confirm-shipping="promptAction('confirm_shipping', $event.toString())"
           @accept-service="promptAction('accept_service', $event.toString())"
