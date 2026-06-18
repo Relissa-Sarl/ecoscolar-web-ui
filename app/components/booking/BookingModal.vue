@@ -57,10 +57,7 @@ const handleConfirm = async () => {
 
   try {
     const paymentService = getPaymentService()
-    const response = await paymentService.createCheckoutSession({
-      productId: Number(props.advert.id),
-      sessions: sessions.value
-    })
+    const response = await paymentService.reserveTutoring(Number(props.advert.id), sessions.value)
 
     if (response?.url) {
       window.location.href = response.url
