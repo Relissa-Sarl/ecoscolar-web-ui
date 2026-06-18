@@ -346,7 +346,9 @@
       "uploadedImages": "Hochgeladene Bilder",
       "publish": "Anzeige veröffentlichen",
       "modify": "Änderungen speichern",
-      "cancel": "Abbrechen"
+      "cancel": "Abbrechen",
+      "minHours": "Minimale Dauer (Stunden)",
+      "maxHours": "Maximale Dauer (Stunden)"
     },
     "error": {
       "empty": {

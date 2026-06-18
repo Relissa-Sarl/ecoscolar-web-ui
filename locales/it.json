@@ -346,7 +346,9 @@
       "uploadedImages": "Immagini caricate",
       "publish": "Pubblica l'annuncio",
       "modify": "Salva le modifiche",
-      "cancel": "Annulla"
+      "cancel": "Annulla",
+      "minHours": "Durata minima (ore)",
+      "maxHours": "Durata massima (ore)"
     },
     "error": {
       "empty": {
