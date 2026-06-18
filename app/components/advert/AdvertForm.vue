@@ -415,14 +415,8 @@ const validateForm = (): boolean => {
 }
 
 const handleMinMaxHoursChange = () => {
-  if (form.value.minHours > form.value.maxHours)
-    form.value.maxHours = form.value.minHours
-
-  if (form.value.maxHours < 1)
-    form.value.maxHours = 1
-
-  if (form.value.minHours < 1)
-    form.value.minHours = 1
+  form.value.minHours = Math.max(1, Math.min(form.value.minHours, 8))
+  form.value.maxHours = Math.max(form.value.minHours, Math.min(form.value.maxHours, 8))
 }
 
 const handleSubmit = () => {
