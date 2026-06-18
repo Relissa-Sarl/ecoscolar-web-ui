@@ -43,11 +43,7 @@ const productIds = computed<number[]>(() => {
 
 // Clear the cart when the user lands on the success page and retrive the price information
 onMounted(async () => {
-  const storedTotal = sessionStorage.getItem('last_payment_total')
-  if (storedTotal) {
-    totalAmount.value = parseFloat(storedTotal)
-    sessionStorage.removeItem('last_payment_total')
-  }
+  sessionStorage.removeItem('pending_checkout_ids')
 
   // Create transactions and update status to SOLD
   const ids = productIds.value.length > 0

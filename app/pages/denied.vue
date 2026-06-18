@@ -23,6 +23,7 @@ const productIds = computed<number[]>(() => {
 })
 
 onMounted(async () => {
+  sessionStorage.removeItem('pending_checkout_ids')
   const ids = productIds.value
   if (ids.length > 0) {
     const advertService = getAdvertService()
