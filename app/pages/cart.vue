@@ -180,9 +180,9 @@ const onPageShow = async (event: PageTransitionEvent) => {
 }
 
 onMounted(async () => {
-  const navigationEntries = window.performance?.getEntriesByType("navigation")
-  const isBackNavigation = navigationEntries && navigationEntries.length > 0 &&
-    (navigationEntries[0] as PerformanceNavigationTiming).type === 'back_forward'
+  const navigationEntries = window.performance?.getEntriesByType('navigation')
+  const isBackNavigation = navigationEntries && navigationEntries.length > 0
+    && (navigationEntries[0] as PerformanceNavigationTiming).type === 'back_forward'
 
   if (isBackNavigation) {
     await checkAndResetPausedItems()
