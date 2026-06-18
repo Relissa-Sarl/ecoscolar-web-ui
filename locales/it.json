@@ -873,5 +873,36 @@
     "submit": "Invia segnalazione",
     "success": "La tua segnalazione è stata registrata con successo. Grazie per il tuo aiuto!",
     "error": "Si è verificato un errore durante l'invio della tua segnalazione."
+  },
+  "booking": {
+    "title": "Prenota una lezione",
+    "subtitle": "Pagamento sicuro tramite Stripe",
+    "close": "Chiudi",
+    "tutor_label": "Tutor:",
+    "rate_label": "Tariffa",
+    "sessions_label": "Numero di sessioni",
+    "session_singular": "sessione",
+    "session_plural": "sessioni",
+    "sessions_hint": "Da {min} a {max} sessioni per prenotazione",
+    "decrease": "Diminuire il numero di sessioni",
+    "increase": "Aumentare il numero di sessioni",
+    "price_summary": "Riepilogo",
+    "subtotal": "{rate} CHF/h × {sessions} sessione/i",
+    "platform_fee": "Commissione piattaforma (10%)",
+    "total": "Totale",
+    "protection_title": "Protezione Acquirente",
+    "protection_text": "Pagamento bloccato fino alla conferma del servizio reso.",
+    "login_to_book": "Accedi per prenotare",
+    "login_to_book_tooltip": "Devi essere connesso per prenotare una lezione",
+    "login_to_buy": "Accedi per acquistare",
+    "login_to_buy_tooltip": "Devi essere connesso per acquistare un articolo",
+    "confirm": "Conferma e paga",
+    "cancel": "Annulla",
+    "loading": "Reindirizzamento a Stripe...",
+    "terms_note": "Confermando, accetti le condizioni generali di vendita di EcoScolar.",
+    "errors": {
+      "init_failed": "Errore durante l'inizializzazione del pagamento. Riprova.",
+      "general": "Si è verificato un errore. Riprova."
+    }
   }
 }
