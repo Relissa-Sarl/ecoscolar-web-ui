@@ -13,6 +13,9 @@ const mockSendTicketMessage = vi.fn()
 const mockGetAllAdverts = vi.fn()
 const mockBlockAdvert = vi.fn()
 const mockDeleteAdvert = vi.fn()
+const mockGetAllAbuses = vi.fn()
+const mockUpdateFlagStatus = vi.fn()
+const mockDeleteFlag = vi.fn()
 
 vi.mock('../../app/services/adminsService', () => ({
   getAdminService: () => ({
@@ -23,7 +26,10 @@ vi.mock('../../app/services/adminsService', () => ({
     sendTicketMessage: mockSendTicketMessage,
     getAllAdverts: mockGetAllAdverts,
     blockAdvert: mockBlockAdvert,
-    deleteAdvert: mockDeleteAdvert
+    deleteAdvert: mockDeleteAdvert,
+    getAllAbuses: mockGetAllAbuses,
+    updateFlagStatus: mockUpdateFlagStatus,
+    deleteFlag: mockDeleteFlag
   })
 }))
 
@@ -37,7 +43,7 @@ const mockAdminUser: User = {
   isOnboarded: true,
   birthdayDate: '1990-01-01',
   postalCode: '1000',
-  spokenLanguages: [],
+  languages: [],
   location: { postalCode: '1000', city: 'Lausanne', region: 'Vaud' }
 }
 
@@ -138,5 +144,44 @@ describe('admins store', () => {
     expect(mockDeleteAdvert).toHaveBeenCalledWith(mockAdvert.id)
     expect(mockGetAllAdverts).toHaveBeenCalled()
     expect(store.adverts).toEqual([])
+  })
+
+  it('fetches all abuses', async () => {
+    const mockAbuses = [{ id: 1, reason: 'SPAM', message: 'test', status: 'PENDING', reporterUserId: 'u1', targetAdvertId: 1, reporterNickname: 'n1', reporterEmail: 'e1', advertTitle: 'a1' }]
+    mockGetAllAbuses.mockResolvedValueOnce(mockAbuses)
+
+    const store = useAdminsStore()
+
+    await store.fetchAbuses()
+
+    expect(store.flags).toEqual(mockAbuses)
+    expect(store.isLoading).toBe(false)
+  })
+
+  it('updates flag status', async () => {
+    const mockFlag = { id: 1, reason: 'SPAM', message: 'test', status: 'PENDING', reporterUserId: 'u1', targetAdvertId: 1, reporterNickname: 'n1', reporterEmail: 'e1', advertTitle: 'a1' }
+    const updatedFlag = { ...mockFlag, status: 'REVIEWED' }
+    mockUpdateFlagStatus.mockResolvedValueOnce(updatedFlag)
+
+    const store = useAdminsStore()
+    store.flags = [mockFlag]
+
+    const result = await store.updateFlagStatus(1, 'REVIEWED' as TicketStatus)
+
+    expect(mockUpdateFlagStatus).toHaveBeenCalledWith(1, 'REVIEWED')
+    expect(result).toEqual(updatedFlag)
+    expect(store.flags[0].status).toBe('REVIEWED')
+  })
+
+  it('deletes a flag and re-fetches', async () => {
+    mockDeleteFlag.mockResolvedValueOnce(undefined)
+    mockGetAllAbuses.mockResolvedValueOnce([])
+    const store = useAdminsStore()
+
+    await store.deleteFlag(1)
+
+    expect(mockDeleteFlag).toHaveBeenCalledWith(1)
+    expect(mockGetAllAbuses).toHaveBeenCalled()
+    expect(store.flags).toEqual([])
   })
 })
