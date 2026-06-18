@@ -156,12 +156,61 @@ describe('historyService', () => {
       const apiClient = vi.fn().mockResolvedValueOnce(undefined)
       const service = createHistoryService({ apiClient })
 
-      await service.disputePurchase('txn-123', 'Item not as described')
+      await service.disputePurchase('txn-123', 'Item not as described', 'Details')
 
       expect(apiClient).toHaveBeenCalledWith('/transactions/txn-123/dispute', {
         method: 'POST',
-        body: { reason: 'Item not as described' }
+        body: { reason: 'Item not as described', description: 'Details' }
       })
+    })
+  })
+
+  describe('tutoring transaction actions', () => {
+    it('acceptTutoringTransaction calls API correctly', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce(undefined)
+      const service = createHistoryService({ apiClient })
+
+      await service.acceptTutoringTransaction('42')
+
+      expect(apiClient).toHaveBeenCalledWith('/tutoring/transactions/42/accept', { method: 'PATCH' })
+    })
+
+    it('refuseTutoringTransaction calls API correctly', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce(undefined)
+      const service = createHistoryService({ apiClient })
+
+      await service.refuseTutoringTransaction('42')
+
+      expect(apiClient).toHaveBeenCalledWith('/tutoring/transactions/42/refuse', { method: 'PATCH' })
+    })
+
+    it('confirmTutoringTransaction calls API correctly', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce(undefined)
+      const service = createHistoryService({ apiClient })
+
+      await service.confirmTutoringTransaction('42')
+
+      expect(apiClient).toHaveBeenCalledWith('/tutoring/transactions/42/confirm', { method: 'PATCH' })
+    })
+
+    it('markTutoringRendered calls API correctly', async () => {
+      const apiClient = vi.fn().mockResolvedValueOnce(undefined)
+      const service = createHistoryService({ apiClient })
+
+      await service.markTutoringRendered('42')
+
+      expect(apiClient).toHaveBeenCalledWith('/tutoring/transactions/42/mark-rendered', { method: 'PATCH' })
+    })
+
+    it('getTutorContact calls API correctly', async () => {
+      const contact = { name: 'Tutor', phoneNumber: '+41 79 000 00 00', email: 'tutor@test.ch' }
+      const apiClient = vi.fn().mockResolvedValueOnce(contact)
+      const service = createHistoryService({ apiClient })
+
+      const result = await service.getTutorContact('42')
+
+      expect(apiClient).toHaveBeenCalledWith('/tutoring/transactions/42/tutor-contact')
+      expect(result).toEqual(contact)
     })
   })
 })

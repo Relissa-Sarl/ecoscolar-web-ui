@@ -218,4 +218,58 @@ describe('SaleCard', () => {
     expect((wrapper.vm as unknown as { localReview: { rating: number, comment: string | null } | null }).localReview).toEqual({ rating: 4, comment: 'Nice!' })
     expect(mockRefreshNuxtData).toHaveBeenCalledWith('user-sales')
   })
+
+  it('shows accept and refuse buttons for SERVICE in PAID_WAITING_ACCEPTANCE', () => {
+    const wrapper = mount(SaleCard, {
+      props: {
+        sale: {
+          ...mockSale,
+          type: 'SERVICE',
+          transactionStatus: 'PAID_WAITING_ACCEPTANCE',
+          transactionId: 99
+        }
+      },
+      global: { stubs }
+    })
+
+    expect(wrapper.text()).toContain('me.sales.actions.accept_service')
+    expect(wrapper.text()).toContain('me.sales.actions.refuse_service')
+    expect(wrapper.text()).toContain('me.sales.alerts.service_waiting_acceptance')
+  })
+
+  it('emits accept-service when accept button is clicked', async () => {
+    const wrapper = mount(SaleCard, {
+      props: {
+        sale: {
+          ...mockSale,
+          type: 'SERVICE',
+          transactionStatus: 'PAID_WAITING_ACCEPTANCE',
+          transactionId: 99
+        }
+      },
+      global: { stubs }
+    })
+
+    const btn = wrapper.findAll('button').find(b => b.text().includes('me.sales.actions.accept_service'))
+    await btn?.trigger('click')
+    expect(wrapper.emitted('accept-service')?.[0]).toEqual([99])
+  })
+
+  it('emits mark-rendered for SERVICE in PAID_WAITING_COMPLETION', async () => {
+    const wrapper = mount(SaleCard, {
+      props: {
+        sale: {
+          ...mockSale,
+          type: 'SERVICE',
+          transactionStatus: 'PAID_WAITING_COMPLETION',
+          transactionId: 88
+        }
+      },
+      global: { stubs }
+    })
+
+    const btn = wrapper.findAll('button').find(b => b.text().includes('me.sales.actions.mark_rendered'))
+    await btn?.trigger('click')
+    expect(wrapper.emitted('mark-rendered')?.[0]).toEqual([88])
+  })
 })

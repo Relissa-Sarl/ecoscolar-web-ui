@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { useI18n, useLocalePath, refreshNuxtData } from '#imports'
-import type { Purchase } from '~/services/historyService'
+import { useI18n, useLocalePath, refreshNuxtData, useToast } from '#imports'
+import type { Purchase, TutorContact } from '~/services/historyService'
+import { getHistoryService } from '~/services/historyService'
+import { formatPrice } from '~/utils/formatPrice'
 import Stars from '~/components/profile/Stars.vue'
 import ReviewModal from '~/components/me/ReviewModal.vue'
 
@@ -11,6 +13,7 @@ const props = defineProps<{
 
 const { locale, t, te } = useI18n()
 const localePath = useLocalePath()
+const toast = useToast()
 
 const statusLabel = (status: string) => {
   const key = `profile.history.status.${status.toLowerCase()}`
@@ -19,12 +22,15 @@ const statusLabel = (status: string) => {
 
 const emit = defineEmits<{
   'confirm-reception': [id: string]
+  'confirm-service': [id: string]
   'dispute': [id: string]
   'cancel': [id: string]
 }>()
 
 const isOpen = ref(false)
 const localReview = ref(props.purchase.review)
+const tutorContact = ref<TutorContact | null>(null)
+const isLoadingContact = ref(false)
 
 watch(() => props.purchase.review, (newReview) => {
   localReview.value = newReview
@@ -32,7 +38,7 @@ watch(() => props.purchase.review, (newReview) => {
 
 const isCompleted = computed(() => {
   const normalized = props.purchase.status.toLowerCase()
-  return normalized === 'completed' || normalized === 'succès' || normalized === 'payé'
+  return normalized === 'completed' || normalized === 'succ\u00e8s' || normalized === 'pay\u00e9'
 })
 
 const formatDate = (dateStr: string) => {
@@ -49,11 +55,14 @@ const formatDate = (dateStr: string) => {
 
 const getStatusBadgeClass = (status: string) => {
   const normalized = status.toLowerCase()
-  if (normalized === 'completed' || normalized === 'succès' || normalized === 'payé') {
+  if (normalized === 'completed' || normalized === 'succ\u00e8s' || normalized === 'pay\u00e9') {
     return 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900/50'
   }
-  if (normalized === 'pending' || normalized === 'en cours') {
+  if (normalized === 'paid_waiting_acceptance' || normalized === 'paid_waiting_completion' || normalized === 'pending' || normalized === 'en cours') {
     return 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400 border-amber-200 dark:border-amber-900/50'
+  }
+  if (normalized === 'cancelled') {
+    return 'bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400 border-red-200 dark:border-red-900/50'
   }
   return 'bg-slate-50 text-slate-700 dark:bg-slate-900 dark:text-slate-400 border-slate-200 dark:border-slate-800'
 }
@@ -64,11 +73,25 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
   localReview.value = review
   refreshNuxtData('user-purchases')
 }
+
+const loadTutorContact = async () => {
+  if (tutorContact.value) return
+  isLoadingContact.value = true
+  try {
+    tutorContact.value = await getHistoryService().getTutorContact(props.purchase.id)
+  } catch (e: unknown) {
+    toast.add({
+      title: t('me.purchases.alerts.error', { message: e instanceof Error ? e.message : String(e) }),
+      color: 'error'
+    })
+  } finally {
+    isLoadingContact.value = false
+  }
+}
 </script>
 
 <template>
   <article class="flex gap-3 p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 shadow-sm transition-all duration-200 hover:shadow-md">
-    <!-- Thumbnail -->
     <div class="h-20 w-16 rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-900 shrink-0 border border-slate-100 dark:border-slate-800">
       <img
         v-if="props.purchase.imageUrl"
@@ -87,7 +110,6 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
       </div>
     </div>
 
-    <!-- Info -->
     <div class="flex flex-col min-w-0 flex-1 justify-between">
       <div>
         <div class="flex items-start justify-between gap-2">
@@ -125,6 +147,53 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
             <span class="font-semibold text-slate-700 dark:text-slate-300 font-mono text-[10px]">{{ props.purchase.orderNumber }}</span>
           </p>
         </div>
+      </div>
+
+      <div
+        v-if="props.purchase.status === 'PAID_WAITING_ACCEPTANCE'"
+        class="mt-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900/50 rounded-lg p-2.5 flex items-start gap-2 text-xs text-amber-700 dark:text-amber-400 font-medium"
+      >
+        <UIcon
+          name="i-heroicons-clock"
+          class="w-4 h-4 shrink-0 mt-0.5"
+        />
+        <p class="leading-relaxed">
+          {{ t('me.purchases.alerts.service_waiting_acceptance') }}
+        </p>
+      </div>
+
+      <div
+        v-if="props.purchase.status === 'PAID_WAITING_COMPLETION'"
+        class="mt-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-900/50 rounded-lg p-2.5 text-xs text-emerald-700 dark:text-emerald-400 font-medium"
+      >
+        <p class="leading-relaxed">
+          {{ t('me.purchases.alerts.service_confirmed') }}
+        </p>
+        <div
+          v-if="tutorContact"
+          class="mt-2 space-y-1 text-slate-700 dark:text-slate-300"
+        >
+          <p><span class="font-semibold">{{ tutorContact.name }}</span></p>
+          <p v-if="tutorContact.phoneNumber">
+            {{ tutorContact.phoneNumber }}
+          </p>
+          <p v-if="tutorContact.email">
+            {{ tutorContact.email }}
+          </p>
+        </div>
+      </div>
+
+      <div
+        v-if="props.purchase.status === 'CANCELLED' && props.purchase.type === 'SERVICE'"
+        class="mt-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50 rounded-lg p-2.5 flex items-start gap-2 text-xs text-red-700 dark:text-red-400 font-medium"
+      >
+        <UIcon
+          name="i-heroicons-x-circle"
+          class="w-4 h-4 shrink-0 mt-0.5"
+        />
+        <p class="leading-relaxed">
+          {{ t('me.purchases.alerts.service_refused') }}
+        </p>
       </div>
 
       <div
@@ -200,7 +269,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
           </button>
 
           <button
-            v-if="props.purchase.status === 'SHIPPED'"
+            v-if="props.purchase.status === 'SHIPPED' || props.purchase.status === 'PAID_WAITING_COMPLETION'"
             class="inline-flex items-center justify-center rounded-lg border border-orange-100 text-orange-600 hover:bg-orange-50 py-1 px-2 text-[10px] font-bold transition-colors"
             @click="emit('dispute', props.purchase.id)"
           >
@@ -213,6 +282,23 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
             @click="emit('confirm-reception', props.purchase.id)"
           >
             {{ t('me.purchases.actions.confirm_reception') }}
+          </button>
+
+          <button
+            v-if="props.purchase.status === 'PAID_WAITING_COMPLETION'"
+            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors"
+            @click="emit('confirm-service', props.purchase.id)"
+          >
+            {{ t('me.purchases.actions.confirm_service') }}
+          </button>
+
+          <button
+            v-if="props.purchase.status === 'PAID_WAITING_COMPLETION'"
+            class="inline-flex items-center justify-center rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 py-1 px-2 text-[10px] font-bold transition-colors"
+            :disabled="isLoadingContact"
+            @click="loadTutorContact"
+          >
+            {{ t('me.purchases.actions.tutor_contact') }}
           </button>
 
           <button
@@ -231,25 +317,10 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
             @click="showDetails = !showDetails"
           >
             {{ t('me.purchases.actions.details') }}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="2.5"
-              stroke="currentColor"
-              class="w-2.5 h-2.5 ml-1 transition-transform"
-              :class="showDetails ? 'rotate-180' : ''"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-              />
-            </svg>
           </button>
 
           <NuxtLink
-            v-else
+            v-else-if="props.purchase.status !== 'COMPLETED' && props.purchase.status !== 'CANCELLED'"
             :to="localePath(`/adverts/${props.purchase.advertId}`)"
             class="inline-flex items-center justify-center rounded-lg bg-slate-900 hover:bg-slate-800 text-white dark:bg-emerald-600 dark:hover:bg-emerald-500 py-1 px-2 text-[10px] font-bold transition-colors"
           >
@@ -258,47 +329,32 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
         </div>
       </div>
 
-      <!-- Expanded Details Section -->
       <div
         v-if="showDetails"
-        class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/80 animate-in fade-in slide-in-from-top-2 duration-300"
+        class="mt-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-3 text-xs space-y-1"
       >
-        <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-2">
+        <h4 class="font-bold text-slate-900 dark:text-white">
           {{ t('me.purchases.details.title') }}
         </h4>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-          <div class="text-slate-500 dark:text-slate-400">
-            {{ t('me.purchases.details.item') }}
-          </div>
-          <div class="font-medium text-slate-900 dark:text-white text-right">
-            {{ props.purchase.advertTitle }}
-          </div>
-
-          <div class="text-slate-500 dark:text-slate-400">
-            {{ t('me.purchases.details.price') }}
-          </div>
-          <div class="font-medium text-slate-900 dark:text-white text-right">
-            {{ formatPrice(props.purchase.price) }} CHF
-          </div>
-
-          <div class="text-slate-500 dark:text-slate-400">
-            {{ t('me.purchases.details.date') }}
-          </div>
-          <div class="font-medium text-slate-900 dark:text-white text-right">
-            {{ formatDate(props.purchase.purchaseDate) }}
-          </div>
-
-          <div class="text-slate-500 dark:text-slate-400">
-            {{ t('me.purchases.details.status') }}
-          </div>
-          <div class="font-medium text-slate-900 dark:text-white text-right">
-            {{ props.purchase.status }}
-          </div>
-        </div>
+        <p class="text-slate-600 dark:text-slate-400">
+          <span class="font-semibold">{{ t('me.purchases.details.item') }} :</span>
+          {{ props.purchase.advertTitle }}
+        </p>
+        <p class="text-slate-600 dark:text-slate-400">
+          <span class="font-semibold">{{ t('me.purchases.details.price') }} :</span>
+          {{ formatPrice(props.purchase.price) }} CHF
+        </p>
+        <p class="text-slate-600 dark:text-slate-400">
+          <span class="font-semibold">{{ t('me.purchases.details.date') }} :</span>
+          {{ formatDate(props.purchase.purchaseDate) }}
+        </p>
+        <p class="text-slate-600 dark:text-slate-400">
+          <span class="font-semibold">{{ t('me.purchases.details.status') }} :</span>
+          {{ statusLabel(props.purchase.status) }}
+        </p>
       </div>
     </div>
 
-    <!-- Review Modal -->
     <ReviewModal
       v-model:open="isOpen"
       :transaction-id="props.purchase.id"

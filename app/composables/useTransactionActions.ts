@@ -2,7 +2,17 @@ import { ref } from 'vue'
 import { useI18n } from '#imports'
 import { getHistoryService } from '~/services/historyService'
 
-export type TransactionActionType = 'confirm_reception' | 'confirm_shipping' | 'dispute' | 'cancel' | 'renew' | 'confirm_service' | 'refuse_service' | null
+export type TransactionActionType
+  = | 'confirm_reception'
+    | 'confirm_shipping'
+    | 'dispute'
+    | 'cancel'
+    | 'renew'
+    | 'accept_service'
+    | 'refuse_service'
+    | 'confirm_service'
+    | 'mark_rendered'
+    | null
 
 export const useTransactionActions = () => {
   const { t } = useI18n()
@@ -13,7 +23,6 @@ export const useTransactionActions = () => {
   const isProcessing = ref(false)
   const actionError = ref<string | null>(null)
 
-  // Ouvre la modale pour une action spécifique
   const promptAction = (action: TransactionActionType, transactionId: string) => {
     activeModal.value = action
     selectedTransactionId.value = transactionId
@@ -31,7 +40,6 @@ export const useTransactionActions = () => {
     isProcessing.value = false
   }
 
-  // Exécute l'action vers l'API
   const executeAction = async (onSuccess?: () => void) => {
     if (!activeModal.value || !selectedTransactionId.value) return
 
@@ -60,17 +68,22 @@ export const useTransactionActions = () => {
         case 'renew':
           await historyService.renewAdvert(selectedTransactionId.value)
           break
-        case 'confirm_service':
-          await historyService.confirmService(selectedTransactionId.value)
+        case 'accept_service':
+          await historyService.acceptTutoringTransaction(selectedTransactionId.value)
           break
         case 'refuse_service':
-          await historyService.refuseService(selectedTransactionId.value)
+          await historyService.refuseTutoringTransaction(selectedTransactionId.value)
+          break
+        case 'confirm_service':
+          await historyService.confirmTutoringTransaction(selectedTransactionId.value)
+          break
+        case 'mark_rendered':
+          await historyService.markTutoringRendered(selectedTransactionId.value)
           break
       }
 
       closeModal()
 
-      // On success alerts or refreshes
       if (onSuccess) {
         onSuccess()
       }

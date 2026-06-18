@@ -6,7 +6,11 @@ const mockHistoryService = {
   confirmReception: vi.fn(),
   confirmShipping: vi.fn(),
   disputePurchase: vi.fn(),
-  cancelPurchase: vi.fn()
+  cancelPurchase: vi.fn(),
+  acceptTutoringTransaction: vi.fn(),
+  refuseTutoringTransaction: vi.fn(),
+  confirmTutoringTransaction: vi.fn(),
+  markTutoringRendered: vi.fn()
 }
 
 vi.mock('~/services/historyService', () => ({
@@ -147,5 +151,45 @@ describe('useTransactionActions', () => {
     await executeAction(onSuccess)
 
     expect(onSuccess).toHaveBeenCalled()
+  })
+
+  it('executeAction accept_service calls historyService', async () => {
+    const { promptAction, executeAction } = useTransactionActions()
+    mockHistoryService.acceptTutoringTransaction.mockResolvedValueOnce(undefined)
+
+    promptAction('accept_service', '42')
+    await executeAction()
+
+    expect(mockHistoryService.acceptTutoringTransaction).toHaveBeenCalledWith('42')
+  })
+
+  it('executeAction refuse_service calls historyService', async () => {
+    const { promptAction, executeAction } = useTransactionActions()
+    mockHistoryService.refuseTutoringTransaction.mockResolvedValueOnce(undefined)
+
+    promptAction('refuse_service', '42')
+    await executeAction()
+
+    expect(mockHistoryService.refuseTutoringTransaction).toHaveBeenCalledWith('42')
+  })
+
+  it('executeAction confirm_service calls historyService', async () => {
+    const { promptAction, executeAction } = useTransactionActions()
+    mockHistoryService.confirmTutoringTransaction.mockResolvedValueOnce(undefined)
+
+    promptAction('confirm_service', '42')
+    await executeAction()
+
+    expect(mockHistoryService.confirmTutoringTransaction).toHaveBeenCalledWith('42')
+  })
+
+  it('executeAction mark_rendered calls historyService', async () => {
+    const { promptAction, executeAction } = useTransactionActions()
+    mockHistoryService.markTutoringRendered.mockResolvedValueOnce(undefined)
+
+    promptAction('mark_rendered', '42')
+    await executeAction()
+
+    expect(mockHistoryService.markTutoringRendered).toHaveBeenCalledWith('42')
   })
 })
