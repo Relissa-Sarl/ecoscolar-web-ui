@@ -6,7 +6,7 @@ import type { User } from '~/types/user'
 import { getAdminService } from '~/services/adminsService'
 import type { SupportTicketAdminDetail } from '~/types/support'
 import type { MySaleAdvert } from '~/composables/useHistory'
-import type { AbuseReportResponse } from '~/types/report'
+import type { AbuseReportAdminResponse } from '~/types/report'
 
 /**
  * Pinia store for managing user authentication and profile state.
@@ -17,7 +17,7 @@ export const useAdminsStore = defineStore('admins', () => {
   const users = ref<User[]>([])
   const supports = ref<SupportTicketAdminDetail[]>([])
   const adverts = ref<(MySaleAdvert)[]>([])
-  const flags = ref<AbuseReportResponse[]>([])
+  const flags = ref<AbuseReportAdminResponse[]>([])
   const isLoading = ref(false)
   const hasLoaded = ref(false)
   const isSending = ref(false)
@@ -138,10 +138,10 @@ export const useAdminsStore = defineStore('admins', () => {
     }
   }
 
-  const fetchFlags = async () => {
+  const fetchAbuses = async () => {
     isLoading.value = true
     try {
-      flags.value = await service.getAllFlags()
+      flags.value = await service.getAllAbuses()
     } catch {
       // ignore error details here; reset admin state
       flags.value = []
@@ -170,6 +170,6 @@ export const useAdminsStore = defineStore('admins', () => {
     fetchAllAdverts,
     blockAdvert,
     deleteAdvert,
-    fetchFlags
+    fetchAbuses
   }
 })

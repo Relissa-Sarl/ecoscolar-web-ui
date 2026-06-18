@@ -3,40 +3,13 @@ import FlagDetailModal from '~/components/admin/FlagDetailModal.vue'
 import PopUp from '~/components/admin/PopUp.vue'
 import Sidebar from '~/components/admin/Sidebar.vue'
 import DeleteConfirmationPopup from '~/components/common/DeleteConfirmationPopup.vue'
-import { ReportReason, type AbuseReportResponse } from '~/types/report'
+import { ReportReason, type AbuseReportAdminResponse } from '~/types/report'
 
 const store = useAdminsStore()
 
 definePageMeta({
   middleware: ['admin', 'auth']
 })
-
-const mock: AbuseReportResponse[] = [
-  {
-    id: 1,
-    reason: ReportReason.INAPPROPRIATE_ADVERT,
-    message: 'This listing is a scam.',
-    reporterUserId: '1fs324-abcde-12345',
-    targetAdvertId: 456,
-    createdAt: '2023-08-01T12:34:56Z'
-  },
-  {
-    id: 2,
-    reason: ReportReason.INAPPROPRIATE_COMMENT,
-    message: 'This listing contains inappropriate content.',
-    reporterUserId: '789',
-    targetAdvertId: 1011,
-    createdAt: '2023-08-02T09:21:43Z'
-  },
-  {
-    id: 3,
-    reason: ReportReason.INAPPROPRIATE_ADVERT,
-    message: 'This listing is spam.',
-    reporterUserId: '1213',
-    targetAdvertId: 1415,
-    createdAt: '2023-08-03T15:47:29Z'
-  }
-]
 
 // Pop-up
 const showPopUp = ref(false)
@@ -61,7 +34,7 @@ const statusFilter = ref('All')
 
 const filteredFlags = computed(() => {
   // let result = store.flags
-  let result = mock
+  let result = store.flags
 
   if (searchQuery.value) {
     const q = searchQuery.value.toLowerCase()
@@ -104,9 +77,9 @@ watch([searchQuery, statusFilter], () => {
 
 // Flag details modal
 const isModalOpen = ref(false)
-const selectedFlag = ref<AbuseReportResponse | null>(null)
+const selectedFlag = ref<AbuseReportAdminResponse | null>(null)
 
-const openFlag = (flag: AbuseReportResponse) => {
+const openFlag = (flag: AbuseReportAdminResponse) => {
   selectedFlag.value = flag
   isModalOpen.value = true
 }
@@ -119,18 +92,18 @@ const closeFlag = () => {
 // Delete flag
 
 const showDeleteConfirm = ref<boolean>(false)
-const flagToDelete = ref<AbuseReportResponse | null>(null)
+const flagToDelete = ref<AbuseReportAdminResponse | null>(null)
 
 const deleteFlag = (flagId: number) => {
   showDeleteConfirm.value = true
-  flagToDelete.value = mock.find(f => f.id === flagId) || null
+  flagToDelete.value = store.flags.find(f => f.id === flagId) || null
 }
 
 const confirmDelete = () => {
   if (flagToDelete.value) {
-    const index = mock.findIndex(f => f.id === flagToDelete.value?.id)
+    const index = store.flags.findIndex(f => f.id === flagToDelete.value?.id)
     if (index !== -1) {
-      mock.splice(index, 1)
+      store.flags.splice(index, 1)
     }
     triggerPopUp('success', 'Advert Deleted', `deleted successfully.`)
 
@@ -146,7 +119,7 @@ const cancelDelete = () => {
 
 onMounted(async () => {
   await store.fetchProfile()
-  await store.fetchFlags()
+  await store.fetchAbuses()
 })
 </script>
 
@@ -235,24 +208,26 @@ onMounted(async () => {
       <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 mb-8 overflow-hidden">
         <table class="w-full text-left">
           <thead class="bg-gray-50 dark:bg-gray-800 text-gray-500 text-xs uppercase">
-            <th class="p-4 font-medium w-1/12">
-              ID
-            </th>
-            <th class="p-4 font-medium w-1/12">
-              Reason
-            </th>
-            <th class="p-4 font-medium w-1/4">
-              Message
-            </th>
-            <th class="p-4 font-medium w-1/4">
-              Reported By
-            </th>
-            <th class="p-4 font-medium w-1/4">
-              Reported On
-            </th>
-            <th class="p-4 font-medium w-1/12">
-              Actions
-            </th>
+            <tr>
+              <th class="p-4 font-medium w-1/12">
+                ID
+              </th>
+              <th class="p-4 font-medium w-1/12">
+                Reason
+              </th>
+              <th class="p-4 font-medium w-1/4">
+                Message
+              </th>
+              <th class="p-4 font-medium w-1/4">
+                Reported By
+              </th>
+              <th class="p-4 font-medium w-1/4">
+                Reported On
+              </th>
+              <th class="p-4 font-medium w-1/12">
+                Actions
+              </th>
+            </tr>
           </thead>
           <tbody
             v-if="!store.isLoading"
@@ -280,12 +255,15 @@ onMounted(async () => {
               </td>
               <td class="p-4">
                 <p class="font-medium">
-                  {{ flag.reporterUserId }}
+                  {{ flag.reporterNickname }}
+                </p>
+                <p class="font-sm text-gray-500">
+                  {{ flag.reporterEmail }}
                 </p>
               </td>
               <td class="p-4">
                 <p class="font-medium">
-                  {{ flag.targetAdvertId }}
+                  {{ flag.advertTitle }}
                 </p>
               </td>
               <td class="p-4 text-right flex">
@@ -353,7 +331,7 @@ onMounted(async () => {
           </button>
         </div>
         <div
-          v-if="(store.flags.length === 0 && !store.isLoading) || paginatedFlags.length === 0"
+          v-if="!store.isLoading && (store.flags.length === 0 || paginatedFlags.length === 0)"
           class="p-8 text-center text-gray-500"
         >
           No flags found.
