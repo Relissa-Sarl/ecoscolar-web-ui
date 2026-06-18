@@ -85,7 +85,7 @@ describe('useTransactionActions', () => {
     expect(mockHistoryService.cancelPurchase).toHaveBeenCalledWith('t1')
   })
 
-  it('executeAction dispute requires reason', async () => {
+  it('executeAction dispute requires reason and description', async () => {
     const { promptAction, executeAction, actionError } = useTransactionActions()
 
     promptAction('dispute', 't1')
@@ -95,16 +95,27 @@ describe('useTransactionActions', () => {
     expect(mockHistoryService.disputePurchase).not.toHaveBeenCalled()
   })
 
-  it('executeAction dispute calls historyService when reason is provided', async () => {
+  it('executeAction dispute requires description even if reason is provided', async () => {
+    const { promptAction, executeAction, disputeReason, actionError } = useTransactionActions()
+
+    promptAction('dispute', 't1')
+    disputeReason.value = 'Damaged item'
+    await executeAction()
+
+    expect(actionError.value).toBe('me.purchases.alerts.error')
+    expect(mockHistoryService.disputePurchase).not.toHaveBeenCalled()
+  })
+
+  it('executeAction dispute calls historyService when reason and description are provided', async () => {
     const { promptAction, executeAction, disputeReason, disputeDescription } = useTransactionActions()
     mockHistoryService.disputePurchase.mockResolvedValueOnce(undefined)
 
     promptAction('dispute', 't1')
     disputeReason.value = 'Damaged item'
-    disputeDescription.value = 'The item arrived broken'
+    disputeDescription.value = 'The screen has multiple deep scratches.'
     await executeAction()
 
-    expect(mockHistoryService.disputePurchase).toHaveBeenCalledWith('t1', 'Damaged item', 'The item arrived broken')
+    expect(mockHistoryService.disputePurchase).toHaveBeenCalledWith('t1', 'Damaged item', 'The screen has multiple deep scratches.')
   })
 
   it('executeAction handles service errors', async () => {

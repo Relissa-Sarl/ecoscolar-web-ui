@@ -104,17 +104,23 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
         <h3 class="mt-1 text-sm font-bold text-slate-900 dark:text-white leading-snug truncate">
           {{ props.purchase.advertTitle }}
         </h3>
-        <div class="flex items-center gap-2 mt-0.5 flex-wrap">
-          <p class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
-            <span>{{ t('me.purchases.seller_label') }} :</span>
-            <span class="font-semibold text-slate-700 dark:text-slate-300">{{ props.purchase.sellerName }}</span>
+        <div class="mt-1 space-y-0.5">
+          <div class="flex items-center gap-2 flex-wrap">
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+              <span>{{ t('me.purchases.seller_label') }} :</span>
+              <span class="font-semibold text-slate-700 dark:text-slate-300">{{ props.purchase.sellerName }}</span>
+            </p>
+            <Stars
+              v-if="localReview"
+              :rating="localReview.rating"
+              :show-text="false"
+              class="scale-75 origin-left"
+            />
+          </div>
+          <p v-if="props.purchase.orderNumber" class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+            <span>{{ t('me.purchases.order_number_label') }} :</span>
+            <span class="font-semibold text-slate-700 dark:text-slate-300 font-mono text-[10px]">{{ props.purchase.orderNumber }}</span>
           </p>
-          <Stars
-            v-if="localReview"
-            :rating="localReview.rating"
-            :show-text="false"
-            class="scale-75 origin-left"
-          />
         </div>
       </div>
 

@@ -5,7 +5,6 @@ import Stars from '../profile/Stars.vue'
 defineProps<{
   isOpen: boolean
   advert: MySaleAdvert
-  isSending: boolean
 }>()
 
 defineEmits(['close'])

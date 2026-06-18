@@ -5,8 +5,8 @@ import AdminUsers from '../../app/pages/me/admin/users.vue'
 const storeMock = {
   user: { firstName: 'John' },
   users: [
-    { id: '1', firstName: 'Alice', lastName: 'Doe', nickname: 'alice', email: 'alice@test.com', roles: ['User'], isBanned: false, isOnboarded: true },
-    { id: '2', firstName: 'Bob', lastName: 'Smith', nickname: 'bob', email: 'bob@test.com', roles: ['User'], isBanned: true, isOnboarded: true }
+    { id: '1', firstName: 'Alice', lastName: 'Doe', nickname: 'alice', email: 'alice@test.com', roles: ['User'], isBanned: false, isOnboarded: true, badReviewsCount: 0, alerteTooBadReviews: false },
+    { id: '2', firstName: 'Bob', lastName: 'Smith', nickname: 'bob', email: 'bob@test.com', roles: ['User'], isBanned: true, isOnboarded: true, badReviewsCount: 6, alerteTooBadReviews: true }
   ],
   isLoading: false,
   fetchProfile: vi.fn(),
@@ -57,6 +57,52 @@ describe('Admin Users Page', () => {
     expect(wrapper.text()).toContain('Bob Smith')
     expect(wrapper.text()).toContain('Active')
     expect(wrapper.text()).toContain('Banned')
+  })
+
+  it('highlights users with too many bad reviews', async () => {
+    const wrapper = mount(AdminUsers, {
+      global: {
+        stubs: {
+          Sidebar: true,
+          UserDetailModal: true,
+          DeleteConfirmationPopup: true,
+          PopUp: true,
+          Icon: true,
+          ProfileBackLink: true
+        }
+      }
+    })
+
+    await flushPromises()
+
+    // Flagged user (Bob, 6 bad reviews) shows the alert badge; Alice (0) does not
+    expect(wrapper.text()).toContain('6 bad reviews')
+    expect(wrapper.text()).not.toContain('0 bad reviews')
+  })
+
+  it('filters users by the At Risk status', async () => {
+    const wrapper = mount(AdminUsers, {
+      global: {
+        stubs: {
+          Sidebar: true,
+          UserDetailModal: true,
+          DeleteConfirmationPopup: true,
+          PopUp: true,
+          Icon: true,
+          ProfileBackLink: true
+        }
+      }
+    })
+
+    await flushPromises()
+
+    const select = wrapper.find('select')
+    await select.setValue('AtRisk')
+    await flushPromises()
+
+    // Only Bob is flagged (alerteTooBadReviews); Alice must be filtered out
+    expect(wrapper.text()).toContain('Bob Smith')
+    expect(wrapper.text()).not.toContain('Alice Doe')
   })
 
   it('filters users by search query', async () => {

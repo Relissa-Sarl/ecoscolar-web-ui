@@ -3,7 +3,7 @@ import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n, useSeoMeta } from '#imports'
 import { getAdvertService } from '~/services/advertService'
-import ErrorIcon from '~/components/paimentState/ErrorIcon.vue'
+import ErrorIcon from '../components/paymentState/ErrorIcon.vue'
 
 const { t } = useI18n()
 const route = useRoute()
