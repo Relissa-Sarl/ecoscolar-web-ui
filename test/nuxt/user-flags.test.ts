@@ -23,10 +23,10 @@ vi.mock('~/services/usersService', () => ({
 }))
 
 const stubs = {
-  PopUp: { template: '<div><slot /></div>' },
-  Sidebar: { template: '<div><slot /></div>' },
-  UserFlagsDetailModal: { template: '<div><slot /></div>' },
-  Icon: { template: '<span class="icon-stub">icon</span>' }
+  PopUp: true,
+  Sidebar: true,
+  UserFlagsDetailModal: true,
+  Icon: true
 }
 
 const mockFlaggedUsers = [
