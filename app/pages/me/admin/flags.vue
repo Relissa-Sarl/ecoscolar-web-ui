@@ -235,24 +235,26 @@ onMounted(async () => {
       <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 mb-8 overflow-hidden">
         <table class="w-full text-left">
           <thead class="bg-gray-50 dark:bg-gray-800 text-gray-500 text-xs uppercase">
-            <th class="p-4 font-medium w-1/12">
-              ID
-            </th>
-            <th class="p-4 font-medium w-1/12">
-              Reason
-            </th>
-            <th class="p-4 font-medium w-1/4">
-              Message
-            </th>
-            <th class="p-4 font-medium w-1/4">
-              Reported By
-            </th>
-            <th class="p-4 font-medium w-1/4">
-              Reported On
-            </th>
-            <th class="p-4 font-medium w-1/12">
-              Actions
-            </th>
+            <tr>
+              <th class="p-4 font-medium w-1/12">
+                ID
+              </th>
+              <th class="p-4 font-medium w-1/12">
+                Reason
+              </th>
+              <th class="p-4 font-medium w-1/4">
+                Message
+              </th>
+              <th class="p-4 font-medium w-1/4">
+                Reported By
+              </th>
+              <th class="p-4 font-medium w-1/4">
+                Reported On
+              </th>
+              <th class="p-4 font-medium w-1/12">
+                Actions
+              </th>
+            </tr>
           </thead>
           <tbody
             v-if="!store.isLoading"
