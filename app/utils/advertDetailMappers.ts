@@ -2,6 +2,7 @@ import type {
   Advert,
   BookReadApiItem,
   ProductReadApiItem,
+  ServiceRead,
   ServiceReadApiItem
 } from '@/types/advert'
 import type { AdvertCatalogDetailApiItem } from '@/types/catalog'
@@ -130,7 +131,7 @@ export function mapProductToAdvert(item: ProductReadApiItem, catalogId: string):
 }
 
 /** GET /v1/adverts/services/{id} — pas de condition (Swagger). */
-export function mapServiceToAdvert(item: ServiceReadApiItem, catalogId: string): Advert {
+export function mapServiceToAdvert(item: ServiceReadApiItem, catalogId: string): ServiceRead {
   const { image, images } = resolveImages(undefined, catalogId)
 
   return {
@@ -153,6 +154,8 @@ export function mapServiceToAdvert(item: ServiceReadApiItem, catalogId: string):
     conditions: [],
     seller: sellerFromApi(item.sellerPseudo, item.userId),
     questions: [],
-    answers: []
+    answers: [],
+    minHours: item.minHours,
+    maxHours: item.maxHours
   }
 }

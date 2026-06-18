@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type { Advert } from '~/types/advert'
+import type { Advert, ServiceRead } from '~/types/advert'
 import { getPaymentService } from '~/services/paymentService'
 
 const props = defineProps<{
   isOpen: boolean
-  advert: Advert | null
+  advert: ServiceRead | null
 }>()
 
 const emit = defineEmits<{
@@ -14,13 +14,13 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
-const sessions = ref(1)
+const MIN_SESSIONS = props.advert?.minHours ?? 1
+const MAX_SESSIONS = props.advert?.maxHours ?? 10
+const PLATFORM_FEE_RATE = 0.10
+
+const sessions = ref(MIN_SESSIONS)
 const isLoading = ref(false)
 const error = ref<string | null>(null)
-
-const MIN_SESSIONS = 1
-const MAX_SESSIONS = 10
-const PLATFORM_FEE_RATE = 0.10
 
 const hourlyRate = computed(() => props.advert?.price ?? 0)
 const subtotal = computed(() => hourlyRate.value * sessions.value)
@@ -44,7 +44,7 @@ const handleClose = () => {
   if (isLoading.value) return
   emit('close')
   setTimeout(() => {
-    sessions.value = 1
+    sessions.value = MIN_SESSIONS
     error.value = null
   }, 300)
 }

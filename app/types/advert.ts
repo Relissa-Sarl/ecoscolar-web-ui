@@ -69,6 +69,11 @@ export interface Advert {
   type: AdvertType
 }
 
+export interface ServiceRead extends Advert {
+  minHours: number
+  maxHours: number
+}
+
 export interface MyAdvert {
   id: number
   type: AdvertType
@@ -166,4 +171,6 @@ export interface ServiceReadApiItem {
   schoolGradeLabel: string
   teachingLanguage: AdvertLanguage
   studyLevel: string
+  minHours: number
+  maxHours: number
 }
