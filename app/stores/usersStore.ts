@@ -95,7 +95,7 @@ export const useUsersStore = defineStore('users', () => {
    * @param email The email address of the user to log in.
    * @param password The password for the user account.
    */
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, redirectTo?: string) => {
     isLoading.value = true
     errors.value = null
 
@@ -107,8 +107,8 @@ export const useUsersStore = defineStore('users', () => {
       user.value = await service.getMyProfile()
       hasLoaded.value = true
 
-      // Redirect to profile page after successful login
-      await navigateTo(localePath('/me/profile'))
+      // Redirect to the provided URL or to the profile page after successful login
+      await navigateTo(redirectTo ?? localePath('/me/profile'))
     } catch (e) {
       errors.value = formatErrors(e as ApiError)
       loggedInCookie.value = null

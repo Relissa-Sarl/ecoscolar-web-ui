@@ -6,6 +6,7 @@ import { getAdvertService } from '~/services/advertService'
 import { useUsersStore } from '~/stores/usersStore'
 import { useAbuseReport } from '~/composables/useAbuseReport'
 import ReportAbuseModal from '~/components/report/ReportAbuseModal.vue'
+import BookingModal from '~/components/booking/BookingModal.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -86,6 +87,7 @@ const isOwnAdvert = computed(() => {
 })
 
 const toast = useToast()
+const isBookingModalOpen = ref(false)
 const answeringQuestionId = ref<number | null>(null)
 
 const handleAskQuestion = async (text: string) => {
@@ -131,6 +133,14 @@ const advertSummary = computed(() => {
     seller: advert.value.seller?.username
   }
 })
+
+const handleReserve = () => {
+  if (!usersStore.isAuthenticated) {
+    navigateTo(localePath(`/login?redirect=${encodeURIComponent(route.fullPath)}`))
+    return
+  }
+  isBookingModalOpen.value = true
+}
 </script>
 
 <template>
@@ -187,6 +197,7 @@ const advertSummary = computed(() => {
           <AdvertActionButtons
             v-if="advert?.seller.id !== usersStore.user?.id"
             :advert="advertSummary"
+            @reserve="handleReserve"
           />
 
           <!-- Bouton Signaler -->
@@ -246,6 +257,12 @@ const advertSummary = computed(() => {
       :target-type="currentCommentId ? 'comment' : 'advert'"
       @close="closeReportModal"
       @submit="submitReport"
+    />
+
+    <BookingModal
+      :is-open="isBookingModalOpen"
+      :advert="advert ?? null"
+      @close="isBookingModalOpen = false"
     />
   </div>
 </template>
