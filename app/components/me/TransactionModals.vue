@@ -72,6 +72,20 @@ const modalDetails = computed(() => {
         confirmText: t('me.sales.actions.renew'),
         confirmClass: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500'
       }
+    case 'confirm_service':
+      return {
+        title: t('me.sales.actions.confirm_service'),
+        description: t('me.sales.alerts.confirm_service_prompt'),
+        confirmText: t('me.sales.actions.confirm_service'),
+        confirmClass: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500'
+      }
+    case 'refuse_service':
+      return {
+        title: t('me.sales.actions.refuse_service'),
+        description: t('me.sales.alerts.refuse_service_prompt'),
+        confirmText: t('me.sales.actions.refuse_service'),
+        confirmClass: 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
+      }
     default:
       return null
   }

@@ -5,6 +5,7 @@ import { useI18n, useSeoMeta } from '#imports'
 import { useCartStore } from '~/stores/cartStore'
 import { getAdvertService } from '~/services/advertService'
 import { getHistoryService } from '~/services/historyService'
+import { getPaymentService } from '~/services/paymentService'
 import SuccessIcon from '../components/paymentState/SuccessIcon.vue'
 import SuccessMainMessage from '../components/paymentState/SuccessMainMessage.vue'
 import SuccessInfos from '../components/paymentState/SuccessInfos.vue'
@@ -43,10 +44,18 @@ const productIds = computed<number[]>(() => {
 
 // Clear the cart when the user lands on the success page and retrive the price information
 onMounted(async () => {
-  const storedTotal = sessionStorage.getItem('last_payment_total')
-  if (storedTotal) {
-    totalAmount.value = parseFloat(storedTotal)
-    sessionStorage.removeItem('last_payment_total')
+  sessionStorage.removeItem('pending_checkout_ids')
+
+  if (stripeSessionId.value) {
+    try {
+      const paymentService = getPaymentService()
+      const session = await paymentService.getSession(stripeSessionId.value)
+      if (session && session.amountTotal !== null) {
+        totalAmount.value = session.amountTotal / 100
+      }
+    } catch (err) {
+      console.error('Failed to retrieve checkout session details:', err)
+    }
   }
 
   // Create transactions and update status to SOLD
