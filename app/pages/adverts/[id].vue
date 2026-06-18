@@ -146,7 +146,7 @@ const handleReserve = () => {
 <template>
   <div class="min-h-screen">
     <Breadcrumb :items="breadcrumbItems" />
-    <pre>{{ advert }}</pre>
+
     <div class="max-w-7xl mx-auto px-6 py-8">
       <div class="mb-8">
         <button

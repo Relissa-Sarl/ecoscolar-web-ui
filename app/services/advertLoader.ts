@@ -61,14 +61,12 @@ export async function loadAdvertData(
     return mapCatalogSummaryToAdvert(summary)
 
   try {
-    const test = await loadAdvertFromTypedEndpoint(
+    return await loadAdvertFromTypedEndpoint(
       advertService,
       summary,
       advertId,
       numericId
     )
-    console.log('test', test)
-    return test
   } catch (error) {
     if (isNotFoundError(error))
       return mapCatalogSummaryToAdvert(summary)
