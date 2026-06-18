@@ -154,9 +154,15 @@ export const useAdminsStore = defineStore('admins', () => {
   const updateFlagStatus = async (id: number, status: TicketStatus) => {
     try {
       const updatedFlag = await service.updateFlagStatus(id, status)
+      if (updatedFlag) {
+        const index = flags.value.findIndex(f => f.id === id)
+        if (index !== -1) {
+          flags.value.splice(index, 1, updatedFlag)
+        }
+      }
       return updatedFlag
     } catch {
-      // ignore error details here; reset admin state
+      return null
     }
   }
 
