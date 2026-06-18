@@ -68,6 +68,15 @@ const daysLeft = computed(() => {
   if (props.sale.status !== AdvertStatus.ACTIVE) return null
   return props.sale.expiresInDays ?? null
 })
+
+const hasTransactionId = computed(() => props.sale.transactionId != null)
+
+const emitTransactionAction = (
+  event: 'confirm-shipping' | 'accept-service' | 'refuse-service' | 'mark-rendered'
+) => {
+  if (props.sale.transactionId == null) return
+  emit(event, props.sale.transactionId)
+}
 </script>
 
 <template>
@@ -198,37 +207,42 @@ const daysLeft = computed(() => {
           </NuxtLink>
 
           <button
-            v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'PAID_WAITING_ACCEPTANCE'"
-            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors"
-            @click="emit('accept-service', props.sale.transactionId!)"
+            v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'PAID_WAITING_ACCEPTANCE' && hasTransactionId"
+            type="button"
+            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors cursor-pointer"
+            @click="emitTransactionAction('accept-service')"
           >
             {{ t('me.sales.actions.accept_service') }}
           </button>
           <button
-            v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'PAID_WAITING_ACCEPTANCE'"
-            class="inline-flex items-center justify-center rounded-lg border border-red-200 dark:border-red-800 bg-red-50 hover:bg-red-100 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 py-1 px-2 text-[10px] font-bold transition-colors"
-            @click="emit('refuse-service', props.sale.transactionId!)"
+            v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'PAID_WAITING_ACCEPTANCE' && hasTransactionId"
+            type="button"
+            class="inline-flex items-center justify-center rounded-lg border border-red-200 dark:border-red-800 bg-red-50 hover:bg-red-100 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 py-1 px-2 text-[10px] font-bold transition-colors cursor-pointer"
+            @click="emitTransactionAction('refuse-service')"
           >
             {{ t('me.sales.actions.refuse_service') }}
           </button>
           <button
-            v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'PAID_WAITING_COMPLETION'"
-            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors"
-            @click="emit('mark-rendered', props.sale.transactionId!)"
+            v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'PAID_WAITING_COMPLETION' && hasTransactionId"
+            type="button"
+            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors cursor-pointer"
+            @click="emitTransactionAction('mark-rendered')"
           >
             {{ t('me.sales.actions.mark_rendered') }}
           </button>
           <button
-            v-if="props.sale.transactionStatus === 'PAID_WAITING_SHIPPING'"
-            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors"
-            @click="emit('confirm-shipping', props.sale.transactionId!)"
+            v-if="props.sale.transactionStatus === 'PAID_WAITING_SHIPPING' && hasTransactionId"
+            type="button"
+            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors cursor-pointer"
+            @click="emitTransactionAction('confirm-shipping')"
           >
             {{ t('me.sales.actions.confirm_shipping') }}
           </button>
 
           <button
-            v-if="props.sale.status === AdvertStatus.EXPIRED || props.sale.status === AdvertStatus.ACTIVE"
-            class="inline-flex items-center justify-center rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 py-1 px-2 text-[10px] font-bold transition-colors"
+            v-if="(props.sale.status === AdvertStatus.EXPIRED || props.sale.status === AdvertStatus.ACTIVE) && props.sale.transactionStatus !== 'PAID_WAITING_ACCEPTANCE'"
+            type="button"
+            class="inline-flex items-center justify-center rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 py-1 px-2 text-[10px] font-bold transition-colors cursor-pointer"
             @click="emit('renew', props.sale.id)"
           >
             {{ t('me.sales.actions.renew') }}

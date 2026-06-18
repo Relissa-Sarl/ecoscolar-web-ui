@@ -2,6 +2,18 @@ import { ref } from 'vue'
 import { useI18n } from '#imports'
 import { getHistoryService } from '~/services/historyService'
 
+const getErrorMessage = (error: unknown): string => {
+  if (error && typeof error === 'object') {
+    const fetchError = error as { data?: { message?: string }, message?: string }
+    if (fetchError.data?.message) return fetchError.data.message
+    if (typeof fetchError.message === 'string' && fetchError.message.length > 0) {
+      return fetchError.message
+    }
+  }
+  if (error instanceof Error) return error.message
+  return String(error)
+}
+
 export type TransactionActionType
   = | 'confirm_reception'
     | 'confirm_shipping'
@@ -88,7 +100,7 @@ export const useTransactionActions = () => {
         onSuccess()
       }
     } catch (e: unknown) {
-      actionError.value = e instanceof Error ? e.message : String(e)
+      actionError.value = getErrorMessage(e)
     } finally {
       isProcessing.value = false
     }

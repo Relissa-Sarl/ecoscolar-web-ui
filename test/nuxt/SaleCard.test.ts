@@ -255,6 +255,23 @@ describe('SaleCard', () => {
     expect(wrapper.emitted('accept-service')?.[0]).toEqual([99])
   })
 
+  it('does not show renew button while waiting for tutoring acceptance', () => {
+    const wrapper = mount(SaleCard, {
+      props: {
+        sale: {
+          ...mockSale,
+          type: 'SERVICE',
+          status: AdvertStatus.ACTIVE,
+          transactionStatus: 'PAID_WAITING_ACCEPTANCE',
+          transactionId: 99
+        }
+      },
+      global: { stubs }
+    })
+
+    expect(wrapper.text()).not.toContain('me.sales.actions.renew')
+  })
+
   it('emits mark-rendered for SERVICE in PAID_WAITING_COMPLETION', async () => {
     const wrapper = mount(SaleCard, {
       props: {
