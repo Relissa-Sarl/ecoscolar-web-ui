@@ -10,6 +10,7 @@ const stubs = {
 const mockFlags = [
   { flagId: 101, reason: 'SPAM_CONTENT', reporterNickname: 'Reporter1', reporterEmail: 'r1@test.com' },
   { flagId: 102, reason: 'INAPPROPRIATE_BEHAVIOR', reporterNickname: 'Reporter2', reporterEmail: 'r2@test.com' }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ] as any
 
 describe('UserFlagsDetailModal', () => {

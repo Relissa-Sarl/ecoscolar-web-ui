@@ -62,6 +62,7 @@ describe('Checkout Page', () => {
     // We can mock window.location.href
     const originalLocation = window.location
     delete (window as unknown as Record<string, unknown>).location
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     window.location = { ...originalLocation, href: '' } as any
 
     const form = wrapper.find('form')
@@ -73,6 +74,7 @@ describe('Checkout Page', () => {
     expect(window.location.href).toBe(mockUrl)
 
     // Restore
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     window.location = originalLocation as any
   })
 

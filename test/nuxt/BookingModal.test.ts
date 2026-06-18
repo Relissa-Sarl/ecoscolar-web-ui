@@ -39,6 +39,7 @@ const mockAdvert = {
   subject: 'Math',
   grade: 'High School',
   school: 'EPFL'
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any
 
 describe('BookingModal', () => {
@@ -104,6 +105,7 @@ describe('BookingModal', () => {
 
     const originalLocation = window.location
     delete (window as unknown as Record<string, unknown>).location
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     window.location = { ...originalLocation, href: '' } as any
 
     const buttons = wrapper.findAll('button')
@@ -117,6 +119,7 @@ describe('BookingModal', () => {
     await new Promise(resolve => setTimeout(resolve, 0))
     expect(window.location.href).toBe(mockUrl)
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     window.location = originalLocation as any
   })
 
