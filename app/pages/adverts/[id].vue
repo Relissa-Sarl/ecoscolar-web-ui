@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Breadcrumb from '~/components/common/Breadcrumb.vue'
 import { AdvertType } from '@/utils/enum/advertType'
-import type { QuestionResponse } from '~/types/advert'
+import type { QuestionResponse, ServiceRead } from '~/types/advert'
 import { getAdvertService } from '~/services/advertService'
 import { useUsersStore } from '~/stores/usersStore'
 import { useAbuseReport } from '~/composables/useAbuseReport'
@@ -260,8 +260,9 @@ const handleReserve = () => {
     />
 
     <BookingModal
+      v-if="advert?.type === AdvertType.SERVICE"
       :is-open="isBookingModalOpen"
-      :advert="advert ?? null"
+      :advert="advert as ServiceRead ?? null"
       @close="isBookingModalOpen = false"
     />
   </div>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type { Advert, ServiceRead } from '~/types/advert'
+import type { ServiceRead } from '~/types/advert'
 import { getPaymentService } from '~/services/paymentService'
 
 const props = defineProps<{
