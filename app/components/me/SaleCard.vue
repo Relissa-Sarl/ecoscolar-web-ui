@@ -206,7 +206,7 @@ const daysLeft = computed(() => {
     <!-- Review Modal -->
     <ReviewModal
       v-model:open="isOpen"
-      :transaction-id="props.sale.id.toString()"
+      :transaction-id="props.sale.transactionId?.toString() ?? ''"
       :name="props.sale.buyerName"
       @success="handleReviewSuccess"
     />
