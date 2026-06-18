@@ -3,9 +3,9 @@ import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n, useSeoMeta } from '#imports'
 import { getAdvertService } from '~/services/advertService'
-import ErrorIcon from '~/components/paimentState/ErrorIcon.vue'
-import ErrorMainMessage from '~/components/paimentState/ErrorMainMessage.vue'
-import PaimentStateButton from '~/components/paimentState/PaimentStateButton.vue'
+import ErrorIcon from '../components/paymentState/ErrorIcon.vue'
+import ErrorMainMessage from '../components/paymentState/ErrorMainMessage.vue'
+import PaimentStateButton from '../components/paymentState/PaimentStateButton.vue'
 
 const { t } = useI18n()
 const route = useRoute()
