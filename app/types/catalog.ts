@@ -9,6 +9,7 @@ export interface AdvertCatalogApiItem {
   type: AdvertType
   sellerId?: number | string
   isbn?: string | null
+  status: AdvertStatus | null
   category?: string | null
   subjects?: string | null
   grade?: string | null

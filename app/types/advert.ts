@@ -62,6 +62,7 @@ export interface Advert {
   grade: string
   school: string
   description: string
+  status: AdvertStatus | null
   conditions: Condition[]
   seller: Seller
   questions?: Question[]
@@ -121,7 +122,7 @@ export interface BookReadApiItem {
   price: number
   publicationDate: string
   notificationDate: string
-  status: AdvertStatus
+  status: AdvertStatus | null
   userId: string
   sellerPseudo: string
   pictures: string[]
@@ -144,7 +145,7 @@ export interface ProductReadApiItem {
   price: number
   publicationDate: string
   notificationDate: string
-  status: AdvertStatus
+  status: AdvertStatus | null
   userId: string
   sellerPseudo: string
   pictures: string[]
@@ -162,7 +163,7 @@ export interface ServiceReadApiItem {
   price: number
   publicationDate: string
   notificationDate: string
-  status: AdvertStatus
+  status: AdvertStatus | null
   userId: string
   sellerPseudo: string
   subjectId: number

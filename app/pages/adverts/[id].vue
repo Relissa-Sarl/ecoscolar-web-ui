@@ -7,6 +7,7 @@ import { useUsersStore } from '~/stores/usersStore'
 import { useAbuseReport } from '~/composables/useAbuseReport'
 import ReportAbuseModal from '~/components/report/ReportAbuseModal.vue'
 import BookingModal from '~/components/booking/BookingModal.vue'
+import { AdvertStatus } from '~/utils/enum/advertStatus'
 
 const route = useRoute()
 const router = useRouter()
@@ -146,7 +147,7 @@ const handleReserve = () => {
 <template>
   <div class="min-h-screen">
     <Breadcrumb :items="breadcrumbItems" />
-
+    <pre>{{ advert }}</pre>
     <div class="max-w-7xl mx-auto px-6 py-8">
       <div class="mb-8">
         <button
@@ -195,7 +196,7 @@ const handleReserve = () => {
             }"
           />
           <AdvertActionButtons
-            v-if="advert?.seller.id !== usersStore.user?.id"
+            v-if="advert?.seller.id !== usersStore.user?.id && advert?.status === AdvertStatus.ACTIVE"
             :advert="advertSummary"
             @reserve="handleReserve"
           />
