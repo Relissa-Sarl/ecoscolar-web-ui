@@ -8,7 +8,7 @@ import { getHistoryService } from '~/services/historyService'
 import SuccessIcon from '../components/paymentState/SuccessIcon.vue'
 import SuccessMainMessage from '../components/paymentState/SuccessMainMessage.vue'
 import SuccessInfos from '../components/paymentState/SuccessInfos.vue'
-import SuccessButton from '../components/paymentState/PaimentStateButton.vue'
+import PaymentStateButton from '../components/paymentState/PaymentStateButton.vue'
 
 definePageMeta({
   middleware: 'auth'
@@ -104,7 +104,7 @@ onMounted(async () => {
       </div>
 
       <!-- Action Buttons -->
-      <SuccessButton />
+      <PaymentStateButton />
     </div>
   </div>
 </template>

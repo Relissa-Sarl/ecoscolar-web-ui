@@ -5,7 +5,7 @@ import { useI18n, useSeoMeta } from '#imports'
 import { getAdvertService } from '~/services/advertService'
 import ErrorIcon from '../components/paymentState/ErrorIcon.vue'
 import ErrorMainMessage from '../components/paymentState/ErrorMainMessage.vue'
-import PaimentStateButton from '../components/paymentState/PaimentStateButton.vue'
+import PaymentStateButton from '../components/paymentState/PaymentStateButton.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -60,7 +60,7 @@ onMounted(async () => {
       <ErrorMainMessage />
 
       <!-- Action Buttons -->
-      <PaimentStateButton />
+      <PaymentStateButton />
     </div>
   </div>
 </template>
