@@ -4,8 +4,8 @@ import { mockNuxtImport } from '@nuxt/test-utils/runtime'
 
 import BookingModal from '~/components/booking/BookingModal.vue'
 
-const { mockCreateCheckoutSession } = vi.hoisted(() => ({
-  mockCreateCheckoutSession: vi.fn()
+const { mockReserveTutoring } = vi.hoisted(() => ({
+  mockReserveTutoring: vi.fn()
 }))
 
 mockNuxtImport('useI18n', () => () => ({
@@ -19,7 +19,7 @@ mockNuxtImport('useI18n', () => () => ({
 
 vi.mock('~/services/paymentService', () => ({
   getPaymentService: () => ({
-    createCheckoutSession: mockCreateCheckoutSession
+    reserveTutoring: mockReserveTutoring
   })
 }))
 
@@ -100,7 +100,7 @@ describe('BookingModal', () => {
     })
 
     const mockUrl = 'https://stripe.com/checkout/456'
-    mockCreateCheckoutSession.mockResolvedValueOnce({ url: mockUrl })
+    mockReserveTutoring.mockResolvedValueOnce({ url: mockUrl })
 
     const originalLocation = window.location
     delete (window as unknown as Record<string, unknown>).location
@@ -112,10 +112,7 @@ describe('BookingModal', () => {
     expect(confirmBtn).toBeDefined()
     await confirmBtn?.trigger('click')
 
-    expect(mockCreateCheckoutSession).toHaveBeenCalledWith({
-      productId: 1,
-      sessions: 1
-    })
+    expect(mockReserveTutoring).toHaveBeenCalledWith(1, 1)
 
     await new Promise(resolve => setTimeout(resolve, 0))
     expect(window.location.href).toBe(mockUrl)
@@ -129,7 +126,7 @@ describe('BookingModal', () => {
       global: { stubs }
     })
 
-    mockCreateCheckoutSession.mockRejectedValueOnce(new Error('Checkout error'))
+    mockReserveTutoring.mockRejectedValueOnce(new Error('Checkout error'))
 
     const buttons = wrapper.findAll('button')
     const confirmBtn = buttons.find(b => b.text().includes('booking.confirm'))
