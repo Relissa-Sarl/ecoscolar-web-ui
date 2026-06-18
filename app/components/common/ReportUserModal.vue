@@ -10,8 +10,8 @@ interface Props {
 const props = defineProps<Props>()
 
 const emits = defineEmits<{
-  'submit': [message: string]
-  'close': []
+  submit: [message: string]
+  close: []
 }>()
 
 const message = ref('')
@@ -44,11 +44,14 @@ const handleSubmit = () => {
         {{ $t('report.title_comment') ? $t('report.message_label').replace('(obligatoire)', '') : 'Signaler cet utilisateur' }}
       </h3>
       <p class="mb-4 text-xs text-slate-500 dark:text-slate-400">
-        Si vous estimez que cet utilisateur ne respecte pas nos conditions d'utilisation ou a un comportement inapproprié, veuillez nous le signaler en détaillant le motif ci-dessous.
+        {{ $t('profile.public.report.description') }}
       </p>
 
       <div class="mb-4">
-        <label for="report-reason" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
+        <label
+          for="report-reason"
+          class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2"
+        >
           {{ $t('report.message_label') }}
         </label>
         <textarea
@@ -59,10 +62,16 @@ const handleSubmit = () => {
           class="w-full p-3 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
           :disabled="isSubmitting"
         />
-        <p v-if="message.trim().length < 5 && message.length > 0" class="mt-1 text-xs text-red-500">
+        <p
+          v-if="message.trim().length < 5 && message.length > 0"
+          class="mt-1 text-xs text-red-500"
+        >
           {{ $t('report.error_min_length') }}
         </p>
-        <p v-if="error" class="mt-2 text-xs text-red-500 font-medium">
+        <p
+          v-if="error"
+          class="mt-2 text-xs text-red-500 font-medium"
+        >
           {{ error }}
         </p>
       </div>
@@ -82,7 +91,10 @@ const handleSubmit = () => {
           :disabled="isSubmitting || message.trim().length < 5"
           @click="handleSubmit"
         >
-          <div v-if="isSubmitting" class="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
+          <div
+            v-if="isSubmitting"
+            class="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"
+          />
           {{ $t('report.submit') }}
         </button>
       </div>

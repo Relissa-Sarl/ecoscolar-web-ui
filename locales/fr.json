@@ -831,7 +831,10 @@
     },
     "public": {
       "error": "Il est actuellement impossible de charger le profil utilisateur. Il se peut que l'utilisateur ne soit pas en public ou que le profil ait été supprimé.",
-      "report": "Signaler cet utilisateur"
+      "report": {
+        "title": "Signaler cet utilisateur",
+        "description": "Si vous estimez que cet utilisateur ne respecte pas nos conditions d'utilisation, veuillez nous le signaler."
+      }
     },
     "reviews": {
       "title": "Avis reçus",

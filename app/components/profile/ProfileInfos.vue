@@ -72,7 +72,7 @@ const profileMenuLink = (path: string) => localePath({
           d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a4.873 4.873 0 003.713-4.748V5.09a4.873 4.873 0 00-3.713-4.748l-3.114.732a9 9 0 01-6.086-.71l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"
         />
       </svg>
-      <span>{{ $t('profile.public.report') }}</span>
+      <span>{{ $t('profile.public.report.title') }}</span>
     </button>
 
     <hr
