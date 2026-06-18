@@ -2,16 +2,22 @@
 import FormErrors from '../common/FormErrors.vue'
 
 const localePath = useLocalePath()
+const route = useRoute()
 const usersStore = useUsersStore()
 
 // Initialize the login form with empty email and password fields
 const loginForm = ref({ email: '', password: '' })
 
+const redirectTarget = computed(() => {
+  const r = route.query.redirect
+  return typeof r === 'string' && r.startsWith('/') ? r : undefined
+})
+
 /**
  * Handle the login form submission by calling the login method of the users store with the email and password from the form.
  */
 const handleLogin = async () => {
-  await usersStore.login(loginForm.value.email, loginForm.value.password)
+  await usersStore.login(loginForm.value.email, loginForm.value.password, redirectTarget.value)
 }
 
 const { globalErrors, hasErrors } = useFormErrors(() => usersStore.errors, 'login.errors')

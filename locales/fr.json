@@ -238,7 +238,11 @@
         "dispute_ongoing": "Un litige est actuellement en cours pour cette commande. Notre équipe l'examine.",
         "cancel_prompt": "Voulez-vous vraiment annuler cette commande ? Vous serez remboursé.",
         "cancel_success": "Commande annulée avec succès.",
-        "error": "Erreur : {message}"
+        "error": "Erreur : {message}",
+        "service_awaiting_tutor": "En attente de confirmation du tuteur.",
+        "service_sessions": "{n} séance(s) réservée(s)",
+        "service_confirmed_by_tutor": "Le tuteur a confirmé votre cours. Vous serez contacté prochainement.",
+        "service_refused_by_tutor": "Le tuteur a refusé ce cours. Vous serez remboursé sous 5 à 10 jours ouvrés."
       }
     },
     "sales": {
@@ -257,7 +261,9 @@
       },
       "actions": {
         "confirm_shipping": "J'ai expédié l'article",
-        "renew": "Renouveler l'annonce"
+        "renew": "Renouveler l'annonce",
+        "confirm_service": "Confirmer le cours",
+        "refuse_service": "Refuser le cours"
       },
       "alerts": {
         "confirm_shipping_prompt": "Avez-vous vraiment expédié l'article ?",
@@ -265,6 +271,8 @@
         "renew_prompt": "Souhaitez-vous vraiment renouveler cette annonce pour 30 jours supplémentaires ?",
         "renew_success": "Votre annonce a été renouvelée pour 30 jours supplémentaires.",
         "dispute_ongoing": "Un litige a été ouvert par l'acheteur. Notre équipe l'examine.",
+        "confirm_service_prompt": "Confirmez-vous avoir donné ce cours ou être disponible pour le donner ? L'élève sera notifié.",
+        "refuse_service_prompt": "Êtes-vous sûr de vouloir refuser ce cours ? L'élève sera remboursé et notifié.",
         "error": "Erreur : {message}"
       },
       "timer": {
@@ -877,5 +885,36 @@
     "success": "Votre signalement a bien été enregistré. Merci pour votre aide !",
     "error": "Une erreur est survenue lors de l'envoi de votre signalement.",
     "error_min_length": "Ton signalement doit contenir au moins 5 caractères pour être pris en compte."
+  },
+  "booking": {
+    "title": "Réserver un cours",
+    "subtitle": "Paiement sécurisé via Stripe",
+    "close": "Fermer",
+    "tutor_label": "Tuteur :",
+    "rate_label": "Tarif",
+    "sessions_label": "Nombre de séances",
+    "session_singular": "séance",
+    "session_plural": "séances",
+    "sessions_hint": "Entre {min} et {max} séances par réservation",
+    "decrease": "Diminuer le nombre de séances",
+    "increase": "Augmenter le nombre de séances",
+    "price_summary": "Récapitulatif",
+    "subtotal": "{rate} CHF/h × {sessions} séance(s)",
+    "platform_fee": "Frais de plateforme (10%)",
+    "total": "Total",
+    "protection_title": "Protection Acheteur",
+    "protection_text": "Paiement bloqué jusqu'à confirmation du service rendu.",
+    "login_to_book": "Se connecter pour réserver",
+    "login_to_book_tooltip": "Vous devez être connecté pour réserver un cours",
+    "login_to_buy": "Se connecter pour acheter",
+    "login_to_buy_tooltip": "Vous devez être connecté pour acheter un article",
+    "confirm": "Confirmer et payer",
+    "cancel": "Annuler",
+    "loading": "Redirection vers Stripe...",
+    "terms_note": "En confirmant, vous acceptez les conditions générales de vente EcoScolar.",
+    "errors": {
+      "init_failed": "Erreur lors de l'initialisation du paiement. Veuillez réessayer.",
+      "general": "Une erreur est survenue. Veuillez réessayer."
+    }
   }
 }

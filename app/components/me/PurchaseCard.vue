@@ -117,7 +117,10 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
               class="scale-75 origin-left"
             />
           </div>
-          <p v-if="props.purchase.orderNumber" class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+          <p
+            v-if="props.purchase.orderNumber"
+            class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1"
+          >
             <span>{{ t('me.purchases.order_number_label') }} :</span>
             <span class="font-semibold text-slate-700 dark:text-slate-300 font-mono text-[10px]">{{ props.purchase.orderNumber }}</span>
           </p>
@@ -134,6 +137,52 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
         />
         <p class="leading-relaxed">
           {{ t('me.purchases.alerts.dispute_ongoing') }}
+        </p>
+      </div>
+
+      <!-- Bannière statut service réservé -->
+      <div
+        v-if="props.purchase.type === 'SERVICE' && props.purchase.status === 'SERVICE_RESERVED'"
+        class="mt-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900/50 rounded-lg p-2.5 flex items-start gap-2 text-xs text-amber-700 dark:text-amber-400 font-medium"
+      >
+        <UIcon
+          name="i-heroicons-clock"
+          class="w-4 h-4 shrink-0 mt-0.5"
+        />
+        <p class="leading-relaxed">
+          {{ t('me.purchases.alerts.service_awaiting_tutor') }}
+          <span
+            v-if="props.purchase.sessions"
+            class="block mt-0.5 font-normal text-amber-600 dark:text-amber-500"
+          >{{ t('me.purchases.alerts.service_sessions', { n: props.purchase.sessions }) }}</span>
+        </p>
+      </div>
+
+      <!-- Bannière service confirmé par le tuteur -->
+      <div
+        v-if="props.purchase.type === 'SERVICE' && props.purchase.status === 'SERVICE_CONFIRMED'"
+        class="mt-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-900/50 rounded-lg p-2.5 flex items-start gap-2 text-xs text-emerald-700 dark:text-emerald-400 font-medium"
+      >
+        <UIcon
+          name="i-heroicons-check-circle"
+          class="w-4 h-4 shrink-0 mt-0.5"
+        />
+        <p class="leading-relaxed">
+          {{ t('me.purchases.alerts.service_confirmed_by_tutor') }}
+        </p>
+      </div>
+
+      <!-- Bannière service refusé par le tuteur -->
+      <div
+        v-if="props.purchase.type === 'SERVICE' && props.purchase.status === 'SERVICE_REFUSED'"
+        class="mt-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50 rounded-lg p-2.5 flex items-start gap-2 text-xs text-red-700 dark:text-red-400 font-medium"
+      >
+        <UIcon
+          name="i-heroicons-x-circle"
+          class="w-4 h-4 shrink-0 mt-0.5"
+        />
+        <p class="leading-relaxed">
+          {{ t('me.purchases.alerts.service_refused_by_tutor') }}
         </p>
       </div>
 

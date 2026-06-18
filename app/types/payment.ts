@@ -1,7 +1,9 @@
 export interface CheckoutRequest {
   productId: number
   productIds?: number[]
-  productPrice: string
+  productPrice?: string
+  shippingMethod?: 'post' | 'handToHand'
+  sessions?: number
 }
 
 export interface CheckoutResponse {

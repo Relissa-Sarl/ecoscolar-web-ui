@@ -20,12 +20,14 @@ const { data: purchases, pending, error, refresh } = await useAsyncData(
 
 const activeTab = ref<'ongoing' | 'past'>('ongoing')
 
+const FINAL_PURCHASE_STATUSES = ['COMPLETED', 'CANCELLED', 'SERVICE_CONFIRMED', 'SERVICE_REFUSED']
+
 const filteredPurchases = computed(() => {
   if (!purchases.value) return []
   if (activeTab.value === 'ongoing') {
-    return purchases.value.filter(p => p.status !== 'COMPLETED' && p.status !== 'CANCELLED')
+    return purchases.value.filter(p => !FINAL_PURCHASE_STATUSES.includes(p.status))
   } else {
-    return purchases.value.filter(p => p.status === 'COMPLETED' || p.status === 'CANCELLED')
+    return purchases.value.filter(p => FINAL_PURCHASE_STATUSES.includes(p.status))
   }
 })
 
