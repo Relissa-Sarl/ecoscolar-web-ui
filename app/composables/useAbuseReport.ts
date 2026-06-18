@@ -12,7 +12,7 @@ export const useAbuseReport = () => {
   const reportError = ref<string | null>(null)
   const currentAdvertId = ref<number | null>(null)
   const currentCommentId = ref<number | null>(null)
-  const reportedItems = useCookie<string[]> ('ecoscolar_reported_items', { 
+  const reportedItems = useCookie<string[]> ('ecoscolar_reported_items', {
     default: () => [],
     maxAge: 60 * 60 * 24
   })
