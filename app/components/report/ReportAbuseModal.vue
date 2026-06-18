@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useI18n } from '#imports'
 
 const props = defineProps<{
@@ -38,13 +38,15 @@ const description = computed(() => {
     : t('report.description_advert')
 })
 
+watch(() => props.isOpen, (newIsOpen) => {
+  if (newIsOpen) {
+    message.value = ''
+  }
+})
+
 const handleClose = () => {
   if (!props.isProcessing) {
     emits('close')
-    // Reset form after a short delay to allow transition
-    setTimeout(() => {
-      message.value = ''
-    }, 300)
   }
 }
 

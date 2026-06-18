@@ -52,6 +52,7 @@ describe('PublicQuestions', () => {
           rating: 5,
           reviews: 10
         },
+        questions: [],
         canAsk: true
       },
       global: globalOptions

@@ -11,7 +11,7 @@ import BookingModal from '~/components/booking/BookingModal.vue'
 const route = useRoute()
 const router = useRouter()
 const localePath = useLocalePath()
-const { isReportModalOpen, isReporting, reportError, currentCommentId, openReportModal, closeReportModal, submitReport } = useAbuseReport()
+const { isReportModalOpen, isReporting, reportError, currentCommentId, openReportModal, closeReportModal, submitReport, hasReportedComment, hasReportedAdvert } = useAbuseReport()
 
 function goBack() {
   const previous = router.options.history.state.back
@@ -202,7 +202,7 @@ const handleReserve = () => {
 
           <!-- Bouton Signaler -->
           <div
-            v-if="usersStore.isAuthenticated && advert?.seller.id !== usersStore.user?.id"
+            v-if="usersStore.isAuthenticated && advert && advert.seller.id !== usersStore.user?.id && !hasReportedAdvert(Number(advert.id))"
             class="pt-4 border-t border-slate-200 dark:border-slate-800"
           >
             <button
@@ -239,10 +239,12 @@ const handleReserve = () => {
         <AdvertPublicQuestions
           :seller="advert.seller"
           :is-authenticated="usersStore.isAuthenticated"
+          :current-username="usersStore.user?.nickname"
           :can-ask="usersStore.isAuthenticated && !isOwnAdvert"
           :can-answer="isOwnAdvert"
           :answering-question-id="answeringQuestionId"
           :questions="advertQuestions || []"
+          :has-reported-comment="hasReportedComment"
           @ask-question="handleAskQuestion"
           @answer-question="handleAnswerQuestion"
           @report-comment="(commentId: number) => openReportModal(Number(advert!.id), commentId)"
