@@ -110,7 +110,10 @@ const form = ref({
   edition: '',
   isbn: '',
   bookCategoryId: 1,
-  writtenLanguage: 'FR'
+  writtenLanguage: 'FR',
+
+  maxHours: 1,
+  minHours: 1
 })
 
 const MAX_IMAGES = 5
@@ -169,6 +172,8 @@ interface DetailedAdvertData {
   isbn?: string | null
   bookCategoryId?: number | null
   writtenLanguage?: string | null
+  maxHours?: number | null
+  minHours?: number | null
 }
 
 // Sync form data if initialData is provided (in modify mode)
@@ -200,7 +205,9 @@ watch(() => props.initialData, (newData) => {
       edition: data.edition ?? '',
       isbn: data.isbn ?? '',
       bookCategoryId: data.bookCategoryId ?? 1,
-      writtenLanguage: data.writtenLanguage ?? 'FR'
+      writtenLanguage: data.writtenLanguage ?? 'FR',
+      maxHours: data.maxHours ?? 1,
+      minHours: data.minHours ?? 1
     }
   }
 }, { immediate: true })
@@ -405,6 +412,17 @@ const validateForm = (): boolean => {
   }
 
   return Object.keys(errors.value).length === 0
+}
+
+const handleMinMaxHoursChange = () => {
+  if (form.value.minHours > form.value.maxHours)
+    form.value.maxHours = form.value.minHours
+
+  if (form.value.maxHours < 1)
+    form.value.maxHours = 1
+
+  if (form.value.minHours < 1)
+    form.value.minHours = 1
 }
 
 const handleSubmit = () => {
@@ -685,6 +703,26 @@ const handleSubmit = () => {
           label="studyLevel"
           label-key="studyLevel"
           type="text"
+        />
+        <FormInput
+          v-show="category == AdvertType.SERVICE"
+          v-model="form.minHours"
+          :error="errors.minHours"
+          label="minHours"
+          label-key="minHours"
+          type="number"
+          min="0"
+          @input="handleMinMaxHoursChange"
+        />
+        <FormInput
+          v-show="category == AdvertType.SERVICE"
+          v-model="form.maxHours"
+          :error="errors.maxHours"
+          label="maxHours"
+          label-key="maxHours"
+          type="number"
+          min="0"
+          @input="handleMinMaxHoursChange"
         />
         <FormTextArea
           v-model="form.description"

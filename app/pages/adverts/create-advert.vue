@@ -66,7 +66,9 @@ const handleCreate = async (formData: Partial<ModifyAdvertForm>, category: Adver
           subjectId: formData.subjectId,
           schoolGradeId: formData.schoolGradeId,
           teachingLanguage: formData.teachingLanguage,
-          studyLevel: formData.studyLevel
+          studyLevel: formData.studyLevel,
+          maxHours: formData.maxHours,
+          minHours: formData.minHours
         }
         await advertService.createServiceAdvert(payload)
         break

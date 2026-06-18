@@ -106,6 +106,9 @@ export interface ModifyAdvertForm {
   isbn: string | null
   bookCategoryId: number | null
   writtenLanguage: string | null
+
+  maxHours: number | null
+  minHours: number | null
 }
 
 /** GET /api/v1/adverts/books/{id} */
