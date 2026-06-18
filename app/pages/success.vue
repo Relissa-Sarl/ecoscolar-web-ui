@@ -32,14 +32,6 @@ const stripeSessionId = computed(() => {
 
 const displayedOrderNumber = ref<string | null>(null)
 
-const productIds = computed<number[]>(() => {
-  const pParam = route.query.productIds
-  if (!pParam) return []
-  const val = Array.isArray(pParam) ? pParam[0] : pParam
-  if (!val) return []
-  return val.split(',').map(Number).filter(n => !isNaN(n))
-})
-
 // Clear the cart when the user lands on the success page and retrive the price information
 onMounted(async () => {
   sessionStorage.removeItem('pending_checkout_ids')
