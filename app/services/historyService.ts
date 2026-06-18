@@ -19,6 +19,8 @@ export interface Purchase {
   sellerName: string
   orderNumber?: string | null
   review?: ReviewDto | null
+  type?: string
+  sessions?: number
 }
 
 export interface MySaleAdvert {
@@ -53,6 +55,8 @@ export interface HistoryService {
   createReview: (transactionId: string, rating: number, comment?: string) => Promise<void>
   createTransactions: (advertIds: number[], stripeSessionId: string | null) => Promise<CreatedTransaction[]>
   renewAdvert: (advertId: string | number) => Promise<void>
+  confirmService: (transactionId: string) => Promise<void>
+  refuseService: (transactionId: string) => Promise<void>
 }
 
 export interface CreatedTransaction {
@@ -117,6 +121,14 @@ export function createHistoryService({ apiClient }: HistoryServiceDependencies):
 
     async renewAdvert(advertId: string | number): Promise<void> {
       await apiClient(`/me/sales/${advertId}/renew`, { method: 'POST' })
+    },
+
+    async confirmService(transactionId: string): Promise<void> {
+      await apiClient(`/transactions/${transactionId}/confirm-service`, { method: 'POST' })
+    },
+
+    async refuseService(transactionId: string): Promise<void> {
+      await apiClient(`/transactions/${transactionId}/refuse-service`, { method: 'POST' })
     }
   }
 }

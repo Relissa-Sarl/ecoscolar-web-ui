@@ -121,7 +121,7 @@ const handleCheckout = async () => {
     const response = await paymentService.createCheckoutSession({
       productId: firstItem ? Number(firstItem.id) : 0,
       productIds: cartItems.value.map(item => Number(item.id)),
-      productPrice: total.value.toFixed(2)
+      shippingMethod: shippingMethod.value
     })
     // open stripe checkout page
     if (response && response.url) {
