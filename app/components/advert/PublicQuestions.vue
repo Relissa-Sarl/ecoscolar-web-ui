@@ -4,7 +4,7 @@ import type { Seller, QuestionResponse } from '@/types/advert'
 
 interface Props {
   seller: Seller
-  questions: QuestionResponse[]
+  questions?: QuestionResponse[]
   canAsk?: boolean
   canAnswer?: boolean
   isAuthenticated?: boolean

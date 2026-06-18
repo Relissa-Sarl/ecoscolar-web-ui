@@ -62,8 +62,9 @@ export const useAbuseReport = () => {
         title: t('report.success'),
         color: 'success'
       })
-    } catch (e: any) {
-      if (e?.data?.errors?.Message) {
+    } catch (e: unknown) {
+      const apiError = e as { data?: { errors?: { Message?: string[] } }, message?: string }
+      if (apiError?.data?.errors?.Message) {
         reportError.value = t('report.error_min_length')
       } else {
         reportError.value = t('report.error')
