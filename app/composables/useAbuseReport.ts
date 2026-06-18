@@ -14,7 +14,7 @@ export const useAbuseReport = () => {
   const currentCommentId = ref<number | null>(null)
   const reportedItems = useCookie<string[]> ('ecoscolar_reported_items', { 
     default: () => [],
-    maxAge: 60 * 60 * 24 // 1 jour
+    maxAge: 60 * 60 * 24
   })
 
   const hasReportedComment = (commentId: number) => {
