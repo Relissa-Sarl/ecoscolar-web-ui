@@ -20,7 +20,7 @@ export interface QuestionResponse {
 }
 
 export interface Seller {
-  id?: string
+  id: string
   avatar: string
   username: string
   zip: string
@@ -62,11 +62,17 @@ export interface Advert {
   grade: string
   school: string
   description: string
+  status: AdvertStatus | null
   conditions: Condition[]
   seller: Seller
   questions?: Question[]
   answers?: Answer[]
   type: AdvertType
+}
+
+export interface ServiceRead extends Advert {
+  minHours: number
+  maxHours: number
 }
 
 export interface MyAdvert {
@@ -106,6 +112,9 @@ export interface ModifyAdvertForm {
   isbn: string | null
   bookCategoryId: number | null
   writtenLanguage: string | null
+
+  maxHours: number | null
+  minHours: number | null
 }
 
 /** GET /api/v1/adverts/books/{id} */
@@ -116,7 +125,7 @@ export interface BookReadApiItem {
   price: number
   publicationDate: string
   notificationDate: string
-  status: AdvertStatus
+  status: AdvertStatus | null
   userId: string
   sellerPseudo: string
   pictures: string[]
@@ -139,7 +148,7 @@ export interface ProductReadApiItem {
   price: number
   publicationDate: string
   notificationDate: string
-  status: AdvertStatus
+  status: AdvertStatus | null
   userId: string
   sellerPseudo: string
   pictures: string[]
@@ -157,7 +166,7 @@ export interface ServiceReadApiItem {
   price: number
   publicationDate: string
   notificationDate: string
-  status: AdvertStatus
+  status: AdvertStatus | null
   userId: string
   sellerPseudo: string
   subjectId: number
@@ -166,4 +175,6 @@ export interface ServiceReadApiItem {
   schoolGradeLabel: string
   teachingLanguage: AdvertLanguage
   studyLevel: string
+  minHours: number
+  maxHours: number
 }

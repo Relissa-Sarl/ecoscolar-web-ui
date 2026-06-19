@@ -9,14 +9,24 @@ export interface AdvertCatalogApiItem {
   type: AdvertType
   sellerId?: number | string
   isbn?: string | null
+  status: AdvertStatus | null
   category?: string | null
   subjects?: string | null
   grade?: string | null
+  imageUrl?: string | null
 }
 
 export interface AdvertCatalogDetailApiItem extends AdvertCatalogApiItem {
   description: string
   imageUrl?: string | null
+}
+
+export interface CatalogSummaryPageApiResponse {
+  items: AdvertCatalogApiItem[]
+  page: number
+  pageSize: number
+  totalItems: number
+  totalPages: number
 }
 
 export type CatalogCategoryTab = 'all' | 'textbooks' | 'supplies' | 'tutoring'
@@ -53,7 +63,7 @@ export interface CatalogListing {
   serviceBadge?: CatalogServiceBadge
   metaLine?: string
   location: string
-  imageUrl: string
+  imageUrl?: string
   hourly: boolean
   bookCategoryName?: string
   schoolGradeName?: string
@@ -65,6 +75,10 @@ export interface CatalogListing {
 
 export interface CatalogFetchResult {
   items: AdvertCatalogApiItem[]
+  page: number
+  pageSize: number
+  totalItems: number
+  totalPages: number
   fromFallback: boolean
   hadError: boolean
 }

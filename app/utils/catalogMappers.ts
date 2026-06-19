@@ -41,7 +41,7 @@ export function enrichCatalogItem(item: AdvertCatalogApiItem, index: number): Ca
     categoryTab,
     metaLine,
     location: `${1005 + index} Lausanne`,
-    imageUrl: `https://picsum.photos/seed/ecoscolar_${String(item.id)}_400/520/440`,
+    imageUrl: item.imageUrl ?? undefined,
     bookCategoryName: item.category ?? undefined,
     schoolGradeName: item.grade ?? undefined,
     subjectName: item.subjects ?? undefined

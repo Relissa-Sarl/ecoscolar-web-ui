@@ -28,9 +28,11 @@ export interface AdvertService {
   updateServiceAdvert: (id: number, data: Partial<ModifyAdvertForm>) => Promise<void>
   updateBookAdvert: (id: number, data: Partial<ModifyAdvertForm>) => Promise<void>
 
-  createProductAdvert: (data: CreateAdvertData) => Promise<void>
+  createProductAdvert: (data: CreateAdvertData) => Promise<{ id: number }>
   createServiceAdvert: (data: CreateAdvertData) => Promise<void>
-  createBookAdvert: (data: CreateAdvertData) => Promise<void>
+  createBookAdvert: (data: CreateAdvertData) => Promise<{ id: number }>
+
+  uploadPictures: (advertId: number, files: File[]) => Promise<void>
 
   deleteAdvert: (id: number) => Promise<void>
   updateAdvertStatus: (id: number, status: string) => Promise<void>
@@ -70,14 +72,26 @@ export function createAdvertService({ apiClient }: AdvertServiceDependencies): A
     apiClient<unknown>(`${ADVERTS_PATH}/books/${id}`, { method: 'PUT', body: data })
   }
 
-  const createProductAdvert = async (data: CreateAdvertData): Promise<void> => {
-    await apiClient<unknown>(`${ADVERTS_PATH}/products`, { method: 'POST', body: data })
+  const createProductAdvert = async (data: CreateAdvertData): Promise<{ id: number }> => {
+    return await apiClient<{ id: number }>(`${ADVERTS_PATH}/products`, { method: 'POST', body: data })
   }
   const createServiceAdvert = async (data: CreateAdvertData): Promise<void> => {
     await apiClient<unknown>(`${ADVERTS_PATH}/services`, { method: 'POST', body: data })
   }
-  const createBookAdvert = async (data: CreateAdvertData): Promise<void> => {
-    await apiClient<unknown>(`${ADVERTS_PATH}/books`, { method: 'POST', body: data })
+  const createBookAdvert = async (data: CreateAdvertData): Promise<{ id: number }> => {
+    return await apiClient<{ id: number }>(`${ADVERTS_PATH}/books`, { method: 'POST', body: data })
+  }
+
+  const uploadPictures = async (advertId: number, files: File[]): Promise<void> => {
+    if (!files.length) return
+    const formData = new FormData()
+    for (const file of files) {
+      formData.append('files', file)
+    }
+    await apiClient<unknown>(`${ADVERTS_PATH}/${advertId}/pictures`, {
+      method: 'POST',
+      body: formData
+    })
   }
 
   const deleteAdvert = async (id: number): Promise<void> => {
@@ -111,6 +125,8 @@ export function createAdvertService({ apiClient }: AdvertServiceDependencies): A
     createProductAdvert,
     createServiceAdvert,
     createBookAdvert,
+
+    uploadPictures,
 
     deleteAdvert,
     updateAdvertStatus

@@ -11,7 +11,7 @@ import { AdvertType } from '~/utils/enum/advertType'
 const store = useAdminsStore()
 
 definePageMeta({
-  middleware: ['admin']
+  middleware: ['admin', 'auth']
 })
 
 // Pop-up
@@ -160,7 +160,7 @@ const confirmDelete = async () => {
       const isStillPresent = store.adverts.some(a => a.id === advertToDelete.value?.id)
 
       if (isStillPresent) {
-        triggerPopUp('error', 'Advert Status Update Failed', `An error occurred while deleting the advert. Please try again later.`)
+        triggerPopUp('error', 'Advert Delete Failed', `An error occurred while deleting the advert. Please try again later.`)
       } else {
         triggerPopUp('success', 'Advert Deleted', `deleted successfully.`)
       }
@@ -170,7 +170,7 @@ const confirmDelete = async () => {
     } catch (error) {
       console.error('Error toggling advert status:', error)
       showPopUp.value = true
-      triggerPopUp('error', 'Advert Status Update Failed', `An error occurred while deleting the advert. Please try again later.`)
+      triggerPopUp('error', 'Advert Delete Failed', `An error occurred while deleting the advert. Please try again later.`)
     } finally {
       showDeleteConfirm.value = false
       advertToDelete.value = null
@@ -345,7 +345,7 @@ onMounted(async () => {
               </td>
               <td class="p-4">
                 <p class="font-medium">
-                  {{ advert.price }} CHF<span v-if="advert.type === 'SERVICE'">/h</span>
+                  {{ formatPrice(advert.price) }} CHF<span v-if="advert.type === 'SERVICE'">/h</span>
                 </p>
                 <p class="text-xs text-gray-500 truncate w-64">
                   {{ advert.buyerName || 'No buyer yet' }}
@@ -375,8 +375,8 @@ onMounted(async () => {
                 </button>
                 <button
                   class="ml-2 text-gray-400 transition-colors font-medium text-sm"
-                  :disabled="advert.status === AdvertStatus.BLOCKED || advert.status === AdvertStatus.SOLD"
-                  :class="advert.status === AdvertStatus.BLOCKED || advert.status === AdvertStatus.SOLD ? 'disabled:opacity-50 hover:text-gray-400' : 'hover:text-red-600 cursor-pointer'"
+                  :disabled="advert.status === AdvertStatus.BLOCKED || advert.status === AdvertStatus.SOLD || advert.status === AdvertStatus.PAUSED"
+                  :class="advert.status === AdvertStatus.BLOCKED || advert.status === AdvertStatus.SOLD || advert.status === AdvertStatus.PAUSED ? 'disabled:opacity-50 hover:text-gray-400 cursor-not-allowed' : 'hover:text-red-600 cursor-pointer'"
                   @click="blockAdvert(advert.id)"
                 >
                   <Icon
@@ -386,8 +386,8 @@ onMounted(async () => {
                 </button>
                 <button
                   class="ml-2 text-gray-400 transition-colors font-medium text-sm"
-                  :disabled="advert.status === AdvertStatus.SOLD"
-                  :class="advert.status === AdvertStatus.SOLD ? 'disabled:opacity-50 hover:text-gray-400' : 'hover:text-red-600 cursor-pointer'"
+                  :disabled="advert.status === AdvertStatus.SOLD || advert.status === AdvertStatus.PAUSED"
+                  :class="advert.status === AdvertStatus.SOLD || advert.status === AdvertStatus.PAUSED ? 'disabled:opacity-50 hover:text-gray-400 cursor-not-allowed' : 'hover:text-red-600 cursor-pointer'"
                   @click="deleteAdvert(advert.id)"
                 >
                   <Icon

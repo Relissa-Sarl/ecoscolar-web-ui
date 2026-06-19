@@ -21,13 +21,11 @@ watch(() => props.images, (newImages) => {
   <div>
     <!-- Main Image -->
     <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden mb-4 h-96 flex items-center justify-center">
-      <NuxtImg
+      <img
         :src="selectedImage"
         :alt="title"
-        class="w-full h-full object-cover"
-        width="600"
-        height="800"
-      />
+        class="w-full h-full object-contain"
+      >
     </div>
 
     <!-- Thumbnail Gallery -->
@@ -42,13 +40,11 @@ watch(() => props.images, (newImages) => {
         :aria-pressed="selectedImage === img"
         @click="selectedImage = img"
       >
-        <NuxtImg
+        <img
           :src="img"
           alt=""
           class="w-full h-20 object-cover"
-          width="100"
-          height="100"
-        />
+        >
       </button>
     </div>
   </div>

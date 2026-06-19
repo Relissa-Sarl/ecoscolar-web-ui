@@ -40,6 +40,18 @@ describe('catalogFilterUtils', () => {
       expect(localizedRefLabel(subjects[0], 'fr')).toBe('Français')
     })
 
+    it('returns the Italian label when locale is it', () => {
+      expect(localizedRefLabel(subjects[0], 'it')).toBe('Francese')
+    })
+
+    it('returns the German label when locale is de', () => {
+      expect(localizedRefLabel(subjects[0], 'de')).toBe('Französisch')
+    })
+
+    it('returns the default name for unknown locale', () => {
+      expect(localizedRefLabel(subjects[0], 'en')).toBe('Français')
+    })
+
     it('falls back to name when localized field is empty', () => {
       expect(localizedRefLabel({ name: 'Default', nameFr: '', nameIt: '', nameDe: '' }, 'fr')).toBe('Default')
     })

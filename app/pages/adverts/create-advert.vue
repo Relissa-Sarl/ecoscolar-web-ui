@@ -17,10 +17,12 @@ const localePath = useLocalePath()
 const isSubmitting = ref(false)
 const errorMessage = ref('')
 
-const handleCreate = async (formData: Partial<ModifyAdvertForm>, category: AdvertType) => {
+const handleCreate = async (formData: Partial<ModifyAdvertForm>, category: AdvertType, files: File[] = []) => {
   isSubmitting.value = true
   errorMessage.value = ''
   try {
+    let advertId: number | null = null
+
     switch (category) {
       case AdvertType.PRODUCT: {
         const payload = {
@@ -31,9 +33,9 @@ const handleCreate = async (formData: Partial<ModifyAdvertForm>, category: Adver
           condition: formData.condition,
           weight: formData.weight,
           productCategoryId: formData.productCategoryId
-          // pictures: formData.pictures
         }
-        await advertService.createProductAdvert(payload)
+        const result = await advertService.createProductAdvert(payload)
+        advertId = result.id
         break
       }
       case AdvertType.BOOK: {
@@ -44,7 +46,6 @@ const handleCreate = async (formData: Partial<ModifyAdvertForm>, category: Adver
           userId: userStore.user?.id,
           condition: formData.condition,
           weight: formData.weight,
-          // pictures: formData.pictures,
           author: formData.author,
           publisher: formData.publisher,
           isbn: formData.isbn,
@@ -52,7 +53,8 @@ const handleCreate = async (formData: Partial<ModifyAdvertForm>, category: Adver
           writtenLanguage: formData.writtenLanguage,
           edition: formData.edition
         }
-        await advertService.createBookAdvert(payload)
+        const result = await advertService.createBookAdvert(payload)
+        advertId = result.id
         break
       }
       case AdvertType.SERVICE: {
@@ -64,14 +66,33 @@ const handleCreate = async (formData: Partial<ModifyAdvertForm>, category: Adver
           subjectId: formData.subjectId,
           schoolGradeId: formData.schoolGradeId,
           teachingLanguage: formData.teachingLanguage,
-          studyLevel: formData.studyLevel
+          studyLevel: formData.studyLevel,
+          maxHours: formData.maxHours,
+          minHours: formData.minHours
         }
         await advertService.createServiceAdvert(payload)
         break
       }
     }
 
-    await navigateTo(localePath('/me/adverts')) // Redirect to adverts list after successful creation
+    // Upload images after advert creation (books and products only)
+    let uploadFailed = false
+    if (advertId && files.length > 0) {
+      try {
+        await advertService.uploadPictures(advertId, files)
+      } catch (uploadError) {
+        console.warn('Image upload failed after advert creation:', uploadError)
+        uploadFailed = true
+      }
+    }
+
+    if (uploadFailed) {
+      // Advert is created but images failed: show message and redirect after a short delay
+      errorMessage.value = $t('createAdvert.error.uploadFailed')
+      await new Promise(resolve => setTimeout(resolve, 2500))
+    }
+
+    await navigateTo(localePath('/me/adverts'))
   } catch (error) {
     console.error('Error creating advert:', error)
     errorMessage.value = $t('createAdvert.error.creationFailed')
@@ -102,7 +123,7 @@ const handleCreate = async (formData: Partial<ModifyAdvertForm>, category: Adver
           mode="create"
           :is-submitting="isSubmitting"
           :error-message="errorMessage"
-          @submit="handleCreate"
+          @submit="(formData, category, files) => handleCreate(formData, category, files)"
         />
       </div>
     </div>

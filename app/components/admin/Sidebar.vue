@@ -7,6 +7,8 @@ defineProps<{
 const menu = [
   { name: 'Dashboard', path: '/me/admin', icon: 'material-symbols:space-dashboard-rounded' },
   { name: 'Support', path: '/me/admin/supports', icon: 'material-symbols:shield' },
+  { name: 'Flags', path: '/me/admin/flags', icon: 'material-symbols:flag' },
+  { name: 'User Flags', path: '/me/admin/user-flags', icon: 'material-symbols:flag-circle' },
   { name: 'Adverts', path: '/me/admin/adverts', icon: 'material-symbols:cards-stack' },
   { name: 'Users', path: '/me/admin/users', icon: 'material-symbols:groups-2-rounded' }
 ]

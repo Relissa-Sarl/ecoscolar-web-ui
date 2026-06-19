@@ -22,7 +22,7 @@ interface Props {
 
 const props = defineProps<Props>()
 const emit = defineEmits<{
-  submit: [formData: Partial<ModifyAdvertForm>, category: AdvertType]
+  submit: [formData: Partial<ModifyAdvertForm>, category: AdvertType, files: File[]]
   cancel: []
 }>()
 
@@ -110,19 +110,48 @@ const form = ref({
   edition: '',
   isbn: '',
   bookCategoryId: 1,
-  writtenLanguage: 'FR'
+  writtenLanguage: 'FR',
+
+  maxHours: 1,
+  minHours: 1
 })
 
-// Commented-out files state as requested
-// const uploadedFiles = ref<File[]>([])
-// const handleImageUpload = (event: Event) => {
-//   const input = event.target as HTMLInputElement
-//   if (input.files) {
-//     uploadedFiles.value = Array.from(input.files)
-//     form.value.pictures = uploadedFiles.value
-//     errors.value.images = ''
-//   }
-// }
+const MAX_IMAGES = 5
+const MAX_IMAGE_SIZE_MB = 5
+const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+
+const uploadedFiles = ref<File[]>([])
+const imagePreviews = ref<string[]>([])
+
+const handleImageUpload = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  if (!input.files) return
+
+  const incoming = Array.from(input.files)
+
+  for (const file of incoming) {
+    if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+      errors.value.images = $t('advertForm.error.invalid.imageType')
+      return
+    }
+    if (file.size > MAX_IMAGE_SIZE_MB * 1024 * 1024) {
+      errors.value.images = $t('advertForm.error.invalid.imageSize')
+      return
+    }
+  }
+
+  const combined = [...uploadedFiles.value, ...incoming].slice(0, MAX_IMAGES)
+  uploadedFiles.value = combined
+  imagePreviews.value = combined.map(f => URL.createObjectURL(f))
+  errors.value.images = ''
+  input.value = ''
+}
+
+const removeImage = (index: number) => {
+  URL.revokeObjectURL(imagePreviews.value[index] ?? '')
+  uploadedFiles.value.splice(index, 1)
+  imagePreviews.value.splice(index, 1)
+}
 
 interface DetailedAdvertData {
   type?: AdvertType
@@ -143,6 +172,8 @@ interface DetailedAdvertData {
   isbn?: string | null
   bookCategoryId?: number | null
   writtenLanguage?: string | null
+  maxHours?: number | null
+  minHours?: number | null
 }
 
 // Sync form data if initialData is provided (in modify mode)
@@ -174,7 +205,9 @@ watch(() => props.initialData, (newData) => {
       edition: data.edition ?? '',
       isbn: data.isbn ?? '',
       bookCategoryId: data.bookCategoryId ?? 1,
-      writtenLanguage: data.writtenLanguage ?? 'FR'
+      writtenLanguage: data.writtenLanguage ?? 'FR',
+      maxHours: data.maxHours ?? 1,
+      minHours: data.minHours ?? 1
     }
   }
 }, { immediate: true })
@@ -230,9 +263,9 @@ const validateForm = (): boolean => {
       if (!form.value.productCategoryId) {
         errors.value.productCategoryId = $t('advertForm.error.empty.productCategoryId')
       }
-      // if (uploadedFiles.value.length === 0) {
-      //   errors.value.images = $t('advertForm.error.empty.images')
-      // }
+      if (props.mode === 'create' && uploadedFiles.value.length === 0) {
+        errors.value.images = $t('advertForm.error.empty.images')
+      }
       break
     case AdvertType.BOOK:
       if (!form.value.condition) {
@@ -256,9 +289,9 @@ const validateForm = (): boolean => {
       if (!author.trim()) {
         errors.value.author = $t('advertForm.error.empty.author')
       }
-      // if (uploadedFiles.value.length === 0) {
-      //   errors.value.images = $t('advertForm.error.empty.images')
-      // }
+      if (props.mode === 'create' && uploadedFiles.value.length === 0) {
+        errors.value.images = $t('advertForm.error.empty.images')
+      }
       break
   }
 
@@ -381,11 +414,16 @@ const validateForm = (): boolean => {
   return Object.keys(errors.value).length === 0
 }
 
+const handleMinMaxHoursChange = () => {
+  form.value.minHours = Math.max(1, Math.min(form.value.minHours, 8))
+  form.value.maxHours = Math.max(form.value.minHours, Math.min(form.value.maxHours, 8))
+}
+
 const handleSubmit = () => {
   if (!validateForm()) {
     return
   }
-  emit('submit', form.value, category.value)
+  emit('submit', form.value, category.value, uploadedFiles.value)
 }
 </script>
 
@@ -660,6 +698,26 @@ const handleSubmit = () => {
           label-key="studyLevel"
           type="text"
         />
+        <FormInput
+          v-show="category == AdvertType.SERVICE"
+          v-model="form.minHours"
+          :error="errors.minHours"
+          label="minHours"
+          label-key="minHours"
+          type="number"
+          min="0"
+          @input="handleMinMaxHoursChange"
+        />
+        <FormInput
+          v-show="category == AdvertType.SERVICE"
+          v-model="form.maxHours"
+          :error="errors.maxHours"
+          label="maxHours"
+          label-key="maxHours"
+          type="number"
+          min="0"
+          @input="handleMinMaxHoursChange"
+        />
         <FormTextArea
           v-model="form.description"
           :error="errors.description"
@@ -718,15 +776,9 @@ const handleSubmit = () => {
       </div>
     </section>
 
-    <!-- Commented out Image Upload sections to be implemented after, as requested -->
-    <!--
-    <FormImageUploader
-      v-show="category == AdvertType.PRODUCT || category == AdvertType.BOOK"
-      v-model="uploadedFiles"
-      :error="errors.images"
-    />
+    <!-- Image Upload Section (Books and Products only) -->
     <section
-      v-show="category == AdvertType.PRODUCT || category == AdvertType.BOOK"
+      v-show="category === AdvertType.PRODUCT || category === AdvertType.BOOK"
       class="rounded-2xl border border-dashed border-gray-300 bg-gray-50/60 dark:border-gray-400 dark:bg-gray-800 dark:text-gray-400 p-5"
     >
       <h2 class="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-300">
@@ -750,13 +802,47 @@ const handleSubmit = () => {
           />
         </svg>
         {{ $t('advertForm.form.images') }}
+        <span class="ml-auto text-xs font-normal text-gray-400">{{ uploadedFiles.length }}/{{ MAX_IMAGES }}</span>
       </h2>
-      <label class="mt-5 flex flex-col items-center justify-center gap-3 rounded-2xl border border-gray-200 bg-white px-6 py-10 text-center cursor-pointer dark:bg-gray-800 dark:border-gray-400">
+
+      <!-- Previews grid -->
+      <div
+        v-if="imagePreviews.length"
+        class="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-5"
+      >
+        <div
+          v-for="(src, i) in imagePreviews"
+          :key="i"
+          class="group relative aspect-square overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-600"
+        >
+          <img
+            :src="src"
+            class="h-full w-full object-cover"
+            alt=""
+          >
+          <button
+            type="button"
+            class="absolute right-1 top-1 hidden rounded-full bg-red-500 p-0.5 text-white shadow group-hover:flex items-center justify-center"
+            @click="removeImage(i)"
+          >
+            <UIcon
+              name="i-heroicons-x-mark"
+              class="size-4"
+            />
+          </button>
+        </div>
+      </div>
+
+      <!-- Drop zone -->
+      <label
+        v-if="uploadedFiles.length < MAX_IMAGES"
+        class="mt-4 flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border border-gray-200 bg-white px-6 py-8 text-center transition hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-400 dark:hover:bg-gray-700"
+      >
         <input
           id="images"
           type="file"
           multiple
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp"
           class="hidden"
           @change="handleImageUpload"
         >
@@ -776,37 +862,26 @@ const handleSubmit = () => {
             />
           </svg>
         </div>
-        <div v-if="uploadedFiles.length == 0">
+        <div>
           <p class="text-sm font-semibold text-gray-900 dark:text-gray-300">
             {{ $t('advertForm.form.uploadImages') }}
           </p>
-          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
             {{ $t('advertForm.form.dragDrop') }}
           </p>
-        </div>
-        <div
-          v-else
-          class="space-y-2"
-        >
-          <p class="text-sm font-semibold text-gray-900 dark:text-gray-300">
-            {{ uploadedFiles.length }} {{ $t('advertForm.form.uploadedImages') }}
+          <p class="mt-1 text-xs text-gray-400">
+            JPEG · PNG · WebP — max {{ MAX_IMAGE_SIZE_MB }} Mo
           </p>
-          <ul class="text-sm text-gray-500 dark:text-gray-400 list-disc list-inside">
-            <li
-              v-for="file in uploadedFiles"
-              :key="file.name"
-            >{{ file.name }}</li>
-          </ul>
         </div>
       </label>
+
       <p
-        v-show="errors.images != null"
+        v-if="errors.images"
         class="mt-2 min-h-5 text-sm text-red-500"
       >
         {{ errors.images }}
       </p>
     </section>
-    -->
 
     <p
       v-show="errors.content != null || props.errorMessage"

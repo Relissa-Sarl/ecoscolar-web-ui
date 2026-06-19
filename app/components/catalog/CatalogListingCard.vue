@@ -11,6 +11,7 @@ import { useUsersStore } from '~/stores/usersStore'
 import type { FavoriteAdvertSummary, FavoriteAdvertInput } from '~/types/favorite'
 
 const localePath = useLocalePath()
+const route = useRoute()
 
 const props = defineProps<{
   listing: CatalogListing
@@ -40,7 +41,7 @@ const favoriteSummary = computed((): FavoriteAdvertSummary => ({
   type: props.listing.type,
   condition: props.listing.itemCondition ?? '',
   price: props.listing.price,
-  image: props.listing.imageUrl,
+  image: props.listing.imageUrl ?? '',
   seller: props.listing.seller
 }))
 
@@ -50,6 +51,10 @@ const favoriteInput = computed((): FavoriteAdvertInput => ({
 }))
 
 const handleCartAdd = async () => {
+  if (!usersStore.isAuthenticated) {
+    await navigateTo(localePath(`/login?redirect=${encodeURIComponent(route.fullPath)}`))
+    return
+  }
   if (isInCart.value) return
   await cartStore.addToCart(props.listing)
   toast.add({
@@ -58,8 +63,8 @@ const handleCartAdd = async () => {
   })
 }
 
-const handleReservation = async () => {
-  // TODO: Implement reservation logic
+const handleReservation = () => {
+  navigateTo(detailLink.value)
 }
 
 const toggleFavorite = async () => {
@@ -86,13 +91,24 @@ onBeforeMount(() => {
 
 <template>
   <article class="flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-950">
-    <div class="relative aspect-[520/440] bg-slate-100 dark:bg-slate-900">
+    <div class="relative aspect-520/440 bg-slate-100 dark:bg-slate-900">
       <img
+        v-if="listing.imageUrl"
         :src="listing.imageUrl"
         :alt="$t('catalog.card.alt_image')"
         loading="lazy"
         class="h-full w-full object-cover"
       >
+      <!-- Fallback when no image is available -->
+      <div
+        v-else
+        class="flex h-full w-full items-center justify-center"
+      >
+        <Icon
+          name="material-symbols:image-outline"
+          class="size-16 text-slate-300 dark:text-slate-700"
+        />
+      </div>
       <span
         v-if="listing.itemCondition"
         class="absolute left-3 top-3 rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide shadow-sm sm:text-[11px]"
@@ -137,10 +153,10 @@ onBeforeMount(() => {
         <div class="leading-tight">
           <template v-if="listing.hourly">
             <span class="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">{{ $t('catalog.card.hourly') }} &nbsp;</span>
-            <span class="text-xl font-black text-emerald-800 dark:text-emerald-400">CHF {{ listing.price.toFixed(2) }}/h</span>
+            <span class="text-xl font-black text-emerald-800 dark:text-emerald-400">{{ formatPrice(listing.price) }} CHF/h</span>
           </template>
           <template v-else>
-            <span class="block text-xl font-black text-emerald-800 dark:text-emerald-400">CHF {{ listing.price.toFixed(2) }}</span>
+            <span class="block text-xl font-black text-emerald-800 dark:text-emerald-400">{{ formatPrice(listing.price) }} CHF</span>
           </template>
         </div>
         <div
@@ -148,7 +164,7 @@ onBeforeMount(() => {
           class="flex items-center gap-2"
         >
           <button
-            v-if="usersStore.isAuthenticated"
+            v-if="usersStore.isAuthenticated && !usersStore.user?.isBanned"
             type="button"
             class="cursor-pointer size-10 flex items-center justify-center shrink-0 rounded-full border border-slate-200 transition hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-900"
             :aria-label="isFavorite ? $t('advert.actions.favorite_remove') : $t('advert.actions.favorite_add')"
@@ -170,26 +186,43 @@ onBeforeMount(() => {
           <button
             v-if="listing.hourly"
             type="button"
-            class="rounded-full transition bg-emerald-800 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer"
+            class="rounded-full transition px-4 py-2 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+            :class="usersStore.isAuthenticated
+              ? 'bg-emerald-800 text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500'
+              : 'border border-emerald-800 text-emerald-800 dark:border-emerald-500 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20'"
+            :title="usersStore.isAuthenticated ? undefined : $t('booking.login_to_book_tooltip')"
             @click="handleReservation"
           >
-            {{ $t('catalog.card.book_lesson') }}
+            <Icon
+              v-if="!usersStore.isAuthenticated"
+              name="material-symbols:lock-outline"
+              class="size-3.5 shrink-0"
+            />
+            {{ usersStore.isAuthenticated ? $t('catalog.card.book_lesson') : $t('booking.login_to_book') }}
           </button>
           <button
             v-else
             type="button"
-            class="rounded-full transition"
+            class="rounded-full transition size-10 flex items-center justify-center shrink-0"
             :class="isInCart
-              ? 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-600 border border-slate-200 dark:border-slate-800 cursor-not-allowed size-10 flex items-center justify-center shrink-0'
-              : 'bg-emerald-800 text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer size-10 flex items-center justify-center shrink-0'"
+              ? 'bg-slate-100 text-slate-400 dark:bg-slate-900 dark:text-slate-600 border border-slate-200 dark:border-slate-800 cursor-not-allowed'
+              : !usersStore.isAuthenticated
+                ? 'border border-emerald-800 text-emerald-800 dark:border-emerald-500 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 cursor-pointer'
+                : 'bg-emerald-800 text-white hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 cursor-pointer'"
             :disabled="isInCart"
-            :aria-label="isInCart ? $t('advert.actions.already_in_cart') : $t('advert.actions.buy_now')"
+            :aria-label="isInCart ? $t('advert.actions.already_in_cart') : !usersStore.isAuthenticated ? $t('booking.login_to_buy_tooltip') : $t('advert.actions.buy_now')"
+            :title="!usersStore.isAuthenticated && !isInCart ? $t('booking.login_to_buy_tooltip') : undefined"
             @click="handleCartAdd"
           >
             <Icon
               v-if="isInCart"
               name="material-symbols:check"
               class="size-5 text-emerald-650 dark:text-emerald-500 font-bold"
+            />
+            <Icon
+              v-else-if="!usersStore.isAuthenticated"
+              name="material-symbols:lock-outline"
+              class="size-5"
             />
             <Icon
               v-else

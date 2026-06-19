@@ -62,7 +62,7 @@ describe('SaleCard', () => {
     // Check texts
     expect(wrapper.text()).toContain('me.sales.status.active')
     expect(wrapper.text()).toContain('Calculatrice scientifique')
-    expect(wrapper.text()).toContain('45 CHF')
+    expect(wrapper.text()).toContain('45.00 CHF')
     expect(wrapper.text()).toContain('me.sales.view')
 
     // buyerName should not be shown
@@ -217,5 +217,76 @@ describe('SaleCard', () => {
     // It should update the review UI (e.g. show the rating / hide leave review button)
     expect((wrapper.vm as unknown as { localReview: { rating: number, comment: string | null } | null }).localReview).toEqual({ rating: 4, comment: 'Nice!' })
     expect(mockRefreshNuxtData).toHaveBeenCalledWith('user-sales')
+  })
+
+  it('shows accept and refuse buttons for SERVICE in PAID_WAITING_ACCEPTANCE', () => {
+    const wrapper = mount(SaleCard, {
+      props: {
+        sale: {
+          ...mockSale,
+          type: 'SERVICE',
+          transactionStatus: 'PAID_WAITING_ACCEPTANCE',
+          transactionId: 99
+        }
+      },
+      global: { stubs }
+    })
+
+    expect(wrapper.text()).toContain('me.sales.actions.accept_service')
+    expect(wrapper.text()).toContain('me.sales.actions.refuse_service')
+    expect(wrapper.text()).toContain('me.sales.alerts.service_waiting_acceptance')
+  })
+
+  it('emits accept-service when accept button is clicked', async () => {
+    const wrapper = mount(SaleCard, {
+      props: {
+        sale: {
+          ...mockSale,
+          type: 'SERVICE',
+          transactionStatus: 'PAID_WAITING_ACCEPTANCE',
+          transactionId: 99
+        }
+      },
+      global: { stubs }
+    })
+
+    const btn = wrapper.findAll('button').find(b => b.text().includes('me.sales.actions.accept_service'))
+    await btn?.trigger('click')
+    expect(wrapper.emitted('accept-service')?.[0]).toEqual([99])
+  })
+
+  it('does not show renew button while waiting for tutoring acceptance', () => {
+    const wrapper = mount(SaleCard, {
+      props: {
+        sale: {
+          ...mockSale,
+          type: 'SERVICE',
+          status: AdvertStatus.ACTIVE,
+          transactionStatus: 'PAID_WAITING_ACCEPTANCE',
+          transactionId: 99
+        }
+      },
+      global: { stubs }
+    })
+
+    expect(wrapper.text()).not.toContain('me.sales.actions.renew')
+  })
+
+  it('emits mark-rendered for SERVICE in PAID_WAITING_COMPLETION', async () => {
+    const wrapper = mount(SaleCard, {
+      props: {
+        sale: {
+          ...mockSale,
+          type: 'SERVICE',
+          transactionStatus: 'PAID_WAITING_COMPLETION',
+          transactionId: 88
+        }
+      },
+      global: { stubs }
+    })
+
+    const btn = wrapper.findAll('button').find(b => b.text().includes('me.sales.actions.mark_rendered'))
+    await btn?.trigger('click')
+    expect(wrapper.emitted('mark-rendered')?.[0]).toEqual([88])
   })
 })

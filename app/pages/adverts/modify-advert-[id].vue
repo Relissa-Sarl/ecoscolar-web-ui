@@ -55,6 +55,10 @@ onMounted(async () => {
     }
 
     advert.value = { ...detailedAdvert, type: fetchedAdvert.type } as DetailedAdvert
+
+    if (!advert.value || advert.value.status === 'PAUSED' || advert.value.status === 'EXPIRED' || advert.value.status === 'SOLD' || advert.value.status === 'BLOCKED') {
+      return navigateTo(localePath('/me/adverts'))
+    }
   } catch (error) {
     console.error('Error fetching advert:', error)
     advertIsGet.value = false
@@ -108,7 +112,9 @@ const handleUpdate = async (formData: Partial<ModifyAdvertForm>, category: Adver
           subjectId: formData.subjectId,
           schoolGradeId: formData.schoolGradeId,
           teachingLanguage: formData.teachingLanguage,
-          studyLevel: formData.studyLevel
+          studyLevel: formData.studyLevel,
+          maxHours: formData.maxHours,
+          minHours: formData.minHours
         }
         await advertService.updateServiceAdvert(id, payload as Partial<ModifyAdvertForm>)
         break

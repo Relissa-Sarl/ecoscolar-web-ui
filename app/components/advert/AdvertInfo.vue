@@ -72,11 +72,11 @@ const conditionLabel = computed(() => {
         {{ $t('advert.detail.current_price') }}
       </p>
       <div class="flex items-baseline gap-3">
-        <span class="text-4xl font-bold text-gray-900 dark:text-white">CHF {{ price.toFixed(2) }}</span>
+        <span class="text-4xl font-bold text-gray-900 dark:text-white">{{ formatPrice(price) }} CHF</span>
         <span
           v-if="oldPrice > price"
           class="text-lg text-gray-500 line-through"
-        >CHF {{ oldPrice.toFixed(2) }}</span>
+        >{{ formatPrice(oldPrice) }} CHF</span>
       </div>
     </div>
   </div>

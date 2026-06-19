@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import { ref, watch } from 'vue'
+﻿<script setup lang="ts">
+import { ref, watch, computed } from 'vue'
 import { useI18n, useLocalePath, refreshNuxtData } from '#imports'
 import type { MySaleAdvert } from '~/services/historyService'
 import { AdvertStatus } from '~/utils/enum/advertStatus'
@@ -14,7 +14,7 @@ const { locale, t } = useI18n()
 const localePath = useLocalePath()
 
 const emit = defineEmits<{
-  (e: 'confirm-shipping', id: number): void
+  (e: 'confirm-shipping' | 'renew' | 'accept-service' | 'refuse-service' | 'mark-rendered', id: number): void
 }>()
 
 const isOpen = ref(false)
@@ -63,6 +63,20 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
   localReview.value = review
   refreshNuxtData('user-sales')
 }
+
+const daysLeft = computed(() => {
+  if (props.sale.status !== AdvertStatus.ACTIVE) return null
+  return props.sale.expiresInDays ?? null
+})
+
+const hasTransactionId = computed(() => props.sale.transactionId != null)
+
+const emitTransactionAction = (
+  event: 'confirm-shipping' | 'accept-service' | 'refuse-service' | 'mark-rendered'
+) => {
+  if (props.sale.transactionId == null) return
+  emit(event, props.sale.transactionId)
+}
 </script>
 
 <template>
@@ -105,6 +119,19 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
           {{ props.sale.title }}
         </h3>
 
+        <!-- Expiration Timer -->
+        <div
+          v-if="daysLeft !== null && daysLeft <= 7"
+          class="flex items-center gap-1 mt-1 text-[10px] font-medium text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20 px-2 py-0.5 rounded-md w-max border border-orange-100 dark:border-orange-800/50"
+        >
+          <UIcon
+            name="i-heroicons-clock"
+            class="w-3 h-3"
+          />
+          <span v-if="daysLeft > 0">{{ t('me.sales.timer.expires_in', daysLeft) }}</span>
+          <span v-else>{{ t('me.sales.timer.expires_today') }}</span>
+        </div>
+
         <!-- Buyer details if SOLD -->
         <div
           v-if="props.sale.status === AdvertStatus.SOLD && props.sale.buyerName"
@@ -129,9 +156,34 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
         </div>
       </div>
 
+      <div
+        v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'PAID_WAITING_ACCEPTANCE'"
+        class="mt-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900/50 rounded-lg p-2.5 flex items-start gap-2 text-xs text-amber-700 dark:text-amber-400 font-medium"
+      >
+        <UIcon
+          name="i-heroicons-clock"
+          class="w-4 h-4 shrink-0 mt-0.5"
+        />
+        <p class="leading-relaxed">
+          {{ t('me.sales.alerts.service_waiting_acceptance') }}
+        </p>
+      </div>
+      <div
+        v-if="props.sale.transactionStatus === 'DISPUTED'"
+        class="mt-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50 rounded-lg p-2.5 flex items-start gap-2 text-xs text-red-700 dark:text-red-400 font-medium"
+      >
+        <UIcon
+          name="i-heroicons-exclamation-triangle"
+          class="w-4 h-4 shrink-0 mt-0.5"
+        />
+        <p class="leading-relaxed">
+          {{ t('me.sales.alerts.dispute_ongoing') }}
+        </p>
+      </div>
+
       <div class="mt-2 flex items-center justify-between gap-4">
         <span class="text-base font-black text-emerald-700 dark:text-emerald-400 whitespace-nowrap">
-          {{ props.sale.price }} CHF<span
+          {{ formatPrice(props.sale.price) }} CHF<span
             v-if="props.sale.type === 'SERVICE'"
             class="text-[10px] font-semibold text-slate-400"
           >/H</span>
@@ -155,11 +207,45 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
           </NuxtLink>
 
           <button
-            v-if="props.sale.transactionStatus === 'PAID_WAITING_SHIPPING'"
-            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors"
-            @click="emit('confirm-shipping', props.sale.transactionId!)"
+            v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'PAID_WAITING_ACCEPTANCE' && hasTransactionId"
+            type="button"
+            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors cursor-pointer"
+            @click="emitTransactionAction('accept-service')"
+          >
+            {{ t('me.sales.actions.accept_service') }}
+          </button>
+          <button
+            v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'PAID_WAITING_ACCEPTANCE' && hasTransactionId"
+            type="button"
+            class="inline-flex items-center justify-center rounded-lg border border-red-200 dark:border-red-800 bg-red-50 hover:bg-red-100 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 py-1 px-2 text-[10px] font-bold transition-colors cursor-pointer"
+            @click="emitTransactionAction('refuse-service')"
+          >
+            {{ t('me.sales.actions.refuse_service') }}
+          </button>
+          <button
+            v-if="props.sale.type === 'SERVICE' && props.sale.transactionStatus === 'PAID_WAITING_COMPLETION' && hasTransactionId"
+            type="button"
+            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors cursor-pointer"
+            @click="emitTransactionAction('mark-rendered')"
+          >
+            {{ t('me.sales.actions.mark_rendered') }}
+          </button>
+          <button
+            v-if="props.sale.transactionStatus === 'PAID_WAITING_SHIPPING' && hasTransactionId"
+            type="button"
+            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-2 text-[10px] font-bold transition-colors cursor-pointer"
+            @click="emitTransactionAction('confirm-shipping')"
           >
             {{ t('me.sales.actions.confirm_shipping') }}
+          </button>
+
+          <button
+            v-if="(props.sale.status === AdvertStatus.EXPIRED || props.sale.status === AdvertStatus.ACTIVE) && props.sale.transactionStatus !== 'PAID_WAITING_ACCEPTANCE'"
+            type="button"
+            class="inline-flex items-center justify-center rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 py-1 px-2 text-[10px] font-bold transition-colors cursor-pointer"
+            @click="emit('renew', props.sale.id)"
+          >
+            {{ t('me.sales.actions.renew') }}
           </button>
         </div>
       </div>
@@ -168,7 +254,7 @@ const handleReviewSuccess = (review: { rating: number, comment: string | null })
     <!-- Review Modal -->
     <ReviewModal
       v-model:open="isOpen"
-      :transaction-id="props.sale.id.toString()"
+      :transaction-id="props.sale.transactionId?.toString() ?? ''"
       :name="props.sale.buyerName"
       @success="handleReviewSuccess"
     />

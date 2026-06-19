@@ -1,33 +1,24 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
 import { useI18n } from '#imports'
 import { getPaymentService } from '~/services/paymentService'
-import { getAdvertService } from '~/services/advertService'
+
+definePageMeta({
+  middleware: 'auth'
+})
 
 const { t } = useI18n()
 const route = useRoute()
 const paymentService = getPaymentService()
-const advertService = getAdvertService()
-
 const advertId = ref<number | null>(null)
-const productPrice = ref<string>('0')
 const shippingAddress = ref('')
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 
-onMounted(async () => {
+onMounted(() => {
   const id = route.query.advertId
   if (id && !Array.isArray(id)) {
     advertId.value = parseInt(id, 10)
-    try {
-      const advert = await advertService.getAdvert(advertId.value)
-      if (advert && advert.price) {
-        productPrice.value = advert.price.toFixed(2)
-      }
-    } catch (e) {
-      console.error('Failed to load advert details', e)
-    }
   }
 })
 
@@ -43,8 +34,7 @@ const submitCheckout = async () => {
 
   try {
     const response = await paymentService.createCheckoutSession({
-      productId: advertId.value,
-      productPrice: productPrice.value
+      productId: advertId.value
     })
 
     if (response && response.url) {

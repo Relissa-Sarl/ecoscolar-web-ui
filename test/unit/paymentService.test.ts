@@ -12,7 +12,7 @@ describe('paymentService', () => {
 
     const service = createPaymentService({ apiClient })
 
-    const requestPayload = { productId: 456, productPrice: 42.5 }
+    const requestPayload = { productId: 456 }
     const response = await service.createCheckoutSession(requestPayload)
 
     expect(response).toEqual(mockResponse)

@@ -1,11 +1,13 @@
 import type { User, UpdateProfileInput, PublicUser, UserReview, ResetPasswordInput, StripeStatus, StripeOnboardingLink } from '~/types/user'
 import { useApi } from '../composables/useApi'
 import type { MyAdvert } from '~/types/advert'
+import type { FlaggedUserAdminResponse } from '~/types/user-report'
 
 type ApiClient = typeof useApi
 
 const AUTH_PATH = '/auth'
 const USER_PATH = '/users'
+const ADMIN_PATH = '/admins'
 
 /**
 * Interface defining the contract of the UserService,
@@ -25,6 +27,8 @@ export interface UserService {
   getMeAdvert: () => Promise<MyAdvert[]>
   createStripeOnboardingLink: () => Promise<StripeOnboardingLink>
   getStripeStatus: () => Promise<StripeStatus>
+  report: (userId: string, message: string) => Promise<undefined>
+  getFlaggedUsers: () => Promise<FlaggedUserAdminResponse[]>
 }
 
 /**
@@ -168,7 +172,17 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
    * the onboarding is complete, i.e. the seller can receive payouts).
    * @returns A promise that resolves to the StripeStatus of the current user.
    */
-  const getStripeStatus = async () => apiClient<StripeStatus>(`${USER_PATH}/me/stripe/status`)
+  const getStripeStatus = async () =>
+    apiClient<StripeStatus>(`${USER_PATH}/me/stripe/status`)
+
+  const report = async (userId: string, message: string) =>
+    apiClient<undefined>(`${USER_PATH}/${userId}/report`, {
+      method: 'POST',
+      body: { reason: message }
+    })
+
+  const getFlaggedUsers = async () =>
+    apiClient<FlaggedUserAdminResponse[]>(`${ADMIN_PATH}/flagged-users`)
 
   return {
     register,
@@ -183,7 +197,9 @@ export function createUserService({ apiClient }: UserServiceDependencies): UserS
     getMeAdvert,
     getReviews,
     createStripeOnboardingLink,
-    getStripeStatus
+    getStripeStatus,
+    report,
+    getFlaggedUsers
   }
 }
 

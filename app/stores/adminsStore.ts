@@ -6,6 +6,8 @@ import type { User } from '~/types/user'
 import { getAdminService } from '~/services/adminsService'
 import type { SupportTicketAdminDetail } from '~/types/support'
 import type { MySaleAdvert } from '~/composables/useHistory'
+import type { AbuseReportAdminResponse } from '~/types/report'
+import type { TicketStatus } from '~/utils/enum/TicketStatus'
 
 /**
  * Pinia store for managing user authentication and profile state.
@@ -16,6 +18,7 @@ export const useAdminsStore = defineStore('admins', () => {
   const users = ref<User[]>([])
   const supports = ref<SupportTicketAdminDetail[]>([])
   const adverts = ref<(MySaleAdvert)[]>([])
+  const flags = ref<AbuseReportAdminResponse[]>([])
   const isLoading = ref(false)
   const hasLoaded = ref(false)
   const isSending = ref(false)
@@ -136,11 +139,52 @@ export const useAdminsStore = defineStore('admins', () => {
     }
   }
 
+  const fetchAbuses = async () => {
+    isLoading.value = true
+    try {
+      flags.value = await service.getAllAbuses()
+    } catch {
+      // ignore error details here; reset admin state
+      flags.value = []
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  const updateFlagStatus = async (id: number, status: TicketStatus) => {
+    try {
+      const updatedFlag = await service.updateFlagStatus(id, status)
+      if (updatedFlag) {
+        const index = flags.value.findIndex(f => f.id === id)
+        if (index !== -1) {
+          flags.value.splice(index, 1, updatedFlag)
+        }
+      }
+      return updatedFlag
+    } catch {
+      return null
+    }
+  }
+
+  const deleteFlag = async (id: number) => {
+    isLoading.value = true
+
+    try {
+      await service.deleteFlag(id)
+      flags.value = await service.getAllAbuses()
+    } catch {
+      // ignore error details here; reset admin state
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   return {
     user,
     users,
     adverts,
     supports,
+    flags,
     isLoading,
     isSending,
     hasLoaded,
@@ -154,6 +198,9 @@ export const useAdminsStore = defineStore('admins', () => {
     sendMessage,
     fetchAllAdverts,
     blockAdvert,
-    deleteAdvert
+    deleteAdvert,
+    fetchAbuses,
+    updateFlagStatus,
+    deleteFlag
   }
 })

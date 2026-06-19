@@ -2,6 +2,9 @@
 import { useI18n, useAsyncData, useLocalePath } from '#imports'
 import { useHistory } from '~/composables/useHistory'
 import SaleCard from '~/components/me/SaleCard.vue'
+import TransactionModals from '~/components/me/TransactionModals.vue'
+import { useTransactionActions } from '~/composables/useTransactionActions'
+import { useRoute } from 'vue-router'
 
 definePageMeta({
   middleware: 'auth'
@@ -9,6 +12,7 @@ definePageMeta({
 
 const { t } = useI18n()
 const localePath = useLocalePath()
+const route = useRoute()
 const { getSales } = useHistory()
 
 const { data: sales, pending, error, refresh } = await useAsyncData(
@@ -18,36 +22,59 @@ const { data: sales, pending, error, refresh } = await useAsyncData(
 
 const activeTab = ref<'ongoing' | 'past'>('ongoing')
 
+const FINAL_TRANSACTION_STATUSES = ['COMPLETED', 'CANCELLED', 'SERVICE_CONFIRMED', 'SERVICE_REFUSED']
+
 const filteredSales = computed(() => {
   if (!sales.value) return []
   if (activeTab.value === 'ongoing') {
     return sales.value.filter((s) => {
+      if (s.transactionStatus) {
+        return !['COMPLETED', 'CANCELLED'].includes(s.transactionStatus)
+      }
       if (s.status === 'SOLD') {
-        return s.transactionStatus && s.transactionStatus !== 'COMPLETED' && s.transactionStatus !== 'CANCELLED'
+        return s.transactionStatus && !FINAL_TRANSACTION_STATUSES.includes(s.transactionStatus)
       }
       return true
     })
   } else {
     return sales.value.filter((s) => {
+      if (s.transactionStatus) {
+        return ['COMPLETED', 'CANCELLED'].includes(s.transactionStatus)
+      }
       if (s.status === 'SOLD') {
-        return !s.transactionStatus || s.transactionStatus === 'COMPLETED' || s.transactionStatus === 'CANCELLED'
+        return !s.transactionStatus || FINAL_TRANSACTION_STATUSES.includes(s.transactionStatus)
       }
       return false
     })
   }
 })
 
-const handleConfirmShipping = async (id: number) => {
-  if (!confirm(t('me.sales.alerts.confirm_shipping_prompt'))) return
-  try {
-    const { getHistoryService } = await import('~/services/historyService')
-    await getHistoryService().confirmShipping(id.toString())
-    alert(t('me.sales.alerts.shipping_success'))
-    refresh()
-  } catch (e: unknown) {
-    alert(t('me.sales.alerts.error', { message: e instanceof Error ? e.message : String(e) }))
-  }
+const {
+  activeModal,
+  isProcessing,
+  actionError,
+  promptAction,
+  closeModal,
+  executeAction
+} = useTransactionActions()
+
+const handleActionSuccess = () => {
+  refresh()
 }
+
+const promptTransactionAction = (
+  action: 'confirm_shipping' | 'accept_service' | 'refuse_service' | 'mark_rendered',
+  transactionId?: number
+) => {
+  if (transactionId == null) return
+  promptAction(action, String(transactionId))
+}
+
+onMounted(() => {
+  if (route.query.renew) {
+    promptAction('renew', route.query.renew as string)
+  }
+})
 </script>
 
 <template>
@@ -151,11 +178,23 @@ const handleConfirmShipping = async (id: number) => {
       >
         <SaleCard
           v-for="sale in filteredSales"
-          :key="sale.id"
+          :key="`${sale.id}-${sale.transactionId ?? 0}`"
           :sale="sale"
-          @confirm-shipping="handleConfirmShipping"
+          @confirm-shipping="promptTransactionAction('confirm_shipping', $event)"
+          @accept-service="promptTransactionAction('accept_service', $event)"
+          @refuse-service="promptTransactionAction('refuse_service', $event)"
+          @mark-rendered="promptTransactionAction('mark_rendered', $event)"
+          @renew="promptAction('renew', String($event))"
         />
       </div>
     </div>
+
+    <TransactionModals
+      :active-modal="activeModal"
+      :is-processing="isProcessing"
+      :action-error="actionError"
+      @cancel="closeModal"
+      @confirm="() => executeAction(handleActionSuccess)"
+    />
   </div>
 </template>

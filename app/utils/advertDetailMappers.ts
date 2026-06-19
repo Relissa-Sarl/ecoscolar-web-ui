@@ -2,6 +2,7 @@ import type {
   Advert,
   BookReadApiItem,
   ProductReadApiItem,
+  ServiceRead,
   ServiceReadApiItem
 } from '@/types/advert'
 import type { AdvertCatalogDetailApiItem } from '@/types/catalog'
@@ -9,7 +10,7 @@ import { AdvertType } from '@/utils/enum/advertType'
 
 function sellerFromApi(sellerPseudo: string, userId?: string): Advert['seller'] {
   return {
-    id: userId,
+    id: userId ?? 'unknown',
     avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(sellerPseudo)}`,
     username: sellerPseudo,
     zip: '',
@@ -60,8 +61,10 @@ export function mapCatalogSummaryToAdvert(item: AdvertCatalogDetailApiItem): Adv
     grade: item.grade ?? '',
     school: '',
     description: item.description,
+    status: item.status,
     conditions: [],
     seller: {
+      id: 'unknown',
       avatar: '',
       username: '',
       zip: '',
@@ -93,6 +96,7 @@ export function mapBookToAdvert(item: BookReadApiItem, catalogId: string): Adver
     subject: '',
     grade: '',
     school: '',
+    status: item.status,
     description: item.description,
     conditions: [],
     seller: sellerFromApi(item.sellerPseudo, item.userId),
@@ -122,6 +126,7 @@ export function mapProductToAdvert(item: ProductReadApiItem, catalogId: string):
     grade: '',
     school: '',
     description: item.description,
+    status: item.status,
     conditions: [],
     seller: sellerFromApi(item.sellerPseudo, item.userId),
     questions: [],
@@ -130,7 +135,7 @@ export function mapProductToAdvert(item: ProductReadApiItem, catalogId: string):
 }
 
 /** GET /v1/adverts/services/{id} — pas de condition (Swagger). */
-export function mapServiceToAdvert(item: ServiceReadApiItem, catalogId: string): Advert {
+export function mapServiceToAdvert(item: ServiceReadApiItem, catalogId: string): ServiceRead {
   const { image, images } = resolveImages(undefined, catalogId)
 
   return {
@@ -150,9 +155,12 @@ export function mapServiceToAdvert(item: ServiceReadApiItem, catalogId: string):
     grade: item.schoolGradeLabel,
     school: item.studyLevel,
     description: item.description,
+    status: item.status,
     conditions: [],
     seller: sellerFromApi(item.sellerPseudo, item.userId),
     questions: [],
-    answers: []
+    answers: [],
+    minHours: item.minHours,
+    maxHours: item.maxHours
   }
 }

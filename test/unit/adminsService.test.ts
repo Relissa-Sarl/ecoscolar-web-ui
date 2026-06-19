@@ -87,4 +87,39 @@ describe('adminsService', () => {
       method: 'DELETE'
     })
   })
+
+  it('gets all abuses', async () => {
+    const apiClient = vi.fn().mockResolvedValueOnce([])
+    const service = createadminService({ apiClient })
+
+    await service.getAllAbuses()
+
+    expect(apiClient).toHaveBeenCalledWith('/admins/abuses')
+  })
+
+  it('updates flag status', async () => {
+    const apiClient = vi.fn().mockResolvedValueOnce({ id: 1, status: 'REVIEWED' })
+    const service = createadminService({ apiClient })
+
+    await service.updateFlagStatus(1, 'REVIEWED' as TicketStatus)
+
+    expect(apiClient).toHaveBeenCalledWith('/admins/abuses/1/status', {
+      method: 'PATCH',
+      body: { status: 'REVIEWED' },
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+  })
+
+  it('deletes a flag', async () => {
+    const apiClient = vi.fn().mockResolvedValueOnce(undefined)
+    const service = createadminService({ apiClient })
+
+    await service.deleteFlag(1)
+
+    expect(apiClient).toHaveBeenCalledWith('/admins/abuses/1', {
+      method: 'DELETE'
+    })
+  })
 })

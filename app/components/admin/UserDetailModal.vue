@@ -31,7 +31,10 @@ defineEmits(['close'])
           aria-label="Fermer"
           @click="$emit('close')"
         >
-          ✕
+          <Icon
+            name="material-symbols:close"
+            class="w-6 h-6"
+          />
         </button>
       </div>
 

@@ -4,8 +4,19 @@ import { useHistory } from '~/composables/useHistory'
 import type { Purchase, MySaleAdvert } from '~/services/historyService'
 import PurchaseCard from '~/components/me/PurchaseCard.vue'
 import SaleCard from '~/components/me/SaleCard.vue'
+import TransactionModals from '~/components/me/TransactionModals.vue'
+import { useTransactionActions } from '~/composables/useTransactionActions'
 
 const { getPurchases, getSales } = useHistory()
+const {
+  activeModal,
+  disputeReason,
+  isProcessing,
+  actionError,
+  promptAction,
+  closeModal,
+  executeAction
+} = useTransactionActions()
 
 const activeTab = ref<'purchases' | 'sales'>('purchases')
 const purchases = ref<Purchase[]>([])
@@ -24,7 +35,7 @@ const lastSales = computed(() => {
     .slice(0, 3)
 })
 
-onMounted(async () => {
+const refreshData = async () => {
   isLoading.value = true
   try {
     const [purchasesData, salesData] = await Promise.all([
@@ -36,7 +47,17 @@ onMounted(async () => {
   } finally {
     isLoading.value = false
   }
-})
+}
+
+const promptTransactionAction = (
+  action: 'confirm_shipping' | 'accept_service' | 'refuse_service' | 'mark_rendered',
+  transactionId?: number
+) => {
+  if (transactionId == null) return
+  promptAction(action, String(transactionId))
+}
+
+onMounted(refreshData)
 </script>
 
 <template>
@@ -92,6 +113,9 @@ onMounted(async () => {
             v-for="purchase in lastPurchases"
             :key="purchase.id"
             :purchase="purchase"
+            @confirm-reception="promptAction('confirm_reception', $event)"
+            @dispute="promptAction('dispute', $event)"
+            @cancel="promptAction('cancel', $event)"
           />
         </div>
         <div
@@ -111,8 +135,13 @@ onMounted(async () => {
         >
           <SaleCard
             v-for="sale in lastSales"
-            :key="sale.id"
+            :key="`${sale.id}-${sale.transactionId ?? 0}`"
             :sale="sale"
+            @confirm-shipping="promptTransactionAction('confirm_shipping', $event)"
+            @accept-service="promptTransactionAction('accept_service', $event)"
+            @refuse-service="promptTransactionAction('refuse_service', $event)"
+            @mark-rendered="promptTransactionAction('mark_rendered', $event)"
+            @renew="promptAction('renew', String($event))"
           />
         </div>
         <div
@@ -125,5 +154,14 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+
+    <TransactionModals
+      v-model:dispute-reason="disputeReason"
+      :active-modal="activeModal"
+      :is-processing="isProcessing"
+      :action-error="actionError"
+      @cancel="closeModal"
+      @confirm="() => executeAction(refreshData)"
+    />
   </div>
 </template>

@@ -3,9 +3,9 @@ import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n, useSeoMeta } from '#imports'
 import { getAdvertService } from '~/services/advertService'
-import ErrorIcon from '~/components/paimentState/ErrorIcon.vue'
-import ErrorMainMessage from '~/components/paimentState/ErrorMainMessage.vue'
-import PaimentStateButton from '~/components/paimentState/PaimentStateButton.vue'
+import ErrorIcon from '../components/paymentState/ErrorIcon.vue'
+import ErrorMainMessage from '../components/paymentState/ErrorMainMessage.vue'
+import PaymentStateButton from '../components/paymentState/PaymentStateButton.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -23,6 +23,7 @@ const productIds = computed<number[]>(() => {
 })
 
 onMounted(async () => {
+  sessionStorage.removeItem('pending_checkout_ids')
   const ids = productIds.value
   if (ids.length > 0) {
     const advertService = getAdvertService()
@@ -60,7 +61,7 @@ onMounted(async () => {
       <ErrorMainMessage />
 
       <!-- Action Buttons -->
-      <PaimentStateButton />
+      <PaymentStateButton />
     </div>
   </div>
 </template>

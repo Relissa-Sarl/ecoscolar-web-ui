@@ -75,13 +75,9 @@ const useFormErrors = <K extends string = string>(
     if (!currentErrors || Object.keys(currentErrors).length === 0)
       return []
 
-    const tesst = Object.entries(currentErrors)
+    return Object.entries(currentErrors)
       .filter(([key]) => !handledKeys.has(key))
       .map(([, value]) => value as string)
-
-    console.log(handledKeys)
-
-    return tesst
   })
 
   /**

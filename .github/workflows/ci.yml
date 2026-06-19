@@ -2,7 +2,7 @@ name: CI Pipeline - EcoScolar frontend
 
 on: 
   pull_request:
-    branches: ["main", "develop" ]
+    branches: ["develop" ]
 
 jobs:
   build-and-test:
@@ -24,14 +24,17 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile --shamefully-hoist --ignore-workspace
+        run: pnpm install --frozen-lockfile --shamefully-hoist --ignore-workspace
 
       - name: Nuxt Type Preparation
         run: pnpm nuxi prepare
 
       - name: Lint
         run: pnpm run lint
-      
+
+      - name: Unit & component tests
+        run: pnpm run test:coverage
+
       - name: Nuxt Build
         run: pnpm build
 

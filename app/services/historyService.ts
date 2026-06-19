@@ -17,7 +17,16 @@ export interface Purchase {
   status: string
   imageUrl?: string | null
   sellerName: string
+  orderNumber?: string | null
+  type?: string
   review?: ReviewDto | null
+  sessions?: number
+}
+
+export interface TutorContact {
+  name: string
+  phoneNumber?: string | null
+  email?: string | null
 }
 
 export interface MySaleAdvert {
@@ -35,6 +44,7 @@ export interface MySaleAdvert {
   transactionId?: number
   transactionStatus?: string
   review?: ReviewDto | null
+  expiresInDays?: number
 }
 
 export interface HistoryServiceDependencies {
@@ -47,24 +57,30 @@ export interface HistoryService {
   confirmShipping: (transactionId: string) => Promise<void>
   confirmReception: (transactionId: string) => Promise<void>
   cancelPurchase: (transactionId: string) => Promise<void>
-  disputePurchase: (transactionId: string, reason: string) => Promise<void>
+  disputePurchase: (transactionId: string, reason: string, description: string) => Promise<void>
   createReview: (transactionId: string, rating: number, comment?: string) => Promise<void>
-  createTransactions: (advertIds: number[], stripeSessionId: string | null) => Promise<void>
+  createTransactions: (advertIds: number[], stripeSessionId: string | null) => Promise<CreatedTransaction[]>
+  renewAdvert: (advertId: string | number) => Promise<void>
+  acceptTutoringTransaction: (transactionId: string) => Promise<void>
+  refuseTutoringTransaction: (transactionId: string) => Promise<void>
+  confirmTutoringTransaction: (transactionId: string) => Promise<void>
+  markTutoringRendered: (transactionId: string) => Promise<void>
+  getTutorContact: (transactionId: string) => Promise<TutorContact>
+}
+
+export interface CreatedTransaction {
+  transactionId: number
+  advertId: number
+  orderNumber?: string | null
 }
 
 export function createHistoryService({ apiClient }: HistoryServiceDependencies): HistoryService {
   return {
-    /**
-     * Retrieves the purchase history of the current user.
-     */
     async getPurchaseHistory(): Promise<Purchase[]> {
       const data = await apiClient<Purchase[]>('/me/purchases')
       return data || []
     },
 
-    /**
-     * Retrieves the sales history of the current user.
-     */
     async getSalesHistory(): Promise<MySaleAdvert[]> {
       const data = await apiClient<MySaleAdvert[]>('/me/sales')
       return data || []
@@ -82,16 +98,13 @@ export function createHistoryService({ apiClient }: HistoryServiceDependencies):
       await apiClient(`/me/purchases/${transactionId}/cancel`, { method: 'POST' })
     },
 
-    async disputePurchase(transactionId: string, reason: string): Promise<void> {
+    async disputePurchase(transactionId: string, reason: string, description: string): Promise<void> {
       await apiClient(`/transactions/${transactionId}/dispute`, {
         method: 'POST',
-        body: { reason }
+        body: { reason, description }
       })
     },
 
-    /**
-     * Creates a review for a transaction.
-     */
     async createReview(transactionId: string, rating: number, comment?: string): Promise<void> {
       await apiClient<unknown>(`/transactions/${transactionId}/reviews`, {
         method: 'POST',
@@ -99,11 +112,35 @@ export function createHistoryService({ apiClient }: HistoryServiceDependencies):
       })
     },
 
-    async createTransactions(advertIds: number[], stripeSessionId: string | null): Promise<void> {
-      await apiClient('/transactions', {
+    async createTransactions(advertIds: number[], stripeSessionId: string | null): Promise<CreatedTransaction[]> {
+      return await apiClient<CreatedTransaction[]>('/transactions', {
         method: 'POST',
         body: { advertIds, stripeSessionId }
       })
+    },
+
+    async renewAdvert(advertId: string | number): Promise<void> {
+      await apiClient(`/me/sales/${advertId}/renew`, { method: 'POST' })
+    },
+
+    async acceptTutoringTransaction(transactionId: string): Promise<void> {
+      await apiClient(`/tutoring/transactions/${transactionId}/accept`, { method: 'PATCH' })
+    },
+
+    async refuseTutoringTransaction(transactionId: string): Promise<void> {
+      await apiClient(`/tutoring/transactions/${transactionId}/refuse`, { method: 'PATCH' })
+    },
+
+    async confirmTutoringTransaction(transactionId: string): Promise<void> {
+      await apiClient(`/tutoring/transactions/${transactionId}/confirm`, { method: 'PATCH' })
+    },
+
+    async markTutoringRendered(transactionId: string): Promise<void> {
+      await apiClient(`/tutoring/transactions/${transactionId}/mark-rendered`, { method: 'PATCH' })
+    },
+
+    async getTutorContact(transactionId: string): Promise<TutorContact> {
+      return await apiClient<TutorContact>(`/tutoring/transactions/${transactionId}/tutor-contact`)
     }
   }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from 'vue'
+import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
 import { navigateTo } from '#imports'
 import CartEmpty from '~/components/cart/CartEmpty.vue'
 import CartHeader from '~/components/cart/CartHeader.vue'
@@ -7,6 +7,7 @@ import CartSummary from '~/components/cart/CartSummary.vue'
 import CartAdvertItems from '~/components/cart/CartAdvertItems.vue'
 import { useCartStore } from '~/stores/cartStore'
 import { getPaymentService } from '~/services/paymentService'
+import { getAdvertService } from '~/services/advertService'
 
 const { t } = useI18n()
 const localePath = useLocalePath()
@@ -104,6 +105,11 @@ const handleCheckout = async () => {
     return
   }
 
+  if (usersStore.user?.isBanned) {
+    await navigateTo(localePath('/banned'))
+    return
+  }
+
   // set checking out flag and clear any previous error
   isCheckingOut.value = true
   checkoutError.value = null
@@ -115,12 +121,11 @@ const handleCheckout = async () => {
     const response = await paymentService.createCheckoutSession({
       productId: firstItem ? Number(firstItem.id) : 0,
       productIds: cartItems.value.map(item => Number(item.id)),
-      productPrice: total.value.toFixed(2)
+      shippingMethod: shippingMethod.value
     })
-
-    // set last_payment_total in sessionStorage for the payment success page
+    // open stripe checkout page
     if (response && response.url) {
-      sessionStorage.setItem('last_payment_total', total.value.toFixed(2))
+      sessionStorage.setItem('pending_checkout_ids', JSON.stringify(cartItems.value.map(item => Number(item.id))))
       await navigateTo(response.url, { external: true })
     } else {
       throw new Error('Url de session Stripe manquante dans la réponse de l\'API')
@@ -143,12 +148,59 @@ const handleCheckout = async () => {
     isCheckingOut.value = false
   }
 }
+
+const checkAndResetPausedItems = async () => {
+  const pendingJson = sessionStorage.getItem('pending_checkout_ids')
+  if (pendingJson) {
+    try {
+      const ids: number[] = JSON.parse(pendingJson)
+      if (Array.isArray(ids) && ids.length > 0) {
+        const advertService = getAdvertService()
+        for (const id of ids) {
+          try {
+            await advertService.updateAdvertStatus(id, 'ACTIVE')
+          } catch (err) {
+            console.error(`Failed to reset PAUSED status for advert ${id}:`, err)
+          }
+        }
+        await cartStore.loadCart(true)
+      }
+    } catch (err) {
+      console.error('Failed to parse pending_checkout_ids:', err)
+    } finally {
+      sessionStorage.removeItem('pending_checkout_ids')
+    }
+  }
+}
+
+const onPageShow = async (event: PageTransitionEvent) => {
+  if (event.persisted) {
+    await checkAndResetPausedItems()
+  }
+}
+
+onMounted(async () => {
+  const navigationEntries = window.performance?.getEntriesByType('navigation')
+  const isBackNavigation = navigationEntries && navigationEntries.length > 0
+    && (navigationEntries[0] as PerformanceNavigationTiming).type === 'back_forward'
+
+  if (isBackNavigation) {
+    await checkAndResetPausedItems()
+  }
+
+  window.addEventListener('pageshow', onPageShow)
+})
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('pageshow', onPageShow)
+  }
+})
 </script>
 
 <template>
   <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
     <div class="max-w-6xl mx-auto">
-      <!-- Header -->
       <CartHeader
         :items-count="itemsCount"
         :has-items="cartItems.length > 0"
@@ -163,7 +215,7 @@ const handleCheckout = async () => {
         <div class="flex items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 flex-shrink-0"
+            class="h-5 w-5 shrink-0"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

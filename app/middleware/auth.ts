@@ -6,4 +6,9 @@ export default defineNuxtRouteMiddleware(() => {
   // If the user is not authenticated, we redirect them to the login page
   if (!usersStore.isAuthenticated)
     return navigateTo('/login')
+
+  if (usersStore.user?.isBanned) {
+    usersStore.logout()
+    return navigateTo('/denied')
+  }
 })

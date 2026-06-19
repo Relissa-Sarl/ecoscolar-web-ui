@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue'
 import { useLocalePath } from '#imports'
-import {
-  bookCategoryMatches,
-  tutoringGradeMatches,
-  tutoringSubjectMatches
-} from '~/utils/catalogFilterUtils'
 import type {
   AdvertCatalogApiItem,
   CatalogCategoryTab,
@@ -14,10 +9,12 @@ import type {
 } from '@/types/catalog'
 
 import catalogFallbackJson from '@/mocks/catalogSummaries.json'
-import { getCatalogService } from '~/services/catalogService'
+import { getCatalogService, type CatalogSearchParams } from '~/services/catalogService'
 import { mapCatalogApiToListings } from '~/utils/catalogMappers'
+import { AdvertType } from '~/utils/enum/advertType'
 
 const route = useRoute()
+const initialSearch = routeSearchValue()
 
 definePageMeta({ layout: 'catalog' })
 
@@ -30,23 +27,90 @@ useSeoMeta({
 })
 
 const catalogService = getCatalogService()
-const appliedSearch = ref('')
+
+const activeCategory = ref<CatalogCategoryTab>('all')
+const sortKey = ref<'recent' | 'price_asc' | 'price_desc'>('recent')
+const draftSearch = ref(initialSearch)
+const appliedSearch = ref(initialSearch)
+
+const pageSize = ref(9)
+const currentPage = ref(1)
+
+const {
+  bookCategories: bookCategoriesRef,
+  schoolGrades: schoolGradesRef,
+  subjects: subjectsRef,
+  isLoading: referencesLoading,
+  loadError: referencesError,
+  load: loadCatalogReferences
+} = useCatalogReferenceData()
+
+const bookCategoryIds = ref<number[]>([])
+const schoolGradeIds = ref<number[]>([])
+const subjectIds = ref<number[]>([])
+
+const selectedBookCategoryNames = computed(() =>
+  selectedNames(bookCategoriesRef.value, bookCategoryIds.value, item => item.bookCategoryId))
+const selectedSchoolGradeNames = computed(() =>
+  selectedNames(schoolGradesRef.value, schoolGradeIds.value, item => item.schoolGradeId))
+const selectedSubjectNames = computed(() =>
+  selectedNames(subjectsRef.value, subjectIds.value, item => item.subjectId))
+
+const catalogQueryParams = computed<CatalogSearchParams>(() => {
+  const params: CatalogSearchParams = {
+    page: currentPage.value,
+    pageSize: pageSize.value,
+    sort: sortKey.value
+  }
+
+  const q = appliedSearch.value.trim()
+  if (q)
+    params.q = q
+
+  const type = categoryToApiType(activeCategory.value)
+  if (type)
+    params.type = type
+
+  const category = toCsv(selectedBookCategoryNames.value)
+  if (category)
+    params.category = category
+
+  const bookCategories = toCsv(bookCategoryIds.value)
+  if (bookCategories)
+    params.bookCategoryIds = bookCategories
+
+  const grade = toCsv(selectedSchoolGradeNames.value)
+  if (grade)
+    params.grade = grade
+
+  const schoolGrades = toCsv(schoolGradeIds.value)
+  if (schoolGrades)
+    params.schoolGradeIds = schoolGrades
+
+  const subjects = toCsv(selectedSubjectNames.value)
+  if (subjects)
+    params.subjects = subjects
+
+  const subjectIdsQuery = toCsv(subjectIds.value)
+  if (subjectIdsQuery)
+    params.subjectIds = subjectIdsQuery
+
+  return params
+})
 
 const { data: rawItems, pending } = await useAsyncData(
   'catalog-adverts',
   async (): Promise<CatalogFetchResult> => {
-    const params = appliedSearch.value
-      ? { q: appliedSearch.value }
-      : undefined
+    const params = catalogQueryParams.value
 
     try {
-      const rows = await catalogService.listSummaries(params)
-      return { items: rows, fromFallback: false, hadError: false }
+      const page = await catalogService.listSummaries(params)
+      return { ...page, fromFallback: false, hadError: false }
     } catch {
-      return { items: catalogFallback, fromFallback: true, hadError: true }
+      return buildFallbackPage(params)
     }
   },
-  { watch: [appliedSearch] }
+  { watch: [catalogQueryParams] }
 )
 
 const hadApiError = computed(() => rawItems.value?.hadError === true)
@@ -56,11 +120,23 @@ const fromFallbackOnly = computed(() =>
 const listings = computed((): CatalogListing[] =>
   mapCatalogApiToListings(rawItems.value?.items ?? []))
 
-const activeCategory = ref<CatalogCategoryTab>('all')
-
-const sortKey = ref<'recent' | 'price_asc' | 'price_desc'>('recent')
-const draftSearch = ref('')
+const totalItems = computed(() => rawItems.value?.totalItems ?? 0)
+const pageCount = computed(() => Math.max(1, rawItems.value?.totalPages ?? 1))
+const pagedRows = computed(() => listings.value)
 const searchLoading = computed(() => pending.value)
+
+const canResetFilters = computed(() =>
+  activeCategory.value !== 'all'
+  || draftSearch.value.trim() !== ''
+  || appliedSearch.value.trim() !== ''
+  || bookCategoryIds.value.length > 0
+  || schoolGradeIds.value.length > 0
+  || subjectIds.value.length > 0
+  || sortKey.value !== 'recent')
+
+onMounted(async () => {
+  await loadCatalogReferences()
+})
 
 function applySearchFromBanner() {
   appliedSearch.value = draftSearch.value.trim()
@@ -82,83 +158,107 @@ function resetSidebar() {
   currentPage.value = 1
 }
 
-const pageSize = ref(9)
-const currentPage = ref(1)
-
-const canResetFilters = computed(() =>
-  activeCategory.value !== 'all'
-  || draftSearch.value.trim() !== ''
-  || appliedSearch.value.trim() !== ''
-  || bookCategoryIds.value.length > 0
-  || schoolGradeIds.value.length > 0
-  || subjectIds.value.length > 0
-  || sortKey.value !== 'recent')
-
 function applySearchFromRouteQuery() {
-  const q = route.query.q
-  if (typeof q === 'string' && q.trim()) {
-    draftSearch.value = q.trim()
-    appliedSearch.value = q.trim()
-    currentPage.value = 1
+  const q = routeSearchValue()
+  draftSearch.value = q
+  appliedSearch.value = q
+  currentPage.value = 1
+}
+
+function categoryToApiType(tab: CatalogCategoryTab): AdvertType | undefined {
+  switch (tab) {
+    case 'textbooks':
+      return AdvertType.BOOK
+    case 'supplies':
+      return AdvertType.PRODUCT
+    case 'tutoring':
+      return AdvertType.SERVICE
+    default:
+      return undefined
   }
 }
 
-const {
-  bookCategories: bookCategoriesRef,
-  schoolGrades: schoolGradesRef,
-  subjects: subjectsRef,
-  isLoading: referencesLoading,
-  loadError: referencesError,
-  load: loadCatalogReferences
-} = useCatalogReferenceData()
+function selectedNames<T extends { name: string }>(
+  items: T[],
+  selectedIds: number[],
+  getId: (item: T) => number
+): string[] {
+  return selectedIds
+    .map(id => items.find(item => getId(item) === id)?.name)
+    .filter((name): name is string => Boolean(name))
+}
 
-const bookCategoryIds = ref<number[]>([])
-const schoolGradeIds = ref<number[]>([])
-const subjectIds = ref<number[]>([])
+function toCsv(values: Array<number | string>): string | undefined {
+  return values.length > 0 ? values.join(',') : undefined
+}
 
-onMounted(async () => {
-  applySearchFromRouteQuery()
-  await loadCatalogReferences()
-})
+function routeSearchValue(): string {
+  const q = route.query.q
+  return typeof q === 'string' ? q.trim() : ''
+}
 
-const filtered = computed(() => {
-  let rows = [...listings.value]
+function splitCsv(value?: string): string[] {
+  return value
+    ?.split(',')
+    .map(term => term.trim().toLowerCase())
+    .filter(Boolean) ?? []
+}
 
-  const shouldApplyLocalSearch
-    = rawItems.value?.fromFallback === true || hadApiError.value
-  const normalizedSearch = appliedSearch.value.trim().toLowerCase()
-  if (shouldApplyLocalSearch && normalizedSearch) {
-    rows = rows.filter(row => row.title.toLowerCase().includes(normalizedSearch))
+function buildFallbackPage(params: CatalogSearchParams): CatalogFetchResult {
+  let rows = [...catalogFallback]
+
+  const q = params.q?.trim().toLowerCase()
+  if (q) {
+    const normalizedIsbnQuery = q.replace(/-/g, '')
+    rows = rows.filter(row =>
+      row.title.toLowerCase().includes(q)
+      || (row.isbn?.toLowerCase().replace(/-/g, '').includes(normalizedIsbnQuery) ?? false))
   }
 
-  if (activeCategory.value !== 'all') {
-    rows = rows.filter(row => row.categoryTab === activeCategory.value)
-  }
+  if (params.type)
+    rows = rows.filter(row => row.type === params.type)
 
-  rows = rows.filter(row => bookCategoryMatches(bookCategoryIds.value, bookCategoriesRef.value, row))
-  rows = rows.filter(row => tutoringGradeMatches(schoolGradeIds.value, schoolGradesRef.value, row))
-  rows = rows.filter(row => tutoringSubjectMatches(subjectIds.value, subjectsRef.value, row))
+  const categories = splitCsv(params.category)
+  if (categories.length > 0)
+    rows = rows.filter(row => row.category != null && categories.includes(row.category.toLowerCase()))
 
-  if (sortKey.value === 'price_asc')
+  const grades = splitCsv(params.grade)
+  if (grades.length > 0)
+    rows = rows.filter(row => row.grade != null && grades.includes(row.grade.toLowerCase()))
+
+  const subjects = splitCsv(params.subjects)
+  if (subjects.length > 0)
+    rows = rows.filter(row => row.subjects != null && subjects.includes(row.subjects.toLowerCase()))
+
+  if (params.sort === 'price_asc')
     rows.sort((a, b) => a.price - b.price)
-  else if (sortKey.value === 'price_desc')
+  else if (params.sort === 'price_desc')
     rows.sort((a, b) => b.price - a.price)
 
-  return rows
-})
+  const size = Math.max(1, params.pageSize ?? pageSize.value)
+  const total = rows.length
+  const totalPages = Math.max(1, Math.ceil(total / size))
+  const page = Math.min(Math.max(1, params.page ?? 1), totalPages)
+  const start = (page - 1) * size
 
-const pageCount = computed(() =>
-  Math.max(1, Math.ceil(filtered.value.length / pageSize.value)))
+  return {
+    items: rows.slice(start, start + size),
+    page,
+    pageSize: size,
+    totalItems: total,
+    totalPages,
+    fromFallback: true,
+    hadError: true
+  }
+}
 
-const pagedRows = computed(() => {
-  const start = (currentPage.value - 1) * pageSize.value
-  return filtered.value.slice(start, start + pageSize.value)
-})
-
-watch(filtered, () => {
-  if (currentPage.value > pageCount.value)
-    currentPage.value = pageCount.value
-})
+watch(
+  () => rawItems.value?.page,
+  (page) => {
+    if (page != null && page !== currentPage.value)
+      currentPage.value = page
+  }
+)
 
 watch(activeCategory, (tab) => {
   currentPage.value = 1
@@ -179,6 +279,9 @@ watch(schoolGradeIds, () => {
 watch(subjectIds, () => {
   currentPage.value = 1
 }, { deep: true })
+watch(sortKey, () => {
+  currentPage.value = 1
+})
 
 watch(
   () => route.query.q,
@@ -269,7 +372,7 @@ watch(
                 {{ $t('catalog.list.title') }}
               </h1>
               <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                {{ $t('catalog.list.subtitle_near', { count: filtered.length }) }}
+                {{ $t('catalog.list.subtitle_near', { count: totalItems }) }}
               </p>
             </div>
             <div class="flex items-center gap-2">
@@ -314,7 +417,11 @@ watch(
             </button>
           </div>
 
-          <div class="grid w-full gap-6 [grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))]">
+          <div
+            class="grid w-full gap-6 transition-opacity [grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))]"
+            :class="pending ? 'opacity-60' : 'opacity-100'"
+            :aria-busy="pending"
+          >
             <CatalogListingCard
               v-for="row in pagedRows"
               :key="row.id"
@@ -325,6 +432,7 @@ watch(
           <CatalogPagination
             v-model:page="currentPage"
             :page-count="pageCount"
+            :disabled="pending"
           />
         </div>
       </div>

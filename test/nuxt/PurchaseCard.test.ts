@@ -60,7 +60,7 @@ describe('PurchaseCard', () => {
     expect(wrapper.text()).toContain('profile.history.status.completed')
     expect(wrapper.text()).toContain('Calculatrice Graphique')
     expect(wrapper.text()).toContain('JaneDoe')
-    expect(wrapper.text()).toContain('55 CHF')
+    expect(wrapper.text()).toContain('55.00 CHF')
     expect(wrapper.text()).toContain('me.purchases.seller_label')
     // COMPLETED purchases show the details toggle instead of the view advert link
     expect(wrapper.text()).toContain('me.purchases.actions.details')
@@ -224,21 +224,17 @@ describe('PurchaseCard', () => {
     expect(wrapper.text()).not.toContain('me.purchases.details.title')
   })
 
-  it('emits dispute when dispute is submitted via DisputeModal', async () => {
-    // We import DisputeModal here to query it
-    const DisputeModalComp = (await import('~/components/me/DisputeModal.vue')).default
+  it('emits dispute when dispute button is clicked', async () => {
     const wrapper = mount(PurchaseCard, {
       props: { purchase: { ...mockPurchase, status: 'SHIPPED' } },
       global: { stubs }
     })
 
-    const disputeModal = wrapper.findComponent(DisputeModalComp)
-    expect(disputeModal.exists()).toBe(true)
+    const btn = wrapper.findAll('button').find(b => b.text().includes('me.purchases.actions.dispute'))
+    expect(btn).toBeDefined()
+    await btn?.trigger('click')
 
-    await disputeModal.vm.$emit('submit', 'Item not as described')
-
-    expect(wrapper.emitted('dispute')?.[0]).toEqual(['txn-1', 'Item not as described'])
-    expect((wrapper.vm as unknown as { isDisputeOpen: boolean }).isDisputeOpen).toBe(false)
+    expect(wrapper.emitted('dispute')?.[0]).toEqual(['txn-1'])
   })
 
   it('updates localReview and refreshes Nuxt data when review is successfully submitted', async () => {
@@ -273,5 +269,35 @@ describe('PurchaseCard', () => {
     })
 
     expect((wrapper.vm as unknown as { localReview: { rating: number, comment: string | null } | null }).localReview).toEqual(updatedReview)
+  })
+
+  it('shows confirm service button for PAID_WAITING_COMPLETION', () => {
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, status: 'PAID_WAITING_COMPLETION' } },
+      global: { stubs }
+    })
+
+    expect(wrapper.text()).toContain('me.purchases.actions.confirm_service')
+    expect(wrapper.text()).toContain('me.purchases.alerts.service_confirmed')
+  })
+
+  it('emits confirm-service when confirm service button is clicked', async () => {
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, status: 'PAID_WAITING_COMPLETION' } },
+      global: { stubs }
+    })
+
+    const btn = wrapper.findAll('button').find(b => b.text().includes('me.purchases.actions.confirm_service'))
+    await btn?.trigger('click')
+    expect(wrapper.emitted('confirm-service')?.[0]).toEqual(['txn-1'])
+  })
+
+  it('shows service refused banner for CANCELLED SERVICE purchase', () => {
+    const wrapper = mount(PurchaseCard, {
+      props: { purchase: { ...mockPurchase, status: 'CANCELLED', type: 'SERVICE' } },
+      global: { stubs }
+    })
+
+    expect(wrapper.text()).toContain('me.purchases.alerts.service_refused')
   })
 })

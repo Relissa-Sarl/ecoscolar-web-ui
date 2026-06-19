@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import Breadcrumb from '~/components/common/Breadcrumb.vue'
 import { AdvertType } from '@/utils/enum/advertType'
-import type { QuestionResponse } from '~/types/advert'
+import type { QuestionResponse, ServiceRead } from '~/types/advert'
 import { getAdvertService } from '~/services/advertService'
 import { useUsersStore } from '~/stores/usersStore'
+import { useAbuseReport } from '~/composables/useAbuseReport'
+import ReportAbuseModal from '~/components/report/ReportAbuseModal.vue'
+import BookingModal from '~/components/booking/BookingModal.vue'
+import { AdvertStatus } from '~/utils/enum/advertStatus'
 
 const route = useRoute()
 const router = useRouter()
 const localePath = useLocalePath()
+const { isReportModalOpen, isReporting, reportError, currentCommentId, openReportModal, closeReportModal, submitReport, hasReportedComment, hasReportedAdvert } = useAbuseReport()
 
 function goBack() {
   const previous = router.options.history.state.back
@@ -83,6 +88,7 @@ const isOwnAdvert = computed(() => {
 })
 
 const toast = useToast()
+const isBookingModalOpen = ref(false)
 const answeringQuestionId = ref<number | null>(null)
 
 const handleAskQuestion = async (text: string) => {
@@ -128,6 +134,14 @@ const advertSummary = computed(() => {
     seller: advert.value.seller?.username
   }
 })
+
+const handleReserve = () => {
+  if (!usersStore.isAuthenticated) {
+    navigateTo(localePath(`/login?redirect=${encodeURIComponent(route.fullPath)}`))
+    return
+  }
+  isBookingModalOpen.value = true
+}
 </script>
 
 <template>
@@ -182,9 +196,29 @@ const advertSummary = computed(() => {
             }"
           />
           <AdvertActionButtons
-            v-if="advert?.seller.id !== usersStore.user?.id"
+            v-if="advert?.seller.id !== usersStore.user?.id && advert?.status === AdvertStatus.ACTIVE"
             :advert="advertSummary"
+            @reserve="handleReserve"
           />
+
+          <!-- Bouton Signaler -->
+          <div
+            v-if="usersStore.isAuthenticated && advert && advert.seller.id !== usersStore.user?.id && !hasReportedAdvert(Number(advert.id))"
+            class="pt-4 border-t border-slate-200 dark:border-slate-800"
+          >
+            <button
+              type="button"
+              class="flex items-center gap-2 text-sm text-slate-500 hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400 transition-colors bg-transparent border-0 p-0 cursor-pointer outline-none focus:ring-2 focus:ring-red-500 rounded"
+              @click="advert && openReportModal(Number(advert.id))"
+            >
+              <UIcon
+                name="i-heroicons-flag"
+                class="w-4 h-4"
+                aria-hidden="true"
+              />
+              <span>{{ $t('report.action') }}</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -205,14 +239,34 @@ const advertSummary = computed(() => {
       >
         <AdvertPublicQuestions
           :seller="advert.seller"
+          :is-authenticated="usersStore.isAuthenticated"
+          :current-username="usersStore.user?.nickname"
           :can-ask="usersStore.isAuthenticated && !isOwnAdvert"
           :can-answer="isOwnAdvert"
           :answering-question-id="answeringQuestionId"
           :questions="advertQuestions || []"
+          :has-reported-comment="hasReportedComment"
           @ask-question="handleAskQuestion"
           @answer-question="handleAnswerQuestion"
+          @report-comment="(commentId: number) => openReportModal(Number(advert!.id), commentId)"
         />
       </div>
     </div>
+
+    <ReportAbuseModal
+      :is-open="isReportModalOpen"
+      :is-processing="isReporting"
+      :error="reportError"
+      :target-type="currentCommentId ? 'comment' : 'advert'"
+      @close="closeReportModal"
+      @submit="submitReport"
+    />
+
+    <BookingModal
+      v-if="advert?.type === AdvertType.SERVICE"
+      :is-open="isBookingModalOpen"
+      :advert="advert as ServiceRead ?? null"
+      @close="isBookingModalOpen = false"
+    />
   </div>
 </template>

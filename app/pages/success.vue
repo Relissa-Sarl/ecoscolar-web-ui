@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
 import { useI18n, useSeoMeta } from '#imports'
 import { useCartStore } from '~/stores/cartStore'
-import { getAdvertService } from '~/services/advertService'
-import { getHistoryService } from '~/services/historyService'
-import SuccessIcon from '~/components/paimentState/SuccessIcon.vue'
-import SuccessMainMessage from '~/components/paimentState/SuccessMainMessage.vue'
-import SuccessInfos from '~/components/paimentState/SuccessInfos.vue'
-import SuccessButton from '~/components/paimentState/PaimentStateButton.vue'
+import { getPaymentService } from '~/services/paymentService'
+import SuccessIcon from '../components/paymentState/SuccessIcon.vue'
+import SuccessMainMessage from '../components/paymentState/SuccessMainMessage.vue'
+import SuccessInfos from '../components/paymentState/SuccessInfos.vue'
+import PaymentStateButton from '../components/paymentState/PaymentStateButton.vue'
+
+definePageMeta({
+  middleware: 'auth'
+})
 
 const { t } = useI18n()
 const route = useRoute()
@@ -20,55 +22,34 @@ useSeoMeta({
 
 const totalAmount = ref<number | null>(null)
 
-const orderId = computed(() => {
-  const oParam = route.query.orderId
-  if (!oParam) return null
-  const val = Array.isArray(oParam) ? oParam[0] : oParam
-  return val || null
+const stripeSessionId = computed(() => {
+  const value = route.query.stripeSessionId ?? route.query.orderId
+  if (!value) return null
+  const sessionId = Array.isArray(value) ? value[0] : value
+  return sessionId || null
 })
 
-const productIds = computed<number[]>(() => {
-  const pParam = route.query.productIds
-  if (!pParam) return []
-  const val = Array.isArray(pParam) ? pParam[0] : pParam
-  if (!val) return []
-  return val.split(',').map(Number).filter(n => !isNaN(n))
-})
+const displayedOrderNumber = ref<string | null>(null)
 
 // Clear the cart when the user lands on the success page and retrive the price information
 onMounted(async () => {
-  const storedTotal = sessionStorage.getItem('last_payment_total')
-  if (storedTotal) {
-    totalAmount.value = parseFloat(storedTotal)
-    sessionStorage.removeItem('last_payment_total')
+  sessionStorage.removeItem('pending_checkout_ids')
+
+  if (stripeSessionId.value) {
+    try {
+      const paymentService = getPaymentService()
+      const session = await paymentService.getSession(stripeSessionId.value)
+      if (session && session.amountTotal !== null) {
+        totalAmount.value = session.amountTotal / 100
+      }
+    } catch (err) {
+      console.error('Failed to retrieve checkout session details:', err)
+    }
   }
 
-  // Create transactions and update status to SOLD
-  const ids = productIds.value.length > 0
-    ? productIds.value
-    : (() => {
-        const pParam = route.query.productId
-        const val = Array.isArray(pParam) ? pParam[0] : pParam
-        const singleId = val ? Number(val) : null
-        return singleId ? [singleId] : []
-      })()
-
-  if (ids.length > 0) {
-    try {
-      const historyService = getHistoryService()
-      await historyService.createTransactions(ids, orderId.value)
-    } catch (err) {
-      console.error('Failed to create transactions, falling back to manual status update:', err)
-      // Fallback: update status to SOLD manually
-      const advertService = getAdvertService()
-      for (const id of ids) {
-        try {
-          await advertService.updateAdvertStatus(id, 'SOLD')
-        } catch (updateErr) {
-          console.error(`Failed to update status to SOLD for advert ${id}:`, updateErr)
-        }
-      }
-    }
+  if (route.query.orderId) {
+    const val = route.query.orderId
+    displayedOrderNumber.value = (Array.isArray(val) ? val[0] : val) ?? null
   }
 
   try {
@@ -86,18 +67,18 @@ onMounted(async () => {
       <SuccessIcon />
 
       <!-- Main Messages -->
-      <SuccessMainMessage :order-id="orderId" />
+      <SuccessMainMessage :order-number="displayedOrderNumber" />
 
       <!-- Success Paiment Informations -->
       <div class="p-6 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-white/75 dark:bg-slate-900/70 backdrop-blur-md shadow-sm space-y-4 text-left">
         <SuccessInfos
           :total-amount="totalAmount"
-          :order-id="orderId"
+          :order-number="displayedOrderNumber"
         />
       </div>
 
       <!-- Action Buttons -->
-      <SuccessButton />
+      <PaymentStateButton />
     </div>
   </div>
 </template>
